@@ -1,0 +1,53 @@
+.inputTable {
+    border-collapse: separate;
+}
+.inputTable td, .inputTable th{
+    border-radius: 5px;
+    height: 53px;
+    vertical-align: middle;
+}
+.inputTable input {
+    border: none;
+    text-align: center;
+    background-color: transparent;
+    padding: 0px;
+}
+.inputTable input:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+}
+.inputTable thead th {
+    background-color: #2f90ea
+}
+.inputTable thead td {
+    background-color: #989898
+}
+.inputTable tbody td {
+    background-color: #c4c4c4
+}
+.fuelCheck input {
+    border: 1px solid;
+}
+
+.fuelCheck .form-check-input:checked {
+    background-color: initial;
+    border-color: initial;
+}
+
+h1, h2 {
+    margin-bottom: 40px !important;
+}
+
+h2 {
+    font-size: 15px !important;
+}
+.projectStepContainer {
+    padding: 30px;
+}
+
+.projectStepContainer .input-group-text {
+    background-color: transparent !important;
+    border: transparent !important;
+    color: gray
+}

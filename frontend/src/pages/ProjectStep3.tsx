@@ -1,0 +1,199 @@
+import React, {useState, useEffect} from 'react'
+import { useKeycloak } from "@react-keycloak/web"
+import { useParams, useNavigate } from "react-router-dom"
+import Table from 'react-bootstrap/Table'
+import Form from 'react-bootstrap/Form'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+import InputGroup from 'react-bootstrap/InputGroup'
+import {InputStep3, ProjectType, VehiculeType} from '../frontendTypes'
+
+import './Project.css'
+
+export default function ProjectStep3(){
+    const { keycloak, initialized } = useKeycloak();
+    const navigate = useNavigate()
+    let params = useParams();
+    let init:InputStep3 = {vktSource: ''}
+    let vtypes = Object.keys(VehiculeType)
+    for (let i = 0; i < vtypes.length; i++) {
+        let vtype = vtypes[i] as VehiculeType
+        init[vtype] = {
+            vkt: 0,
+            vktRate: [0, 0, 0, 0, 0]
+        }
+    }
+    let [inputData, setInputData ] = useState(init)
+    let [project, setProject ] = useState({} as ProjectType)
+    let projectId = params.projectId
+    useEffect(() => {
+        if (initialized && keycloak.authenticated){
+            const requestOptions = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
+            };
+            fetch('http://localhost:8081/api/project/' + projectId, requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("get projetcs reply", data)
+                    setProject(data.project)
+                    if (data.project.inputStep3){
+                        setInputData(data.project.inputStep3)
+                    }
+                });
+            }
+    }, [keycloak, initialized, projectId])
+    const updateSource = (event: React.BaseSyntheticEvent) => {
+        setInputData((prevInputData: InputStep3) => ({
+            ...prevInputData,
+            vktSource: event.target.value
+        }))
+    }
+    const updateInput = (event: React.BaseSyntheticEvent, index?: number) => {
+        let target = event.target as HTMLInputElement
+        let vtype = target.name as VehiculeType
+        setInputData((prevInputData: InputStep3) => {
+            let vtypeobj = prevInputData[vtype]
+            if (vtypeobj) {
+                if (index === undefined) {
+                    vtypeobj.vkt = parseInt(target.value) || 0
+                } else {
+                    let percent = parseInt(target.value) || 0
+                    percent = Math.min(100, percent)
+                    vtypeobj.vktRate[index] = percent
+                }
+                return {
+                    ...prevInputData,
+                    [vtype]: vtypeobj
+                }
+            } else {
+                return prevInputData
+            }
+        })
+
+    }
+    const saveAndGoPreviousStep = () => {
+        // TODO: validate content ?
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
+            body: JSON.stringify({ inputData: inputData })
+        };
+        fetch('http://localhost:8081/api/project/' + projectId + '/step/3', requestOptions)
+            .then(response => response.json())
+            .then(data => navigate('/project/' + projectId + '/step/2'));
+    }
+    const saveAndGoNextStep = () => {
+        // TODO: validate content ?
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
+            body: JSON.stringify({ inputData: inputData })
+        };
+        fetch('http://localhost:8081/api/project/' + projectId + '/step/3', requestOptions)
+            .then(response => response.json())
+            .then(data => navigate('/project/' + projectId + '/step/4'));
+    }
+    return (
+        <Container className="projectStepContainer">
+            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)"}}>
+                <Col xs lg="8">
+                    <h1 style={{marginBottom: "40px"}}>Set up transport activity data</h1>
+                    <h2>Fill the Vehicle Kilometer Travelled, then fill the estimated percentage of growth milleage</h2>
+                    <Table className="inputTable">
+                        <thead>
+                            <tr>
+                                <th>Vehicle type</th>
+                                <th style={{width: "200px"}}>VKT (mio km/year)</th>
+                                <th colSpan={5}>Annual growth of VKT (%)</th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>{project.referenceYear} (RY)</td>
+                                <td>2018-2020</td>
+                                <td>2020-2025</td>
+                                <td>2025-2030</td>
+                                <td>2030-2040</td>
+                                <td>2040-2050</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.keys(project.inputStep2 || []).map((vtype, index) => {
+                                let vt = vtype as VehiculeType
+                                if (!project.inputStep2 || project.inputStep2[vt] === false || !inputData) {
+                                    return <></>
+                                }
+                                let inputVt = inputData[vt]
+                                if (inputVt)
+                                    return (
+                                        <tr key={index}>
+                                            <td style={{backgroundColor: "#989898"}}>{vtype}</td>
+                                            <td>
+                                                <InputGroup>
+                                                    <Form.Control type="input" name={vtype} value={inputVt.vkt} onChange={updateInput} placeholder="" />
+                                                    <InputGroup.Text>Mkm/y</InputGroup.Text>
+                                                </InputGroup>
+
+                                            </td>
+                                            <td>
+                                                <InputGroup>
+                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
+                                                    <InputGroup.Text>%</InputGroup.Text>
+                                                </InputGroup>
+                                            </td>
+                                            <td>
+                                                <InputGroup>
+                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
+                                                    <InputGroup.Text>%</InputGroup.Text>
+                                                </InputGroup>
+                                            </td>
+                                            <td>
+                                                <InputGroup>
+                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
+                                                    <InputGroup.Text>%</InputGroup.Text>
+                                                </InputGroup>
+                                            </td>
+                                            <td>
+                                                <InputGroup>
+                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
+                                                    <InputGroup.Text>%</InputGroup.Text>
+                                                </InputGroup>
+                                            </td>
+                                            <td>
+                                                <InputGroup>
+                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
+                                                    <InputGroup.Text>%</InputGroup.Text>
+                                                </InputGroup>
+                                            </td>
+                                        </tr>
+                                    )
+                                return <></>
+                            })
+                            }
+
+                        </tbody>
+                    </Table>
+                    {inputData?
+                        <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                            <Form.Label column sm={2}>Source</Form.Label>
+                            <Col sm={10}>
+                                <Form.Control type="input" name="vktSource" value={inputData.vktSource} onChange={updateSource} placeholder=""/>
+                            </Col>
+                        </Form.Group>
+                    :''}
+
+                    <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email 📧</a></h2>
+                    <Button variant="secondary" style={{marginRight: "20px"}} onClick={saveAndGoPreviousStep}>
+                        Previous
+                    </Button>
+                    <Button variant="primary" onClick={saveAndGoNextStep}>
+                        Next
+                    </Button>
+                </Col>
+            </Row>
+        </Container>
+
+    )
+}
