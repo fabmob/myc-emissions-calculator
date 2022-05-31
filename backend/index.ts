@@ -2,7 +2,7 @@ import {defaultsFacteursEnergetiqueEmission} from './defaults'
 import * as types from './types'
 import * as models from './models'
 import * as dbwrapper from './dbwrapper'
-// import path from 'path'
+import path from 'path'
 import {initKeycloak} from './keycloak-config'
 import express, { Express, Request, Response } from 'express'
 import cors from 'cors'
@@ -10,13 +10,14 @@ import cors from 'cors'
 const app: Express = express()
 app.use(express.json())
 app.use(cors())
-// app.use(express.static(path.join('../frontend', '')));
+app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
+
 let keycloak = initKeycloak()
-app.use(keycloak.middleware())
 
 dbwrapper.init()
 
 const port = process.env.PORT || 8081;
+app.use('/api/*', keycloak.middleware())
 
 app.post('/api/createProject', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
@@ -93,6 +94,16 @@ app.put('/api/project/:projectId/step/:stepNumber', keycloak.protect(), (req: Re
     res.json({
         status: "ok"
     });
+});
+
+app.all('/api/*', function(_, res) {
+    res.status(404).json({
+        status: "Not found"
+    })
+});
+
+app.all('*', (_, res) => {
+    res.sendFile(path.resolve(path.join(__dirname, "..", "frontend", "build", "index.html")));
 });
 
 app.listen(port, () => {

@@ -94,10 +94,7 @@ npm start
 
 The frontend is then accessible on http://localhost:3000
 
-To deploy on a non-development environment, it is recommended to build the frontend with `npm run build` and serve it using the backend by adding the following line to `index.ts`
-```
-app.use(express.static(path.join('../frontend', '')));
-```
+To deploy on a non-development environment, it is recommended to build the frontend with `npm run build` and serve it using the backend. The backend is configured to statically serve files in the `frontend/build/` folder.
 
 Configurations such as backend URL can be edited in the `frontend/.env` file.
 
