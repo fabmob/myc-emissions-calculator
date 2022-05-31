@@ -1,4 +1,4 @@
-import Reac, {useState} from 'react'
+import React, {useState} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useNavigate } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
