@@ -35,7 +35,7 @@ export default function CreateProject(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ project: projectDict })
         };
-        fetch('http://localhost:8081/api/createProject', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/createProject', requestOptions)
             .then(response => response.json())
             .then(data => navigate('/project/' + data.projectId + '/step/1'));
         event.preventDefault();

@@ -22,7 +22,7 @@ export default function ProjectViz(){
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
             };
-            fetch('http://localhost:8081/api/project/' + projectId + "/viz", requestOptions)
+            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + "/viz", requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     setProject(data.project)

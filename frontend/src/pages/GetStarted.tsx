@@ -28,7 +28,7 @@ export default function GetStarted(){
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
             };
-            fetch('http://localhost:8081/api/myProjects', requestOptions)
+            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/myProjects', requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log("get projetcs reply", data)

@@ -99,6 +99,8 @@ To deploy on a non-development environment, it is recommended to build the front
 app.use(express.static(path.join('../frontend', '')));
 ```
 
+Configurations such as backend URL can be edited in the `frontend/.env` file.
+
 ### Contributing
 
 Contributions to this project are welcomed, be sure to check [CONTRIBUTING.md](CONTRIBUTING.md) for more details.

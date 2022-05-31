@@ -37,7 +37,7 @@ export default function ProjectStep6(){
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
             };
-            fetch('http://localhost:8081/api/project/' + projectId, requestOptions)
+            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log("get projetcs reply", data)
@@ -96,7 +96,7 @@ export default function ProjectStep6(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: inputData })
         };
-        fetch('http://localhost:8081/api/project/' + projectId + '/step/6', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/6', requestOptions)
             .then(response => response.json())
             .then(data => navigate('/project/' + projectId + '/step/5'));
     }
@@ -107,7 +107,7 @@ export default function ProjectStep6(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: inputData })
         };
-        fetch('http://localhost:8081/api/project/' + projectId + '/step/6', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/6', requestOptions)
             .then(response => response.json())
             .then(data => navigate('/project/' + projectId + '/step/7'));
     }
