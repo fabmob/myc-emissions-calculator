@@ -195,15 +195,14 @@ export function computeAverageEnergyConsumption(
 
 export function computeTotalEnergyAndEmissions(
     consomationMoyenneEnergieComputed: types.AverageEnergyConsumptionComputed,
-    defaultsFacteursEnergetiqueEmission: types.EnergyAndEmissionsDefaultValues,
+    energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues,
     vktPerFuelComputed: types.VktPerFuelComputed
 ) : types.TotalEnergyAndEmissions {
     let outputTotalEnergyAndEmissions = <types.TotalEnergyAndEmissions>{}
-    console.log("vktPerFuelComputed", vktPerFuelComputed['Bus'])
     for (let i = 0; i < types.VehiculeTypeArray.length; i++) {
         let vtype = types.VehiculeTypeArray[i] as types.VehiculeType
         outputTotalEnergyAndEmissions[vtype] = {}
-        let fuelTypes = Object.keys(defaultsFacteursEnergetiqueEmission[vtype]) as types.FuelType[]
+        let fuelTypes = Object.keys(energyAndEmissionsDefaultValues) as types.FuelType[]
         for (let j = 0; j < fuelTypes.length; j++) {
             outputTotalEnergyAndEmissions[vtype][fuelTypes[j]] = {
                 energie: [0, 0, 0, 0, 0],
@@ -211,14 +210,10 @@ export function computeTotalEnergyAndEmissions(
             }
             for (let k = 0; k < dates.length; k++) {
                 let tmp = outputTotalEnergyAndEmissions[vtype][fuelTypes[j]]
-                let pci = defaultsFacteursEnergetiqueEmission?.[vtype]?.[fuelTypes[j]]?.pci || 0
-                let co2default = defaultsFacteursEnergetiqueEmission?.[vtype]?.[fuelTypes[j]]?.ges[k] || 0
+                let pci = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.pci || 0
+                let co2default = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.ges[k] || 0
                 let vkt = vktPerFuelComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
                 let consomoy = consomationMoyenneEnergieComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
-                if (vtype === "Bus") {
-                    console.log("fuelTypes[j]", "pci", "co2default", "vkt", "consomoy")
-                    console.log(fuelTypes[j], pci, co2default, vkt, consomoy)
-                }
                 if (tmp) {
                     tmp.energie[k] = pci * vkt * consomoy / 100
                     tmp.co2[k] = tmp.energie[k] * co2default / 1000000
@@ -227,7 +222,6 @@ export function computeTotalEnergyAndEmissions(
             }
         }
     }
-    console.log("outputTotalEnergyAndEmissions['Bus']", outputTotalEnergyAndEmissions["Bus"])
     return outputTotalEnergyAndEmissions
 }
 

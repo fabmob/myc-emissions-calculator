@@ -1,4 +1,4 @@
-import {defaultsFacteursEnergetiqueEmission} from './defaults'
+import {energyAndEmissionsDefaultValues} from './defaults'
 import * as types from './types'
 import * as models from './models'
 
@@ -56,7 +56,7 @@ const inputAverageEnergyConsumption : types.AverageEnergyConsumption = {
 let outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption)
 console.log("outputAverageEnergyConsumptionComputed", outputAverageEnergyConsumptionComputed)
 
-let outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, defaultsFacteursEnergetiqueEmission, outputVktPerFuelComputed)
+let outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, outputVktPerFuelComputed)
 // console.log("outputComputeTotalEnergyAndEmissions", outputComputeTotalEnergyAndEmissions["Private car"])
 
 let outputSumTotalEnergyAndEmissions = models.sumTotalEnergyAndEmissions(outputComputeTotalEnergyAndEmissions)

@@ -132,11 +132,9 @@ export type SumTotalEnergyAndEmissions = {
     }
 }
 export type EnergyAndEmissionsDefaultValues = {
-    [key in VehiculeType]: {
-        [key in FuelType]?: {
-            pci: number,
-            ges: YearlyValues<number>
-        }
+    [key in FuelType]?: {
+        pci: number,
+        ges: YearlyValues<number>
     }
 }
 

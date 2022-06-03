@@ -1,4 +1,4 @@
-import {defaultsFacteursEnergetiqueEmission} from './defaults'
+import {energyAndEmissionsDefaultValues} from './defaults'
 import * as types from './types'
 import * as models from './models'
 import * as dbwrapper from './dbwrapper'
@@ -76,7 +76,7 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.inputStep7
     project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption)
 
-    project.outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, defaultsFacteursEnergetiqueEmission, project.outputVktPerFuelComputed)
+    project.outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, project.outputVktPerFuelComputed)
 
     project.outputSumTotalEnergyAndEmissions = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissions)
 
