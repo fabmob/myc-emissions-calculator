@@ -32,7 +32,8 @@ export default function GetStarted(){
         return <Navigate to='/'  />
     }
     if (selectedProject !== ""){
-        let step = projects[parseInt(selectedProject) - 1].step
+        let p = projects.find(project => project.id === parseInt(selectedProject))
+        let step = p?.step
         let url = "/project/" + selectedProject + "/step/" + step
         if (step === 100) {
             url = "/project/" + selectedProject + "/viz"
