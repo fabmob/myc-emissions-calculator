@@ -14,7 +14,8 @@ console.log("socioEconomicDataCalc", socioEconomicDataCalc)
 
 const inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = {
     "Private car": {vkt: 1000, vktRate: [1, 1, 1, 1, 1]},
-    "Individual taxi": {vkt: 200, vktRate: [0.5, 0.5, 0.5, 0.5, 0.5]}
+    "Individual taxi": {vkt: 200, vktRate: [0.5, 0.5, 0.5, 0.5, 0.5]},
+    "Some random category": {vkt: 100, vktRate: [0.5, 1, 1.5, 2, 2.5]}
 }
 
 let vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled)
@@ -27,6 +28,9 @@ const inputVktPerFuel: types.VktPerFuel = {
     },
     "Individual taxi": {
         "Diesel": [100, 100, 100, 100, 100]
+    },
+    "Some random category": {
+        "Diesel": [100, 100, 100, 100, 100]
     }
 }
 
@@ -35,7 +39,8 @@ console.log("outputVktPerFuelComputed", outputVktPerFuelComputed)
 
 const inputVehicleStats : types.VehicleStats = {
     "Private car": {"occupancy": 1, "tripLength": 20},
-    "Individual taxi": {"occupancy": 2, "tripLength": 20}
+    "Individual taxi": {"occupancy": 2, "tripLength": 20},
+    "Some random category": {"occupancy": 20, "tripLength": 20}
 }
 
 let outputTransportPerformance = models.computeTransportPerformance(outputVktPerFuelComputed, inputVehicleStats)
@@ -50,6 +55,9 @@ const inputAverageEnergyConsumption : types.AverageEnergyConsumption = {
         "Diesel": [6, 1, 1, 1, 1, 1]
     },
     "Individual taxi": {
+        "Diesel": [6, 1, 1, 1, 1, 1]
+    },
+    "Some random category": {
         "Diesel": [6, 1, 1, 1, 1, 1]
     }
 }

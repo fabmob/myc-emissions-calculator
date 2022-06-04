@@ -29,37 +29,17 @@ export type YearlyGrowth = YearlyValues<Percent>
 
 export type date = 2020 | 2025 | 2030 | 2040 | 2050
 
-export enum VehicleType {
-    "Non motorized vehicle" = "Non motorized vehicle",
-    "Private car" = "Private car",
-    "Individual taxi" = "Individual taxi",
-    "Motorcycle" = "Motorcycle",
-    "Motorcycle taxi" = "Motorcycle taxi",
-    "Minibus" = "Minibus",
-    "Bus" = "Bus",
-    "Bus rapid transit" = "Bus rapid transit",
-    "Very light commercial vehicle" = "Very light commercial vehicle",
-    "Light commercial vehicle" = "Light commercial vehicle",
-    "Solo truck" = "Solo truck",
-    "Articulated truck" = "Articulated truck",
-    "Long distance train" = "Long distance train",
-    "Urban train" = "Urban train",
-    "Metro" = "Metro",
-    "Freight train" = "Freight train"
-}
-export const VehicleTypeArray = Object.keys(VehicleType)
-
 // valeur: mil km / year
 export type VehicleKilometresTravelled = {
-    [key in VehicleType]?: {vkt: MillKmPerYear, vktRate: YearlyGrowth}
+    [key: string]: {vkt: MillKmPerYear, vktRate: YearlyGrowth}
 }
 
 export type VehicleKilometresTravelledComputed = {
-    [key in VehicleType]: YearlyValues<MillKm>
+    [key: string]: YearlyValues<MillKm>
 }
 
 export type VehicleStats = {
-    [key in VehicleType]?: {
+    [key: string]: {
         occupancy: UsersPerVehicle, // passagers / vehicle ou tonnes / vehicles
         tripLength: Km // km
     }
@@ -75,50 +55,50 @@ export enum FuelType {
 }
 
 export type VktPerFuel = {
-    [key in VehicleType]?: {
+    [key: string]: {
         [key in FuelType]?: YearlyValues<Percent> // %
     }
 }
 
 export type VktPerFuelComputed = {
-    [key in VehicleType]?: {
+    [key: string]: {
         [key in FuelType]?: YearlyValues<MillKm> // km
     }
 }
 
 export type TransportPerformance = {
-    [key in VehicleType]?: {
+    [key: string]: {
         [key in FuelType]?: YearlyValues<MillPersonKm> // mill pkm
     }
 }
 
 export type ModalShare = {
-    [key in VehicleType]?: YearlyValues<Part>
+    [key: string]: YearlyValues<Part>
 }
 export type SumsPerVehicleType = {
-    [key in VehicleType]?: YearlyValues<MillPersonKm>
+    [key: string]: YearlyValues<MillPersonKm>
 }
 
 export type AverageEnergyConsumption = {
-    [key in VehicleType]?: {
+    [key: string]: {
         [key in FuelType]?: YearlyValues<UnitPerHundredKm>
     }
 }
 
 export type AnnualChange = {
-    [key in VehicleType]?: {
+    [key: string]: {
         [key in FuelType]?: YearlyValues<Percent> // %
     }
 }
 
 export type AverageEnergyConsumptionComputed = {
-    [key in VehicleType]?: {
+    [key: string]: {
         [key in FuelType]?: YearlyValues<UnitPerHundredKm>
     }
 }
 
 export type TotalEnergyAndEmissions = {
-    [key in VehicleType]: {
+    [key: string]: {
         [key in FuelType]?: {
             energie: YearlyValues<Tj>,
             co2: YearlyValues<MilTons>
@@ -126,7 +106,7 @@ export type TotalEnergyAndEmissions = {
     }
 }
 export type SumTotalEnergyAndEmissions = {
-    [key in VehicleType]: {
+    [key: string]: {
         energie: YearlyValues<Tj>,
         co2: YearlyValues<MilTons>
     }

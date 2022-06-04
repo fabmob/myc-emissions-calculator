@@ -26,12 +26,13 @@ export function computeVehicleKilometresTravelled(
     inputVehicleKilometresTravelled : types.VehicleKilometresTravelled
 ) : types.VehicleKilometresTravelledComputed {
     let outputVehicleKilometresTravelledComputed = <types.VehicleKilometresTravelledComputed>{}
+    let vehicleTypeArray = Object.keys(inputVehicleKilometresTravelled)
     // Initialize output with default values
-    for (let i = 0; i < types.VehicleTypeArray.length; i++) {
-        let vtype = types.VehicleTypeArray[i] as types.VehicleType
+    for (let i = 0; i < vehicleTypeArray.length; i++) {
+        let vtype = vehicleTypeArray[i]
         outputVehicleKilometresTravelledComputed[vtype] = [inputVehicleKilometresTravelled[vtype]?.vkt || 0, 0, 0, 0, 0]
     }
-    const keys = Object.keys(inputVehicleKilometresTravelled) as types.VehicleType[]
+    const keys = Object.keys(inputVehicleKilometresTravelled)
     // Compute increases according to rate
     for (let k = 0; k < keys.length; k++) {
         for (let i = 1; i < dates.length; i++) {
@@ -49,7 +50,7 @@ export function computeVktPerFuel (
     vehicleKilometresTravelledComputed: types.VehicleKilometresTravelledComputed
 ) : types.VktPerFuelComputed {
     let outputVktPerFuelComputed : types.VktPerFuelComputed = {}
-    let vehicleTypes = Object.keys(inputVktPerFuel) as types.VehicleType[]
+    let vehicleTypes = Object.keys(inputVktPerFuel)
     for (let i = 0; i < vehicleTypes.length; i++) {
         let vtype = vehicleTypes[i]
         let outputVktCurrentVehicle = outputVktPerFuelComputed[vtype]
@@ -78,7 +79,7 @@ export function computeTransportPerformance (
     vehicleStats: types.VehicleStats
 ) : types.TransportPerformance {
     let outputTransportPerformance : types.TransportPerformance = {}
-    let vehicleTypes = Object.keys(vktPerFuelComputed) as types.VehicleType[]
+    let vehicleTypes = Object.keys(vktPerFuelComputed)
     for (let i = 0; i < vehicleTypes.length; i++) {
         let vtype = vehicleTypes[i]
         let vTauxOccupation = vehicleStats?.[vtype]?.occupancy || 1 as types.UsersPerVehicle
@@ -107,7 +108,7 @@ export function computeModalShare (
     transportPerformance: types.TransportPerformance
 ) : types.ModalShare {
     let outputModalShare : types.ModalShare = {}
-    let vehicleTypes = Object.keys(transportPerformance) as types.VehicleType[]
+    let vehicleTypes = Object.keys(transportPerformance)
     let toots = [0, 0, 0, 0, 0]
     let sumsPerVehicleType: types.SumsPerVehicleType = {}
     for (let i = 0; i < vehicleTypes.length; i++) {
@@ -159,7 +160,7 @@ export function computeAverageEnergyConsumption(
     inputAverageEnergyConsumption: types.AverageEnergyConsumption
 ) : types.AverageEnergyConsumptionComputed {
     let outputAverageEnergyConsumptionComputed: types.AverageEnergyConsumptionComputed = {}
-    let vehicleTypes = Object.keys(inputAverageEnergyConsumption) as types.VehicleType[]
+    let vehicleTypes = Object.keys(inputAverageEnergyConsumption)
     for (let i = 0; i < vehicleTypes.length; i++) {
         let vtype = vehicleTypes[i]
         let inputAnnualChangePerVehicle = inputAverageEnergyConsumption[vtype] || {}
@@ -199,8 +200,9 @@ export function computeTotalEnergyAndEmissions(
     vktPerFuelComputed: types.VktPerFuelComputed
 ) : types.TotalEnergyAndEmissions {
     let outputTotalEnergyAndEmissions = <types.TotalEnergyAndEmissions>{}
-    for (let i = 0; i < types.VehicleTypeArray.length; i++) {
-        let vtype = types.VehicleTypeArray[i] as types.VehicleType
+    let vehicleTypeArray = Object.keys(consomationMoyenneEnergieComputed)
+    for (let i = 0; i < vehicleTypeArray.length; i++) {
+        let vtype = vehicleTypeArray[i]
         outputTotalEnergyAndEmissions[vtype] = {}
         let fuelTypes = Object.keys(energyAndEmissionsDefaultValues) as types.FuelType[]
         for (let j = 0; j < fuelTypes.length; j++) {
@@ -229,8 +231,9 @@ export function sumTotalEnergyAndEmissions(
     energieTotaleEmissionsGes: types.TotalEnergyAndEmissions
 ) : types.SumTotalEnergyAndEmissions {
     let outputSumTotalEnergyAndEmissions = <types.SumTotalEnergyAndEmissions>{}
-    for (let i = 0; i < types.VehicleTypeArray.length; i++) {
-        let vtype = types.VehicleTypeArray[i] as types.VehicleType
+    let vehicleTypeArray = Object.keys(energieTotaleEmissionsGes)
+    for (let i = 0; i < vehicleTypeArray.length; i++) {
+        let vtype = vehicleTypeArray[i]
         outputSumTotalEnergyAndEmissions[vtype] = {
             energie: [0, 0, 0, 0, 0],
             co2: [0, 0, 0, 0, 0]
