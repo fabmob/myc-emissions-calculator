@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import {InputStep4, ProjectType, VehiculeType} from '../frontendTypes'
+import {InputStep4, ProjectType} from '../frontendTypes'
 
 
 import './Project.css'
@@ -18,16 +18,7 @@ export default function ProjectStep4(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
-    let init:InputStep4 = {source: ''}
-    let vtypes = Object.keys(VehiculeType)
-    for (let i = 0; i < vtypes.length; i++) {
-        let vtype = vtypes[i] as VehiculeType
-        init[vtype] = {
-            occupancy: 0,
-            tripLength: 0
-        }
-    }
-    let [inputData, setInputData ] = useState(init)
+    let [inputData, setInputData ] = useState({source: ''} as InputStep4)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
     useEffect(() => {
@@ -43,6 +34,17 @@ export default function ProjectStep4(){
                     setProject(data.project)
                     if (data.project.inputStep4){
                         setInputData(data.project.inputStep4)
+                    } else {
+                        let vtypes = Object.keys(data.project.inputStep2)
+                        let init:InputStep4 = {source: ''}
+                        for (let i = 0; i < vtypes.length; i++) {
+                            let vtype = vtypes[i]
+                            init[vtype] = {
+                                occupancy: 0,
+                                tripLength: 0
+                            }
+                        }
+                        setInputData(init)
                     }
                 });
             }
@@ -53,10 +55,10 @@ export default function ProjectStep4(){
             source: event.target.value
         }))
     }
-    const updateInput = (vtype: VehiculeType, param: "occupancy" | "tripLength", value: number) => {
+    const updateInput = (vtype: string, param: "occupancy" | "tripLength", value: number) => {
         setInputData((prevInputData: InputStep4) => {
             let vtypeobj = prevInputData[vtype]
-            if (vtypeobj) {
+            if (vtypeobj && typeof(vtypeobj) !== 'string') {
                 vtypeobj[param] = value
                 return {
                     ...prevInputData,
@@ -69,13 +71,13 @@ export default function ProjectStep4(){
     }
     const updateOccupancy = (event: React.BaseSyntheticEvent) => {
         let target = event.target as HTMLInputElement
-        let vtype = target.name as VehiculeType
+        let vtype = target.name
         let value = parseInt(target.value) || 0
         updateInput(vtype, "occupancy", value)
     }
     const updateTripLength = (event: React.BaseSyntheticEvent) => {
         let target = event.target as HTMLInputElement
-        let vtype = target.name as VehiculeType
+        let vtype = target.name
         let value = parseInt(target.value) || 0
         updateInput(vtype, "tripLength", value)
     }
@@ -88,7 +90,7 @@ export default function ProjectStep4(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/4', requestOptions)
             .then(response => response.json())
-            .then(data => navigate('/project/' + projectId + '/step/3'));
+            .then(() => navigate('/project/' + projectId + '/step/3'));
     }
     const saveAndGoNextStep = () => {
         // TODO: validate content ?
@@ -99,7 +101,7 @@ export default function ProjectStep4(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/4', requestOptions)
             .then(response => response.json())
-            .then(data => navigate('/project/' + projectId + '/step/5'));
+            .then(() => navigate('/project/' + projectId + '/step/5'));
     }
     return (
         <Container className="projectStepContainer">
@@ -117,12 +119,12 @@ export default function ProjectStep4(){
                         </thead>
                         <tbody>
                             {Object.keys(project.inputStep2 || []).map((vtype, index) => {
-                                let vt = vtype as VehiculeType
+                                let vt = vtype
                                 if (!project.inputStep2 || project.inputStep2[vt] === false || !inputData) {
                                     return <></>
                                 }
                                 let inputVt = inputData[vt]
-                                if (inputVt)
+                                if (inputVt && typeof(inputVt) !== 'string')
                                     return (
                                         <tr key={index}>
                                             <td style={{backgroundColor: "#989898"}}>{vtype}</td>
@@ -145,7 +147,7 @@ export default function ProjectStep4(){
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
                             <Form.Label column sm={2}>Source</Form.Label>
                             <Col sm={10}>
-                                <Form.Control type="input" name="vktSource" value={inputData.source} onChange={updateSource} placeholder=""/>
+                                <Form.Control type="input" name="vktSource" value={inputData.source as string} onChange={updateSource} placeholder=""/>
                             </Col>
                         </Form.Group>
                     :''}

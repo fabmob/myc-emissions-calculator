@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep1, ProjectType} from '../frontendTypes'
+import {validateStringAsPercent} from '../utils'
 
 import './Project.css'
 
@@ -18,11 +19,11 @@ export default function ProjectStep1(){
     const navigate = useNavigate()
     let params = useParams();
     let [inputData, setInputData ] = useState({
-        population: 0,
-        populationRate: [0, 0, 0, 0, 0],
+        population: "0",
+        populationRate: ["0", "0", "0", "0", "0"],
         populationSource: "",
-        gdp: 0,
-        gdpRate: [0, 0, 0, 0, 0],
+        gdp: "0",
+        gdpRate: ["0", "0", "0", "0", "0"],
         gdpSource: ""
     } as InputStep1)
     let [project, setProject ] = useState({} as ProjectType)
@@ -55,9 +56,7 @@ export default function ProjectStep1(){
             let name = target.name as "populationRate" | "gdpRate"
             setInputData((prevInputData) => {
                 let rateToChange = prevInputData[name]
-                let percent = parseInt(target.value) || 0
-                percent = Math.min(100, percent)
-                rateToChange[index] = percent
+                rateToChange[index] = validateStringAsPercent(target.value)
                 return {
                     ...prevInputData,
                     [name]: rateToChange
@@ -74,7 +73,7 @@ export default function ProjectStep1(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/1', requestOptions)
             .then(response => response.json())
-            .then(data => navigate('/project/' + projectId + '/step/2'));
+            .then(() => navigate('/project/' + projectId + '/step/2'));
     }
     return (
         <Container className="projectStepContainer">

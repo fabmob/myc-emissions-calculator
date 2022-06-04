@@ -14,36 +14,17 @@ export type ProjectType = {
         gdp: number[]
     },
     outputModalShare?: {
-        [key in VehiculeType]?: number[]
+        [key: string]: number[]
     },
     outputSumTotalEnergyAndEmissions?: {
-        [key in VehiculeType]?: {
+        [key: string]: {
             co2: number[],
             energie: number[],
         }
     },
     vehiculeKilometresTravelledComputed?: {
-        [key in VehiculeType]?: number[]
+        [key: string]: number[]
     }
-}
-
-export enum VehiculeType {
-    "Non motorized vehicle" = "Non motorized vehicle",
-    "Private car" = "Private car",
-    "Individual taxi" = "Individual taxi",
-    "Motorcycle" = "Motorcycle",
-    "Motorcycle taxi" = "Motorcycle taxi",
-    "Minibus" = "Minibus",
-    "Bus" = "Bus",
-    "Bus rapid transit" = "Bus rapid transit",
-    "Very light commercial vehicle" = "Very light commercial vehicle",
-    "Light commercial vehicle" = "Light commercial vehicle",
-    "Solo truck" = "Solo truck",
-    "Articulated truck" = "Articulated truck",
-    "Long distance train" = "Long distance train",
-    "Urban train" = "Urban train",
-    "Metro" = "Metro",
-    "Freight train" = "Freight train"
 }
 
 export enum FuelType {
@@ -56,47 +37,47 @@ export enum FuelType {
 }
 
 export type InputStep1 = {
-    population: number,
-    populationRate: number[],
+    population: string,
+    populationRate: string[],
     populationSource: string,
-    gdp: number,
-    gdpRate: number[],
+    gdp: string,
+    gdpRate: string[],
     gdpSource: string
 }
 
 export type InputStep2 = {
-    [key in VehiculeType]?: boolean
+    [key: string]: boolean
 }
 
 export type InputStep3 = {
-    [key in VehiculeType]?: {
-        vkt: number,
-        vktRate: number[]
-    }
-} & {vktSource: string}
+    [key: string]: {
+        vkt: string,
+        vktRate: string[]
+    } | string
+}
 
 
 export type InputStep4 = {
-    [key in VehiculeType]?: {
+    [key: string]: {
         occupancy: number,
         tripLength: number
-    }
-} & {source: string}
+    } | string
+}
 
 export type InputStep5 = {
-    [key in VehiculeType]?: {
+    [key: string]: {
         [key in FuelType]: boolean
-    }
-} & {source: string}
+    } | string
+}
 
 export type InputStep6 = {
-    [key in VehiculeType]?: {
-        [key in FuelType]: number[]
-    }
-} & {source: string}
+    [key: string]: {
+        [key in FuelType]: string[]
+    }  | string
+}
 
 export type InputStep7 = {
-    [key in VehiculeType]?: {
-        [key in FuelType]: number[]
-    }
-} & {source: string}
+    [key: string]: {
+        [key in FuelType]: string[]
+    } | string
+}

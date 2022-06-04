@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import {ProjectType, VehiculeType} from '../frontendTypes'
+import {ProjectType} from '../frontendTypes'
 
 import './Project.css'
 
@@ -37,7 +37,7 @@ export default function ProjectViz(){
     let outputModalShare = project?.outputModalShare || {}
     let vtypesmodale = Object.keys(outputModalShare)
     let activeVtypesModale = []
-    type DataPartModale = {[key in VehiculeType]?: number} & {name: number}
+    type DataPartModale = {[key : string]: number} & {name: number}
     let dataPartModale : DataPartModale[] = [
         {name: dates[0]},
         {name: dates[1]},
@@ -46,7 +46,7 @@ export default function ProjectViz(){
         {name: dates[4]}
     ]
     for (let i = 0; i < vtypesmodale.length; i++) {
-        let vtype = vtypesmodale[i] as VehiculeType
+        let vtype = vtypesmodale[i]
         for (let j = 0; j < 5; j++) {
             if (outputModalShare?.[vtype]?.[j]) {
                 dataPartModale[j][vtype] = Math.round((outputModalShare?.[vtype]?.[j] || 0) * 100)
@@ -59,7 +59,7 @@ export default function ProjectViz(){
     let vehiculeKilometresTravelledComputed = project?.vehiculeKilometresTravelledComputed || {}
     let vtypesvkt = Object.keys(vehiculeKilometresTravelledComputed)
     let activeVtypesVkt = []
-    type DataVkt = {[key in VehiculeType]?: number} & {name: number}
+    type DataVkt = {[key: string]: number} & {name: number}
     let dataVkt : DataVkt[] = [
         {name: dates[0]},
         {name: dates[1]},
@@ -68,7 +68,7 @@ export default function ProjectViz(){
         {name: dates[4]}
     ]
     for (let i = 0; i < vtypesvkt.length; i++) {
-        let vtype = vtypesvkt[i] as VehiculeType
+        let vtype = vtypesvkt[i]
         for (let j = 0; j < 5; j++) {
             if (vehiculeKilometresTravelledComputed?.[vtype]?.[j]) {
                 dataVkt[j][vtype] = Math.round((vehiculeKilometresTravelledComputed?.[vtype]?.[j] || 0))
@@ -88,7 +88,7 @@ export default function ProjectViz(){
         {name: dates[4]}
     ]
     for (let i = 0; i < vtypesmodale.length; i++) {
-        let vtype = vtypesmodale[i] as VehiculeType
+        let vtype = vtypesmodale[i]
         for (let j = 0; j < 5; j++) {
             let val = outputSumTotalEnergyAndEmissions?.[vtype]?.co2?.[j]
             if (val) {

@@ -8,24 +8,17 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import {InputStep3, ProjectType, VehiculeType} from '../frontendTypes'
+import {InputStep3, ProjectType} from '../frontendTypes'
+import {validateStringAsFloat, validateStringAsPercent} from '../utils'
 
 import './Project.css'
+
 
 export default function ProjectStep3(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
-    let init:InputStep3 = {vktSource: ''}
-    let vtypes = Object.keys(VehiculeType)
-    for (let i = 0; i < vtypes.length; i++) {
-        let vtype = vtypes[i] as VehiculeType
-        init[vtype] = {
-            vkt: 0,
-            vktRate: [0, 0, 0, 0, 0]
-        }
-    }
-    let [inputData, setInputData ] = useState(init)
+    let [inputData, setInputData ] = useState({vktSource: ''} as InputStep3)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
     useEffect(() => {
@@ -41,6 +34,17 @@ export default function ProjectStep3(){
                     setProject(data.project)
                     if (data.project.inputStep3){
                         setInputData(data.project.inputStep3)
+                    } else {
+                        let vtypes = Object.keys(data.project.inputStep2)
+                        let init:InputStep3 = {vktSource: ''}
+                        for (let i = 0; i < vtypes.length; i++) {
+                            let vtype = vtypes[i]
+                            init[vtype] = {
+                                vkt: "0",
+                                vktRate: ["0", "0", "0", "0", "0"]
+                            }
+                        }
+                        setInputData(init)
                     }
                 });
             }
@@ -53,16 +57,15 @@ export default function ProjectStep3(){
     }
     const updateInput = (event: React.BaseSyntheticEvent, index?: number) => {
         let target = event.target as HTMLInputElement
-        let vtype = target.name as VehiculeType
+        let vtype = target.name
+
         setInputData((prevInputData: InputStep3) => {
             let vtypeobj = prevInputData[vtype]
-            if (vtypeobj) {
+            if (vtypeobj && typeof(vtypeobj) != 'string') {
                 if (index === undefined) {
-                    vtypeobj.vkt = parseInt(target.value) || 0
+                    vtypeobj.vkt = validateStringAsFloat(target.value)
                 } else {
-                    let percent = parseInt(target.value) || 0
-                    percent = Math.min(100, percent)
-                    vtypeobj.vktRate[index] = percent
+                    vtypeobj.vktRate[index] = validateStringAsPercent(target.value)
                 }
                 return {
                     ...prevInputData,
@@ -83,7 +86,7 @@ export default function ProjectStep3(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/3', requestOptions)
             .then(response => response.json())
-            .then(data => navigate('/project/' + projectId + '/step/2'));
+            .then(() => navigate('/project/' + projectId + '/step/2'));
     }
     const saveAndGoNextStep = () => {
         // TODO: validate content ?
@@ -94,7 +97,7 @@ export default function ProjectStep3(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/3', requestOptions)
             .then(response => response.json())
-            .then(data => navigate('/project/' + projectId + '/step/4'));
+            .then(() => navigate('/project/' + projectId + '/step/4'));
     }
     return (
         <Container className="projectStepContainer">
@@ -121,12 +124,11 @@ export default function ProjectStep3(){
                         </thead>
                         <tbody>
                             {Object.keys(project.inputStep2 || []).map((vtype, index) => {
-                                let vt = vtype as VehiculeType
-                                if (!project.inputStep2 || project.inputStep2[vt] === false || !inputData) {
+                                if (!project.inputStep2 || project.inputStep2[vtype] === false || !inputData) {
                                     return <></>
                                 }
-                                let inputVt = inputData[vt]
-                                if (inputVt)
+                                let inputVt = inputData[vtype]
+                                if (inputVt && typeof(inputVt) !== 'string')
                                     return (
                                         <tr key={index}>
                                             <td style={{backgroundColor: "#989898"}}>{vtype}</td>
@@ -175,11 +177,11 @@ export default function ProjectStep3(){
 
                         </tbody>
                     </Table>
-                    {inputData?
+                    {inputData ?
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
                             <Form.Label column sm={2}>Source</Form.Label>
                             <Col sm={10}>
-                                <Form.Control type="input" name="vktSource" value={inputData.vktSource} onChange={updateSource} placeholder=""/>
+                                <Form.Control type="input" name="vktSource" value={inputData.vktSource as string} onChange={updateSource} placeholder=""/>
                             </Col>
                         </Form.Group>
                     :''}

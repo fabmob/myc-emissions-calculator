@@ -6,18 +6,35 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import {InputStep2, VehiculeType} from '../frontendTypes'
+import {InputStep2} from '../frontendTypes'
 
 import './Project.css'
 
+const defaultVehicles = [
+    "Non motorized vehicle",
+    "Private car",
+    "Individual taxi",
+    "Motorcycle",
+    "Motorcycle taxi",
+    "Minibus",
+    "Bus",
+    "Bus rapid transit",
+    "Very light commercial vehicle",
+    "Light commercial vehicle",
+    "Solo truck",
+    "Articulated truck",
+    "Long distance train",
+    "Urban train",
+    "Metro",
+    "Freight train",
+]
 export default function ProjectStep2(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
     let init:InputStep2 = {}
-    let vtypes = Object.keys(VehiculeType)
-    for (let i = 0; i < vtypes.length; i++) {
-        let vtype = vtypes[i] as VehiculeType
+    for (let i = 0; i < defaultVehicles.length; i++) {
+        let vtype = defaultVehicles[i]
         init[vtype] = false
     }
     let [inputData, setInputData ] = useState(init)
@@ -39,33 +56,44 @@ export default function ProjectStep2(){
     }, [keycloak, initialized, projectId])
     const updateInput = (event: React.BaseSyntheticEvent) => {
         let target = event.target as HTMLInputElement
-        let vtype = target.name as VehiculeType
+        let vtype = target.name
         setInputData((prevInputData) => ({
             ...prevInputData,
             [vtype]: !prevInputData[vtype]
         }))
+    }
+    // Only send selected vtypes to backend
+    const filterData = (inp: InputStep2): InputStep2 => {
+        let output: InputStep2 = {}
+        let keys = Object.keys(inp)
+        for (let i = 0; i < keys.length; i++) {
+            if (inp[keys[i]]) {
+                output[keys[i]] = true
+            }
+        }
+        return output
     }
     const saveAndGoPreviousStep = () => {
         // TODO: validate content ?
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
-            body: JSON.stringify({ inputData: inputData })
+            body: JSON.stringify({ inputData: filterData(inputData) })
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/2', requestOptions)
             .then(response => response.json())
-            .then(data => navigate('/project/' + projectId + '/step/1'));
+            .then(() => navigate('/project/' + projectId + '/step/1'));
     }
     const saveAndGoNextStep = () => {
         // TODO: validate content ?
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
-            body: JSON.stringify({ inputData: inputData })
+            body: JSON.stringify({ inputData: filterData(inputData) })
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/2', requestOptions)
             .then(response => response.json())
-            .then(data => navigate('/project/' + projectId + '/step/3'));
+            .then(() => navigate('/project/' + projectId + '/step/3'));
     }
     return (
         <Container className="projectStepContainer">
@@ -76,16 +104,15 @@ export default function ProjectStep2(){
                     <Form style={{"marginBottom": "20px"}}>
                         <Row style={{textAlign: "left"}}>
                         {Object.keys(inputData).map((vtype, index) => {
-                            let vt = vtype as VehiculeType
                             return (
                                 <Col lg="4" key={index}>
                                     <Form.Switch
                                         style={{margin: "10px"}}
                                         id="custom-switch"
-                                        label={vt}
+                                        label={vtype}
                                         key={index}
-                                        name={vt}
-                                        checked={inputData[vt]}
+                                        name={vtype}
+                                        checked={inputData[vtype]}
                                         onChange={updateInput}
                                     />
                                 </Col>

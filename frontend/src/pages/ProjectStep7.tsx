@@ -8,7 +8,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import {InputStep7, ProjectType, VehiculeType, FuelType} from '../frontendTypes'
+import {InputStep7, ProjectType, FuelType} from '../frontendTypes'
+import {validateStringAsFloat, validateStringAsPercent} from '../utils'
 
 import './Project.css'
 
@@ -16,19 +17,8 @@ export default function ProjectStep7(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
-    let init:InputStep7 = {source: ''}
-    let vtypes = Object.keys(VehiculeType)
     let ftypes = Object.keys(FuelType)
-    for (let i = 0; i < vtypes.length; i++) {
-        let vtype = vtypes[i] as VehiculeType
-        let tmp = {} as {[key in FuelType]: number[]}
-        for (let j = 0; j < ftypes.length; j++) {
-            let ftype = ftypes[j] as FuelType
-            tmp[ftype] = [0, 0, 0, 0, 0, 0]
-        }
-        init[vtype] = tmp
-    }
-    let [inputData, setInputData ] = useState(init)
+    let [inputData, setInputData ] = useState({source: ''} as InputStep7)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
     useEffect(() => {
@@ -44,6 +34,19 @@ export default function ProjectStep7(){
                     setProject(data.project)
                     if (data.project.inputStep7){
                         setInputData(data.project.inputStep7)
+                    } else {
+                        let vtypes = Object.keys(data.project.inputStep2)
+                        let init:InputStep7 = {source: ''}
+                        for (let i = 0; i < vtypes.length; i++) {
+                            let vtype = vtypes[i]
+                            let tmp = {} as {[key in FuelType]: string[]}
+                            for (let j = 0; j < ftypes.length; j++) {
+                                let ftype = ftypes[j] as FuelType
+                                tmp[ftype] = ["0", "0", "0", "0", "0", "0"]
+                            }
+                            init[vtype] = tmp
+                        }
+                        setInputData(init)
                     }
                 });
             }
@@ -54,17 +57,20 @@ export default function ProjectStep7(){
             source: event.target.value
         }))
     }
-    const updateInput = (vtypestr: string, fueltypestr: string, index: number, event: React.BaseSyntheticEvent) => {
-        let vtype = vtypestr as VehiculeType
+    const updateInput = (vtype: string, fueltypestr: string, index: number, event: React.BaseSyntheticEvent) => {
         let ftype = fueltypestr as FuelType
         let value = event.target.value
         setInputData((prevInputData: InputStep7) => {
             let tt = prevInputData[vtype]
-            if (tt) {
-                tt[ftype][index] = parseInt(value) || 0
+            if (tt && typeof(tt) !== 'string') {
+                if (index === 0) {
+                    tt[ftype][index] = validateStringAsFloat(value)
+                } else {
+                    tt[ftype][index] = validateStringAsPercent(value)
+                }
                 return {
                     ...prevInputData,
-                    [vtypestr]: tt
+                    [vtype]: tt
                 }
             } else {
                 return prevInputData
@@ -81,7 +87,7 @@ export default function ProjectStep7(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/7', requestOptions)
             .then(response => response.json())
-            .then(data => navigate('/project/' + projectId + '/step/6'));
+            .then(() => navigate('/project/' + projectId + '/step/6'));
     }
     const saveAndGoNextStep = () => {
         // TODO: validate content ?
@@ -92,7 +98,7 @@ export default function ProjectStep7(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/7', requestOptions)
             .then(response => response.json())
-            .then(data => navigate('/project/' + projectId + '/viz'));
+            .then(() => navigate('/project/' + projectId + '/viz'));
     }
     return (
         <Container className="projectStepContainer">
@@ -120,21 +126,20 @@ export default function ProjectStep7(){
                         </thead>
                         <tbody>
                         {Object.keys(project.inputStep2 || []).map((vtype, index) => {
-                            let vt = vtype as VehiculeType
-                            if (!project.inputStep2 || project.inputStep2[vt] === false || !inputData) {
+                            if (!project.inputStep2 || project.inputStep2[vtype] === false || !inputData) {
                                 return <></>
                             }
-                            let inputVt = inputData[vt]
+                            let inputVt = inputData[vtype] as {[key in FuelType]: string[]}
                             if (inputVt !== undefined && project.inputStep5) {
-                                let fuelJsx = Object.keys(project.inputStep5[vt] || []).map((ft, i) => {
+                                let fuelJsx = Object.keys(project.inputStep5[vtype] || []).map((ft, i) => {
                                     let ftype = ft as FuelType
                                     let inputFt = inputVt?.[ftype]
-                                    let tmp = project?.inputStep5?.[vt]
+                                    let tmp = project?.inputStep5?.[vtype] as {[key in FuelType]: boolean}
                                     if (!tmp || tmp[ftype] === false || !inputData) {
                                         return  <></>
                                     }
                                     if (inputFt !== undefined) {
-                                        let inp = inputData?.[vt]?.[ftype]
+                                        let inp = inputVt?.[ftype]
                                         if (inp) {
                                             return (
                                                 <tr key={i}>
@@ -182,14 +187,14 @@ export default function ProjectStep7(){
                                     }
                                     return  <></>
                                 })
-                                let inp = inputData?.[vt]
+                                let inp = inputData?.[vtype]
                                 let sums = [0,0,0,0,0,0]
-                                if (inp) {
-                                    let fuels = Object.keys(project.inputStep5[vt] || [])
+                                if (inp && typeof(inp) !== 'string') {
+                                    let fuels = Object.keys(project.inputStep5[vtype] || [])
                                     for (let i = 0; i < fuels.length; i++) {
                                         let ftype = fuels[i] as FuelType
                                         for (let j = 0; j < sums.length; j++) {
-                                            sums[j] += inp[ftype][j]
+                                            sums[j] += parseFloat(inp[ftype][j])
                                         }
                                     }
                                 }
@@ -216,7 +221,7 @@ export default function ProjectStep7(){
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
                             <Form.Label column sm={2}>Source</Form.Label>
                             <Col sm={10}>
-                                <Form.Control type="input" name="vktSource" value={inputData.source} onChange={updateSource} placeholder=""/>
+                                <Form.Control type="input" name="vktSource" value={inputData.source as string} onChange={updateSource} placeholder=""/>
                             </Col>
                         </Form.Group>
                     :''}
