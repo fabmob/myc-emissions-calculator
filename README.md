@@ -86,8 +86,8 @@ PORT=8081 node compile/index.js
 ```bash
 # Move to correct folder
 cd frontend
-# Install dependencies
-npm install
+# Install dependencies (force is required for rechart compatibility with react 18+)
+npm install --force
 # Compile and start
 npm start
 ```
