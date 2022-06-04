@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep1, ProjectType} from '../frontendTypes'
 import {validateStringAsPercent} from '../utils'
+import Progress from '../components/Progress'
 
 import './Project.css'
 
@@ -77,6 +78,7 @@ export default function ProjectStep1(){
     }
     return (
         <Container className="projectStepContainer">
+            <Progress project={project} currentStep={1} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)"}}>
                 <Col xs lg="8">
                     <h1>Set up socio economic data</h1>

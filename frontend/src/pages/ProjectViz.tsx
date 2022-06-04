@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import {ProjectType} from '../frontendTypes'
+import Progress from '../components/Progress'
 
 import './Project.css'
 
@@ -101,7 +102,8 @@ export default function ProjectViz(){
 
     let colors = ["#e07a5f", "#3d405b", "#81b29a", "#f2cc8f", "#5e548e", "#9f86c0", "#be95c4", "#e0b1cb", "#541690", "#FF4949", "#FF8D29", "#FFCD38", "#2E0249", "#570A57", "#A91079", "#F806CC", "#C4DDFF", "#7FB5FF", "#001D6E", "#FEE2C5"]
     return (
-        <Container>
+        <Container className="projectStepContainer">
+            <Progress project={project} currentStep={8} />
             <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Project overview</h1>

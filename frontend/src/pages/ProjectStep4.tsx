@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep4, ProjectType} from '../frontendTypes'
+import Progress from '../components/Progress'
 
 
 import './Project.css'
@@ -105,6 +106,7 @@ export default function ProjectStep4(){
     }
     return (
         <Container className="projectStepContainer">
+            <Progress project={project} currentStep={4} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Set up occupancy and average trip length</h1>

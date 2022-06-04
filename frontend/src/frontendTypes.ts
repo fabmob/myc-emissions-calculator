@@ -6,6 +6,7 @@ export type ProjectType = {
     partnerLocation: string,
     area: string,
     referenceYear: string,
+    step: number,
     inputStep1?: InputStep1,
     inputStep2?: InputStep2,
     inputStep5?: InputStep5,

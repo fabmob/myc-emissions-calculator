@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import {InputStep5, ProjectType, FuelType} from '../frontendTypes'
+import Progress from '../components/Progress'
 
 import './Project.css'
 
@@ -94,6 +95,7 @@ export default function ProjectStep5(){
     }
     return (
         <Container className="projectStepContainer">
+            <Progress project={project} currentStep={5} />
             <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Select fuel type per transport</h1>

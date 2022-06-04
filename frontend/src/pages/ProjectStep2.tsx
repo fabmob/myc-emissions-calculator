@@ -6,7 +6,8 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import {InputStep2} from '../frontendTypes'
+import {InputStep2, ProjectType} from '../frontendTypes'
+import Progress from '../components/Progress'
 
 import './Project.css'
 
@@ -38,6 +39,7 @@ export default function ProjectStep2(){
         init[vtype] = false
     }
     let [inputData, setInputData ] = useState(init)
+    let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
     useEffect(() => {
         if (initialized && keycloak.authenticated){
@@ -48,6 +50,7 @@ export default function ProjectStep2(){
             fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
                 .then(response => response.json())
                 .then(data => {
+                    setProject(data.project)
                     if (data.project.inputStep2 !== null){
                         setInputData(data.project.inputStep2)
                     }
@@ -97,6 +100,7 @@ export default function ProjectStep2(){
     }
     return (
         <Container className="projectStepContainer">
+            <Progress project={project} currentStep={2} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Select category of transport</h1>

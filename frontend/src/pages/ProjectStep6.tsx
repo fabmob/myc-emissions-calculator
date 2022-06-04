@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep6, ProjectType, FuelType} from '../frontendTypes'
 import {validateStringAsPercent} from '../utils'
+import Progress from '../components/Progress'
 
 import './Project.css'
 
@@ -108,6 +109,7 @@ export default function ProjectStep6(){
     }
     return (
         <Container className="projectStepContainer">
+            <Progress project={project} currentStep={6} />
             <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Set up VKT breakdown by fuel type</h1>

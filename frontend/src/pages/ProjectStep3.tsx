@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep3, ProjectType} from '../frontendTypes'
 import {validateStringAsFloat, validateStringAsPercent} from '../utils'
+import Progress from '../components/Progress'
 
 import './Project.css'
 
@@ -101,6 +102,7 @@ export default function ProjectStep3(){
     }
     return (
         <Container className="projectStepContainer">
+            <Progress project={project} currentStep={3} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Set up transport activity data</h1>
