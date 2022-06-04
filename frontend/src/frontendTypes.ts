@@ -22,7 +22,7 @@ export type ProjectType = {
             energie: number[],
         }
     },
-    vehiculeKilometresTravelledComputed?: {
+    vehicleKilometresTravelledComputed?: {
         [key: string]: number[]
     }
 }

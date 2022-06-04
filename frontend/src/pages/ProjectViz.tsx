@@ -56,8 +56,8 @@ export default function ProjectViz(){
         }
     }
 
-    let vehiculeKilometresTravelledComputed = project?.vehiculeKilometresTravelledComputed || {}
-    let vtypesvkt = Object.keys(vehiculeKilometresTravelledComputed)
+    let vehicleKilometresTravelledComputed = project?.vehicleKilometresTravelledComputed || {}
+    let vtypesvkt = Object.keys(vehicleKilometresTravelledComputed)
     let activeVtypesVkt = []
     type DataVkt = {[key: string]: number} & {name: number}
     let dataVkt : DataVkt[] = [
@@ -70,8 +70,8 @@ export default function ProjectViz(){
     for (let i = 0; i < vtypesvkt.length; i++) {
         let vtype = vtypesvkt[i]
         for (let j = 0; j < 5; j++) {
-            if (vehiculeKilometresTravelledComputed?.[vtype]?.[j]) {
-                dataVkt[j][vtype] = Math.round((vehiculeKilometresTravelledComputed?.[vtype]?.[j] || 0))
+            if (vehicleKilometresTravelledComputed?.[vtype]?.[j]) {
+                dataVkt[j][vtype] = Math.round((vehicleKilometresTravelledComputed?.[vtype]?.[j] || 0))
                 if (activeVtypesVkt.indexOf(vtypesvkt[i]) === -1)
                     activeVtypesVkt.push(vtypesvkt[i])
             }

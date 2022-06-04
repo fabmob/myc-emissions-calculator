@@ -12,13 +12,13 @@ const inputSocioEconomicData : types.SocioEconomicData = {
 let socioEconomicDataCalc = models.computeSocioEconomicData(inputSocioEconomicData)
 console.log("socioEconomicDataCalc", socioEconomicDataCalc)
 
-const inputVehiculeKilometresTravelled : types.VehiculeKilometresTravelled = {
+const inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = {
     "Private car": {vkt: 1000, vktRate: [1, 1, 1, 1, 1]},
     "Individual taxi": {vkt: 200, vktRate: [0.5, 0.5, 0.5, 0.5, 0.5]}
 }
 
-let vehiculeKilometresTravelledComputed = models.computeVehiculeKilometresTravelled(inputVehiculeKilometresTravelled)
-console.log("vehiculeKilometresTravelledComputed", vehiculeKilometresTravelledComputed)
+let vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled)
+console.log("vehicleKilometresTravelledComputed", vehicleKilometresTravelledComputed)
 
 const inputVktPerFuel: types.VktPerFuel = {
     "Private car": {
@@ -30,7 +30,7 @@ const inputVktPerFuel: types.VktPerFuel = {
     }
 }
 
-let outputVktPerFuelComputed = models.computeVktPerFuel(inputVktPerFuel, vehiculeKilometresTravelledComputed)
+let outputVktPerFuelComputed = models.computeVktPerFuel(inputVktPerFuel, vehicleKilometresTravelledComputed)
 console.log("outputVktPerFuelComputed", outputVktPerFuelComputed)
 
 const inputVehicleStats : types.VehicleStats = {
