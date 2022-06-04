@@ -7,19 +7,11 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Stack from 'react-bootstrap/Stack'
 import Form from 'react-bootstrap/Form'
+import {ProjectType} from '../frontendTypes'
 
-type Project = {
-    id: number,
-    owner: string,
-    name: string,
-    location: string,
-    partnerLocation: string,
-    area: string,
-    referenceYear: string,
-}
 export default function GetStarted(){
     const { keycloak, initialized } = useKeycloak();
-    const [ projects, setProjects ] = useState([])
+    const [ projects, setProjects ] = useState([] as ProjectType[])
     const [ selectedProject, setSelectedProject ] = useState("")
     const [ gotoCreate, setGotoCreate ] = useState(false)
     useEffect(() => {
@@ -40,7 +32,11 @@ export default function GetStarted(){
         return <Navigate to='/'  />
     }
     if (selectedProject !== ""){
-        let url = "/project/" + selectedProject + "/step/1"
+        let step = projects[parseInt(selectedProject) - 1].step
+        let url = "/project/" + selectedProject + "/step/" + step
+        if (step === 100) {
+            url = "/project/" + selectedProject + "/viz"
+        }
         return <Navigate to={url}  />
     }
     if (gotoCreate) {
@@ -48,7 +44,7 @@ export default function GetStarted(){
     }
     let options = []
     for (let i = 0; i < projects.length; i++) {
-        let project = projects[i] as Project
+        let project = projects[i] as ProjectType
         options.push(<option key={i} value={project.id}>{project.name}</option>)
     }
     let projectSelected = (event: React.ChangeEvent<HTMLSelectElement>) => {

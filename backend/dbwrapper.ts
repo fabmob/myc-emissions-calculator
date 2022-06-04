@@ -24,37 +24,48 @@ export function createProject(project: types.Project, owner: string) {
     return res
 }
 
+function parseProject(project: any) {
+    project.step = 1
+    if (project.inputStep1) {
+        project.inputStep1 = JSON.parse(project.inputStep1)
+        project.step = 2
+    }
+    if (project.inputStep2) {
+        project.inputStep2 = JSON.parse(project.inputStep2)
+        project.step = 3
+    }
+    if (project.inputStep3) {
+        project.inputStep3 = JSON.parse(project.inputStep3)
+        project.step = 4
+    }
+    if (project.inputStep4) {
+        project.inputStep4 = JSON.parse(project.inputStep4)
+        project.step = 5
+    }
+    if (project.inputStep5) {
+        project.inputStep5 = JSON.parse(project.inputStep5)
+        project.step = 6
+    }
+    if (project.inputStep6) {
+        project.inputStep6 = JSON.parse(project.inputStep6)
+        project.step = 7
+    }
+    if (project.inputStep7) {
+        project.inputStep7 = JSON.parse(project.inputStep7)
+        project.step = 100 // All done
+    }
+    return project
+}
 export function getProjectsByOwner(owner: string) {
     const getProjectsByOwnerStmt = db.prepare("SELECT * FROM Projects WHERE owner = ?")
     let res = getProjectsByOwnerStmt.all(owner)
-    return res
+    return res.map(parseProject)
 }
 
 export function getProject(owner: string, id: number) {
     const getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ? AND owner = ?")
     let res = getProjectStmt.get([id, owner])
-    if (res.inputStep1) {
-        res.inputStep1 = JSON.parse(res.inputStep1)
-    }
-    if (res.inputStep2) {
-        res.inputStep2 = JSON.parse(res.inputStep2)
-    }
-    if (res.inputStep3) {
-        res.inputStep3 = JSON.parse(res.inputStep3)
-    }
-    if (res.inputStep4) {
-        res.inputStep4 = JSON.parse(res.inputStep4)
-    }
-    if (res.inputStep5) {
-        res.inputStep5 = JSON.parse(res.inputStep5)
-    }
-    if (res.inputStep6) {
-        res.inputStep6 = JSON.parse(res.inputStep6)
-    }
-    if (res.inputStep7) {
-        res.inputStep7 = JSON.parse(res.inputStep7)
-    }
-    return res
+    return parseProject(res)
 }
 
 export function updateProject(owner: string, id: number, stepNumber: number, inputData: string) {
