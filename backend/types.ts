@@ -100,14 +100,14 @@ export type AverageEnergyConsumptionComputed = {
 export type TotalEnergyAndEmissions = {
     [key: string]: {
         [key in FuelType]?: {
-            energie: YearlyValues<Tj>,
+            energy: YearlyValues<Tj>,
             co2: YearlyValues<MilTons>
         }
     }
 }
 export type SumTotalEnergyAndEmissions = {
     [key: string]: {
-        energie: YearlyValues<Tj>,
+        energy: YearlyValues<Tj>,
         co2: YearlyValues<MilTons>
     }
 }

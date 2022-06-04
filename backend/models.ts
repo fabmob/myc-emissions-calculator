@@ -195,19 +195,19 @@ export function computeAverageEnergyConsumption(
 }
 
 export function computeTotalEnergyAndEmissions(
-    consomationMoyenneEnergieComputed: types.AverageEnergyConsumptionComputed,
+    averageEnergyConsumptionComputed: types.AverageEnergyConsumptionComputed,
     energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues,
     vktPerFuelComputed: types.VktPerFuelComputed
 ) : types.TotalEnergyAndEmissions {
     let outputTotalEnergyAndEmissions = <types.TotalEnergyAndEmissions>{}
-    let vehicleTypeArray = Object.keys(consomationMoyenneEnergieComputed)
+    let vehicleTypeArray = Object.keys(averageEnergyConsumptionComputed)
     for (let i = 0; i < vehicleTypeArray.length; i++) {
         let vtype = vehicleTypeArray[i]
         outputTotalEnergyAndEmissions[vtype] = {}
         let fuelTypes = Object.keys(energyAndEmissionsDefaultValues) as types.FuelType[]
         for (let j = 0; j < fuelTypes.length; j++) {
             outputTotalEnergyAndEmissions[vtype][fuelTypes[j]] = {
-                energie: [0, 0, 0, 0, 0],
+                energy: [0, 0, 0, 0, 0],
                 co2: [0, 0, 0, 0, 0]
             }
             for (let k = 0; k < dates.length; k++) {
@@ -215,10 +215,10 @@ export function computeTotalEnergyAndEmissions(
                 let pci = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.pci || 0
                 let co2default = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.ges[k] || 0
                 let vkt = vktPerFuelComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
-                let consomoy = consomationMoyenneEnergieComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
+                let avg = averageEnergyConsumptionComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
                 if (tmp) {
-                    tmp.energie[k] = pci * vkt * consomoy / 100
-                    tmp.co2[k] = tmp.energie[k] * co2default / 1000000
+                    tmp.energy[k] = pci * vkt * avg / 100
+                    tmp.co2[k] = tmp.energy[k] * co2default / 1000000
                 }
                 outputTotalEnergyAndEmissions[vtype][fuelTypes[j]] = tmp
             }
@@ -228,21 +228,21 @@ export function computeTotalEnergyAndEmissions(
 }
 
 export function sumTotalEnergyAndEmissions(
-    energieTotaleEmissionsGes: types.TotalEnergyAndEmissions
+    totalEnergyAndEmissions: types.TotalEnergyAndEmissions
 ) : types.SumTotalEnergyAndEmissions {
     let outputSumTotalEnergyAndEmissions = <types.SumTotalEnergyAndEmissions>{}
-    let vehicleTypeArray = Object.keys(energieTotaleEmissionsGes)
+    let vehicleTypeArray = Object.keys(totalEnergyAndEmissions)
     for (let i = 0; i < vehicleTypeArray.length; i++) {
         let vtype = vehicleTypeArray[i]
         outputSumTotalEnergyAndEmissions[vtype] = {
-            energie: [0, 0, 0, 0, 0],
+            energy: [0, 0, 0, 0, 0],
             co2: [0, 0, 0, 0, 0]
         }
-        let fuelTypes = Object.keys(energieTotaleEmissionsGes[vtype]) as types.FuelType[]
+        let fuelTypes = Object.keys(totalEnergyAndEmissions[vtype]) as types.FuelType[]
         for (let j = 0; j < fuelTypes.length; j++) {
             for (let k = 0; k < dates.length; k++) {
-                outputSumTotalEnergyAndEmissions[vtype].energie[k] += energieTotaleEmissionsGes?.[vtype]?.[fuelTypes[j]]?.energie?.[k] || 0
-                outputSumTotalEnergyAndEmissions[vtype].co2[k] += energieTotaleEmissionsGes?.[vtype]?.[fuelTypes[j]]?.co2?.[k] || 0
+                outputSumTotalEnergyAndEmissions[vtype].energy[k] += totalEnergyAndEmissions?.[vtype]?.[fuelTypes[j]]?.energy?.[k] || 0
+                outputSumTotalEnergyAndEmissions[vtype].co2[k] += totalEnergyAndEmissions?.[vtype]?.[fuelTypes[j]]?.co2?.[k] || 0
             }
         }
     }

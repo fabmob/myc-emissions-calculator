@@ -19,7 +19,7 @@ export type ProjectType = {
     outputSumTotalEnergyAndEmissions?: {
         [key: string]: {
             co2: number[],
-            energie: number[],
+            energy: number[],
         }
     },
     vehicleKilometresTravelledComputed?: {
