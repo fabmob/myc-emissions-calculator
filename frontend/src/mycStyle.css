@@ -1,0 +1,20 @@
+.App {
+  color: rgb(102, 102, 102);
+}
+
+h1 {
+    color: #9e2886
+}
+
+.btn-primary {
+    background-color: #1bb9d9;
+    border-color: #1bb9d9;
+}
+.btn-primary:hover {
+    background-color: #44c9ec;
+    border-color: #44c9ec;
+}
+.inputTable thead th {
+    background-color: #9e2886;
+    color: white
+}
