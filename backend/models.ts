@@ -75,31 +75,22 @@ export function computeVktPerFuel (
 }
 
 export function computeTransportPerformance (
-    vktPerFuelComputed: types.VktPerFuelComputed,
+    vehicleKilometresTravelledComputed: types.VehicleKilometresTravelledComputed,
     vehicleStats: types.VehicleStats
 ) : types.TransportPerformance {
     let outputTransportPerformance : types.TransportPerformance = {}
-    let vehicleTypes = Object.keys(vktPerFuelComputed)
+    let vehicleTypes = Object.keys(vehicleKilometresTravelledComputed)
     for (let i = 0; i < vehicleTypes.length; i++) {
         let vtype = vehicleTypes[i]
         let vTauxOccupation = vehicleStats?.[vtype]?.occupancy || 1 as types.UsersPerVehicle
-        let outputTransportPerformanceCurrentVehicle = outputTransportPerformance[vtype]
-        outputTransportPerformanceCurrentVehicle = {}
-        let vktPerFuelComputedPerVehicle = vktPerFuelComputed[vtype]
-        if (vktPerFuelComputedPerVehicle) {
-            let fuelTypes = Object.keys(vktPerFuelComputedPerVehicle) as types.FuelType[]
-            for (let j = 0; j < fuelTypes.length; j++) {
-                let yearlyVkt = vktPerFuelComputedPerVehicle[fuelTypes[j]] as types.YearlyValues<types.MillKm>
-                outputTransportPerformanceCurrentVehicle[fuelTypes[j]] = [
-                    vTauxOccupation * yearlyVkt[0],
-                    vTauxOccupation * yearlyVkt[1],
-                    vTauxOccupation * yearlyVkt[2],
-                    vTauxOccupation * yearlyVkt[3],
-                    vTauxOccupation * yearlyVkt[4]
-                ]
-            }
-        }
-        outputTransportPerformance[vtype] = outputTransportPerformanceCurrentVehicle
+        let yearlyVkt = vehicleKilometresTravelledComputed[vtype]
+        outputTransportPerformance[vtype] = [
+            vTauxOccupation * yearlyVkt[0],
+            vTauxOccupation * yearlyVkt[1],
+            vTauxOccupation * yearlyVkt[2],
+            vTauxOccupation * yearlyVkt[3],
+            vTauxOccupation * yearlyVkt[4]
+        ]
     }
     return outputTransportPerformance
 }
@@ -109,49 +100,26 @@ export function computeModalShare (
 ) : types.ModalShare {
     let outputModalShare : types.ModalShare = {}
     let vehicleTypes = Object.keys(transportPerformance)
-    let toots = [0, 0, 0, 0, 0]
-    let sumsPerVehicleType: types.SumsPerVehicleType = {}
+    let totalsPerDate = [0, 0, 0, 0, 0]
     for (let i = 0; i < vehicleTypes.length; i++) {
         let vtype = vehicleTypes[i]
-        if (!sumsPerVehicleType[vtype]) {
-            sumsPerVehicleType[vtype] = [0, 0, 0, 0, 0]
-        }
-        let transportPerformancePerVehicle = transportPerformance[vtype]
-        if (transportPerformancePerVehicle) {
-            let fuelTypes = Object.keys(transportPerformancePerVehicle) as types.FuelType[]
-            for (let j = 0; j < fuelTypes.length; j++) {
-                let transportPerformancePerVehiclePerFuel = transportPerformancePerVehicle[fuelTypes[j]]
-                if (transportPerformancePerVehiclePerFuel) {
-                    toots[0] += transportPerformancePerVehiclePerFuel[0]
-                    toots[1] += transportPerformancePerVehiclePerFuel[1]
-                    toots[2] += transportPerformancePerVehiclePerFuel[2]
-                    toots[3] += transportPerformancePerVehiclePerFuel[3]
-                    toots[4] += transportPerformancePerVehiclePerFuel[4]
-                    let tmp = sumsPerVehicleType[vtype]
-                    if (tmp) {
-                        tmp[0] += transportPerformancePerVehiclePerFuel[0]
-                        tmp[1] += transportPerformancePerVehiclePerFuel[1]
-                        tmp[2] += transportPerformancePerVehiclePerFuel[2]
-                        tmp[3] += transportPerformancePerVehiclePerFuel[3]
-                        tmp[4] += transportPerformancePerVehiclePerFuel[4]
-                    }
-                    sumsPerVehicleType[vtype] = tmp
-                }
-            }
-        }
+        totalsPerDate[0] += transportPerformance[vtype][0]
+        totalsPerDate[1] += transportPerformance[vtype][1]
+        totalsPerDate[2] += transportPerformance[vtype][2]
+        totalsPerDate[3] += transportPerformance[vtype][3]
+        totalsPerDate[4] += transportPerformance[vtype][4]
     }
     for (let i = 0; i < vehicleTypes.length; i++) {
         let vtype = vehicleTypes[i]
-        let tmp = [0, 0, 0, 0, 0]
+        outputModalShare[vtype] = [0, 0, 0, 0, 0]
         for (let d = 0; d < dates.length; d++) {
-            let a = sumsPerVehicleType[vtype]
+            let a = transportPerformance[vtype]
             if (a) {
                 let b = a[d]
-                let c = toots[d] || 1
-                tmp[d] = b / c
+                let c = totalsPerDate[d] || 1
+                outputModalShare[vtype][d] = b / c
             }
         }
-        outputModalShare[vtype] = tmp
     }
     return outputModalShare
 }

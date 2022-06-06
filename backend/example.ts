@@ -43,7 +43,7 @@ const inputVehicleStats : types.VehicleStats = {
     "Some random category": {"occupancy": 20, "tripLength": 20}
 }
 
-let outputTransportPerformance = models.computeTransportPerformance(outputVktPerFuelComputed, inputVehicleStats)
+let outputTransportPerformance = models.computeTransportPerformance(vehicleKilometresTravelledComputed, inputVehicleStats)
 console.log("outputTransportPerformance (Mill pkm)", outputTransportPerformance)
 
 let outputModalShare = models.computeModalShare(outputTransportPerformance)

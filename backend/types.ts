@@ -67,9 +67,7 @@ export type VktPerFuelComputed = {
 }
 
 export type TransportPerformance = {
-    [key: string]: {
-        [key in FuelType]?: YearlyValues<MillPersonKm> // mill pkm
-    }
+    [key: string]: YearlyValues<MillPersonKm> // mill pkm
 }
 
 export type ModalShare = {

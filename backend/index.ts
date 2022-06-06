@@ -69,9 +69,9 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
 
     delete project.inputStep4.source
     let inputVehicleStats : types.VehicleStats = project.inputStep4
-    project.outputTransportPerformance = models.computeTransportPerformance(project.outputVktPerFuelComputed, inputVehicleStats)
+    project.outputTransportPerformance = models.computeTransportPerformance(project.vehicleKilometresTravelledComputed, inputVehicleStats)
     project.outputModalShare = models.computeModalShare(project.outputTransportPerformance)
-
+    
     delete project.inputStep7.source
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.inputStep7
     project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption)
