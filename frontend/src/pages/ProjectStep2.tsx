@@ -52,7 +52,13 @@ export default function ProjectStep2(){
                 .then(data => {
                     setProject(data.project)
                     if (data.project.inputStep2 !== null){
-                        setInputData(data.project.inputStep2)
+                        setInputData((prevInputData) => {
+                            let vtypes = Object.keys(data.project.inputStep2)
+                            for (let i = 0; i < vtypes.length; i++) {
+                                prevInputData[vtypes[i]] = data.project.inputStep2[vtypes[i]]
+                            }
+                            return prevInputData
+                        })
                     }
                 });
             }
