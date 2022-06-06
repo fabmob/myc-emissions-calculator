@@ -104,7 +104,7 @@ export default function ProjectStep7(){
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={7} />
-            <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
+            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Set up average fuel consumption</h1>
                     <h2>Please enter the average fuel consumption for each vehicle category and per fuel type for the reference year (average fuel consumption per vehicle per 100 km) as well as the annual change rate for each time period</h2>

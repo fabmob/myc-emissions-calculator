@@ -107,7 +107,7 @@ export default function ProjectStep4(){
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={4} />
-            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)"}}>
+            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Set up occupancy and average trip length</h1>
                     <h2>Please enter the occupancy for passenger vehicles (average number of passengers per vehicle)</h2>

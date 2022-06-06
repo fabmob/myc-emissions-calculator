@@ -96,7 +96,7 @@ export default function ProjectStep5(){
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={5} />
-            <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
+            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Select fuel type per transport</h1>
                     <h2>Existing or expected means of transport</h2>

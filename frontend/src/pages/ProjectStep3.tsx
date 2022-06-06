@@ -103,7 +103,7 @@ export default function ProjectStep3(){
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={3} />
-            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)"}}>
+            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Set up transport activity data</h1>
                     <h2>Fill the Vehicle Kilometer Travelled, then fill the estimated percentage of growth milleage</h2>

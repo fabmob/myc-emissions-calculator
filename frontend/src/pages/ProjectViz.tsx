@@ -104,14 +104,15 @@ export default function ProjectViz(){
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={8} />
-            <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
+            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
-                    <h1 style={{marginBottom: "40px"}}>Project overview</h1>
+                    <h1>Project overview</h1>
+                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
                     <Row className="justify-content-md-center align-items-center" style={{"marginBottom": "40px"}}>
                         <h3>Population evolution</h3>
                         <Col lg="6">
                             <ResponsiveContainer width="90%" height={300}>
-                                <BarChart style={{margin: "auto"}} data={(project?.outputSocioEconomicDataComputed?.population || []).map((e,i)=>({name:dates[i], population: Math.round(e)}))}>
+                                <BarChart margin={{ left: 20 }} data={(project?.outputSocioEconomicDataComputed?.population || []).map((e,i)=>({name:dates[i], population: Math.round(e)}))}>
                                     <XAxis dataKey="name"  />
                                     <YAxis />
                                       <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
@@ -121,14 +122,16 @@ export default function ProjectViz(){
                             </ResponsiveContainer>
                         </Col>
                         <Col lg="6">
-                            Very nice graph about population growth
+                            Population evolution is computed using current population and expected annual growth<br/><br/>
+                            <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/1')}>Inputs are in the Socio economic data step</div>
                         </Col>
                     </Row>
 
                     <Row className="justify-content-md-center align-items-center" style={{"marginBottom": "40px"}}>
                         <h3>GDP evolution</h3>
                         <Col lg="6">
-                            Who knew GDP would be so cool
+                            GDP evolution is computed using current GDP and expected annual growth<br/><br/>
+                            <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/1')}>Inputs are in the Socio economic data step</div>
                         </Col>
                         <Col lg="6">
                             <ResponsiveContainer width="90%" height={300}>
@@ -157,14 +160,18 @@ export default function ProjectViz(){
                             </ResponsiveContainer>
                         </Col>
                         <Col lg="6">
-                            Look at all those kilometers
+                            Vehicle Kilometers Traveled evolution is computed using current kilometers traveled per vehicle and expected annual growth<br/><br/>
+                            <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/3')}>Inputs are in the Transport activity data step</div>
                         </Col>
                     </Row>
 
                     <Row className="justify-content-md-center align-items-center" style={{"marginBottom": "40px"}}>
-                        <h3>Mod evolution</h3>
+                        <h3>Modal split evolution</h3>
                         <Col lg="6">
-                            Something something about type of vehicle
+                            The modal split helps to visualize which transport the population mostly uses for their travels.<br/><br/>
+                            It is computed using total vkt and vehicle occupancy.<br/><br/>
+                            <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/3')}>Inputs are in the Transport activity data step</div>
+                            <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/4')}>as well as the Vehicle occupancy step</div>
                         </Col>
                         <Col lg="6">
                             <ResponsiveContainer width="90%" height={300}>
@@ -194,11 +201,13 @@ export default function ProjectViz(){
                             </ResponsiveContainer>
                         </Col>
                         <Col lg="6">
-                            Grim future for our world..
+                            Estimated tons of greenhouse gases emissions for upcoming years per vehicle type.<br/><br/>
+                            It is computed by multiplying for each fuel: vkt, average consumption and default emission factors.<br/><br/>
+                            <div className="inputDescNoLink">Inputs are all the previous steps</div>
                         </Col>
                     </Row>
 
-                    <Button variant="secondary" style={{marginRight: "20px", marginBottom: "3000px"}} onClick={goPreviousStep}>
+                    <Button variant="secondary" style={{marginRight: "20px", marginBottom: "300px"}} onClick={goPreviousStep}>
                         Previous
                     </Button>
                 </Col>

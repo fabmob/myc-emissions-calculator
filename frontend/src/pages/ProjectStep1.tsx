@@ -79,7 +79,7 @@ export default function ProjectStep1(){
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={1} />
-            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)"}}>
+            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Set up socio economic data</h1>
                     <h2>Need some help to find the data, <a href="">click here to send us an email 📧</a></h2>

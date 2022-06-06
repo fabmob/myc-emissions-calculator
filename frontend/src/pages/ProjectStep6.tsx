@@ -110,7 +110,7 @@ export default function ProjectStep6(){
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={6} />
-            <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
+            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Set up VKT breakdown by fuel type</h1>
                     <h2>Please enter the percentage of Vehicle Kilometers Travelled (vkt) per vehicle category and fuel type for the Reference Year and for future years</h2>
