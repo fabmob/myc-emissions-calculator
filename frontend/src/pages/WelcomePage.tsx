@@ -20,7 +20,7 @@ export default function WelcomePage(){
             <Container>
                 <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
                     <Col xs lg="8">
-                        <h1 style={{marginBottom: "40px"}}>Calculate and monitor transport related CHC emissions with MobiliseYourCity</h1>
+                        <h1 style={{marginBottom: "40px"}}>Calculate and monitor transport related GHG emissions with MobiliseYourCity</h1>
                         <h2><a href='#' onClick={handleShow}>Learn more about the purpose of this tool 🛈</a></h2>
                         <Stack gap={2} className="col-md-5 mx-auto">
                             {keycloak.authenticated ?
