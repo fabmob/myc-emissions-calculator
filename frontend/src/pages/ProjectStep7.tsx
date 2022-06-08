@@ -22,6 +22,14 @@ export default function ProjectStep7(){
     let [inputData, setInputData ] = useState({source: ''} as InputStep7)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
+    const unitPerFuelType : {[f in FuelType]: string} = {
+        "Gasoline": "l",
+        "Diesel": "l",
+        "LPG": "l",
+        "NG": "kg",
+        "Hybrid": "l",
+        "Electric": "kWh"
+    }
     useEffect(() => {
         if (initialized && keycloak.authenticated){
             const requestOptions = {
@@ -67,7 +75,7 @@ export default function ProjectStep7(){
                 if (index === 0) {
                     tt[ftype][index] = validateStringAsFloat(value)
                 } else {
-                    tt[ftype][index] = validateStringAsPercent(value)
+                    tt[ftype][index] = value
                 }
                 return {
                     ...prevInputData,
@@ -113,7 +121,7 @@ export default function ProjectStep7(){
                         <thead>
                             <tr>
                                 <th>Vehicle type</th>
-                                <th>Avg energy consumption (l-kW-kg/100km)</th>
+                                <th style={{width: "180px"}}>Avg energy consumption (l-kW-kg/100km)</th>
                                 <th colSpan={5}>Annual growth of energy (%)</th>
                             </tr>
                             <tr>
@@ -149,7 +157,7 @@ export default function ProjectStep7(){
                                                     <td>
                                                         <InputGroup>
                                                             <Form.Control type="input" value={inp[0]} onChange={e => updateInput(vtype, ft, 0, e)} />
-                                                            <InputGroup.Text>l/100km</InputGroup.Text>
+                                                            <InputGroup.Text>{unitPerFuelType[ftype]}/100km</InputGroup.Text>
                                                         </InputGroup>
                                                     </td>
                                                     <td>
