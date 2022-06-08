@@ -118,7 +118,7 @@ export default function ProjectStep2(){
                                 <Col lg="4" key={index}>
                                     <Form.Switch
                                         style={{margin: "10px"}}
-                                        id="custom-switch"
+                                        id={"custom-switch-" + vtype}
                                         label={vtype}
                                         key={index}
                                         name={vtype}
