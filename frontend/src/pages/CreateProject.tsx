@@ -7,6 +7,9 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
+
 
 export default function CreateProject(){
     const navigate = useNavigate();
@@ -16,12 +19,19 @@ export default function CreateProject(){
     const [ partnerLocation, setPartnerLocation ] = useState("")
     const [ projectArea, setProjectArea ] = useState("")
     const [ projectReferenceYear, setProjectReferenceYear ] = useState("2020")
+    const [validated, setValidated] = useState(false);
     if (initialized && !keycloak.authenticated){
         return <Navigate to='/'  />
     }
 
     const createProject = (event: React.FormEvent<HTMLFormElement>) => {
-        console.log("created")
+        const form = event.currentTarget;
+        setValidated(true);
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            return
+        }
         let projectDict = {
             projectName: keycloak?.tokenParsed?.preferred_username + ":" + projectName,
             projectLocation: projectLocation,
@@ -29,7 +39,6 @@ export default function CreateProject(){
             projectArea: projectArea,
             projectReferenceYear: projectReferenceYear
         }
-        console.log(projectDict)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
@@ -40,20 +49,27 @@ export default function CreateProject(){
             .then(data => navigate('/project/' + data.projectId + '/step/1'));
         event.preventDefault();
     }
+    const referenceYearTooltip = (props:any) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Base year. Earliest transport data should be dated this year.
+        </Tooltip>
+    );
     return (
         <Container>
             <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
-                <Col xs lg="8">
+                <Col xs lg="5">
                     <h1 style={{marginBottom: "40px"}}>Project Information</h1>
-                    <Form style={{textAlign: "left"}} onSubmit={createProject}>
+                    <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
                         <Form.Group className="mb-3">
                             <Form.Label>Project name</Form.Label>
-                            <Form.Control type="input" placeholder="" value={projectName} onChange={e => setProjectName(e.target.value)}/>
+                            <Form.Control type="input" required placeholder="" value={projectName} onChange={e => setProjectName(e.target.value)}/>
+                            <Form.Control.Feedback type="invalid">Please specify a project name</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>Select country/city</Form.Label>
-                            <Form.Control type="input" placeholder="" value={projectLocation} onChange={e => setProjectLocation(e.target.value)}/>
+                            <Form.Control type="input" required placeholder="" value={projectLocation} onChange={e => setProjectLocation(e.target.value)}/>
+                            <Form.Control.Feedback type="invalid">Please specify a country</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3">
@@ -62,16 +78,21 @@ export default function CreateProject(){
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label>Territory area (m²)</Form.Label>
+                            <Form.Label>Territory area (km²)</Form.Label>
                             <InputGroup>
                                 <Form.Control type="input" placeholder="" value={projectArea} onChange={e => setProjectArea(e.target.value)}/>
-                                <InputGroup.Text>m²</InputGroup.Text>
+                                <InputGroup.Text>km²</InputGroup.Text>
                             </InputGroup>
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label>Reference year (RY)</Form.Label>
-                            <Form.Control type="input" placeholder="2020" value={projectReferenceYear} onChange={e => setProjectReferenceYear(e.target.value)}/>
+                            <OverlayTrigger placement="right" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
+                                <Form.Label>
+                                    Reference year (RY) 🛈
+                                </Form.Label>
+                            </OverlayTrigger>
+                            <Form.Control type="input" required placeholder="2020" value={projectReferenceYear} onChange={e => setProjectReferenceYear(e.target.value)}/>
+                            <Form.Control.Feedback type="invalid">Please specify the reference year</Form.Control.Feedback>
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
