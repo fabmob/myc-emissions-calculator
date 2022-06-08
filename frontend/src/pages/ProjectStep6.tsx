@@ -202,9 +202,9 @@ export default function ProjectStep6(){
                                             sums[j] += parseFloat(inp?.[ftype]?.[j]) || 0
                                         }
                                     }
-                                }
-                                if (vtype === "Non motorized vehicle") {
-                                    sums = [100, 100, 100, 100, 100, 100]
+                                    if (fuels.length === 0) {
+                                        sums = [100, 100, 100, 100, 100, 100]
+                                    }
                                 }
                                 return [
                                     <tr key={index}>

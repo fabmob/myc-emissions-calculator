@@ -12,22 +12,18 @@ import Progress from '../components/Progress'
 import './Project.css'
 
 const defaultVehicles = [
-    "Non motorized vehicle",
-    "Private car",
-    "Individual taxi",
-    "Motorcycle",
-    "Motorcycle taxi",
-    "Minibus",
-    "Bus",
-    "Bus rapid transit",
-    "Very light commercial vehicle",
-    "Light commercial vehicle",
-    "Solo truck",
-    "Articulated truck",
-    "Long distance train",
-    "Urban train",
-    "Metro",
-    "Freight train",
+    "👟 Walking",
+    "🚲 Cycling",
+    "🚘 Private car",
+    "🚕 Individual taxi",
+    "🏍️ Motorcycle",
+    "🛺 Motorcycle taxi",
+    "🚐 Minibus",
+    "🚌 Bus",
+    "🚌🏁 Bus rapid transit",
+    "🚄 Long distance train",
+    "🚃 Urban train",
+    "🚈 Metro"
 ]
 export default function ProjectStep2(){
     const { keycloak, initialized } = useKeycloak();
