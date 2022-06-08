@@ -11,17 +11,18 @@
     color: lightgray !important;
 }
 .progressMenu .currentStep {
-    color: purple !important;
     font-weight: bold;
+    color: orange !important;
+    text-decoration: underline
 }
 .progressMenu .currentStepDone {
-    color: #9e2886 !important;
     font-weight: bold;
+    color: green !important;
+    text-decoration: underline
 }
 .progressMenu .currentStepDone:after {
     content: '\2713';
     display: inline-block;
-    color: purple;
     padding-right: 2px;
 }
 

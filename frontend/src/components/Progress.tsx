@@ -25,6 +25,9 @@ const Progress = (props: {project: ProjectType, currentStep: number}) => {
             return "stepDisabled"
         }
     }
+    if (props.project.step === undefined) {
+        return <div className="progressMenu" style={{marginTop: "-20px"}}></div>
+    }
     return (
         <div className="progressMenu" style={{marginTop: "-20px"}}>
             <Button
