@@ -41,13 +41,13 @@ export default function ProjectStep7(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    if (data.project.inputStep7){
-                        setInputData(data.project.inputStep7)
-                    } else {
-                        let vtypes = Object.keys(data.project.inputStep2)
-                        let init:InputStep7 = {source: ''}
-                        for (let i = 0; i < vtypes.length; i++) {
-                            let vtype = vtypes[i]
+                    let vtypes = Object.keys(data.project.inputStep2)
+                    let init:InputStep7 = {source: ''}
+                    for (let i = 0; i < vtypes.length; i++) {
+                        let vtype = vtypes[i]
+                        if (data.project.inputStep7[vtype]) {
+                            init[vtype] = data.project.inputStep7[vtype]
+                        } else {
                             let tmp = {} as {[key in FuelType]: string[]}
                             for (let j = 0; j < ftypes.length; j++) {
                                 let ftype = ftypes[j] as FuelType
@@ -55,8 +55,8 @@ export default function ProjectStep7(){
                             }
                             init[vtype] = tmp
                         }
-                        setInputData(init)
                     }
+                    setInputData(init)
                 });
             }
     }, [keycloak, initialized, projectId])

@@ -31,21 +31,22 @@ export default function ProjectStep5(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    if (data.project.inputStep5){
-                        setInputData(data.project.inputStep5)
-                    } else {
-                        let vtypes = Object.keys(data.project.inputStep2)
-                        let init:InputStep5 = {source: ''}
-                        for (let i = 0; i < vtypes.length; i++) {
+                    let vtypes = Object.keys(data.project.inputStep2)
+                    let init:InputStep5 = {source: ''}
+                    for (let i = 0; i < vtypes.length; i++) {
+                        let vtype = vtypes[i]
+                        if (data.project.inputStep5[vtype]){
+                            init[vtype] = data.project.inputStep5[vtype]
+                        } else {
                             let tmp = {} as {[key in FuelType]: boolean}
                             for (let j = 0; j < ftypes.length; j++) {
                                 let ftype = ftypes[j] as FuelType
                                 tmp[ftype] = false
                             }
-                            init[vtypes[i]] = tmp
+                            init[vtype] = tmp
                         }
-                        setInputData(init)
                     }
+                    setInputData(init)
                 });
             }
     }, [keycloak, initialized, projectId])

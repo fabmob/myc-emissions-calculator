@@ -33,20 +33,20 @@ export default function ProjectStep3(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    if (data.project.inputStep3){
-                        setInputData(data.project.inputStep3)
-                    } else {
-                        let vtypes = Object.keys(data.project.inputStep2)
-                        let init:InputStep3 = {vktSource: ''}
-                        for (let i = 0; i < vtypes.length; i++) {
-                            let vtype = vtypes[i]
+                    let vtypes = Object.keys(data.project.inputStep2)
+                    let init:InputStep3 = {vktSource: ''}
+                    for (let i = 0; i < vtypes.length; i++) {
+                        let vtype = vtypes[i]
+                        if (data.project.inputStep3[vtype]) {
+                            init[vtype] = data.project.inputStep3[vtype]
+                        } else {
                             init[vtype] = {
                                 vkt: "0",
                                 vktRate: ["0", "0", "0", "0", "0"]
                             }
                         }
-                        setInputData(init)
                     }
+                    setInputData(init)
                 });
             }
     }, [keycloak, initialized, projectId])

@@ -11,6 +11,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep6, ProjectType, FuelType} from '../frontendTypes'
 import {validateStringAsPercent} from '../utils'
 import Progress from '../components/Progress'
+import Alert from 'react-bootstrap/Alert'
 
 import './Project.css'
 
@@ -20,6 +21,7 @@ export default function ProjectStep6(){
     let params = useParams();
     let [inputData, setInputData ] = useState({source: ''} as InputStep6)
     let [project, setProject ] = useState({} as ProjectType)
+    let [vtypeWarning, setVtypeWarning] = useState(false)
     let projectId = params.projectId
     useEffect(() => {
         if (initialized && keycloak.authenticated){
@@ -32,14 +34,18 @@ export default function ProjectStep6(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    if (data.project.inputStep6){
-                        setInputData(data.project.inputStep6)
-                    } else {
-                        if (data.project.inputStep5) {
-                            let vtypes = Object.keys(data.project.inputStep2)
-                            setInputData(prevInputData => {
-                                for (let i = 0; i < vtypes.length; i++) {
-                                    let vtype = vtypes[i]
+                    if (data.project.inputStep5) {
+                        let vtypes = Object.keys(data.project.inputStep2)
+                        setInputData(prevInputData => {
+                            for (let i = 0; i < vtypes.length; i++) {
+                                let vtype = vtypes[i]
+                                if (data.project.inputStep6[vtype]) {
+                                    prevInputData[vtype] = data.project.inputStep6[vtype]
+                                } else {
+                                    if (!data.project.inputStep5[vtype]) {
+                                        setVtypeWarning(true)
+                                        continue
+                                    }
                                     let ftypes = Object.keys(data.project.inputStep5[vtype]).filter(ftype => data.project.inputStep5[vtype][ftype])
                                     let tmp = {} as {[key in FuelType]: string[]}
                                     if (ftypes.length === 1) {
@@ -55,9 +61,9 @@ export default function ProjectStep6(){
                                         prevInputData[vtype] = tmp
                                     }
                                 }
-                                return prevInputData
-                            })
-                        }
+                            }
+                            return prevInputData
+                        })
                     }
                 });
             }
@@ -113,6 +119,9 @@ export default function ProjectStep6(){
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Set up VKT breakdown by fuel type</h1>
+                    {vtypeWarning? <Alert variant="danger">
+                        A fuel is undefined for one of the vehicles types, making it invisible, please go back to the fuel types step.
+                    </Alert> : <></>}
                     <h2>Please enter the percentage of Vehicle Kilometers Travelled (vkt) per vehicle category and fuel type for the Reference Year and for future years</h2>
                     <Table className="inputTable">
                         <thead>
@@ -202,9 +211,9 @@ export default function ProjectStep6(){
                                             sums[j] += parseFloat(inp?.[ftype]?.[j]) || 0
                                         }
                                     }
-                                    if (fuels.length === 0) {
-                                        sums = [100, 100, 100, 100, 100, 100]
-                                    }
+                                }
+                                if(inp && Object.keys(inp).length === 0) {
+                                    sums = [100, 100, 100, 100, 100, 100]
                                 }
                                 return [
                                     <tr key={index}>

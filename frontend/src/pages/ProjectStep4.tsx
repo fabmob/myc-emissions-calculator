@@ -33,20 +33,20 @@ export default function ProjectStep4(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    if (data.project.inputStep4){
-                        setInputData(data.project.inputStep4)
-                    } else {
-                        let vtypes = Object.keys(data.project.inputStep2)
-                        let init:InputStep4 = {source: ''}
-                        for (let i = 0; i < vtypes.length; i++) {
-                            let vtype = vtypes[i]
+                    let vtypes = Object.keys(data.project.inputStep2)
+                    let init:InputStep4 = {source: ''}
+                    for (let i = 0; i < vtypes.length; i++) {
+                        let vtype = vtypes[i]
+                        if (data.project.inputStep4[vtype]){
+                            init[vtype] = data.project.inputStep4[vtype]
+                        } else {
                             init[vtype] = {
                                 occupancy: 0,
                                 tripLength: 0
                             }
                         }
-                        setInputData(init)
                     }
+                    setInputData(init)
                 });
             }
     }, [keycloak, initialized, projectId])
