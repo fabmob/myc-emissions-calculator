@@ -37,7 +37,7 @@ export default function ProjectStep3(){
                     let init:InputStep3 = {vktSource: ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.inputStep3[vtype]) {
+                        if (data.project.inputStep3?.[vtype]) {
                             init[vtype] = data.project.inputStep3[vtype]
                         } else {
                             init[vtype] = {

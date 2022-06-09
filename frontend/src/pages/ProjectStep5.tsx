@@ -35,7 +35,7 @@ export default function ProjectStep5(){
                     let init:InputStep5 = {source: ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.inputStep5[vtype]){
+                        if (data.project.inputStep5?.[vtype]){
                             init[vtype] = data.project.inputStep5[vtype]
                         } else {
                             let tmp = {} as {[key in FuelType]: boolean}

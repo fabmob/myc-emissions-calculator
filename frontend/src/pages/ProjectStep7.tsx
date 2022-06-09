@@ -45,7 +45,7 @@ export default function ProjectStep7(){
                     let init:InputStep7 = {source: ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.inputStep7[vtype]) {
+                        if (data.project.inputStep7?.[vtype]) {
                             init[vtype] = data.project.inputStep7[vtype]
                         } else {
                             let tmp = {} as {[key in FuelType]: string[]}

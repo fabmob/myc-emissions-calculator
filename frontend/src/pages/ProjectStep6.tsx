@@ -39,7 +39,7 @@ export default function ProjectStep6(){
                         setInputData(prevInputData => {
                             for (let i = 0; i < vtypes.length; i++) {
                                 let vtype = vtypes[i]
-                                if (data.project.inputStep6[vtype]) {
+                                if (data.project.inputStep6?.[vtype]) {
                                     prevInputData[vtype] = data.project.inputStep6[vtype]
                                 } else {
                                     if (!data.project.inputStep5[vtype]) {
@@ -151,7 +151,7 @@ export default function ProjectStep6(){
                                     let inputFt = inputVt?.[ftype]
                                     let tmp = project?.inputStep5?.[vtype]  as {[key in FuelType]: boolean}
                                     if (!tmp || tmp[ftype] === false || !inputData) {
-                                        return <></>
+                                        return null
                                     }
                                     if (inputFt !== undefined) {
                                         let inp = inputVt?.[ftype]
@@ -199,7 +199,7 @@ export default function ProjectStep6(){
                                             )
                                         }
                                     }
-                                    return <></>
+                                    return null
                                 })
                                 let inp = inputData?.[vtype]
                                 let sums = [0,0,0,0,0,0]

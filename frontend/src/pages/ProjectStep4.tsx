@@ -37,7 +37,7 @@ export default function ProjectStep4(){
                     let init:InputStep4 = {source: ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.inputStep4[vtype]){
+                        if (data.project.inputStep4?.[vtype]){
                             init[vtype] = data.project.inputStep4[vtype]
                         } else {
                             init[vtype] = {
