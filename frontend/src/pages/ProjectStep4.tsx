@@ -82,16 +82,9 @@ export default function ProjectStep4(){
         let value = parseInt(target.value) || 0
         updateInput(vtype, "tripLength", value)
     }
-    const saveAndGoPreviousStep = () => {
+    const goPreviousStep = () => {
         // TODO: validate content ?
-        const requestOptions = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
-            body: JSON.stringify({ inputData: inputData })
-        };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/4', requestOptions)
-            .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/step/3'));
+        navigate('/project/' + projectId + '/step/3');
     }
     const saveAndGoNextStep = () => {
         // TODO: validate content ?
@@ -155,7 +148,7 @@ export default function ProjectStep4(){
                     :''}
 
                     <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email 📧</a></h2>
-                    <Button variant="secondary" style={{marginRight: "20px"}} onClick={saveAndGoPreviousStep}>
+                    <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                         Previous
                     </Button>
                     <Button variant="primary" onClick={saveAndGoNextStep}>

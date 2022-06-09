@@ -87,16 +87,9 @@ export default function ProjectStep7(){
         })
     }
 
-    const saveAndGoPreviousStep = () => {
+    const goPreviousStep = () => {
         // TODO: validate content ?
-        const requestOptions = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
-            body: JSON.stringify({ inputData: inputData })
-        };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/7', requestOptions)
-            .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/step/6'));
+        navigate('/project/' + projectId + '/step/6');
     }
     const saveAndGoNextStep = () => {
         // TODO: validate content ?
@@ -236,7 +229,7 @@ export default function ProjectStep7(){
                         </Form.Group>
                     :''}
 
-                    <Button variant="secondary" style={{marginRight: "20px"}} onClick={saveAndGoPreviousStep}>
+                    <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                         Previous
                     </Button>
                     <Button variant="primary" onClick={saveAndGoNextStep}>
