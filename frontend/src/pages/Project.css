@@ -26,6 +26,17 @@
 .inputTable tbody td {
     background-color: #c4c4c4
 }
+/* Chrome, Safari, Edge, Opera */
+.inputTable input::-webkit-outer-spin-button,
+.inputTable input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.inputTable input[type=number] {
+  -moz-appearance: textfield;
+}
 .fuelCheck input {
     border: 1px solid;
 }

@@ -9,7 +9,6 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep1, ProjectType} from '../frontendTypes'
-import {validateStringAsPercent} from '../utils'
 import Progress from '../components/Progress'
 
 import './Project.css'
@@ -28,6 +27,7 @@ export default function ProjectStep1(){
         gdpSource: ""
     } as InputStep1)
     let [project, setProject ] = useState({} as ProjectType)
+    const [validated, setValidated] = useState(false);
     let projectId = params.projectId
     useEffect(() => {
         if (initialized && keycloak.authenticated){
@@ -57,7 +57,7 @@ export default function ProjectStep1(){
             let name = target.name as "populationRate" | "gdpRate"
             setInputData((prevInputData) => {
                 let rateToChange = prevInputData[name]
-                rateToChange[index] = validateStringAsPercent(target.value)
+                rateToChange[index] = target.value
                 return {
                     ...prevInputData,
                     [name]: rateToChange
@@ -65,8 +65,8 @@ export default function ProjectStep1(){
             })
         }
     }
-    const saveAndGoNextStep = () => {
-        // TODO: validate content ?
+    const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
@@ -83,123 +83,125 @@ export default function ProjectStep1(){
                 <Col xs lg="8">
                     <h1>Set up socio economic data</h1>
                     <h2>Need some help to find the data, <a href="">click here to send us an email 📧</a></h2>
-                    <Table className="inputTable">
-                        <thead>
-                            <tr>
-                                <th>Population (number of inhabitants)</th>
-                                <th colSpan={5}>Annual growth of population (%)</th>
-                            </tr>
-                            <tr>
-                                <td>{project.referenceYear} (RY)</td>
-                                <td>{project.referenceYear}-2025</td>
-                                <td>2025-2030</td>
-                                <td>2030-2035</td>
-                                <td>2030-2040</td>
-                                <td>2040-2050</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><Form.Control type="input" name="population" value={inputData.population} onChange={updateInput} placeholder="" /></td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="populationRate" value={inputData.populationRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="populationRate" value={inputData.populationRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="populationRate" value={inputData.populationRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="populationRate" value={inputData.populationRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="populationRate" value={inputData.populationRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                    <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                        <Form.Label column sm={2}>Source</Form.Label>
-                        <Col sm={10}>
-                            <Form.Control type="input" name="populationSource" value={inputData.populationSource} onChange={updateInput} placeholder=""/>
-                        </Col>
-                    </Form.Group>
-                    <Table className="inputTable">
-                        <thead>
-                            <tr>
-                                <th>GDP (Billion $)</th>
-                                <th colSpan={5}>Annual growth of GDP (%)</th>
-                            </tr>
-                            <tr>
-                                <td>{project.referenceYear} (RY)</td>
-                                <td>{project.referenceYear}-2025</td>
-                                <td>2025-2030</td>
-                                <td>2030-2035</td>
-                                <td>2035-2040</td>
-                                <td>2040-2050</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><Form.Control type="input" name="gdp" value={inputData.gdp} onChange={e => updateInput(e)} placeholder="" /></td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="gdpRate" value={inputData.gdpRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="gdpRate" value={inputData.gdpRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="gdpRate" value={inputData.gdpRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="gdpRate" value={inputData.gdpRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                                <td>
-                                    <InputGroup>
-                                        <Form.Control type="input" name="gdpRate" value={inputData.gdpRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
-                                        <InputGroup.Text>%</InputGroup.Text>
-                                    </InputGroup>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                    <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                        <Form.Label column sm={2}>Source</Form.Label>
-                        <Col sm={10}>
-                            <Form.Control type="input" name="gdpSource" value={inputData.gdpSource} onChange={updateInput}  placeholder=""/>
-                        </Col>
-                    </Form.Group>
-                    <Button variant="primary" onClick={saveAndGoNextStep}>
-                        Next
-                    </Button>
+                    <Form onSubmit={saveAndGoNextStep}>
+                        <Table className="inputTable">
+                            <thead>
+                                <tr>
+                                    <th>Population (number of inhabitants)</th>
+                                    <th colSpan={5}>Annual growth of population (%)</th>
+                                </tr>
+                                <tr>
+                                    <td>{project.referenceYear} (RY)</td>
+                                    <td>{project.referenceYear}-2025</td>
+                                    <td>2025-2030</td>
+                                    <td>2030-2035</td>
+                                    <td>2030-2040</td>
+                                    <td>2040-2050</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><Form.Control type="number" required name="population" min="1" value={inputData.population} onChange={updateInput} placeholder="" /></td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                        <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                            <Form.Label column sm={2}>Source</Form.Label>
+                            <Col sm={10}>
+                                <Form.Control type="input" name="populationSource" value={inputData.populationSource} onChange={updateInput} placeholder=""/>
+                            </Col>
+                        </Form.Group>
+                        <Table className="inputTable">
+                            <thead>
+                                <tr>
+                                    <th>GDP (Billion $)</th>
+                                    <th colSpan={5}>Annual growth of GDP (%)</th>
+                                </tr>
+                                <tr>
+                                    <td>{project.referenceYear} (RY)</td>
+                                    <td>{project.referenceYear}-2025</td>
+                                    <td>2025-2030</td>
+                                    <td>2030-2035</td>
+                                    <td>2035-2040</td>
+                                    <td>2040-2050</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><Form.Control type="number" required min="1" name="gdp" value={inputData.gdp} onChange={e => updateInput(e)} placeholder="" /></td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
+                                            <InputGroup.Text>%</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                        <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                            <Form.Label column sm={2}>Source</Form.Label>
+                            <Col sm={10}>
+                                <Form.Control type="input" name="gdpSource" value={inputData.gdpSource} onChange={updateInput}  placeholder=""/>
+                            </Col>
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            Next
+                        </Button>
+                    </Form>
                 </Col>
             </Row>
         </Container>

@@ -9,7 +9,6 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep6, ProjectType, FuelType} from '../frontendTypes'
-import {validateStringAsPercent} from '../utils'
 import Progress from '../components/Progress'
 import Alert from 'react-bootstrap/Alert'
 
@@ -80,7 +79,7 @@ export default function ProjectStep6(){
         setInputData((prevInputData: InputStep6) => {
             let tt = prevInputData[vtype]
             if (tt && typeof(tt) !== 'string') {
-                tt[ftype][index] = validateStringAsPercent(value)
+                tt[ftype][index] = value
                 return {
                     ...prevInputData,
                     [vtype]: tt
@@ -92,11 +91,11 @@ export default function ProjectStep6(){
     }
 
     const goPreviousStep = () => {
-        // TODO: validate content ?
         navigate('/project/' + projectId + '/step/5');
     }
-    const saveAndGoNextStep = () => {
-        // TODO: validate content ?
+    const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
+        // TODO: there might be more content validation needed, aka check that sums are indeed 100
+        event.preventDefault();
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
@@ -116,134 +115,136 @@ export default function ProjectStep6(){
                         A fuel is undefined for one of the vehicles types, making it invisible, please go back to the fuel types step.
                     </Alert> : <></>}
                     <h2>Please enter the percentage of Vehicle Kilometers Travelled (vkt) per vehicle category and fuel type for the Reference Year and for future years</h2>
-                    <Table className="inputTable">
-                        <thead>
-                            <tr>
-                                <th>Vehicle type</th>
-                                <th colSpan={6}>VKT per category (%)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>{project.referenceYear} (RY)</td>
-                                <td>{project.referenceYear}-2025</td>
-                                <td>2025-2030</td>
-                                <td>2030-2035</td>
-                                <td>2035-2040</td>
-                                <td>2040-2050</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {Object.keys(project.inputStep2 || []).map((vtype, index) => {
-                            if (!project.inputStep2 || project.inputStep2[vtype] === false || !inputData) {
-                                return <></>
-                            }
-                            let inputVt = inputData[vtype] as {[key in FuelType]: string[]}
-                            if (inputVt !== undefined && project.inputStep5) {
-                                let fuelJsx = Object.keys(project.inputStep5[vtype] || []).map((ft, i) => {
-                                    let ftype = ft as FuelType
-                                    let inputFt = inputVt?.[ftype]
-                                    let tmp = project?.inputStep5?.[vtype]  as {[key in FuelType]: boolean}
-                                    if (!tmp || tmp[ftype] === false || !inputData) {
+                    <Form onSubmit={saveAndGoNextStep}>
+                        <Table className="inputTable">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle type</th>
+                                    <th colSpan={6}>VKT per category (%)</th>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>{project.referenceYear} (RY)</td>
+                                    <td>{project.referenceYear}-2025</td>
+                                    <td>2025-2030</td>
+                                    <td>2030-2035</td>
+                                    <td>2035-2040</td>
+                                    <td>2040-2050</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {Object.keys(project.inputStep2 || []).map((vtype, index) => {
+                                if (!project.inputStep2 || project.inputStep2[vtype] === false || !inputData) {
+                                    return <></>
+                                }
+                                let inputVt = inputData[vtype] as {[key in FuelType]: string[]}
+                                if (inputVt !== undefined && project.inputStep5) {
+                                    let fuelJsx = Object.keys(project.inputStep5[vtype] || []).map((ft, i) => {
+                                        let ftype = ft as FuelType
+                                        let inputFt = inputVt?.[ftype]
+                                        let tmp = project?.inputStep5?.[vtype]  as {[key in FuelType]: boolean}
+                                        if (!tmp || tmp[ftype] === false || !inputData) {
+                                            return null
+                                        }
+                                        if (inputFt !== undefined) {
+                                            let inp = inputVt?.[ftype]
+                                            if (inp) {
+                                                return (
+                                                    <tr key={i}>
+                                                        <td style={{backgroundColor: "#989898"}}>{ftype}</td>
+                                                        <td>
+                                                            <InputGroup>
+                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[0]} onChange={e => updateInput(vtype, ft, 0, e)} />
+                                                                <InputGroup.Text>%</InputGroup.Text>
+                                                            </InputGroup>
+                                                        </td>
+                                                        <td>
+                                                            <InputGroup>
+                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[1]} onChange={e => updateInput(vtype, ft, 1, e)} />
+                                                                <InputGroup.Text>%</InputGroup.Text>
+                                                            </InputGroup>
+                                                        </td>
+                                                        <td>
+                                                            <InputGroup>
+                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[2]} onChange={e => updateInput(vtype, ft, 2, e)} />
+                                                                <InputGroup.Text>%</InputGroup.Text>
+                                                            </InputGroup>
+                                                        </td>
+                                                        <td>
+                                                            <InputGroup>
+                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[3]} onChange={e => updateInput(vtype, ft, 3, e)} />
+                                                                <InputGroup.Text>%</InputGroup.Text>
+                                                            </InputGroup>
+                                                        </td>
+                                                        <td>
+                                                            <InputGroup>
+                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[4]} onChange={e => updateInput(vtype, ft, 4, e)} />
+                                                                <InputGroup.Text>%</InputGroup.Text>
+                                                            </InputGroup>
+                                                        </td>
+                                                        <td>
+                                                            <InputGroup>
+                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[5]} onChange={e => updateInput(vtype, ft, 5, e)} />
+                                                                <InputGroup.Text>%</InputGroup.Text>
+                                                            </InputGroup>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            }
+                                        }
                                         return null
-                                    }
-                                    if (inputFt !== undefined) {
-                                        let inp = inputVt?.[ftype]
-                                        if (inp) {
-                                            return (
-                                                <tr key={i}>
-                                                    <td style={{backgroundColor: "#989898"}}>{ftype}</td>
-                                                    <td>
-                                                        <InputGroup>
-                                                            <Form.Control type="input" value={inp[0]} onChange={e => updateInput(vtype, ft, 0, e)} />
-                                                            <InputGroup.Text>%</InputGroup.Text>
-                                                        </InputGroup>
-                                                    </td>
-                                                    <td>
-                                                        <InputGroup>
-                                                            <Form.Control type="input" value={inp[1]} onChange={e => updateInput(vtype, ft, 1, e)} />
-                                                            <InputGroup.Text>%</InputGroup.Text>
-                                                        </InputGroup>
-                                                    </td>
-                                                    <td>
-                                                        <InputGroup>
-                                                            <Form.Control type="input" value={inp[2]} onChange={e => updateInput(vtype, ft, 2, e)} />
-                                                            <InputGroup.Text>%</InputGroup.Text>
-                                                        </InputGroup>
-                                                    </td>
-                                                    <td>
-                                                        <InputGroup>
-                                                            <Form.Control type="input" value={inp[3]} onChange={e => updateInput(vtype, ft, 3, e)} />
-                                                            <InputGroup.Text>%</InputGroup.Text>
-                                                        </InputGroup>
-                                                    </td>
-                                                    <td>
-                                                        <InputGroup>
-                                                            <Form.Control type="input" value={inp[4]} onChange={e => updateInput(vtype, ft, 4, e)} />
-                                                            <InputGroup.Text>%</InputGroup.Text>
-                                                        </InputGroup>
-                                                    </td>
-                                                    <td>
-                                                        <InputGroup>
-                                                            <Form.Control type="input" value={inp[5]} onChange={e => updateInput(vtype, ft, 5, e)} />
-                                                            <InputGroup.Text>%</InputGroup.Text>
-                                                        </InputGroup>
-                                                    </td>
-                                                </tr>
-                                            )
+                                    })
+                                    let inp = inputData?.[vtype]
+                                    let sums = [0,0,0,0,0,0]
+                                    if (inp && typeof(inp) !== 'string') {
+                                        let fuels = Object.keys(project.inputStep5[vtype] || [])
+                                        for (let i = 0; i < fuels.length; i++) {
+                                            let ftype = fuels[i] as FuelType
+                                            for (let j = 0; j < sums.length; j++) {
+                                                sums[j] += parseFloat(inp?.[ftype]?.[j]) || 0
+                                            }
                                         }
                                     }
-                                    return null
-                                })
-                                let inp = inputData?.[vtype]
-                                let sums = [0,0,0,0,0,0]
-                                if (inp && typeof(inp) !== 'string') {
-                                    let fuels = Object.keys(project.inputStep5[vtype] || [])
-                                    for (let i = 0; i < fuels.length; i++) {
-                                        let ftype = fuels[i] as FuelType
-                                        for (let j = 0; j < sums.length; j++) {
-                                            sums[j] += parseFloat(inp?.[ftype]?.[j]) || 0
-                                        }
+                                    if(inp && Object.keys(inp).length === 0) {
+                                        sums = [100, 100, 100, 100, 100, 100]
                                     }
+                                    return [
+                                        <tr key={index}>
+                                            <td style={{backgroundColor: "#989898"}}>{vtype}</td>
+                                            <td style={{color: sums[0] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[0]}%</td>
+                                            <td style={{color: sums[1] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[1]}%</td>
+                                            <td style={{color: sums[2] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[2]}%</td>
+                                            <td style={{color: sums[3] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[3]}%</td>
+                                            <td style={{color: sums[4] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[4]}%</td>
+                                            <td style={{color: sums[5] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[5]}%</td>
+                                        </tr>
+                                        ,
+                                        fuelJsx
+                                    ]
+                                } else {
+                                    return <></>
                                 }
-                                if(inp && Object.keys(inp).length === 0) {
-                                    sums = [100, 100, 100, 100, 100, 100]
-                                }
-                                return [
-                                    <tr key={index}>
-                                        <td style={{backgroundColor: "#989898"}}>{vtype}</td>
-                                        <td style={{color: sums[0] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[0]}%</td>
-                                        <td style={{color: sums[1] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[1]}%</td>
-                                        <td style={{color: sums[2] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[2]}%</td>
-                                        <td style={{color: sums[3] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[3]}%</td>
-                                        <td style={{color: sums[4] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[4]}%</td>
-                                        <td style={{color: sums[5] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[5]}%</td>
-                                    </tr>
-                                    ,
-                                    fuelJsx
-                                ]
-                            } else {
-                                return <></>
+                            })
                             }
-                        })
-                        }
-                        </tbody>
-                    </Table>
-                    {inputData?
-                        <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label column sm={2}>Source</Form.Label>
-                            <Col sm={10}>
-                                <Form.Control type="input" name="vktSource" value={inputData.source as string} onChange={updateSource} placeholder=""/>
-                            </Col>
-                        </Form.Group>
-                    :''}
+                            </tbody>
+                        </Table>
+                        {inputData?
+                            <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                                <Form.Label column sm={2}>Source</Form.Label>
+                                <Col sm={10}>
+                                    <Form.Control type="input" name="vktSource" value={inputData.source as string} onChange={updateSource} placeholder=""/>
+                                </Col>
+                            </Form.Group>
+                        :''}
 
-                    <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email 📧</a></h2>
-                    <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
-                        Previous
-                    </Button>
-                    <Button variant="primary" onClick={saveAndGoNextStep}>
-                        Next
-                    </Button>
+                        <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email 📧</a></h2>
+                        <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
+                            Previous
+                        </Button>
+                        <Button variant="primary" type="submit">
+                            Next
+                        </Button>
+                    </Form>
                 </Col>
             </Row>
         </Container>

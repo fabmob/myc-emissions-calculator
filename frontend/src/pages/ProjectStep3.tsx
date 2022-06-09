@@ -9,7 +9,6 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep3, ProjectType} from '../frontendTypes'
-import {validateStringAsFloat, validateStringAsPercent} from '../utils'
 import Progress from '../components/Progress'
 
 import './Project.css'
@@ -64,9 +63,9 @@ export default function ProjectStep3(){
             let vtypeobj = prevInputData[vtype]
             if (vtypeobj && typeof(vtypeobj) != 'string') {
                 if (index === undefined) {
-                    vtypeobj.vkt = validateStringAsFloat(target.value)
+                    vtypeobj.vkt = target.value
                 } else {
-                    vtypeobj.vktRate[index] = validateStringAsPercent(target.value)
+                    vtypeobj.vktRate[index] = target.value
                 }
                 return {
                     ...prevInputData,
@@ -79,11 +78,10 @@ export default function ProjectStep3(){
 
     }
     const goPreviousStep = () => {
-        // TODO: validate content ?
         navigate('/project/' + projectId + '/step/2');
     }
-    const saveAndGoNextStep = () => {
-        // TODO: validate content ?
+    const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
@@ -100,94 +98,96 @@ export default function ProjectStep3(){
                 <Col xs lg="8">
                     <h1 style={{marginBottom: "40px"}}>Set up transport activity data</h1>
                     <h2>Fill the Vehicle Kilometer Travelled, then fill the estimated percentage of growth milleage</h2>
-                    <Table className="inputTable">
-                        <thead>
-                            <tr>
-                                <th>Vehicle type</th>
-                                <th style={{width: "200px"}}>VKT (mio km/year)</th>
-                                <th colSpan={5}>Annual growth of VKT (%)</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>{project.referenceYear} (RY)</td>
-                                <td>{project.referenceYear}-2025</td>
-                                <td>2025-2030</td>
-                                <td>2030-2035</td>
-                                <td>2035-2040</td>
-                                <td>2040-2050</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Object.keys(project.inputStep2 || []).map((vtype, index) => {
-                                if (!project.inputStep2 || project.inputStep2[vtype] === false || !inputData) {
+                    <Form onSubmit={saveAndGoNextStep}>
+                        <Table className="inputTable">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle type</th>
+                                    <th style={{width: "200px"}}>VKT (mio km/year)</th>
+                                    <th colSpan={5}>Annual growth of VKT (%)</th>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>{project.referenceYear} (RY)</td>
+                                    <td>{project.referenceYear}-2025</td>
+                                    <td>2025-2030</td>
+                                    <td>2030-2035</td>
+                                    <td>2035-2040</td>
+                                    <td>2040-2050</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {Object.keys(project.inputStep2 || []).map((vtype, index) => {
+                                    if (!project.inputStep2 || project.inputStep2[vtype] === false || !inputData) {
+                                        return <></>
+                                    }
+                                    let inputVt = inputData[vtype]
+                                    if (inputVt && typeof(inputVt) !== 'string')
+                                        return (
+                                            <tr key={index}>
+                                                <td style={{backgroundColor: "#989898"}}>{vtype}</td>
+                                                <td>
+                                                    <InputGroup>
+                                                        <Form.Control type="number" required min="0" step="0.01" name={vtype} value={inputVt.vkt} onChange={updateInput} placeholder="" />
+                                                        <InputGroup.Text>Mkm/y</InputGroup.Text>
+                                                    </InputGroup>
+
+                                                </td>
+                                                <td>
+                                                    <InputGroup>
+                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
+                                                        <InputGroup.Text>%</InputGroup.Text>
+                                                    </InputGroup>
+                                                </td>
+                                                <td>
+                                                    <InputGroup>
+                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
+                                                        <InputGroup.Text>%</InputGroup.Text>
+                                                    </InputGroup>
+                                                </td>
+                                                <td>
+                                                    <InputGroup>
+                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
+                                                        <InputGroup.Text>%</InputGroup.Text>
+                                                    </InputGroup>
+                                                </td>
+                                                <td>
+                                                    <InputGroup>
+                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
+                                                        <InputGroup.Text>%</InputGroup.Text>
+                                                    </InputGroup>
+                                                </td>
+                                                <td>
+                                                    <InputGroup>
+                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
+                                                        <InputGroup.Text>%</InputGroup.Text>
+                                                    </InputGroup>
+                                                </td>
+                                            </tr>
+                                        )
                                     return <></>
+                                })
                                 }
-                                let inputVt = inputData[vtype]
-                                if (inputVt && typeof(inputVt) !== 'string')
-                                    return (
-                                        <tr key={index}>
-                                            <td style={{backgroundColor: "#989898"}}>{vtype}</td>
-                                            <td>
-                                                <InputGroup>
-                                                    <Form.Control type="input" name={vtype} value={inputVt.vkt} onChange={updateInput} placeholder="" />
-                                                    <InputGroup.Text>Mkm/y</InputGroup.Text>
-                                                </InputGroup>
 
-                                            </td>
-                                            <td>
-                                                <InputGroup>
-                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
-                                                    <InputGroup.Text>%</InputGroup.Text>
-                                                </InputGroup>
-                                            </td>
-                                            <td>
-                                                <InputGroup>
-                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
-                                                    <InputGroup.Text>%</InputGroup.Text>
-                                                </InputGroup>
-                                            </td>
-                                            <td>
-                                                <InputGroup>
-                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
-                                                    <InputGroup.Text>%</InputGroup.Text>
-                                                </InputGroup>
-                                            </td>
-                                            <td>
-                                                <InputGroup>
-                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
-                                                    <InputGroup.Text>%</InputGroup.Text>
-                                                </InputGroup>
-                                            </td>
-                                            <td>
-                                                <InputGroup>
-                                                    <Form.Control type="input" name={vtype} value={inputVt.vktRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
-                                                    <InputGroup.Text>%</InputGroup.Text>
-                                                </InputGroup>
-                                            </td>
-                                        </tr>
-                                    )
-                                return <></>
-                            })
-                            }
+                            </tbody>
+                        </Table>
+                        {inputData ?
+                            <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                                <Form.Label column sm={2}>Source</Form.Label>
+                                <Col sm={10}>
+                                    <Form.Control type="input" name="vktSource" value={inputData.vktSource as string} onChange={updateSource} placeholder=""/>
+                                </Col>
+                            </Form.Group>
+                        :''}
 
-                        </tbody>
-                    </Table>
-                    {inputData ?
-                        <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label column sm={2}>Source</Form.Label>
-                            <Col sm={10}>
-                                <Form.Control type="input" name="vktSource" value={inputData.vktSource as string} onChange={updateSource} placeholder=""/>
-                            </Col>
-                        </Form.Group>
-                    :''}
-
-                    <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email 📧</a></h2>
-                    <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
-                        Previous
-                    </Button>
-                    <Button variant="primary" onClick={saveAndGoNextStep}>
-                        Next
-                    </Button>
+                        <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email 📧</a></h2>
+                        <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
+                            Previous
+                        </Button>
+                        <Button variant="primary" type="submit">
+                            Next
+                        </Button>
+                    </Form>
                 </Col>
             </Row>
         </Container>

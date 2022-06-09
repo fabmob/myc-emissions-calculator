@@ -5,7 +5,6 @@ import {ProjectType} from '../frontendTypes'
 import './Progress.css'
 
 const Progress = (props: {project: ProjectType, currentStep: number}) => {
-    console.log(props.project)
     const navigate = useNavigate()
     const link = (step: string) => navigate('/project/' + props.project.id + '/step/' + step)
     const viz = () => navigate('/project/' + props.project.id + '/viz')
