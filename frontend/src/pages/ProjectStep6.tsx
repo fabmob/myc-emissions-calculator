@@ -132,10 +132,10 @@ export default function ProjectStep6(){
                             <tr>
                                 <td></td>
                                 <td>{project.referenceYear} (RY)</td>
-                                <td>2018-2020</td>
-                                <td>2020-2025</td>
+                                <td>{project.referenceYear}-2025</td>
                                 <td>2025-2030</td>
-                                <td>2030-2040</td>
+                                <td>2030-2035</td>
+                                <td>2035-2040</td>
                                 <td>2040-2050</td>
                             </tr>
                         </thead>

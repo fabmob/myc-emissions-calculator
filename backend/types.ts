@@ -27,7 +27,7 @@ export interface SocioEconomicDataComputed {
 
 export type YearlyGrowth = YearlyValues<Percent>
 
-export type date = 2020 | 2025 | 2030 | 2040 | 2050
+export type date = 0 | 2025 | 2030 | 2035 | 2040 | 2050
 
 // valeur: mil km / year
 export type VehicleKilometresTravelled = {

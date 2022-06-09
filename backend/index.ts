@@ -57,11 +57,11 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
         })
     }
     let inputSocioEconomicData : types.SocioEconomicData = project.inputStep1
-    project.outputSocioEconomicDataComputed = models.computeSocioEconomicData(inputSocioEconomicData)
+    project.outputSocioEconomicDataComputed = models.computeSocioEconomicData(inputSocioEconomicData, project.referenceYear)
 
     delete project.inputStep3.vktSource
     let inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = project.inputStep3
-    project.vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled)
+    project.vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, project.referenceYear)
 
     delete project.inputStep6.source
     let inputVktPerFuel : types.VktPerFuel = project.inputStep6
@@ -71,10 +71,10 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     let inputVehicleStats : types.VehicleStats = project.inputStep4
     project.outputTransportPerformance = models.computeTransportPerformance(project.vehicleKilometresTravelledComputed, inputVehicleStats)
     project.outputModalShare = models.computeModalShare(project.outputTransportPerformance)
-    
+
     delete project.inputStep7.source
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.inputStep7
-    project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption)
+    project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYear)
 
     project.outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, project.outputVktPerFuelComputed)
 

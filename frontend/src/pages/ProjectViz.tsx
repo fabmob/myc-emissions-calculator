@@ -30,7 +30,7 @@ export default function ProjectViz(){
                 });
             }
     }, [keycloak, initialized, projectId])
-    let dates = [2020, 2025, 2030, 2040, 2050]
+    let dates = [parseInt(project.referenceYear) || 2020, 2025, 2030, 2035, 2040, 2050]
     const goPreviousStep = () => {
         navigate('/project/' + projectId + '/step/7')
     }
@@ -44,11 +44,12 @@ export default function ProjectViz(){
         {name: dates[1]},
         {name: dates[2]},
         {name: dates[3]},
-        {name: dates[4]}
+        {name: dates[4]},
+        {name: dates[5]}
     ]
     for (let i = 0; i < vtypesmodale.length; i++) {
         let vtype = vtypesmodale[i]
-        for (let j = 0; j < 5; j++) {
+        for (let j = 0; j < 6; j++) {
             if (outputModalShare?.[vtype]?.[j]) {
                 dataPartModale[j][vtype] = Math.round((outputModalShare?.[vtype]?.[j] || 0) * 100)
                 if (activeVtypesModale.indexOf(vtypesmodale[i]) === -1)
@@ -66,11 +67,12 @@ export default function ProjectViz(){
         {name: dates[1]},
         {name: dates[2]},
         {name: dates[3]},
-        {name: dates[4]}
+        {name: dates[4]},
+        {name: dates[5]}
     ]
     for (let i = 0; i < vtypesvkt.length; i++) {
         let vtype = vtypesvkt[i]
-        for (let j = 0; j < 5; j++) {
+        for (let j = 0; j < 6; j++) {
             if (vehicleKilometresTravelledComputed?.[vtype]?.[j]) {
                 dataVkt[j][vtype] = Math.round((vehicleKilometresTravelledComputed?.[vtype]?.[j] || 0))
                 if (activeVtypesVkt.indexOf(vtypesvkt[i]) === -1)
@@ -86,11 +88,12 @@ export default function ProjectViz(){
         {name: dates[1]},
         {name: dates[2]},
         {name: dates[3]},
-        {name: dates[4]}
+        {name: dates[4]},
+        {name: dates[5]}
     ]
     for (let i = 0; i < vtypesmodale.length; i++) {
         let vtype = vtypesmodale[i]
-        for (let j = 0; j < 5; j++) {
+        for (let j = 0; j < 6; j++) {
             let val = outputSumTotalEnergyAndEmissions?.[vtype]?.co2?.[j]
             if (val) {
                 dataEnergy[j][vtype] = Math.round(val * 1000)
@@ -100,7 +103,17 @@ export default function ProjectViz(){
         }
     }
 
-    let colors = ["#e07a5f", "#3d405b", "#81b29a", "#f2cc8f", "#5e548e", "#9f86c0", "#be95c4", "#e0b1cb", "#541690", "#FF4949", "#FF8D29", "#FFCD38", "#2E0249", "#570A57", "#A91079", "#F806CC", "#C4DDFF", "#7FB5FF", "#001D6E", "#FEE2C5"]
+    let defaultColors = ["#FF7C7C", "#FF9F7C", "#FFB77C", "#FFEB7C", "#CAFF7C", "#8AFF89", "#7BFFE3", "#7CDDFF", "#7CB1FF", "#7C81FF", "#9E7CFF", "#DF7CFF", "#FF7CEC", "#FF7CB2"]
+    let colors = defaultColors.slice()
+    let colorsPerVtype : {[key: string]: string} = {}
+    let vtypes = Object.keys(project?.inputStep2 || {}).filter(vtype => project?.inputStep2?.[vtype])
+    for (let i = 0; i < vtypes.length; i++) {
+        colorsPerVtype[vtypes[i]] = colors.shift() || "black"
+        if (colors.length === 0) {
+            colors = defaultColors.slice()
+        }
+    }
+
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={8} />
@@ -117,7 +130,7 @@ export default function ProjectViz(){
                                     <YAxis />
                                       <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                                       <Legend />
-                                    <Bar dataKey="population" fill={colors[4]}/>
+                                    <Bar dataKey="population" fill="#92E5FF"/>
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
@@ -140,7 +153,7 @@ export default function ProjectViz(){
                                     <YAxis />
                                       <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                                       <Legend />
-                                    <Bar dataKey="gdp" fill={colors[5]} unit=' Mrd $'/>
+                                    <Bar dataKey="gdp" fill="#50F19E" unit=' Mrd $'/>
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
@@ -155,7 +168,7 @@ export default function ProjectViz(){
                                     <YAxis />
                                       <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                                       <Legend />
-                                     {activeVtypesVkt.map((e, i) => (<Bar key={i} dataKey={e} fill={colors[i]} stackId="a" unit=' Mil km'/>))}
+                                     {activeVtypesVkt.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' Mil km'/>))}
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
@@ -180,7 +193,7 @@ export default function ProjectViz(){
                                     <YAxis />
                                       <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                                       <Legend />
-                                     {activeVtypesModale.map((e, i) => (<Bar key={i} dataKey={e} fill={colors[i]} stackId="a" unit='%'/>))}
+                                     {activeVtypesModale.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit='%'/>))}
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
@@ -196,7 +209,7 @@ export default function ProjectViz(){
                                     <YAxis />
                                       <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                                       <Legend />
-                                     {activeVtypesEnergy.map((e, i) => (<Bar key={i} dataKey={e} fill={colors[i]} stackId="a" unit=' tons CHG'/>))}
+                                     {activeVtypesEnergy.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' tons CHG'/>))}
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>

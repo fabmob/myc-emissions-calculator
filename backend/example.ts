@@ -8,8 +8,8 @@ const inputSocioEconomicData : types.SocioEconomicData = {
     gdp: 5,
     gdpRate: [1, 1, 1, 1, 1]
 }
-
-let socioEconomicDataCalc = models.computeSocioEconomicData(inputSocioEconomicData)
+let referenceYear = 2020
+let socioEconomicDataCalc = models.computeSocioEconomicData(inputSocioEconomicData, referenceYear)
 console.log("socioEconomicDataCalc", socioEconomicDataCalc)
 
 const inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = {
@@ -18,7 +18,7 @@ const inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = {
     "Some random category": {vkt: 100, vktRate: [0.5, 1, 1.5, 2, 2.5]}
 }
 
-let vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled)
+let vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, referenceYear)
 console.log("vehicleKilometresTravelledComputed", vehicleKilometresTravelledComputed)
 
 const inputVktPerFuel: types.VktPerFuel = {
@@ -61,7 +61,7 @@ const inputAverageEnergyConsumption : types.AverageEnergyConsumption = {
         "Diesel": [6, 1, 1, 1, 1, 1]
     }
 }
-let outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption)
+let outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, referenceYear)
 console.log("outputAverageEnergyConsumptionComputed", outputAverageEnergyConsumptionComputed)
 
 let outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, outputVktPerFuelComputed)
