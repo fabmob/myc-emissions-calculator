@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useMemo} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { Navigate, useNavigate } from 'react-router-dom'
+import countryList from 'react-select-country-list'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -15,11 +16,13 @@ export default function CreateProject(){
     const navigate = useNavigate();
     const { keycloak, initialized } = useKeycloak();
     const [ projectName, setProjectName ] = useState("")
-    const [ projectLocation, setProjectLocation ] = useState("")
+    const [ projectCity, setProjectCity ] = useState("")
+    const [ projectCountry, setProjectCountry ] = useState("")
     const [ partnerLocation, setPartnerLocation ] = useState("")
     const [ projectArea, setProjectArea ] = useState("")
     const [ projectReferenceYear, setProjectReferenceYear ] = useState("2020")
     const [validated, setValidated] = useState(false);
+    const countryOptions = useMemo(() => countryList().getData(), [])
     if (initialized && !keycloak.authenticated){
         return <Navigate to='/'  />
     }
@@ -33,8 +36,9 @@ export default function CreateProject(){
             return
         }
         let projectDict = {
-            projectName: keycloak?.tokenParsed?.preferred_username + ":" + projectName,
-            projectLocation: projectLocation,
+            projectName: projectName,
+            projectCountry: projectCountry,
+            projectCity: projectCity,
             partnerLocation: partnerLocation,
             projectArea: projectArea,
             projectReferenceYear: projectReferenceYear
@@ -67,9 +71,17 @@ export default function CreateProject(){
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label>Select country/city</Form.Label>
-                            <Form.Control type="input" required placeholder="" value={projectLocation} onChange={e => setProjectLocation(e.target.value)}/>
+                            <Form.Label>Select country</Form.Label>
+                            <Form.Select aria-label="Select a country" value={projectCountry} onChange={e => setProjectCountry(e.target.value)}>
+                                {countryOptions.map(e => (<option value={e.label}>{e.label}</option>))}
+                            </Form.Select>
                             <Form.Control.Feedback type="invalid">Please specify a country</Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>City</Form.Label>
+                            <Form.Control type="input" required placeholder="" value={projectCity} onChange={e => setProjectCity(e.target.value)}/>
+                            <Form.Control.Feedback type="invalid">Please specify a city</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3">

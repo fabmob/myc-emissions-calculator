@@ -4,18 +4,19 @@ const db = new Database('data.db', {verbose: console.log})
 
 export function init() {
     try {
-        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, location STRING, partnerLocation STRING, area STRING, referenceYear STRING, inputStep1 STRING, inputStep2 STRING, inputStep3 STRING, inputStep4 STRING, inputStep5 STRING, inputStep6 STRING, inputStep7 STRING, UNIQUE(name))")
+        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYear STRING, inputStep1 STRING, inputStep2 STRING, inputStep3 STRING, inputStep4 STRING, inputStep5 STRING, inputStep6 STRING, inputStep7 STRING, UNIQUE(name))")
     } catch (err) {
         console.log("Table alredy exists")
     }
 }
 
 export function createProject(project: types.Project, owner: string) {
-    const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, location, partnerLocation, area, referenceYear) values (NULL, ?, ?, ?, ?, ?, ?)")
+    const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, country, city, partnerLocation, area, referenceYear) values (NULL, ?, ?, ?, ?, ?, ?, ?)")
     let res = createProjectStmt.run([
         owner,
         project.projectName,
-        project.projectLocation,
+        project.projectCountry,
+        project.projectCity,
         project.partnerLocation,
         project.projectArea,
         project.projectReferenceYear

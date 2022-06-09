@@ -118,7 +118,8 @@ export type EnergyAndEmissionsDefaultValues = {
 
 export type Project = {
     projectName: string,
-    projectLocation: string,
+    projectCountry: string,
+    projectCity: string,
     partnerLocation: string,
     projectArea: string,
     projectReferenceYear: string
