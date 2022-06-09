@@ -23,6 +23,7 @@
 .progressMenu .currentStepDone:after {
     content: '\2713';
     display: inline-block;
+    padding-left: 2px;
     padding-right: 2px;
 }
 
@@ -33,5 +34,6 @@
     content: '\2713';
     display: inline-block;
     color: green;
+    padding-left: 2px;
     padding-right: 2px;
 }
