@@ -82,7 +82,7 @@ const Progress = (props: {project: ProjectType, currentStep: number}) => {
                 className={getClassName(8)}
                 disabled={props.project.step < 8}
                 onClick={() => viz()}>
-                Vizualizations
+                Overview
             </Button>
         </div>
     );

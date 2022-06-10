@@ -134,7 +134,7 @@ export default function ProjectViz(){
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
-                        <Col lg="6">
+                        <Col lg="6" style={{textAlign: "left"}}>
                             Population evolution is computed using current population and expected annual growth<br/><br/>
                             <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/1')}>Inputs are in the Socio economic data step</div>
                         </Col>
@@ -142,7 +142,7 @@ export default function ProjectViz(){
 
                     <Row className="justify-content-md-center align-items-center" style={{"marginBottom": "40px"}}>
                         <h3>GDP evolution</h3>
-                        <Col lg="6">
+                        <Col lg="6" style={{textAlign: "left"}}>
                             GDP evolution is computed using current GDP and expected annual growth<br/><br/>
                             <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/1')}>Inputs are in the Socio economic data step</div>
                         </Col>
@@ -172,7 +172,7 @@ export default function ProjectViz(){
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
-                        <Col lg="6">
+                        <Col lg="6" style={{textAlign: "left"}}>
                             Vehicle Kilometers Traveled evolution is computed using current kilometers traveled per vehicle and expected annual growth<br/><br/>
                             <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/3')}>Inputs are in the Transport activity data step</div>
                         </Col>
@@ -180,7 +180,7 @@ export default function ProjectViz(){
 
                     <Row className="justify-content-md-center align-items-center" style={{"marginBottom": "40px"}}>
                         <h3>Modal split evolution</h3>
-                        <Col lg="6">
+                        <Col lg="6" style={{textAlign: "left"}}>
                             The modal split helps to visualize which transport the population mostly uses for their travels.<br/><br/>
                             It is computed using total vkt and vehicle occupancy.<br/><br/>
                             <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/3')}>Inputs are in the Transport activity data step</div>
@@ -213,7 +213,7 @@ export default function ProjectViz(){
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
-                        <Col lg="6">
+                        <Col lg="6" style={{textAlign: "left"}}>
                             Estimated tons of greenhouse gases emissions for upcoming years per vehicle type.<br/><br/>
                             It is computed by multiplying for each fuel: vkt, average consumption and default emission factors.<br/><br/>
                             <div className="inputDescNoLink">Inputs are all the previous steps</div>
