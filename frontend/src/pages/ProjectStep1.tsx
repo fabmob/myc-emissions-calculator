@@ -22,12 +22,13 @@ export default function ProjectStep1(){
         population: "0",
         populationRate: ["0", "0", "0", "0", "0"],
         populationSource: "",
+        populationGrowthSource: "",
         gdp: "0",
         gdpRate: ["0", "0", "0", "0", "0"],
-        gdpSource: ""
+        gdpSource: "",
+        gdpGrowthSource: ""
     } as InputStep1)
     let [project, setProject ] = useState({} as ProjectType)
-    const [validated, setValidated] = useState(false);
     let projectId = params.projectId
     useEffect(() => {
         if (initialized && keycloak.authenticated){
@@ -87,8 +88,8 @@ export default function ProjectStep1(){
                         <Table className="inputTable">
                             <thead>
                                 <tr>
-                                    <th>Population (number of inhabitants)</th>
-                                    <th colSpan={5}>Annual growth of population (%)</th>
+                                    <th>Population¹ (number of inhabitants)</th>
+                                    <th colSpan={5}>Annual growth of population² (%)</th>
                                 </tr>
                                 <tr>
                                     <td>{project.referenceYear} (RY)</td>
@@ -136,16 +137,22 @@ export default function ProjectStep1(){
                             </tbody>
                         </Table>
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label column sm={2}>Source</Form.Label>
-                            <Col sm={10}>
+                            <Form.Label column sm={3}>[1] RY population source</Form.Label>
+                            <Col sm={9}>
                                 <Form.Control type="input" name="populationSource" value={inputData.populationSource} onChange={updateInput} placeholder=""/>
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                            <Form.Label column sm={3}>[2] Population growth source</Form.Label>
+                            <Col sm={9}>
+                                <Form.Control type="input" name="populationGrowthSource" value={inputData.populationGrowthSource} onChange={updateInput} placeholder=""/>
                             </Col>
                         </Form.Group>
                         <Table className="inputTable">
                             <thead>
                                 <tr>
-                                    <th>GDP (Billion $)</th>
-                                    <th colSpan={5}>Annual growth of GDP (%)</th>
+                                    <th>GDP¹ (Billion $)</th>
+                                    <th colSpan={5}>Annual growth of GDP² (%)</th>
                                 </tr>
                                 <tr>
                                     <td>{project.referenceYear} (RY)</td>
@@ -158,7 +165,12 @@ export default function ProjectStep1(){
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><Form.Control type="number" required min="1" name="gdp" value={inputData.gdp} onChange={e => updateInput(e)} placeholder="" /></td>
+                                    <td>
+                                        <InputGroup>
+                                            <Form.Control type="number" required min="1" name="gdp" value={inputData.gdp} onChange={e => updateInput(e)} placeholder="" />
+                                            <InputGroup.Text>B$</InputGroup.Text>
+                                        </InputGroup>
+                                    </td>
                                     <td>
                                         <InputGroup>
                                             <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
@@ -193,9 +205,15 @@ export default function ProjectStep1(){
                             </tbody>
                         </Table>
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label column sm={2}>Source</Form.Label>
-                            <Col sm={10}>
+                            <Form.Label column sm={3}>[1] RY gdp source</Form.Label>
+                            <Col sm={9}>
                                 <Form.Control type="input" name="gdpSource" value={inputData.gdpSource} onChange={updateInput}  placeholder=""/>
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                            <Form.Label column sm={3}>[2] Gdp growth source</Form.Label>
+                            <Col sm={9}>
+                                <Form.Control type="input" name="gdpGrowthSource" value={inputData.gdpGrowthSource} onChange={updateInput}  placeholder=""/>
                             </Col>
                         </Form.Group>
                         <Button variant="primary" type="submit">

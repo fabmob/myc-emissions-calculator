@@ -34,7 +34,7 @@ export default function ProjectStep4(){
                     console.log("get projetcs reply", data)
                     setProject(data.project)
                     let vtypes = Object.keys(data.project.inputStep2)
-                    let init:InputStep4 = {source: ''}
+                    let init:InputStep4 = {source: data.project.inputStep4?.source || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
                         if (data.project.inputStep4?.[vtype]){

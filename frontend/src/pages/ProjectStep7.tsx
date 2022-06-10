@@ -18,7 +18,7 @@ export default function ProjectStep7(){
     const navigate = useNavigate()
     let params = useParams();
     let ftypes = Object.keys(FuelType)
-    let [inputData, setInputData ] = useState({source: ''} as InputStep7)
+    let [inputData, setInputData ] = useState({energySource: '', energyGrowthSource: ''} as InputStep7)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
     const unitPerFuelType : {[f in FuelType]: string} = {
@@ -41,7 +41,7 @@ export default function ProjectStep7(){
                     console.log("get projetcs reply", data)
                     setProject(data.project)
                     let vtypes = Object.keys(data.project.inputStep2)
-                    let init:InputStep7 = {source: ''}
+                    let init:InputStep7 = {energySource: data.project.inputStep7?.energySource || '', energyGrowthSource: data.project.inputStep7?.energyGrowthSource || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
                         if (data.project.inputStep7?.[vtype]) {
@@ -59,10 +59,16 @@ export default function ProjectStep7(){
                 });
             }
     }, [keycloak, initialized, projectId])
-    const updateSource = (event: React.BaseSyntheticEvent) => {
+    const updateEnergySource = (event: React.BaseSyntheticEvent) => {
         setInputData((prevInputData: InputStep7) => ({
             ...prevInputData,
-            source: event.target.value
+            energySource: event.target.value
+        }))
+    }
+    const updateEnergyGrowthSource = (event: React.BaseSyntheticEvent) => {
+        setInputData((prevInputData: InputStep7) => ({
+            ...prevInputData,
+            energyGrowthSource: event.target.value
         }))
     }
     const updateInput = (vtype: string, fueltypestr: string, index: number, event: React.BaseSyntheticEvent) => {
@@ -109,8 +115,8 @@ export default function ProjectStep7(){
                             <thead>
                                 <tr>
                                     <th>Vehicle type</th>
-                                    <th style={{width: "180px"}}>Avg energy consumption (l-kW-kg/100km)</th>
-                                    <th colSpan={5}>Annual growth of energy (%)</th>
+                                    <th style={{width: "180px"}}>Avg energy consumption¹ (l-kW-kg/100km)</th>
+                                    <th colSpan={5}>Annual growth of energy² (%)</th>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -217,13 +223,20 @@ export default function ProjectStep7(){
                         </Table>
                         {inputData?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                                <Form.Label column sm={2}>Source</Form.Label>
+                                <Form.Label column sm={2}>[1] Energy consumption source</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="input" name="vktSource" value={inputData.source as string} onChange={updateSource} placeholder=""/>
+                                    <Form.Control type="input" name="energySource" value={inputData.energySource as string} onChange={updateEnergySource} placeholder=""/>
                                 </Col>
                             </Form.Group>
                         :''}
-
+                        {inputData?
+                            <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                                <Form.Label column sm={2}>[2] Energy growth source</Form.Label>
+                                <Col sm={10}>
+                                    <Form.Control type="input" name="energyGrowthSource" value={inputData.energyGrowthSource as string} onChange={updateEnergyGrowthSource} placeholder=""/>
+                                </Col>
+                            </Form.Group>
+                        :''}
                         <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                             Previous
                         </Button>

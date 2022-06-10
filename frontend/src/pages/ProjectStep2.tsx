@@ -79,11 +79,9 @@ export default function ProjectStep2(){
         return output
     }
     const goPreviousStep = () => {
-        // TODO: validate content ?
         navigate('/project/' + projectId + '/step/1');
     }
     const saveAndGoNextStep = () => {
-        // TODO: validate content ?
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },

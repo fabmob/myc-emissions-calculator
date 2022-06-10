@@ -36,6 +36,7 @@ export default function ProjectStep6(){
                     if (data.project.inputStep5) {
                         let vtypes = Object.keys(data.project.inputStep2)
                         setInputData(prevInputData => {
+                            prevInputData.source = data.project.inputStep6?.source || ''
                             for (let i = 0; i < vtypes.length; i++) {
                                 let vtype = vtypes[i]
                                 if (data.project.inputStep6?.[vtype]) {

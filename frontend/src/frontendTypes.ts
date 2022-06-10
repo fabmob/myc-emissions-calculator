@@ -43,7 +43,9 @@ export type InputStep1 = {
     populationSource: string,
     gdp: string,
     gdpRate: string[],
-    gdpSource: string
+    gdpSource: string,
+    populationGrowthSource: string,
+    gdpGrowthSource: string
 }
 
 export type InputStep2 = {

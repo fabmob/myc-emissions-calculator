@@ -18,7 +18,7 @@ export default function ProjectStep3(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
-    let [inputData, setInputData ] = useState({vktSource: ''} as InputStep3)
+    let [inputData, setInputData ] = useState({vktSource: '', vktGrowthSource: ''} as InputStep3)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function ProjectStep3(){
                     console.log("get projetcs reply", data)
                     setProject(data.project)
                     let vtypes = Object.keys(data.project.inputStep2)
-                    let init:InputStep3 = {vktSource: ''}
+                    let init:InputStep3 = {vktSource: data.project.inputStep3?.vktSource || '', vktGrowthSource: data.project.inputStep3?.vktGrowthSource || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
                         if (data.project.inputStep3?.[vtype]) {
@@ -53,6 +53,12 @@ export default function ProjectStep3(){
         setInputData((prevInputData: InputStep3) => ({
             ...prevInputData,
             vktSource: event.target.value
+        }))
+    }
+    const updateGrowthSource = (event: React.BaseSyntheticEvent) => {
+        setInputData((prevInputData: InputStep3) => ({
+            ...prevInputData,
+            vktGrowthSource: event.target.value
         }))
     }
     const updateInput = (event: React.BaseSyntheticEvent, index?: number) => {
@@ -103,8 +109,8 @@ export default function ProjectStep3(){
                             <thead>
                                 <tr>
                                     <th>Vehicle type</th>
-                                    <th style={{width: "200px"}}>VKT (mio km/year)</th>
-                                    <th colSpan={5}>Annual growth of VKT (%)</th>
+                                    <th style={{width: "200px"}}>VKT¹ (mio km/year)</th>
+                                    <th colSpan={5}>Annual growth of VKT² (%)</th>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -173,13 +179,20 @@ export default function ProjectStep3(){
                         </Table>
                         {inputData ?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                                <Form.Label column sm={2}>Source</Form.Label>
+                                <Form.Label column sm={2}>[1] Vkt source</Form.Label>
                                 <Col sm={10}>
                                     <Form.Control type="input" name="vktSource" value={inputData.vktSource as string} onChange={updateSource} placeholder=""/>
                                 </Col>
                             </Form.Group>
                         :''}
-
+                        {inputData ?
+                            <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                                <Form.Label column sm={2}>[2] Vkt growth source</Form.Label>
+                                <Col sm={10}>
+                                    <Form.Control type="input" name="vktGrowthSource" value={inputData.vktGrowthSource as string} onChange={updateGrowthSource} placeholder=""/>
+                                </Col>
+                            </Form.Group>
+                        :''}
                         <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email 📧</a></h2>
                         <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                             Previous
