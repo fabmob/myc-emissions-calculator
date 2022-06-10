@@ -193,7 +193,7 @@ export default function ProjectStep3(){
                                 </Col>
                             </Form.Group>
                         :''}
-                        <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email 📧</a></h2>
+                        <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></h2>
                         <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                             Previous
                         </Button>

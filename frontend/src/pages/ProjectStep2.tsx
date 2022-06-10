@@ -20,7 +20,7 @@ const defaultVehicles = [
     "🛺 Motorcycle taxi",
     "🚐 Minibus",
     "🚌 Bus",
-    "🚌🏁 Bus rapid transit",
+    "🚌 Bus rapid transit",
     "🚄 Long distance train",
     "🚃 Urban train",
     "🚈 Metro"
