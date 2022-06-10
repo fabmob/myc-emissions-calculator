@@ -60,6 +60,7 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     project.outputSocioEconomicDataComputed = models.computeSocioEconomicData(inputSocioEconomicData, project.referenceYear)
 
     delete project.inputStep3.vktSource
+    delete project.inputStep3.vktGrowthSource
     let inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = project.inputStep3
     project.vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, project.referenceYear)
 
@@ -72,7 +73,8 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     project.outputTransportPerformance = models.computeTransportPerformance(project.vehicleKilometresTravelledComputed, inputVehicleStats)
     project.outputModalShare = models.computeModalShare(project.outputTransportPerformance)
 
-    delete project.inputStep7.source
+    delete project.inputStep7.energySource
+    delete project.inputStep7.energyGrowthSource
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.inputStep7
     project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYear)
 
