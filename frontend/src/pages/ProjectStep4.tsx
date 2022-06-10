@@ -41,8 +41,7 @@ export default function ProjectStep4(){
                             init[vtype] = data.project.inputStep4[vtype]
                         } else {
                             init[vtype] = {
-                                occupancy: "0",
-                                tripLength: "0"
+                                occupancy: "0"
                             }
                         }
                     }
@@ -56,7 +55,7 @@ export default function ProjectStep4(){
             source: event.target.value
         }))
     }
-    const updateInput = (vtype: string, param: "occupancy" | "tripLength", value: string) => {
+    const updateInput = (vtype: string, param: "occupancy", value: string) => {
         setInputData((prevInputData: InputStep4) => {
             let vtypeobj = prevInputData[vtype]
             if (vtypeobj && typeof(vtypeobj) !== 'string') {
@@ -75,12 +74,6 @@ export default function ProjectStep4(){
         let vtype = target.name
         let value = target.value
         updateInput(vtype, "occupancy", value)
-    }
-    const updateTripLength = (event: React.BaseSyntheticEvent) => {
-        let target = event.target as HTMLInputElement
-        let vtype = target.name
-        let value = target.value
-        updateInput(vtype, "tripLength", value)
     }
     const goPreviousStep = () => {
         navigate('/project/' + projectId + '/step/3');
@@ -101,7 +94,7 @@ export default function ProjectStep4(){
             <Progress project={project} currentStep={4} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
-                    <h1 style={{marginBottom: "40px"}}>Set up occupancy and average trip length</h1>
+                    <h1 style={{marginBottom: "40px"}}>Set up occupancy</h1>
                     <h2>Please enter the occupancy for passenger vehicles (average number of passengers per vehicle)</h2>
                     <Form onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
@@ -109,7 +102,6 @@ export default function ProjectStep4(){
                                 <tr>
                                     <th>Vehicle type</th>
                                     <th>Average occupancy (number of passengers)</th>
-                                    <th>Average BAU trip length (km)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -124,12 +116,6 @@ export default function ProjectStep4(){
                                             <tr key={index}>
                                                 <td style={{backgroundColor: "#989898"}}>{vtype}</td>
                                                 <td><Form.Control type="number" required min="0" step="0.1" name={vtype} value={inputVt.occupancy} onChange={updateOccupancy} placeholder="" /></td>
-                                                <td>
-                                                    <InputGroup>
-                                                        <Form.Control type="number" required min="0" name={vtype} value={inputVt.tripLength} onChange={updateTripLength} placeholder="" />
-                                                        <InputGroup.Text>km</InputGroup.Text>
-                                                    </InputGroup>
-                                                </td>
                                             </tr>
                                         )
                                     return <></>

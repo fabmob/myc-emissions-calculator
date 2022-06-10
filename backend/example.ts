@@ -38,9 +38,9 @@ let outputVktPerFuelComputed = models.computeVktPerFuel(inputVktPerFuel, vehicle
 console.log("outputVktPerFuelComputed", outputVktPerFuelComputed)
 
 const inputVehicleStats : types.VehicleStats = {
-    "Private car": {"occupancy": 1, "tripLength": 20},
-    "Individual taxi": {"occupancy": 2, "tripLength": 20},
-    "Some random category": {"occupancy": 20, "tripLength": 20}
+    "Private car": {"occupancy": 1},
+    "Individual taxi": {"occupancy": 2},
+    "Some random category": {"occupancy": 20}
 }
 
 let outputTransportPerformance = models.computeTransportPerformance(vehicleKilometresTravelledComputed, inputVehicleStats)

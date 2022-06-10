@@ -62,8 +62,7 @@ export type InputStep3 = {
 
 export type InputStep4 = {
     [key: string]: {
-        occupancy: string,
-        tripLength: string
+        occupancy: string
     } | string
 }
 

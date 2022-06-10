@@ -40,8 +40,7 @@ export type VehicleKilometresTravelledComputed = {
 
 export type VehicleStats = {
     [key: string]: {
-        occupancy: UsersPerVehicle, // passagers / vehicle ou tonnes / vehicles
-        tripLength: Km // km
+        occupancy: UsersPerVehicle // passagers / vehicle ou tonnes / vehicles
     }
 }
 
