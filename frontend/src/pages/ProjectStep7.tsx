@@ -27,7 +27,8 @@ export default function ProjectStep7(){
         "LPG": "l",
         "NG": "kg",
         "Hybrid": "l",
-        "Electric": "kWh"
+        "Electric": "kWh",
+        "None": ""
     }
     useEffect(() => {
         if (initialized && keycloak.authenticated){
@@ -145,6 +146,17 @@ export default function ProjectStep7(){
                                         if (inputFt !== undefined) {
                                             let inp = inputVt?.[ftype]
                                             if (inp) {
+                                                if (ftype === "None") {
+                                                    return <tr key={i}>
+                                                        <td style={{backgroundColor: "#989898"}}>{ftype}</td>
+                                                        <td>N/A</td>
+                                                        <td>N/A</td>
+                                                        <td>N/A</td>
+                                                        <td>N/A</td>
+                                                        <td>N/A</td>
+                                                        <td>N/A</td>
+                                                    </tr>
+                                                }
                                                 return (
                                                     <tr key={i}>
                                                         <td style={{backgroundColor: "#989898"}}>{ftype}</td>

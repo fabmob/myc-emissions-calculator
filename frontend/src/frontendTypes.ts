@@ -35,6 +35,7 @@ export enum FuelType {
     "NG" = "NG",
     "Hybrid" = "Hybrid",
     "Electric" = "Electric",
+    "None" = "None"
 }
 
 export type InputStep1 = {
