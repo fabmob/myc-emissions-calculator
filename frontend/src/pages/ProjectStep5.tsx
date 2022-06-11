@@ -92,7 +92,8 @@ export default function ProjectStep5(){
             <Progress project={project} currentStep={5} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
-                    <h1 style={{marginBottom: "40px"}}>Select fuel type per transport</h1>
+                    <h1>Select fuel type per transport</h1>
+                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
                     <h2>Existing or expected means of transport</h2>
                     <Table className="inputTable">
                         <thead>
@@ -111,7 +112,7 @@ export default function ProjectStep5(){
                             {Object.keys(project.inputStep2 || []).map((vtype, index) => {
                                 let vt = vtype
                                 if (!project.inputStep2 || project.inputStep2[vt] === false || !inputData) {
-                                    return <></>
+                                    return null
                                 }
                                 let inputVt = inputData[vt] as {[key in FuelType]: boolean}
                                 if (inputVt)
@@ -133,11 +134,11 @@ export default function ProjectStep5(){
                                                         </td>
                                                     )
                                                 }
-                                                return <></>
+                                                return null
                                             })}
                                         </tr>
                                     )
-                                return <></>
+                                return null
                             })
                             }
 

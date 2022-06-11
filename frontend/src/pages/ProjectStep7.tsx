@@ -108,7 +108,8 @@ export default function ProjectStep7(){
             <Progress project={project} currentStep={7} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
-                    <h1 style={{marginBottom: "40px"}}>Set up average fuel consumption</h1>
+                    <h1>Set up average fuel consumption</h1>
+                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
                     <h2>Please enter the average fuel consumption for each vehicle category and per fuel type for the reference year (average fuel consumption per vehicle per 100 km) as well as the annual change rate for each time period</h2>
                     <h2>Need some help to find the data, <a href="">click here to send us an email 📧</a></h2>
                     <Form onSubmit={saveAndGoNextStep}>
@@ -132,7 +133,7 @@ export default function ProjectStep7(){
                             <tbody>
                             {Object.keys(project.inputStep2 || []).map((vtype, index) => {
                                 if (!project.inputStep2 || project.inputStep2[vtype] === false || !inputData) {
-                                    return <></>
+                                    return null
                                 }
                                 let inputVt = inputData[vtype] as {[key in FuelType]: string[]}
                                 if (inputVt !== undefined && project.inputStep5) {
@@ -141,7 +142,7 @@ export default function ProjectStep7(){
                                         let inputFt = inputVt?.[ftype]
                                         let tmp = project?.inputStep5?.[vtype] as {[key in FuelType]: boolean}
                                         if (!tmp || tmp[ftype] === false || !inputData) {
-                                            return  <></>
+                                            return  null
                                         }
                                         if (inputFt !== undefined) {
                                             let inp = inputVt?.[ftype]
@@ -199,9 +200,9 @@ export default function ProjectStep7(){
                                                     </tr>
                                                 )
                                             }
-                                            return <></>
+                                            return null
                                         }
-                                        return  <></>
+                                        return  null
                                     })
                                     let inp = inputData?.[vtype]
                                     let sums = [0,0,0,0,0,0]
@@ -228,7 +229,7 @@ export default function ProjectStep7(){
                                         fuelJsx
                                     ]
                                 }
-                                return <></>
+                                return null
                             })
                             }
                             </tbody>

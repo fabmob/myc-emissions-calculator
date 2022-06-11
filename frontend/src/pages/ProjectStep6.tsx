@@ -111,7 +111,8 @@ export default function ProjectStep6(){
             <Progress project={project} currentStep={6} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
-                    <h1 style={{marginBottom: "40px"}}>Set up VKT breakdown by fuel type</h1>
+                    <h1>Set up VKT breakdown by fuel type</h1>
+                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
                     {vtypeWarning? <Alert variant="danger">
                         A fuel is undefined for one of the vehicles types, making it invisible, please go back to the fuel types step.
                     </Alert> : <></>}
@@ -223,7 +224,7 @@ export default function ProjectStep6(){
                                         fuelJsx
                                     ]
                                 } else {
-                                    return <></>
+                                    return null
                                 }
                             })
                             }

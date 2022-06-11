@@ -73,12 +73,17 @@ export default function ProjectStep2(){
         init[vtype] = false
     }
     let [inputData, setInputData ] = useState(init)
-    const [showAddCustomType, setShowAddCustomType] = useState(false);
 
+    const [showAddCustomType, setShowAddCustomType] = useState(false);
     const handleCloseAddCustomType = () => setShowAddCustomType(false);
     const handleShowAddCustomType = () => setShowAddCustomType(true);
+    
     let [categoryName, setCategoryName ] = useState("")
     let [validated, setValidated ] = useState(false)
+
+    const [showInfo, setShowInfo] = useState(false);
+    const handleCloseInfo = () => setShowInfo(false);
+    const handleShowInfo = () => setShowInfo(true);
 
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
@@ -160,8 +165,9 @@ export default function ProjectStep2(){
                 <Progress project={project} currentStep={2} />
                 <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                     <Col xs lg="8">
-                        <h1 style={{marginBottom: "40px"}}>Select / add category of transport</h1>
-                        <h2>Existing or expected means of transport. <a href="#">Find related transport by clicking here 🛈</a></h2>
+                        <h1>Select / add category of transport</h1>
+                        <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
+                        <h2>Existing or expected means of transport. <a href="#" onClick={handleShowInfo}>Find related transport by clicking here 🛈</a></h2>
                         <h2>
                             For each category, you will later need to fill the following information: Total vkt, Vehicle occupancy, Fuel types and consumptions, Vkt breakdown per fuel
                         </h2>
@@ -221,53 +227,66 @@ export default function ProjectStep2(){
                 </Row>
             </Container>
             <Modal size="lg" centered show={showAddCustomType} onHide={handleCloseAddCustomType}>
-            <Modal.Header closeButton>
-                <Modal.Title>Add a custom vehicle category</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <p>
-                    If no category is matching your vehicle, you can create a new one.
-                </p>
-                <div>Just like the default categories, you will later need to fill the following information for this newly created category:
-                    <ul>
-                        <li>Total vkt</li>
-                        <li>Vehicle occupancy</li>
-                        <li>Fuel types and consumptions</li>
-                        <li>Vkt breakdown per fuel</li>
-                    </ul>
-                </div>
-                <Form noValidate validated={validated} onSubmit={addCategory}>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Category name</Form.Label>
-                        <Form.Control type="input" required placeholder="" value={categoryName} onChange={e => setCategoryName(e.target.value)}/>
-                        <Form.Control.Feedback type="invalid">Please specify a name</Form.Control.Feedback>
-                    </Form.Group>
-                    <div style={{display: "flex", color: "gray"}}>
-                        <div style={{lineHeight: "40px"}}>Click to add an emoji: </div>
-                        <div className='emojiChoice' onClick={() => addEmoji("👟")}>👟</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🚲")}>🚲</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🚘")}>🚘</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🏍️")}>🏍️</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🚕")}>🚕</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🛺")}>🛺</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🚐")}>🚐</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🚌")}>🚌</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🚄")}>🚄</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🚃")}>🚃</div>
-                        <div className='emojiChoice' onClick={() => addEmoji("🚈")}>🚈</div>
+                <Modal.Header closeButton>
+                    <Modal.Title>Add a custom vehicle category</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        If no category is matching your vehicle, you can create a new one.
+                    </p>
+                    <div>Just like the default categories, you will later need to fill the following information for this newly created category:
+                        <ul>
+                            <li>Total vkt</li>
+                            <li>Vehicle occupancy</li>
+                            <li>Fuel types and consumptions</li>
+                            <li>Vkt breakdown per fuel</li>
+                        </ul>
                     </div>
-                    <div style={{textAlign: "center", marginTop: "10px"}}>
-                        <Button variant="primary" type="submit">
-                            Add new category
-                        </Button>
-                    </div>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseAddCustomType}>
-                Close
-                </Button>
-            </Modal.Footer>
+                    <Form noValidate validated={validated} onSubmit={addCategory}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Category name</Form.Label>
+                            <Form.Control type="input" required placeholder="" value={categoryName} onChange={e => setCategoryName(e.target.value)}/>
+                            <Form.Control.Feedback type="invalid">Please specify a name</Form.Control.Feedback>
+                        </Form.Group>
+                        <div style={{display: "flex", color: "gray"}}>
+                            <div style={{lineHeight: "40px"}}>Click to add an emoji: </div>
+                            <div className='emojiChoice' onClick={() => addEmoji("👟")}>👟</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚲")}>🚲</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚘")}>🚘</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🏍️")}>🏍️</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚕")}>🚕</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🛺")}>🛺</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚐")}>🚐</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚌")}>🚌</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚄")}>🚄</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚃")}>🚃</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚈")}>🚈</div>
+                        </div>
+                        <div style={{textAlign: "center", marginTop: "10px"}}>
+                            <Button variant="primary" type="submit">
+                                Add new category
+                            </Button>
+                        </div>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseAddCustomType}>
+                    Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal size="lg" centered show={showInfo} onHide={handleCloseInfo}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Categories of transport</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {Object.entries(defaultVehiclesTooltips).map((key, index) => <p key={index}><b>{key[0]} :</b> {key[1]}</p>)}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseInfo}>
+                    Close
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </>
     )
