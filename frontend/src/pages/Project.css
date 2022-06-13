@@ -79,3 +79,7 @@ h2 {
     font-size: 20px;
     cursor: pointer;
 }
+
+.recharts-legend-item-text {
+    color: black !important
+}

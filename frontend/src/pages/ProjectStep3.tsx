@@ -103,7 +103,7 @@ export default function ProjectStep3(){
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Set up transport activity data</h1>
-                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
+                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                     <h2>Fill the Vehicle Kilometer Travelled, then fill the estimated percentage of growth milleage</h2>
                     <Form onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">

@@ -109,7 +109,7 @@ export default function ProjectStep7(){
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Set up average fuel consumption</h1>
-                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
+                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                     <h2>Please enter the average fuel consumption for each vehicle category and per fuel type for the reference year (average fuel consumption per vehicle per 100 km) as well as the annual change rate for each time period</h2>
                     <h2>Need some help to find the data, <a href="">click here to send us an email 📧</a></h2>
                     <Form onSubmit={saveAndGoNextStep}>

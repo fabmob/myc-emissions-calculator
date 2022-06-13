@@ -13,13 +13,12 @@ const MyNav = () => {
         <Navbar bg="light" expand="lg">
             <Container>
                 <Navbar.Brand href="/">
-                    <img style={{height: "50px", marginRight: "20px"}}src="/fabmob.png" alt="Fabmob" />
                     <img style={{height: "50px", marginRight: "20px"}}src="/mobiliseyourcity.png" alt="Moblise Your City" />
-                    Emissions Calculator
+                    MYC GHG Emissions Calculator
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
+                    <Nav className="ms-auto">
                         <NavLink className="nav-link" to="/">Home</NavLink>
                         {!!keycloak.authenticated && (<NavLink className="nav-link" to="/getStarted">Get Started</NavLink>)}
                     </Nav>

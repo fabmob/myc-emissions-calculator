@@ -28,6 +28,12 @@ export default function WelcomePage(){
                             : <Button variant="primary" onClick={() => keycloak.login()}>Login</Button>
                             }
                         </Stack>
+                        <div style={{marginTop: "50px"}}>
+                            <img style={{height: "50px", marginRight: "20px"}}src="/mobiliseyourcity.png" alt="Moblise Your City" />
+                            <img style={{height: "50px", marginRight: "20px"}}src="/fabmob.png" alt="Fabmob" />
+                            <img style={{height: "50px", marginRight: "20px"}}src="/ifeu.gif" alt="ifeu" />
+                            <img style={{height: "50px", marginRight: "20px"}}src="/afd.png" alt="afd" />
+                        </div>
                     </Col>
                 </Row>
             </Container>

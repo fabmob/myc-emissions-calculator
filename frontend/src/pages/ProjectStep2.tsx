@@ -30,7 +30,6 @@ const defaultVehicles = [
     [
         "🚌 Bus",
         "🚌 Bus rapid transit",
-        "🚄 Long distance train",
         "🚃 Urban train",
         "🚈 Metro",
     ]
@@ -45,7 +44,6 @@ const defaultVehiclesTooltips : {[key: string]: string} = {
     "🚐 Minibus": 'Any motor vehicle intended for the collective transport of persons whose number of seats is less than nine, including hirings, collective taxis and rural transportation.',
     "🚌 Bus": 'Any motor vehicle intended for the collective transport of persons, the number of seats of which is greater than nine or the permissible total weight exceeds 3.5t.',
     "🚌 Bus rapid transit": 'Bus Rapid Transit (BRT) is a high-quality bus-based transit system. It is typically specified with dedicated lanes, iconic stations, off-board fare collection, and fast and frequent operations.',
-    "🚄 Long distance train": 'Passenger train mainly traveling outside the city - long distance train.',
     "🚃 Urban train": 'Passenger train mainly traveling within the city territory - short distance train.',
     "🚈 Metro": 'Passenger train mainly traveling within the city territory - Tram and Metro.'
 }
@@ -166,7 +164,7 @@ export default function ProjectStep2(){
                 <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                     <Col xs lg="8">
                         <h1>Select / add category of transport</h1>
-                        <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
+                        <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                         <h2>Existing or expected means of transport. <a href="#" onClick={handleShowInfo}>Find related transport by clicking here 🛈</a></h2>
                         <h2>
                             For each category, you will later need to fill the following information: Total vkt, Vehicle occupancy, Fuel types and consumptions, Vkt breakdown per fuel
@@ -217,6 +215,7 @@ export default function ProjectStep2(){
                                 Add a custom vehicle category
                             </Button>
                         </div>
+			            <hr />
                         <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                             Previous
                         </Button>
@@ -258,7 +257,6 @@ export default function ProjectStep2(){
                             <div className='emojiChoice' onClick={() => addEmoji("🛺")}>🛺</div>
                             <div className='emojiChoice' onClick={() => addEmoji("🚐")}>🚐</div>
                             <div className='emojiChoice' onClick={() => addEmoji("🚌")}>🚌</div>
-                            <div className='emojiChoice' onClick={() => addEmoji("🚄")}>🚄</div>
                             <div className='emojiChoice' onClick={() => addEmoji("🚃")}>🚃</div>
                             <div className='emojiChoice' onClick={() => addEmoji("🚈")}>🚈</div>
                         </div>

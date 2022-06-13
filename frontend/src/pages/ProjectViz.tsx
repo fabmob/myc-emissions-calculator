@@ -103,7 +103,7 @@ export default function ProjectViz(){
         }
     }
 
-    let defaultColors = ["#FF7C7C", "#FF9F7C", "#FFB77C", "#FFEB7C", "#CAFF7C", "#8AFF89", "#7BFFE3", "#7CDDFF", "#7CB1FF", "#7C81FF", "#9E7CFF", "#DF7CFF", "#FF7CEC", "#FF7CB2"]
+    let defaultColors = ["#FF7C7C", "#FFEB7C", "#7BFFE3", "#7C81FF", "#DF7CFF", "#FF9F7C", "#CAFF7C", "#7CDDFF", "#9E7CFF", "#FF7CEC", "#FFB77C"," #8AFF89", "#7CB1FF", "#FF7CB2"]
     let colors = defaultColors.slice()
     let colorsPerVtype : {[key: string]: string} = {}
     let vtypes = Object.keys(project?.inputStep2 || {}).filter(vtype => project?.inputStep2?.[vtype])
@@ -120,7 +120,7 @@ export default function ProjectViz(){
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Project overview</h1>
-                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
+                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                     <Row className="justify-content-md-center align-items-center" style={{"marginBottom": "40px"}}>
                         <h3>Population evolution</h3>
                         <Col lg="6">

@@ -93,7 +93,7 @@ export default function ProjectStep5(){
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Select fuel type per transport</h1>
-                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>{project.name}</h2>
+                    <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                     <h2>Existing or expected means of transport</h2>
                     <Table className="inputTable">
                         <thead>
@@ -144,14 +144,6 @@ export default function ProjectStep5(){
 
                         </tbody>
                     </Table>
-                    {inputData?
-                        <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label column sm={2}>Source</Form.Label>
-                            <Col sm={10}>
-                                <Form.Control type="input" name="vktSource" value={inputData.source as string} onChange={updateSource} placeholder=""/>
-                            </Col>
-                        </Form.Group>
-                    :''}
 
                     <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                         Previous
