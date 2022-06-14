@@ -111,12 +111,16 @@ export default function ProjectStep6(){
             <Progress project={project} currentStep={6} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
-                    <h1>Set up VKT breakdown by fuel type</h1>
+                    <h1>Fuel breakdown</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                     {vtypeWarning? <Alert variant="danger">
                         A fuel is undefined for one of the vehicles types, making it invisible, please go back to the fuel types step.
                     </Alert> : <></>}
-                    <h2>Please enter the percentage of Vehicle Kilometers Travelled (vkt) per vehicle category and fuel type for the Reference Year and for future years</h2>
+                    <h2>Please enter <b>the percentage of vehicle kilometers travelled (vkt)</b>  per vehicle category and fuel type for the reference year and for future years. </h2>
+
+                    <h2>Remark 1: The sum of shares in each vehicle category must be 100 %.</h2>
+
+                    <h2><i>Provide the sources of the information if possible. </i></h2>
                     <Form onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>

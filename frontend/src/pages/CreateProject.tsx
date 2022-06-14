@@ -66,7 +66,7 @@ export default function CreateProject(){
                     <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
                         <Form.Group className="mb-3">
                             <Form.Label>Project name</Form.Label>
-                            <Form.Control type="input" required placeholder="SUMP / NUMP - Country / City" value={projectName} onChange={e => setProjectName(e.target.value)}/>
+                            <Form.Control type="input" required placeholder="SUMP City" value={projectName} onChange={e => setProjectName(e.target.value)}/>
                             <Form.Control.Feedback type="invalid">Please specify a project name</Form.Control.Feedback>
                         </Form.Group>
 

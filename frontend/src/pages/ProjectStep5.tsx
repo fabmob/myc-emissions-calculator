@@ -92,7 +92,7 @@ export default function ProjectStep5(){
             <Progress project={project} currentStep={5} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
-                    <h1>Select fuel type per transport</h1>
+                    <h1>Select the fuel types of the means of transport</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                     <h2>Existing or expected means of transport</h2>
                     <Table className="inputTable">

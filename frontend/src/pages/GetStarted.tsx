@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Stack from 'react-bootstrap/Stack'
 import Form from 'react-bootstrap/Form'
+import Modal from 'react-bootstrap/Modal'
 import {ProjectType} from '../frontendTypes'
 
 export default function GetStarted(){
@@ -14,6 +15,11 @@ export default function GetStarted(){
     const [ projects, setProjects ] = useState([] as ProjectType[])
     const [ selectedProject, setSelectedProject ] = useState("")
     const [ gotoCreate, setGotoCreate ] = useState(false)
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     useEffect(() => {
         if (initialized && keycloak.authenticated){
             const requestOptions = {
@@ -53,22 +59,62 @@ export default function GetStarted(){
         setSelectedProject(value)
     }
     return (
-        <Container>
-            <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
-                <Col xs lg="8">
-                    <h1 style={{marginBottom: "40px"}}>Get Started</h1>
-                    {initialized ?
-                    <Stack gap={2} className="col-md-5 mx-auto">
-                        <Button variant="primary" onClick={_ => setGotoCreate(true)}>Create a project</Button>
-                        <Form.Select aria-label="Select a project" onChange={projectSelected}>
-                            <option key="select">Select an existing project</option>
-                            {options}
-                        </Form.Select>
-                    </Stack>
-                    : <div>Loading...</div>
-                    }
-                </Col>
-            </Row>
-        </Container>
+        <>
+            <Container>
+                <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
+                    <Col xs lg="8">
+                        <h1 style={{marginBottom: "40px"}}>Get Started</h1>
+                        <h2><a href='#' onClick={handleShow}>Calculate the environmental effects of local urban mobility activity 🛈</a></h2>
+                        {initialized ?
+                        <Stack gap={2} className="col-md-5 mx-auto">
+                            <Button variant="primary" onClick={_ => setGotoCreate(true)}>Create a project</Button>
+                            <Form.Select aria-label="Select a project" onChange={projectSelected}>
+                                <option key="select">Select an existing project</option>
+                                {options}
+                            </Form.Select>
+                        </Stack>
+                        : <div>Loading...</div>
+                        }
+                    </Col>
+                </Row>
+            </Container>
+            <Modal size="lg" centered show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Calculate the environmental effects of local urban mobility activity</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <p>To compile an inventory and obtain the BAU scenario, you will require different input data - for the year of reference <i>and its projected evolution until 2050 if you want to calculate BAU </i> : </p>
+
+                <ol>
+                    <li><b>Socio-economic data</b></li>
+                    <ul>
+                    <li>Population (Number of inhabitants) </li>
+                    <li>GDP (Gross domestic product)</li>
+                    <li><i>Their evolution until 2050</i> </li>
+                    </ul>  
+                <li><b>Vehicle kilometers travelled</b></li>
+                    <ul>
+                    <li>Direct input of the vehicle kilometers travelled for each vehicle category to be assessed for the reference year. This approach can often be applied, when data from a transport model are available. </li>
+                        <li><i>The expected growth rate of the total vehicle kilometers travelled (vkt) should be given in order to calculate the Business-as-usual (BAU) scenario</i></li>
+                    </ul> 
+                <li><b>Further required transport data</b></li>
+                    <ul>
+                    <li>Average Load (freight transport) and average occupancy (passenger transport) per vehicle category</li>
+                    <li>Distribution of the vkt by fuel type per vehicle category</li>
+                    <li>Average fuel/energy consumption by category per vehicle category</li>
+                    <li>CO2 content of the grid electricity production</li>
+                    <li><i>Their evolution until 2050</i></li>
+                    </ul> 
+                </ol>
+
+                <p>Cities which can not provide all of the required data can contact the <a href="https://www.mobiliseyourcity.net/about_the_partnership">MobiliseYourCity Secretariat </a> to check if suitable data are available.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                    Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     )
 }

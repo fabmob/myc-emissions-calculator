@@ -96,7 +96,16 @@ export default function ProjectStep4(){
                 <Col xs lg="8">
                     <h1>Set up occupancy</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                    <h2>Please enter the occupancy for passenger vehicles (average number of passengers per vehicle)</h2>
+                    <h2>Please enter <b>the occupancy for passenger vehicles</b> (average number of passengers per vehicle). These values are used both for inventory and BAU purposes.</h2>
+
+                    <h2>Remark 1: These values are used both for inventory and BAU purposes. <br/>
+                        Remark 2: Conventionally drivers of public transport are not included as there are not passengers (incl. taxi), but for private transport drivers should be included if they travel for their own sake. </h2>
+
+                    <h2><i>Local city data can be used if available and robust.<br/>
+                    Otherwise for cities it is recommended to use national data and for countries to use regional specific data. If you do not have data available please get in touch with MYC secretariat to check if data are available for your city.<br/>
+
+                    Provide the sources of the information if possible.
+                    </i></h2>
                     <Form onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>

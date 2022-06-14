@@ -104,7 +104,11 @@ export default function ProjectStep3(){
                 <Col xs lg="8">
                     <h1>Set up transport activity data</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                    <h2>Fill the Vehicle Kilometer Travelled, then fill the estimated percentage of growth milleage</h2>
+                    <h2>Please enter the <b> vehicle kilometers travelled (Mio km)</b> in the table delivered by the transport plannig tool for the reference year (mandatory).</h2>
+
+                    <h2>For BAU calculations, please enter the expected % of growth or decrease for the corresponding years in the same way. </h2>
+
+                    <h2><i>Data input for the vehicle kilometers travelled in the reference year is mandatory. Provide the sources of the data if possible.</i></h2>
                     <Form onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>

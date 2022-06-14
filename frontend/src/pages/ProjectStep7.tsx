@@ -110,8 +110,12 @@ export default function ProjectStep7(){
                 <Col xs lg="8">
                     <h1>Set up average fuel consumption</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                    <h2>Please enter the average fuel consumption for each vehicle category and per fuel type for the reference year (average fuel consumption per vehicle per 100 km) as well as the annual change rate for each time period</h2>
-                    <h2>Need some help to find the data, <a href="">click here to send us an email 📧</a></h2>
+                    <h2>Please enter <b>the average fuel/energy consumption</b> - for each vehicle category and per fuel type- for the reference year (average fuel/energy consumption per vehicle per 100 km) as well as the annual change rate for each time period.</h2>
+
+                    <h2>Remark 1: Negative numbers for the annual change rate means a decrease of fuel/energy consumption. Positive numbers means an increase. </h2>
+
+                    <h2><i>Provide the sources of the information if possible.</i></h2>
+                    <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></h2>
                     <Form onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>
