@@ -33,6 +33,7 @@ export default function WelcomePage(){
                             <img style={{height: "50px", marginRight: "20px"}}src="/fabmob.png" alt="Fabmob" />
                             <img style={{height: "50px", marginRight: "20px"}}src="/ifeu.gif" alt="ifeu" />
                             <img style={{height: "50px", marginRight: "20px"}}src="/afd.png" alt="afd" />
+                            <img style={{height: "50px", marginRight: "20px"}}src="/giz.svg" alt="giz" />
                         </div>
                     </Col>
                 </Row>
