@@ -110,7 +110,7 @@ export default function ProjectStep3(){
                             <thead>
                                 <tr>
                                     <th>Vehicle type</th>
-                                    <th style={{width: "200px"}}>VKT¹ (mio km/year)</th>
+                                    <th style={{width: "200px"}}>VKT¹ (Mkm/year)</th>
                                     <th colSpan={5}>Annual growth of VKT² (%)</th>
                                 </tr>
                                 <tr>
@@ -135,7 +135,7 @@ export default function ProjectStep3(){
                                                 <td style={{backgroundColor: "#989898"}}>{vtype}</td>
                                                 <td>
                                                     <InputGroup>
-                                                        <Form.Control type="number" required min="0" step="0.01" name={vtype} value={inputVt.vkt} onChange={updateInput} placeholder="" />
+                                                        <Form.Control type="number" required min="0" name={vtype} value={inputVt.vkt} onChange={updateInput} placeholder="" />
                                                         <InputGroup.Text>Mkm/y</InputGroup.Text>
                                                     </InputGroup>
 

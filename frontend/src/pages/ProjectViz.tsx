@@ -168,7 +168,7 @@ export default function ProjectViz(){
                                     <YAxis />
                                       <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                                       <Legend />
-                                     {activeVtypesVkt.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' Mil km'/>))}
+                                     {activeVtypesVkt.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' Mkm'/>))}
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
@@ -204,7 +204,7 @@ export default function ProjectViz(){
                         <h3>GHG evolution</h3>
                         <Col lg="6">
                             <ResponsiveContainer width="90%" height={300}>
-                                <BarChart style={{margin: "auto"}} data={dataEnergy}>
+                                <BarChart margin={{ left: 20 }} data={dataEnergy}>
                                     <XAxis dataKey="name" />
                                     <YAxis />
                                       <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
