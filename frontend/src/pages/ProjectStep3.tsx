@@ -135,7 +135,7 @@ export default function ProjectStep3(){
                                                 <td style={{backgroundColor: "#989898"}}>{vtype}</td>
                                                 <td>
                                                     <InputGroup>
-                                                        <Form.Control type="number" required min="0" name={vtype} value={inputVt.vkt} onChange={updateInput} placeholder="" />
+                                                        <Form.Control type="number" required min="0" step="any" name={vtype} value={inputVt.vkt} onChange={updateInput} placeholder="" />
                                                         <InputGroup.Text>Mkm/y</InputGroup.Text>
                                                     </InputGroup>
 
