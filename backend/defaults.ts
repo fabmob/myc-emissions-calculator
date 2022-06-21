@@ -5,5 +5,5 @@ export const energyAndEmissionsDefaultValues: EnergyAndEmissionsDefaultValues = 
     "LPG": {pci: 24.7, ges: [72692, 72692, 72692, 72692, 72692, 72692]},
     "NG": {pci: 48.0, ges: [67772, 67772, 67772, 67772, 67772, 67772]},
     "Hybrid": {pci: 32.8, ges: [85192, 85192, 85192, 85192, 85192, 85192]},
-    "Electric": {pci: 3.6, ges: [833, 2778, 0, 0, 0, 0]}
+    "Electric": {pci: 3.6, ges: [20556, 20556, 20556, 20556, 20556, 20556]}
 }

@@ -16,6 +16,7 @@ export default function ProjectViz(){
     const navigate = useNavigate()
     let params = useParams();
     let [project, setProject ] = useState({} as ProjectType)
+    let [typeOfGHGIsWTW, setTypeOfGHGIsWTW] = useState(true)
     let projectId = params.projectId
     useEffect(() => {
         if (initialized && keycloak.authenticated){
@@ -82,7 +83,10 @@ export default function ProjectViz(){
     }
 
     let activeVtypesEnergy = []
-    let outputSumTotalEnergyAndEmissions = project?.outputSumTotalEnergyAndEmissions || {}
+    let outputSumTotalEnergyAndEmissions = project?.outputSumTotalEnergyAndEmissionsWTW || {}
+    if (!typeOfGHGIsWTW) {
+        outputSumTotalEnergyAndEmissions = project?.outputSumTotalEnergyAndEmissionsTTW || {}
+    }
     let dataEnergy : any[] = [
         {name: dates[0]},
         {name: dates[1]},
@@ -125,11 +129,11 @@ export default function ProjectViz(){
                         <h3>Population evolution</h3>
                         <Col lg="6">
                             <ResponsiveContainer width="90%" height={300}>
-                                <BarChart margin={{ left: 20 }} data={(project?.outputSocioEconomicDataComputed?.population || []).map((e,i)=>({name:dates[i], population: Math.round(e)}))}>
+                                <BarChart margin={{ left: 30 }} data={(project?.outputSocioEconomicDataComputed?.population || []).map((e,i)=>({name:dates[i], population: Math.round(e)}))}>
                                     <XAxis dataKey="name"  />
-                                    <YAxis />
-                                      <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
-                                      <Legend />
+                                    <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value)} />
+                                    <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
+                                    <Legend />
                                     <Bar dataKey="population" fill="#92E5FF"/>
                                 </BarChart>
                             </ResponsiveContainer>
@@ -148,11 +152,11 @@ export default function ProjectViz(){
                         </Col>
                         <Col lg="6">
                             <ResponsiveContainer width="90%" height={300}>
-                                <BarChart style={{margin: "auto"}} data={(project?.outputSocioEconomicDataComputed?.gdp || []).map((e,i)=>({name:dates[i], gdp: Math.round(e)}))}>
+                                <BarChart margin={{left: 30}} data={(project?.outputSocioEconomicDataComputed?.gdp || []).map((e,i)=>({name:dates[i], gdp: Math.round(e)}))}>
                                     <XAxis dataKey="name"  />
-                                    <YAxis />
-                                      <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
-                                      <Legend />
+                                    <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + "Mrd$"} />
+                                    <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
+                                    <Legend />
                                     <Bar dataKey="gdp" fill="#50F19E" unit=' Mrd $'/>
                                 </BarChart>
                             </ResponsiveContainer>
@@ -163,12 +167,12 @@ export default function ProjectViz(){
                         <h3>Vkt</h3>
                         <Col lg="6">
                             <ResponsiveContainer width="90%" height={300}>
-                                <BarChart style={{margin: "auto"}} data={dataVkt}>
+                                <BarChart margin={{left: 30}} data={dataVkt}>
                                     <XAxis dataKey="name" />
-                                    <YAxis />
-                                      <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
-                                      <Legend />
-                                     {activeVtypesVkt.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' Mkm'/>))}
+                                    <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + "Mkm"} />
+                                    <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
+                                    <Legend />
+                                        {activeVtypesVkt.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' Mkm'/>))}
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
@@ -182,7 +186,7 @@ export default function ProjectViz(){
                         <h3>Modal split evolution</h3>
                         <Col lg="6" style={{textAlign: "left"}}>
                             The modal split helps to visualize which transport the population mostly uses for their travels.<br/><br/>
-                            It is computed using total vkt and vehicle occupancy.<br/><br/>
+                            It is computed using total vkt and vehicle occupancy, expressed as a percent of passenger-kilometre (pkm) <br/><br/>
                             <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/3')}>Inputs are in the Transport activity data step</div>
                             <div className="inputDesc" onClick={() => navigate('/project/' + projectId + '/step/4')}>as well as the Vehicle occupancy step</div>
                         </Col>
@@ -190,9 +194,9 @@ export default function ProjectViz(){
                             <ResponsiveContainer width="90%" height={300}>
                                 <BarChart style={{margin: "auto", "marginBottom": "40px"}} data={dataPartModale}>
                                     <XAxis dataKey="name" />
-                                    <YAxis />
-                                      <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
-                                      <Legend />
+                                    <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + "%"} />
+                                    <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
+                                    <Legend />
                                      {activeVtypesModale.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit='%'/>))}
                                 </BarChart>
                             </ResponsiveContainer>
@@ -201,15 +205,15 @@ export default function ProjectViz(){
 
 
                     <Row className="justify-content-md-center align-items-center" style={{"marginBottom": "40px"}}>
-                        <h3>GHG evolution</h3>
+                        <h3>GHG evolution ({typeOfGHGIsWTW?"WTW":"TTW"})</h3>
                         <Col lg="6">
                             <ResponsiveContainer width="90%" height={300}>
-                                <BarChart margin={{ left: 20 }} data={dataEnergy}>
+                                <BarChart margin={{ left: 30 }} data={dataEnergy}>
                                     <XAxis dataKey="name" />
-                                    <YAxis />
-                                      <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
-                                      <Legend />
-                                     {activeVtypesEnergy.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' tons CHG'/>))}
+                                    <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + 't'} />
+                                    <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
+                                    <Legend />
+                                     {activeVtypesEnergy.map((e, i) => (<Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' tons GHG'/>))}
                                 </BarChart>
                             </ResponsiveContainer>
                         </Col>
@@ -217,6 +221,7 @@ export default function ProjectViz(){
                             Estimated tons of greenhouse gases emissions for upcoming years per vehicle type.<br/><br/>
                             It is computed by multiplying for each fuel: vkt, average consumption and default emission factors.<br/><br/>
                             <div className="inputDescNoLink">Inputs are all the previous steps</div>
+                            <Button style={{marginTop: "10px"}} onClick={e => setTypeOfGHGIsWTW(prev => !prev)}>Set to {typeOfGHGIsWTW?"TTW":"WTW"}</Button>
                         </Col>
                     </Row>
 

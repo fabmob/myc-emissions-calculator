@@ -17,7 +17,13 @@ export type ProjectType = {
     outputModalShare?: {
         [key: string]: number[]
     },
-    outputSumTotalEnergyAndEmissions?: {
+    outputSumTotalEnergyAndEmissionsWTW?: {
+        [key: string]: {
+            co2: number[],
+            energy: number[],
+        }
+    },
+    outputSumTotalEnergyAndEmissionsTTW?: {
         [key: string]: {
             co2: number[],
             energy: number[],
@@ -71,6 +77,25 @@ export type InputStep5 = {
     [key: string]: {
         [key in FuelType]: boolean
     } | string
+}
+
+export type EmissionsFactors = {
+    "WTW": {
+        [key in FuelType]: {
+            lowerHeatingValue: string,
+            density: string,
+            pci: string,
+            ges: string[]
+        }
+    },
+    "TTW": {
+        [key in FuelType]: {
+            lowerHeatingValue: string,
+            density: string,
+            pci: string,
+            ges: string[]
+        }
+    }
 }
 
 export type InputStep6 = {

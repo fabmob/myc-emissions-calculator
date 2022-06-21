@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep3, ProjectType} from '../frontendTypes'
 import Progress from '../components/Progress'
+import PercentInput from '../components/PercentInput'
 
 import './Project.css'
 
@@ -21,6 +22,7 @@ export default function ProjectStep3(){
     let [inputData, setInputData ] = useState({vktSource: '', vktGrowthSource: ''} as InputStep3)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
+    const [validated, setValidated] = useState(false)
     useEffect(() => {
         if (initialized && keycloak.authenticated){
             const requestOptions = {
@@ -88,6 +90,12 @@ export default function ProjectStep3(){
     }
     const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const form = event.currentTarget;
+        setValidated(true);
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            return
+        }
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
@@ -108,8 +116,8 @@ export default function ProjectStep3(){
 
                     <h2>For BAU calculations, please enter the expected % of growth or decrease for the corresponding years in the same way. </h2>
 
-                    <h2><i>Data input for the vehicle kilometers travelled in the reference year is mandatory. Provide the sources of the data if possible.</i></h2>
-                    <Form onSubmit={saveAndGoNextStep}>
+                    <h2><i>Data input for the vehicle kilometers travelled in the reference year is mandatory.</i></h2>
+                    <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>
                                 <tr>
@@ -119,12 +127,12 @@ export default function ProjectStep3(){
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>{project.referenceYear} (RY)</td>
-                                    <td>{project.referenceYear}-2025</td>
-                                    <td>2025-2030</td>
-                                    <td>2030-2035</td>
-                                    <td>2035-2040</td>
-                                    <td>2040-2050</td>
+                                    <td className="reqStar">{project.referenceYear} (RY)</td>
+                                    <td className="reqStar">{project.referenceYear}-2025</td>
+                                    <td className="reqStar">2025-2030</td>
+                                    <td className="reqStar">2030-2035</td>
+                                    <td className="reqStar">2035-2040</td>
+                                    <td className="reqStar">2040-2050</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -141,38 +149,24 @@ export default function ProjectStep3(){
                                                     <InputGroup>
                                                         <Form.Control type="number" required min="0" step="any" name={vtype} value={inputVt.vkt} onChange={updateInput} placeholder="" />
                                                         <InputGroup.Text>Mkm/y</InputGroup.Text>
+                                                        <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
                                                     </InputGroup>
 
                                                 </td>
                                                 <td>
-                                                    <InputGroup>
-                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
-                                                        <InputGroup.Text>%</InputGroup.Text>
-                                                    </InputGroup>
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[0]} onChange={(e:any) => updateInput(e, 0)}/>
                                                 </td>
                                                 <td>
-                                                    <InputGroup>
-                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
-                                                        <InputGroup.Text>%</InputGroup.Text>
-                                                    </InputGroup>
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[1]} onChange={(e:any) => updateInput(e, 1)}/>
                                                 </td>
                                                 <td>
-                                                    <InputGroup>
-                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
-                                                        <InputGroup.Text>%</InputGroup.Text>
-                                                    </InputGroup>
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[2]} onChange={(e:any) => updateInput(e, 2)}/>
                                                 </td>
                                                 <td>
-                                                    <InputGroup>
-                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
-                                                        <InputGroup.Text>%</InputGroup.Text>
-                                                    </InputGroup>
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[3]} onChange={(e:any) => updateInput(e, 3)}/>
                                                 </td>
                                                 <td>
-                                                    <InputGroup>
-                                                        <Form.Control type="number" required min="-100" max="100" step="0.01" name={vtype} value={inputVt.vktRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
-                                                        <InputGroup.Text>%</InputGroup.Text>
-                                                    </InputGroup>
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[4]} onChange={(e:any) => updateInput(e, 4)}/>
                                                 </td>
                                             </tr>
                                         )
@@ -184,17 +178,19 @@ export default function ProjectStep3(){
                         </Table>
                         {inputData ?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                                <Form.Label column sm={2}>[1] Vkt source</Form.Label>
+                                <Form.Label className="reqStar" column sm={2}>[1] Vkt source</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="input" name="vktSource" value={inputData.vktSource as string} onChange={updateSource} placeholder=""/>
+                                    <Form.Control type="input" name="vktSource" required value={inputData.vktSource as string} onChange={updateSource} placeholder="DGT Spain, 2022"/>
+                                    <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
                         :''}
                         {inputData ?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                                <Form.Label column sm={2}>[2] Vkt growth source</Form.Label>
+                                <Form.Label className="reqStar" column sm={2}>[2] Vkt growth source</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="input" name="vktGrowthSource" value={inputData.vktGrowthSource as string} onChange={updateGrowthSource} placeholder=""/>
+                                    <Form.Control type="input" name="vktGrowthSource" required value={inputData.vktGrowthSource as string} onChange={updateGrowthSource} placeholder="EIA, 2022"/>
+                                    <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
                         :''}

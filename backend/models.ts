@@ -64,7 +64,7 @@ export function computeVktPerFuel (
         let outputVktCurrentVehicle = outputVktPerFuelComputed[vtype]
         outputVktCurrentVehicle = {}
         let inputVktParVehicle = inputVktPerFuel[vtype]
-        if (inputVktParVehicle) {
+        if (inputVktParVehicle && vehicleKilometresTravelledComputed[vtype]) {
             let fuelTypes = Object.keys(inputVktParVehicle) as types.FuelType[]
             for (let j = 0; j < fuelTypes.length; j++) {
                 let yearlyVkt = inputVktParVehicle[fuelTypes[j]] as types.YearlyValues<types.MillKm>

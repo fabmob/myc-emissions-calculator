@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep1, ProjectType} from '../frontendTypes'
 import Progress from '../components/Progress'
+import PercentInput from '../components/PercentInput'
 
 import './Project.css'
 
@@ -30,6 +31,7 @@ export default function ProjectStep1(){
     } as InputStep1)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
+    const [validated, setValidated] = useState(false)
     useEffect(() => {
         if (initialized && keycloak.authenticated){
             const requestOptions = {
@@ -49,16 +51,17 @@ export default function ProjectStep1(){
     }, [keycloak, initialized, projectId])
     const updateInput = (event: React.BaseSyntheticEvent, index?: number) => {
         let target = event.target as HTMLInputElement
+        let value = target.value
         if (index === undefined) {
             setInputData((prevInputData) => ({
                 ...prevInputData,
-                [target.name]: target.value
+                [target.name]: value
             }))
         } else {
             let name = target.name as "populationRate" | "gdpRate"
             setInputData((prevInputData) => {
                 let rateToChange = prevInputData[name]
-                rateToChange[index] = target.value
+                rateToChange[index] = value
                 return {
                     ...prevInputData,
                     [name]: rateToChange
@@ -68,6 +71,12 @@ export default function ProjectStep1(){
     }
     const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const form = event.currentTarget;
+        setValidated(true);
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            return
+        }
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
@@ -77,6 +86,7 @@ export default function ProjectStep1(){
             .then(response => response.json())
             .then(() => navigate('/project/' + projectId + '/step/2'));
     }
+
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={1} />
@@ -86,10 +96,10 @@ export default function ProjectStep1(){
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                     <h2>Please enter the <b>population</b> and the <b>gross domestic product (GDP)</b>  of your city for the reference year in the table below. For BAU scenario calculations please also enter corresponding annual growth rates.  </h2>
 
-                    <h2><i>Data input for the population in the reference year is mandatory, data input for the GDP is optional. Provide the sources of the data if possible.</i></h2>
+                    <h2><i>Data input for the population in the reference year is mandatory, data input for the GDP is optional.</i></h2>
                     
                     <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></h2>
-                    <Form onSubmit={saveAndGoNextStep}>
+                    <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>
                                 <tr>
@@ -97,60 +107,52 @@ export default function ProjectStep1(){
                                     <th colSpan={5}>Annual growth of population² (%)</th>
                                 </tr>
                                 <tr>
-                                    <td>{project.referenceYear} (RY)</td>
-                                    <td>{project.referenceYear}-2025</td>
-                                    <td>2025-2030</td>
-                                    <td>2030-2035</td>
-                                    <td>2030-2040</td>
-                                    <td>2040-2050</td>
+                                    <td className="reqStar">{project.referenceYear}</td>
+                                    <td className="reqStar">{project.referenceYear}-2025</td>
+                                    <td className="reqStar">2025-2030</td>
+                                    <td className="reqStar">2030-2035</td>
+                                    <td className="reqStar">2030-2040</td>
+                                    <td className="reqStar">2040-2050</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><Form.Control type="number" required name="population" min="1" value={inputData.population} onChange={updateInput} placeholder="" /></td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <Form.Group>
+                                            <Form.Control type="number" required name="population" min="1" value={inputData.population} onChange={updateInput} placeholder="" />
+                                            <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
+                                        </Form.Group>
                                     </td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <PercentInput name="populationRate" value={inputData.populationRate[0]} onChange={(e:any) => updateInput(e, 0)} />
                                     </td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <PercentInput name="populationRate" value={inputData.populationRate[1]} onChange={(e:any) => updateInput(e, 1)} />
                                     </td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <PercentInput name="populationRate" value={inputData.populationRate[2]} onChange={(e:any) => updateInput(e, 2)} />
                                     </td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="populationRate" min="-100" max="100" step="0.01" value={inputData.populationRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <PercentInput name="populationRate" value={inputData.populationRate[3]} onChange={(e:any) => updateInput(e, 3)} />
+                                    </td>
+                                    <td>
+                                        <PercentInput name="populationRate" value={inputData.populationRate[4]} onChange={(e:any) => updateInput(e, 4)} />
                                     </td>
                                 </tr>
                             </tbody>
                         </Table>
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label column sm={3}>[1] RY population source</Form.Label>
+                            <Form.Label className="reqStar" column sm={3}>[1] {project.referenceYear} population source</Form.Label>
                             <Col sm={9}>
-                                <Form.Control type="input" name="populationSource" value={inputData.populationSource} onChange={updateInput} placeholder=""/>
+                                <Form.Control type="input" required name="populationSource" value={inputData.populationSource} onChange={updateInput} placeholder="INSEE, 2022"/>
+                                <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label column sm={3}>[2] Population growth source</Form.Label>
+                            <Form.Label className="reqStar" column sm={3}>[2] Population growth source</Form.Label>
                             <Col sm={9}>
-                                <Form.Control type="input" name="populationGrowthSource" value={inputData.populationGrowthSource} onChange={updateInput} placeholder=""/>
+                                <Form.Control type="input" required name="populationGrowthSource" value={inputData.populationGrowthSource} onChange={updateInput} placeholder="World Bank, 2022"/>
+                                <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Table className="inputTable">
@@ -160,65 +162,55 @@ export default function ProjectStep1(){
                                     <th colSpan={5}>Annual growth of GDP² (%)</th>
                                 </tr>
                                 <tr>
-                                    <td>{project.referenceYear} (RY)</td>
-                                    <td>{project.referenceYear}-2025</td>
-                                    <td>2025-2030</td>
-                                    <td>2030-2035</td>
-                                    <td>2035-2040</td>
-                                    <td>2040-2050</td>
+                                    <td className="reqStar">{project.referenceYear}</td>
+                                    <td className="reqStar">{project.referenceYear}-2025</td>
+                                    <td className="reqStar">2025-2030</td>
+                                    <td className="reqStar">2030-2035</td>
+                                    <td className="reqStar">2035-2040</td>
+                                    <td className="reqStar">2040-2050</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required min="1" name="gdp" value={inputData.gdp} onChange={e => updateInput(e)} placeholder="" />
-                                            <InputGroup.Text>B$</InputGroup.Text>
-                                        </InputGroup>
+                                        <Form.Group>
+                                            <InputGroup>
+                                                <Form.Control type="number" required min="1" name="gdp" value={inputData.gdp} onChange={e => updateInput(e)} placeholder="" />
+                                                <InputGroup.Text>B$</InputGroup.Text>
+                                                <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
+                                            </InputGroup>
+                                        </Form.Group>
                                     </td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[0]} onChange={e => updateInput(e, 0)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <PercentInput name="gdpRate" value={inputData.gdpRate[0]} onChange={(e:any) => updateInput(e, 0)} />
                                     </td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[1]} onChange={e => updateInput(e, 1)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <PercentInput name="gdpRate" value={inputData.gdpRate[1]} onChange={(e:any) => updateInput(e, 1)} />
                                     </td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[2]} onChange={e => updateInput(e, 2)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <PercentInput name="gdpRate" value={inputData.gdpRate[2]} onChange={(e:any) => updateInput(e, 2)} />
                                     </td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[3]} onChange={e => updateInput(e, 3)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <PercentInput name="gdpRate" value={inputData.gdpRate[3]} onChange={(e:any) => updateInput(e, 3)} />
                                     </td>
                                     <td>
-                                        <InputGroup>
-                                            <Form.Control type="number" required name="gdpRate" min="-100" max="100" step="0.01" value={inputData.gdpRate[4]} onChange={e => updateInput(e, 4)} placeholder="" />
-                                            <InputGroup.Text>%</InputGroup.Text>
-                                        </InputGroup>
+                                        <PercentInput name="gdpRate" value={inputData.gdpRate[4]} onChange={(e:any) => updateInput(e, 4)} />
                                     </td>
                                 </tr>
                             </tbody>
                         </Table>
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label column sm={3}>[1] RY gdp source</Form.Label>
+                            <Form.Label className="reqStar" column sm={3}>[1] {project.referenceYear} gdp source</Form.Label>
                             <Col sm={9}>
-                                <Form.Control type="input" name="gdpSource" value={inputData.gdpSource} onChange={updateInput}  placeholder=""/>
+                                <Form.Control type="input" required name="gdpSource" value={inputData.gdpSource} onChange={updateInput}  placeholder="INSEE, 2022"/>
+                                <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label column sm={3}>[2] Gdp growth source</Form.Label>
+                            <Form.Label className="reqStar" column sm={3}>[2] Gdp growth source</Form.Label>
                             <Col sm={9}>
-                                <Form.Control type="input" name="gdpGrowthSource" value={inputData.gdpGrowthSource} onChange={updateInput}  placeholder=""/>
+                                <Form.Control type="input" required name="gdpGrowthSource" value={inputData.gdpGrowthSource} onChange={updateInput}  placeholder="World Bank, 2022"/>
+                                <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Button variant="primary" type="submit">

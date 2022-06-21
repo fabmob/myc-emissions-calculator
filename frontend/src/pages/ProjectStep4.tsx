@@ -22,6 +22,7 @@ export default function ProjectStep4(){
     let [inputData, setInputData ] = useState({source: ''} as InputStep4)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
+    const [validated, setValidated] = useState(false)
     useEffect(() => {
         if (initialized && keycloak.authenticated){
             const requestOptions = {
@@ -40,8 +41,14 @@ export default function ProjectStep4(){
                         if (data.project.inputStep4?.[vtype]){
                             init[vtype] = data.project.inputStep4[vtype]
                         } else {
-                            init[vtype] = {
-                                occupancy: "0"
+                            if (vtype.includes("alking")) {
+                                init[vtype] = {
+                                    occupancy: "1"
+                                }
+                            } else {
+                                init[vtype] = {
+                                    occupancy: "0"
+                                }
                             }
                         }
                     }
@@ -80,6 +87,12 @@ export default function ProjectStep4(){
     }
     const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const form = event.currentTarget;
+        setValidated(true);
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            return
+        }
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
@@ -96,7 +109,7 @@ export default function ProjectStep4(){
                 <Col xs lg="8">
                     <h1>Set up occupancy</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                    <h2>Please enter <b>the occupancy for passenger vehicles</b> (average number of passengers per vehicle). These values are used both for inventory and BAU purposes.</h2>
+                    <h2>Please enter <b>the occupancy for passenger vehicles</b> (average number of passengers per vehicle).</h2>
 
                     <h2>Remark 1: These values are used both for inventory and BAU purposes. <br/>
                         Remark 2: Conventionally drivers of public transport are not included as there are not passengers (incl. taxi), but for private transport drivers should be included if they travel for their own sake. </h2>
@@ -104,14 +117,14 @@ export default function ProjectStep4(){
                     <h2><i>Local city data can be used if available and robust.<br/>
                     Otherwise for cities it is recommended to use national data and for countries to use regional specific data. If you do not have data available please get in touch with MYC secretariat to check if data are available for your city.<br/>
 
-                    Provide the sources of the information if possible.
+                     
                     </i></h2>
-                    <Form onSubmit={saveAndGoNextStep}>
+                    <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>
                                 <tr>
                                     <th>Vehicle type</th>
-                                    <th>Average occupancy (number of passengers)</th>
+                                    <th className="reqStar">Average occupancy (number of passengers)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -125,7 +138,12 @@ export default function ProjectStep4(){
                                         return (
                                             <tr key={index}>
                                                 <td style={{backgroundColor: "#989898"}}>{vtype}</td>
-                                                <td><Form.Control type="number" required min="0" step="0.1" name={vtype} value={inputVt.occupancy} onChange={updateOccupancy} placeholder="" /></td>
+                                                <td>
+                                                    <Form.Group>
+                                                        <Form.Control type="number" required min="0" step="0.1" name={vtype} value={inputVt.occupancy} onChange={updateOccupancy} placeholder="" />
+                                                        <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
+                                                    </Form.Group>
+                                                </td>
                                             </tr>
                                         )
                                     return <></>
@@ -136,9 +154,10 @@ export default function ProjectStep4(){
                         </Table>
                         {inputData?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                                <Form.Label column sm={2}>Source</Form.Label>
+                                <Form.Label className="reqStar" column sm={2}>Source</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="input" name="vktSource" value={inputData.source as string} onChange={updateSource} placeholder=""/>
+                                    <Form.Control type="input" name="vktSource" required value={inputData.source as string} onChange={updateSource} placeholder="IEA, 2022"/>
+                                    <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
                         :''}

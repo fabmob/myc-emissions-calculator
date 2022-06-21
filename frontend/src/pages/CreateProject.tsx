@@ -55,7 +55,7 @@ export default function CreateProject(){
     }
     const referenceYearTooltip = (props:any) => (
         <Tooltip id="button-tooltip" {...props}>
-            Base year. Earliest transport data should be dated this year.
+            The year you started the SUMP implementation
         </Tooltip>
     );
     return (
@@ -65,13 +65,13 @@ export default function CreateProject(){
                     <h1 style={{marginBottom: "40px"}}>Project Information</h1>
                     <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Project name</Form.Label>
+                            <Form.Label className="reqStar">Project name</Form.Label>
                             <Form.Control type="input" required placeholder="SUMP City" value={projectName} onChange={e => setProjectName(e.target.value)}/>
                             <Form.Control.Feedback type="invalid">Please specify a project name</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label>Select country</Form.Label>
+                            <Form.Label className="reqStar">Select country</Form.Label>
                             <Form.Select aria-label="Select a country" value={projectCountry} onChange={e => setProjectCountry(e.target.value)}>
                                 {countryOptions.map(e => (<option value={e.label}>{e.label}</option>))}
                             </Form.Select>
@@ -79,13 +79,13 @@ export default function CreateProject(){
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label>City</Form.Label>
+                            <Form.Label className="reqStar">City</Form.Label>
                             <Form.Control type="input" required placeholder="" value={projectCity} onChange={e => setProjectCity(e.target.value)}/>
                             <Form.Control.Feedback type="invalid">Please specify a city</Form.Control.Feedback>
                         </Form.Group>
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Partner country/city</Form.Label>
+                        <Form.Group className="mb-3">   
+                            <Form.Label>Partner name in city</Form.Label>
                             <Form.Control type="input" placeholder="" value={partnerLocation} onChange={e => setPartnerLocation(e.target.value)}/>
                         </Form.Group>
 
@@ -99,7 +99,7 @@ export default function CreateProject(){
 
                         <Form.Group className="mb-3">
                             <OverlayTrigger placement="right" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
-                                <Form.Label>
+                                <Form.Label className="reqStar">
                                     Reference year (RY) 🛈
                                 </Form.Label>
                             </OverlayTrigger>

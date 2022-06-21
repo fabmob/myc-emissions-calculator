@@ -4,7 +4,7 @@ const db = new Database('data.db', {verbose: console.log})
 
 export function init() {
     try {
-        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYear STRING, inputStep1 STRING, inputStep2 STRING, inputStep3 STRING, inputStep4 STRING, inputStep5 STRING, inputStep6 STRING, inputStep7 STRING, UNIQUE(name))")
+        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYear STRING, inputStep1 STRING, inputStep2 STRING, inputStep3 STRING, inputStep4 STRING, inputStep5 STRING, inputStep6 STRING, inputStep7 STRING, emissionFactors STRING, UNIQUE(name))")
     } catch (err) {
         console.log("Table alredy exists")
     }
@@ -55,6 +55,9 @@ function parseProject(project: any) {
         project.inputStep7 = JSON.parse(project.inputStep7)
         project.step = 100 // All done
     }
+    if (project.emissionFactors) {
+        project.emissionFactors = JSON.parse(project.emissionFactors)
+    }
     return project
 }
 export function getProjectsByOwner(owner: string) {
@@ -103,5 +106,11 @@ export function updateProject(owner: string, id: number, stepNumber: number, inp
         default:
             break;
     }
+    return res
+}
+
+export function updateProjectEmissionFactors(owner: string, id: number, emissionFactorsString: string) {
+    const updateProjectEmissionFactorStmt = db.prepare("UPDATE Projects set emissionFactors = ? WHERE id = ? AND owner = ?")
+    let res = updateProjectEmissionFactorStmt.run([emissionFactorsString, id, owner])
     return res
 }

@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep6, ProjectType, FuelType} from '../frontendTypes'
 import Progress from '../components/Progress'
+import PercentInput from '../components/PercentInput'
 import Alert from 'react-bootstrap/Alert'
 
 import './Project.css'
@@ -21,7 +22,9 @@ export default function ProjectStep6(){
     let [inputData, setInputData ] = useState({source: ''} as InputStep6)
     let [project, setProject ] = useState({} as ProjectType)
     let [vtypeWarning, setVtypeWarning] = useState(false)
+    let [sumWarning, setSumWarning] = useState(false)
     let projectId = params.projectId
+    const [validated, setValidated] = useState(false)
     useEffect(() => {
         if (initialized && keycloak.authenticated){
             const requestOptions = {
@@ -39,27 +42,23 @@ export default function ProjectStep6(){
                             prevInputData.source = data.project.inputStep6?.source || ''
                             for (let i = 0; i < vtypes.length; i++) {
                                 let vtype = vtypes[i]
-                                if (data.project.inputStep6?.[vtype]) {
-                                    prevInputData[vtype] = data.project.inputStep6[vtype]
+                                if (!data.project.inputStep5[vtype]) {
+                                    setVtypeWarning(true)
+                                    continue
+                                }
+                                let ftypes = Object.keys(data.project.inputStep5[vtype]).filter(ftype => data.project.inputStep5[vtype][ftype])
+                                let tmp = {} as {[key in FuelType]: string[]}
+                                if (ftypes.length === 1) {
+                                    // If we only have one fuel type, we can initalize everything at 100%
+                                    let ftype = ftypes[0] as FuelType
+                                    tmp[ftype] = ["100", "100", "100", "100", "100", "100"]
+                                    prevInputData[vtype] = tmp
                                 } else {
-                                    if (!data.project.inputStep5[vtype]) {
-                                        setVtypeWarning(true)
-                                        continue
+                                    for (let j = 0; j < ftypes.length; j++) {
+                                        let ftype = ftypes[j] as FuelType
+                                        tmp[ftype] = data.project.inputStep6[vtype][ftype] || ["0", "0", "0", "0", "0", "0"]
                                     }
-                                    let ftypes = Object.keys(data.project.inputStep5[vtype]).filter(ftype => data.project.inputStep5[vtype][ftype])
-                                    let tmp = {} as {[key in FuelType]: string[]}
-                                    if (ftypes.length === 1) {
-                                        // If we only have one fuel type, we can initalize everything at 100%
-                                        let ftype = ftypes[0] as FuelType
-                                        tmp[ftype] = ["100", "100", "100", "100", "100", "100"]
-                                        prevInputData[vtype] = tmp
-                                    } else {
-                                        for (let j = 0; j < ftypes.length; j++) {
-                                            let ftype = ftypes[j] as FuelType
-                                            tmp[ftype] = ["0", "0", "0", "0", "0", "0"]
-                                        }
-                                        prevInputData[vtype] = tmp
-                                    }
+                                    prevInputData[vtype] = tmp
                                 }
                             }
                             return prevInputData
@@ -91,12 +90,45 @@ export default function ProjectStep6(){
         })
     }
 
+    const areSumsOk = (input: InputStep6) => {
+        let vtypes = Object.keys(input)
+        for (let i = 0; i < vtypes.length; i++) {
+            const vtype = vtypes[i];
+            let inputVal = input[vtype]
+            if (typeof(inputVal) !== 'string') {
+                let sums = [0,0,0,0,0,0]
+                let ftypes = Object.keys(inputVal)
+                for (let j = 0; j < ftypes.length; j++) {
+                    const ftype = ftypes[j] as FuelType;
+                    for (let k = 0; k < sums.length; k++) {
+                        sums[k] += parseFloat(inputVal[ftype][k]) || 0
+                    }
+                }
+                for (let k = 0; k < sums.length; k++) {
+                    if (sums[k] != 100) {
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
     const goPreviousStep = () => {
         navigate('/project/' + projectId + '/step/5');
     }
     const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
-        // TODO: there might be more content validation needed, aka check that sums are indeed 100
         event.preventDefault();
+        const form = event.currentTarget;
+        setValidated(true);
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            return
+        }
+        if (!areSumsOk(inputData)) {
+            setSumWarning(true)
+            return
+        }
+        setSumWarning(false)
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
@@ -116,12 +148,14 @@ export default function ProjectStep6(){
                     {vtypeWarning? <Alert variant="danger">
                         A fuel is undefined for one of the vehicles types, making it invisible, please go back to the fuel types step.
                     </Alert> : <></>}
+                    {sumWarning? <Alert variant="danger">
+                        Error: At least one of the sums of share is not 100%.
+                    </Alert> : <></>}
                     <h2>Please enter <b>the percentage of vehicle kilometers travelled (vkt)</b>  per vehicle category and fuel type for the reference year and for future years. </h2>
 
                     <h2>Remark 1: The sum of shares in each vehicle category must be 100 %.</h2>
 
-                    <h2><i>Provide the sources of the information if possible. </i></h2>
-                    <Form onSubmit={saveAndGoNextStep}>
+                    <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>
                                 <tr>
@@ -130,12 +164,12 @@ export default function ProjectStep6(){
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>{project.referenceYear} (RY)</td>
-                                    <td>{project.referenceYear}-2025</td>
-                                    <td>2025-2030</td>
-                                    <td>2030-2035</td>
-                                    <td>2035-2040</td>
-                                    <td>2040-2050</td>
+                                    <td className="reqStar">{project.referenceYear} (RY)</td>
+                                    <td className="reqStar">{project.referenceYear}-2025</td>
+                                    <td className="reqStar">2025-2030</td>
+                                    <td className="reqStar">2030-2035</td>
+                                    <td className="reqStar">2035-2040</td>
+                                    <td className="reqStar">2040-2050</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -159,40 +193,22 @@ export default function ProjectStep6(){
                                                     <tr key={i}>
                                                         <td style={{backgroundColor: "#989898"}}>{ftype}</td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[0]} onChange={e => updateInput(vtype, ft, 0, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[0]} onChange={(e: any) => updateInput(vtype, ft, 0, e)} />
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[1]} onChange={e => updateInput(vtype, ft, 1, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[1]} onChange={(e: any) => updateInput(vtype, ft, 1, e)} />
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[2]} onChange={e => updateInput(vtype, ft, 2, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[2]} onChange={(e: any) => updateInput(vtype, ft, 2, e)} />
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[3]} onChange={e => updateInput(vtype, ft, 3, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[3]} onChange={(e: any) => updateInput(vtype, ft, 3, e)} />
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[4]} onChange={e => updateInput(vtype, ft, 4, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[4]} onChange={(e: any) => updateInput(vtype, ft, 4, e)} />
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[5]} onChange={e => updateInput(vtype, ft, 5, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[5]} onChange={(e: any) => updateInput(vtype, ft, 5, e)} />
                                                         </td>
                                                     </tr>
                                                 )
@@ -217,12 +233,12 @@ export default function ProjectStep6(){
                                     return [
                                         <tr key={index}>
                                             <td style={{backgroundColor: "#989898"}}>{vtype}</td>
-                                            <td style={{color: sums[0] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[0]}%</td>
-                                            <td style={{color: sums[1] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[1]}%</td>
-                                            <td style={{color: sums[2] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[2]}%</td>
-                                            <td style={{color: sums[3] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[3]}%</td>
-                                            <td style={{color: sums[4] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[4]}%</td>
-                                            <td style={{color: sums[5] !== 100 ? 'orange' : 'green', backgroundColor: "#989898"}}>{sums[5]}%</td>
+                                            <td style={{color: sums[0] !== 100 ? 'red' : 'green', backgroundColor: "#989898"}}>{sums[0]}%</td>
+                                            <td style={{color: sums[1] !== 100 ? 'red' : 'green', backgroundColor: "#989898"}}>{sums[1]}%</td>
+                                            <td style={{color: sums[2] !== 100 ? 'red' : 'green', backgroundColor: "#989898"}}>{sums[2]}%</td>
+                                            <td style={{color: sums[3] !== 100 ? 'red' : 'green', backgroundColor: "#989898"}}>{sums[3]}%</td>
+                                            <td style={{color: sums[4] !== 100 ? 'red' : 'green', backgroundColor: "#989898"}}>{sums[4]}%</td>
+                                            <td style={{color: sums[5] !== 100 ? 'red' : 'green', backgroundColor: "#989898"}}>{sums[5]}%</td>
                                         </tr>
                                         ,
                                         fuelJsx
@@ -236,9 +252,10 @@ export default function ProjectStep6(){
                         </Table>
                         {inputData?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                                <Form.Label column sm={2}>Source</Form.Label>
+                                <Form.Label className="reqStar" column sm={2}>Source</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="input" name="vktSource" value={inputData.source as string} onChange={updateSource} placeholder=""/>
+                                    <Form.Control required type="input" name="vktSource" value={inputData.source as string} onChange={updateSource} placeholder="IEA, 2022"/>
+                                    <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
                         :''}

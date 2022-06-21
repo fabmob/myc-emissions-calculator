@@ -83,3 +83,7 @@ h2 {
 .recharts-legend-item-text {
     color: black !important
 }
+.reqStar:after {
+    content:"*";
+    color:red;
+}

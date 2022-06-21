@@ -68,7 +68,7 @@ const Progress = (props: {project: ProjectType, currentStep: number}) => {
                 className={getClassName(6)}
                 disabled={props.project.step < 6}
                 onClick={() => link('6')}>
-                VKT breakdown
+                Fuel breakdown
             </Button>
             →
             <Button

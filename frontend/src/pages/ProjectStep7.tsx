@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputStep7, ProjectType, FuelType} from '../frontendTypes'
 import Progress from '../components/Progress'
+import PercentInput from '../components/PercentInput'
 
 import './Project.css'
 
@@ -21,6 +22,7 @@ export default function ProjectStep7(){
     let [inputData, setInputData ] = useState({energySource: '', energyGrowthSource: ''} as InputStep7)
     let [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
+    const [validated, setValidated] = useState(false)
     const unitPerFuelType : {[f in FuelType]: string} = {
         "Gasoline": "l",
         "Diesel": "l",
@@ -94,6 +96,13 @@ export default function ProjectStep7(){
     }
     const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const form = event.currentTarget;
+        setValidated(true);
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            return
+        }
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
@@ -113,25 +122,14 @@ export default function ProjectStep7(){
                     <h2>Please enter <b>the average fuel/energy consumption</b> - for each vehicle category and per fuel type- for the reference year (average fuel/energy consumption per vehicle per 100 km) as well as the annual change rate for each time period.</h2>
 
                     <h2>Remark 1: Negative numbers for the annual change rate means a decrease of fuel/energy consumption. Positive numbers means an increase. </h2>
-
-                    <h2><i>Provide the sources of the information if possible.</i></h2>
                     <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></h2>
-                    <Form onSubmit={saveAndGoNextStep}>
+                    <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>
                                 <tr>
                                     <th>Vehicle type</th>
                                     <th style={{width: "180px"}}>Avg energy consumption¹ (l-kW-kg/100km)</th>
                                     <th colSpan={5}>Annual growth of energy² (%)</th>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>{project.referenceYear} (RY)</td>
-                                    <td>{project.referenceYear}-2025</td>
-                                    <td>2025-2030</td>
-                                    <td>2030-2035</td>
-                                    <td>2035-2040</td>
-                                    <td>2040-2050</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -153,7 +151,7 @@ export default function ProjectStep7(){
                                             if (inp) {
                                                 if (ftype === "None") {
                                                     return <tr key={i}>
-                                                        <td style={{backgroundColor: "#989898"}}>{ftype}</td>
+                                                        <td style={{backgroundColor: "#989898", textAlign: "right"}}>{ftype}</td>
                                                         <td>N/A</td>
                                                         <td>N/A</td>
                                                         <td>N/A</td>
@@ -164,42 +162,28 @@ export default function ProjectStep7(){
                                                 }
                                                 return (
                                                     <tr key={i}>
-                                                        <td style={{backgroundColor: "#989898"}}>{ftype}</td>
+                                                        <td style={{backgroundColor: "#989898", textAlign: "right"}}>{ftype}</td>
                                                         <td>
                                                             <InputGroup>
                                                                 <Form.Control type="number" required min="0" step="0.1" value={inp[0]} onChange={e => updateInput(vtype, ft, 0, e)} />
                                                                 <InputGroup.Text>{unitPerFuelType[ftype]}/100km</InputGroup.Text>
+                                                                <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
                                                             </InputGroup>
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[1]} onChange={e => updateInput(vtype, ft, 1, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[1]} onChange={(e: any) => updateInput(vtype, ft, 1, e)} />
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[2]} onChange={e => updateInput(vtype, ft, 2, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[2]} onChange={(e: any) => updateInput(vtype, ft, 2, e)} />
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[3]} onChange={e => updateInput(vtype, ft, 3, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[3]} onChange={(e: any) => updateInput(vtype, ft, 3, e)} />
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[4]} onChange={e => updateInput(vtype, ft, 4, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[4]} onChange={(e: any) => updateInput(vtype, ft, 4, e)} />
                                                         </td>
                                                         <td>
-                                                            <InputGroup>
-                                                                <Form.Control type="number" required min="-100" max="100" step="0.01" value={inp[5]} onChange={e => updateInput(vtype, ft, 5, e)} />
-                                                                <InputGroup.Text>%</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <PercentInput value={inp[5]} onChange={(e: any) => updateInput(vtype, ft, 5, e)} />
                                                         </td>
                                                     </tr>
                                                 )
@@ -208,29 +192,19 @@ export default function ProjectStep7(){
                                         }
                                         return  null
                                     })
-                                    let inp = inputData?.[vtype]
-                                    let sums = [0,0,0,0,0,0]
-                                    if (inp && typeof(inp) !== 'string') {
-                                        let fuels = Object.keys(project.inputStep5[vtype] || [])
-                                        for (let i = 0; i < fuels.length; i++) {
-                                            let ftype = fuels[i] as FuelType
-                                            for (let j = 0; j < sums.length; j++) {
-                                                sums[j] += parseFloat(inp[ftype][j]) || 0
-                                            }
-                                        }
-                                    }
                                     return [
                                         <tr key={index}>
                                             <td style={{backgroundColor: "#989898"}}>{vtype}</td>
-                                            <td style={{backgroundColor: "#989898"}}>{sums[0]}</td>
-                                            <td style={{backgroundColor: "#989898"}}>{sums[1]}%</td>
-                                            <td style={{backgroundColor: "#989898"}}>{sums[2]}%</td>
-                                            <td style={{backgroundColor: "#989898"}}>{sums[3]}%</td>
-                                            <td style={{backgroundColor: "#989898"}}>{sums[4]}%</td>
-                                            <td style={{backgroundColor: "#989898"}}>{sums[5]}%</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{project.referenceYear}</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{project.referenceYear}-2025</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">2025-2030</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">2030-2035</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">2035-2040</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">2040-2050</td>
                                         </tr>
                                         ,
-                                        fuelJsx
+                                        fuelJsx,
+                                        <tr key={index + "_spacer"} style={{height: "10px"}}></tr>
                                     ]
                                 }
                                 return null
@@ -240,17 +214,19 @@ export default function ProjectStep7(){
                         </Table>
                         {inputData?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                                <Form.Label column sm={2}>[1] Energy consumption source</Form.Label>
+                                <Form.Label className="reqStar" column sm={2}>[1] Energy consumption source</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="input" name="energySource" value={inputData.energySource as string} onChange={updateEnergySource} placeholder=""/>
+                                    <Form.Control type="input" required name="energySource" value={inputData.energySource as string} onChange={updateEnergySource} placeholder=""/>
+                                    <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
                         :''}
                         {inputData?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                                <Form.Label column sm={2}>[2] Energy growth source</Form.Label>
+                                <Form.Label className="reqStar" column sm={2}>[2] Energy growth source</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="input" name="energyGrowthSource" value={inputData.energyGrowthSource as string} onChange={updateEnergyGrowthSource} placeholder=""/>
+                                    <Form.Control type="input" required name="energyGrowthSource" value={inputData.energyGrowthSource as string} onChange={updateEnergyGrowthSource} placeholder=""/>
+                                    <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
                         :''}

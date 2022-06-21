@@ -78,9 +78,16 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.inputStep7
     project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYear)
 
-    project.outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, project.outputVktPerFuelComputed)
+    if (project.emissionFactors.WTW) {
+        project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.emissionFactors.WTW, project.outputVktPerFuelComputed)
+        console.log(project.outputComputeTotalEnergyAndEmissionsWTW)
+        project.outputComputeTotalEnergyAndEmissionsTTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.emissionFactors.TTW, project.outputVktPerFuelComputed)
+        project.outputSumTotalEnergyAndEmissionsTTW = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissionsTTW)
+    } else {
+        project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, project.outputVktPerFuelComputed)
+    }
 
-    project.outputSumTotalEnergyAndEmissions = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissions)
+    project.outputSumTotalEnergyAndEmissionsWTW = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissionsWTW)
 
     res.json({
         status: "ok",
@@ -92,6 +99,16 @@ app.put('/api/project/:projectId/step/:stepNumber', keycloak.protect(), (req: Re
     let owner = (req as any).kauth.grant.access_token.content.email
     let inputDataString = JSON.stringify(req.body.inputData)
     let dbres = dbwrapper.updateProject(owner, parseInt(req.params.projectId), parseInt(req.params.stepNumber), inputDataString)
+    console.log(dbres)
+    res.json({
+        status: "ok"
+    });
+});
+
+app.put('/api/project/:projectId/emissionFactors', keycloak.protect(), (req: Request, res: Response) => {
+    let owner = (req as any).kauth.grant.access_token.content.email
+    let emissionFactorsString = JSON.stringify(req.body.emissionFactors)
+    let dbres = dbwrapper.updateProjectEmissionFactors(owner, parseInt(req.params.projectId), emissionFactorsString)
     console.log(dbres)
     res.json({
         status: "ok"
