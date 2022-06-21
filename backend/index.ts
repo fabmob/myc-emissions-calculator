@@ -78,7 +78,7 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.inputStep7
     project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYear)
 
-    if (project.emissionFactors.WTW) {
+    if (project?.emissionFactors?.WTW) {
         project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.emissionFactors.WTW, project.outputVktPerFuelComputed)
         console.log(project.outputComputeTotalEnergyAndEmissionsWTW)
         project.outputComputeTotalEnergyAndEmissionsTTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.emissionFactors.TTW, project.outputVktPerFuelComputed)
