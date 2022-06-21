@@ -31,7 +31,7 @@ export default function ProjectStep5(){
             "LPG": {lowerHeatingValue: "47", density: "0.522193211488251", pci: "24.7", ges: ["72692", "72692", "72692", "72692", "72692", "72692"]},
             "NG": {lowerHeatingValue: "48", density: "1", pci: "48.0", ges: ["67772", "67772", "67772", "67772", "67772", "67772"]},
             "Hybrid": {lowerHeatingValue: "44", density: "0.740740740740741", pci: "32.8", ges: ["85192", "85192", "85192", "85192", "85192", "85192"]},
-            "Electric": {lowerHeatingValue: "4", density: "1", pci: "3.6", ges: ["20556", "20556", "20556", "20556", "20556", "0"]},
+            "Electric": {lowerHeatingValue: "4", density: "1", pci: "3.6", ges: ["20556", "20556", "20556", "20556", "20556", "20556"]},
             "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: ["0","0","0","0","0","0"]}
         },
         "TTW": {
