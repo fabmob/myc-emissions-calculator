@@ -56,7 +56,7 @@ export default function ProjectStep6(){
                                 } else {
                                     for (let j = 0; j < ftypes.length; j++) {
                                         let ftype = ftypes[j] as FuelType
-                                        tmp[ftype] = data.project.inputStep6[vtype][ftype] || ["0", "0", "0", "0", "0", "0"]
+                                        tmp[ftype] = data.project.inputStep6?.[vtype]?.[ftype] || ["0", "0", "0", "0", "0", "0"]
                                     }
                                     prevInputData[vtype] = tmp
                                 }
