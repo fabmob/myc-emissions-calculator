@@ -21,7 +21,8 @@ export default function CreateProject(){
     const [ partnerLocation, setPartnerLocation ] = useState("")
     const [ projectArea, setProjectArea ] = useState("")
     const [ projectReferenceYear, setProjectReferenceYear ] = useState("2020")
-    const [validated, setValidated] = useState(false);
+    const [validated, setValidated] = useState(false)
+    const [ createWarning, setCreateWarning ] = useState(false)
     const countryOptions = useMemo(() => countryList().getData(), [])
     if (initialized && !keycloak.authenticated){
         return <Navigate to='/'  />
@@ -29,7 +30,8 @@ export default function CreateProject(){
 
     const createProject = (event: React.FormEvent<HTMLFormElement>) => {
         const form = event.currentTarget;
-        setValidated(true);
+        setValidated(true)
+        setCreateWarning(false)
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -49,8 +51,19 @@ export default function CreateProject(){
             body: JSON.stringify({ project: projectDict })
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/createProject', requestOptions)
-            .then(response => response.json())
-            .then(data => navigate('/project/' + data.projectId + '/step/1'));
+            .then(response => {
+                if (response.status === 409) {
+                    // Unique constraint failed, project name already exists
+                    setCreateWarning(true)
+                    setValidated(false)
+                }
+                return response.json()
+            })
+            .then(data => {
+                if (data.status !== "err") {
+                    navigate('/project/' + data.projectId + '/step/1')
+                }
+            });
         event.preventDefault();
     }
     const referenceYearTooltip = (props:any) => (
@@ -66,14 +79,14 @@ export default function CreateProject(){
                     <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
                         <Form.Group className="mb-3">
                             <Form.Label className="reqStar">Project name</Form.Label>
-                            <Form.Control type="input" required placeholder="SUMP City" value={projectName} onChange={e => setProjectName(e.target.value)}/>
-                            <Form.Control.Feedback type="invalid">Please specify a project name</Form.Control.Feedback>
+                            <Form.Control type="input" required placeholder="SUMP City" value={projectName} onChange={e => setProjectName(e.target.value)} isInvalid={createWarning}/>
+                            <Form.Control.Feedback type="invalid">{createWarning ? "This project name already exists" : "Please specify a project name"}</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label className="reqStar">Select country</Form.Label>
                             <Form.Select aria-label="Select a country" value={projectCountry} onChange={e => setProjectCountry(e.target.value)}>
-                                {countryOptions.map(e => (<option value={e.label}>{e.label}</option>))}
+                                {countryOptions.map(e => (<option value={e.label} key={e.label}>{e.label}</option>))}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">Please specify a country</Form.Control.Feedback>
                         </Form.Group>

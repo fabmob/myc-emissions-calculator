@@ -22,11 +22,25 @@ app.use('/api/*', keycloak.middleware())
 app.post('/api/createProject', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
     let inputProject : types.Project = req.body.project
-    let dbres = dbwrapper.createProject(inputProject, owner)
-    res.json({
-        status: "ok",
-        projectId: dbres.lastInsertRowid
-    });
+    let [errorCode, dbres] = dbwrapper.createProject(inputProject, owner)
+    if (dbres !== null) {
+        res.status(201).json({
+            status: "ok",
+            projectId: dbres.lastInsertRowid
+        });
+    } else {
+        if (errorCode === "SQLITE_CONSTRAINT_UNIQUE") {
+            res.status(409).json({
+                status: "err",
+                errorCode: errorCode
+            })
+        } else {
+            res.status(400).json({
+                status: "err",
+                errorCode: errorCode
+            })
+        }
+    }
 });
 
 app.get('/api/myProjects', keycloak.protect(), (req: Request, res: Response) => {

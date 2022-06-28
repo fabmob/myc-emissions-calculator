@@ -10,19 +10,22 @@ export function init() {
     }
 }
 
-export function createProject(project: types.Project, owner: string) {
+export function createProject(project: types.Project, owner: string): [string | null, Database.RunResult | null] {
     const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, country, city, partnerLocation, area, referenceYear) values (NULL, ?, ?, ?, ?, ?, ?, ?)")
-    let res = createProjectStmt.run([
-        owner,
-        project.projectName,
-        project.projectCountry,
-        project.projectCity,
-        project.partnerLocation,
-        project.projectArea,
-        project.projectReferenceYear
-    ])
-    console.log(res)
-    return res
+    try {
+        let res = createProjectStmt.run([
+            owner,
+            project.projectName,
+            project.projectCountry,
+            project.projectCity,
+            project.partnerLocation,
+            project.projectArea,
+            project.projectReferenceYear
+        ])
+        return [null, res]
+    } catch (error: any) {
+        return [error?.code, null]
+    }
 }
 
 function parseProject(project: any) {
