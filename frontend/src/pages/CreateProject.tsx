@@ -12,7 +12,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 
 
-export default function CreateProject(){
+export default function CreateProject() {
     const navigate = useNavigate();
     const { keycloak, initialized } = useKeycloak();
     const [ projectName, setProjectName ] = useState("")
@@ -68,7 +68,7 @@ export default function CreateProject(){
     }
     const referenceYearTooltip = (props:any) => (
         <Tooltip id="button-tooltip" {...props}>
-            The year you started the SUMP implementation
+            You can choose the year of reference based on your needs
         </Tooltip>
     );
     return (

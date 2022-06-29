@@ -112,7 +112,7 @@ export default function ProjectStep3(){
                 <Col xs lg="8">
                     <h1>Set up transport activity data</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                    <h2>Please enter the <b> vehicle kilometers travelled (Mio km)</b> in the table delivered by the transport plannig tool for the reference year (mandatory).</h2>
+                    <h2>Please enter the <b> vehicle kilometers travelled (Mio km)</b> in the table delivered by the transport plannig tool for the reference year.</h2>
 
                     <h2>For BAU calculations, please enter the expected % of growth or decrease for the corresponding years in the same way. </h2>
 

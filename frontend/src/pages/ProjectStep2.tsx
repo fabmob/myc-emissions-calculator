@@ -165,12 +165,13 @@ export default function ProjectStep2(){
                     <Col xs lg="8">
                         <h1>Select / add category of transport</h1>
                         <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                        <h2>Existing or expected means of transport. <a href="#" onClick={handleShowInfo}>Find related transport by clicking here 🛈</a></h2>
+                        <h2>Please select existing or expected means of transport on your territory. Click <a href="#" onClick={handleShowInfo}>here</a> for more details on default categories.<br/>You can also add a custom vehicle category below, if you don't find it in the list. </h2>
                         <h2>
                             For each category, you will later need to fill the following information: Total vkt, Vehicle occupancy, Fuel types and consumptions, Vkt breakdown per fuel
                         </h2>
                         <Form style={{"marginBottom": "20px"}}>
                             <Row style={{textAlign: "left"}}>
+                            <b>Default Categories</b>
                             {defaultVehicles.map((vCol, index) => {
                                 return (
                                     <Col lg="4" key={index}>
@@ -193,6 +194,7 @@ export default function ProjectStep2(){
                                 )
                             })}
                             <hr/>
+                            <b>Custom Categories</b>
                             {Object.keys(inputData).filter(vtype => defaultVehiclesList.indexOf(vtype) === -1).map((vtype, index) => {
                                 return (
                                     <Col lg="4" key={index}>
