@@ -63,39 +63,51 @@ app.get('/api/project/:projectId', keycloak.protect(), (req: Request, res: Respo
 
 app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
-    let project = dbwrapper.getProject(owner, parseInt(req.params.projectId))
-    if (!project.inputStep7) {
+    let dbProject = dbwrapper.getProject(owner, parseInt(req.params.projectId))
+    let project = dbProject as typeof dbProject & {
+        outputSocioEconomicDataComputed: types.SocioEconomicDataComputed,
+        vehicleKilometresTravelledComputed: types.VehicleKilometresTravelledComputed,
+        outputVktPerFuelComputed: types.VktPerFuelComputed,
+        outputTransportPerformance: types.TransportPerformance,
+        outputModalShare: types.ModalShare,
+        outputAverageEnergyConsumptionComputed: types.AverageEnergyConsumptionComputed,
+        outputComputeTotalEnergyAndEmissionsWTW: types.TotalEnergyAndEmissions,
+        outputComputeTotalEnergyAndEmissionsTTW: types.TotalEnergyAndEmissions,
+        outputSumTotalEnergyAndEmissionsTTW: types.SumTotalEnergyAndEmissions,
+        outputSumTotalEnergyAndEmissionsWTW: types.SumTotalEnergyAndEmissions
+    }
+    if (!project.steps[7]) {
         return res.json({
             status: "missing steps",
             project: null
         })
     }
-    let inputSocioEconomicData : types.SocioEconomicData = project.inputStep1
+    let inputSocioEconomicData : types.SocioEconomicData = project.steps[1]
     project.outputSocioEconomicDataComputed = models.computeSocioEconomicData(inputSocioEconomicData, project.referenceYear)
 
-    delete project.inputStep3.vktSource
-    delete project.inputStep3.vktGrowthSource
-    let inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = project.inputStep3
+    delete project.steps[3].vktSource
+    delete project.steps[3].vktGrowthSource
+    let inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = project.steps[3]
     project.vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, project.referenceYear)
 
-    delete project.inputStep6.source
-    let inputVktPerFuel : types.VktPerFuel = project.inputStep6
+    delete project.steps[6].source
+    let inputVktPerFuel : types.VktPerFuel = project.steps[6]
     project.outputVktPerFuelComputed = models.computeVktPerFuel(inputVktPerFuel, project.vehicleKilometresTravelledComputed)
 
-    delete project.inputStep4.source
-    let inputVehicleStats : types.VehicleStats = project.inputStep4
+    delete project.steps[4].source
+    let inputVehicleStats : types.VehicleStats = project.steps[4]
     project.outputTransportPerformance = models.computeTransportPerformance(project.vehicleKilometresTravelledComputed, inputVehicleStats)
     project.outputModalShare = models.computeModalShare(project.outputTransportPerformance)
 
-    delete project.inputStep7.energySource
-    delete project.inputStep7.energyGrowthSource
-    let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.inputStep7
+    delete project.steps[7].energySource
+    delete project.steps[7].energyGrowthSource
+    let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.steps[7]
     project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYear)
 
-    if (project?.emissionFactors?.WTW) {
-        project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.emissionFactors.WTW, project.outputVktPerFuelComputed)
+    if (project.steps[5].emissionFactors?.WTW) {
+        project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.steps[5].emissionFactors.WTW, project.outputVktPerFuelComputed)
         console.log(project.outputComputeTotalEnergyAndEmissionsWTW)
-        project.outputComputeTotalEnergyAndEmissionsTTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.emissionFactors.TTW, project.outputVktPerFuelComputed)
+        project.outputComputeTotalEnergyAndEmissionsTTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.steps[5].emissionFactors.TTW, project.outputVktPerFuelComputed)
         project.outputSumTotalEnergyAndEmissionsTTW = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissionsTTW)
     } else {
         project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, project.outputVktPerFuelComputed)
@@ -110,24 +122,23 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
 });
 
 app.put('/api/project/:projectId/step/:stepNumber', keycloak.protect(), (req: Request, res: Response) => {
-    let owner = (req as any).kauth.grant.access_token.content.email
     let inputDataString = JSON.stringify(req.body.inputData)
-    let dbres = dbwrapper.updateProject(owner, parseInt(req.params.projectId), parseInt(req.params.stepNumber), inputDataString)
+    let dbres = dbwrapper.addProjectStep(parseInt(req.params.projectId), parseInt(req.params.stepNumber), inputDataString)
     console.log(dbres)
     res.json({
         status: "ok"
     });
 });
 
-app.put('/api/project/:projectId/emissionFactors', keycloak.protect(), (req: Request, res: Response) => {
-    let owner = (req as any).kauth.grant.access_token.content.email
-    let emissionFactorsString = JSON.stringify(req.body.emissionFactors)
-    let dbres = dbwrapper.updateProjectEmissionFactors(owner, parseInt(req.params.projectId), emissionFactorsString)
-    console.log(dbres)
-    res.json({
-        status: "ok"
-    });
-});
+// app.put('/api/project/:projectId/emissionFactors', keycloak.protect(), (req: Request, res: Response) => {
+//     let owner = (req as any).kauth.grant.access_token.content.email
+//     let emissionFactorsString = JSON.stringify(req.body.emissionFactors)
+//     let dbres = dbwrapper.updateProjectEmissionFactors(owner, parseInt(req.params.projectId), emissionFactorsString)
+//     console.log(dbres)
+//     res.json({
+//         status: "ok"
+//     });
+// });
 
 app.all('/api/*', function(_, res) {
     res.status(404).json({
