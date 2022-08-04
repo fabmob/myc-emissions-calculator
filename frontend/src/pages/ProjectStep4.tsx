@@ -34,12 +34,12 @@ export default function ProjectStep4(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    let vtypes = Object.keys(data.project.inputStep2)
-                    let init:InputStep4 = {source: data.project.inputStep4?.source || ''}
+                    let vtypes = Object.keys(data.project.steps[2])
+                    let init:InputStep4 = {source: data.project.steps[4]?.source || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.inputStep4?.[vtype]){
-                            init[vtype] = data.project.inputStep4[vtype]
+                        if (data.project.steps[4]?.[vtype]){
+                            init[vtype] = data.project.steps[4][vtype]
                         } else {
                             if (vtype.includes("alking")) {
                                 init[vtype] = {
@@ -128,9 +128,9 @@ export default function ProjectStep4(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.keys(project.inputStep2 || []).map((vtype, index) => {
+                                {Object.keys(project.steps?.[2] || []).map((vtype, index) => {
                                     let vt = vtype
-                                    if (!project.inputStep2 || project.inputStep2[vt] === false || !inputData) {
+                                    if (!project.steps?.[2] || project.steps[2][vt] === false || !inputData) {
                                         return <></>
                                     }
                                     let inputVt = inputData[vt]

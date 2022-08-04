@@ -7,9 +7,7 @@ export type ProjectType = {
     area: string,
     referenceYear: string,
     step: number,
-    inputStep1?: InputStep1,
-    inputStep2?: InputStep2,
-    inputStep5?: InputStep5,
+    steps: any[],
     outputSocioEconomicDataComputed?: {
         population: number[],
         gdp: number[]

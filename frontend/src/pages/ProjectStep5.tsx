@@ -56,12 +56,12 @@ export default function ProjectStep5(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    let vtypes = Object.keys(data.project.inputStep2)
-                    let init:InputStep5 = {source: data.project.inputStep5?.source || ''}
+                    let vtypes = Object.keys(data.project.steps[2])
+                    let init:InputStep5 = {source: data.project.steps[5]?.source || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.inputStep5?.[vtype]){
-                            init[vtype] = data.project.inputStep5[vtype]
+                        if (data.project.steps[5]?.[vtype]){
+                            init[vtype] = data.project.steps[5][vtype]
                         } else {
                             let tmp = {} as {[key in FuelType]: boolean}
                             for (let j = 0; j < ftypes.length; j++) {
@@ -133,27 +133,27 @@ export default function ProjectStep5(){
         // TODO: validate content ?
         navigate('/project/' + projectId + '/step/4');
     }
-    const saveEmissionFactors = () => {
+    // const saveEmissionFactors = () => {
+    //     const requestOptions = {
+    //         method: 'PUT',
+    //         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
+    //         body: JSON.stringify({ emissionFactors: emissionFactors })
+    //     };
+    //     return fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/emissionFactors', requestOptions)
+    //         .then(response => response.json())
+    // }
+    const saveAndGoNextStep = () => {
+        // TODO: validate content ?
+        let saveData = inputData as any
+        saveData.emissionFactors = emissionFactors
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
-            body: JSON.stringify({ emissionFactors: emissionFactors })
+            body: JSON.stringify({ inputData: saveData })
         };
-        return fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/emissionFactors', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/5', requestOptions)
             .then(response => response.json())
-    }
-    const saveAndGoNextStep = () => {
-        // TODO: validate content ?
-        saveEmissionFactors().then(() => {
-            const requestOptions = {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
-                body: JSON.stringify({ inputData: inputData })
-            };
-            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/5', requestOptions)
-                .then(response => response.json())
-                .then(() => navigate('/project/' + projectId + '/step/6'));
-        })
+            .then(() => navigate('/project/' + projectId + '/step/6'));
     }
     return (
         <Container className="projectStepContainer">
@@ -178,9 +178,9 @@ export default function ProjectStep5(){
                             </tr>
                         </thead>
                         <tbody>
-                            {Object.keys(project.inputStep2 || []).map((vtype, index) => {
+                            {Object.keys(project.steps?.[2] || []).map((vtype, index) => {
                                 let vt = vtype
-                                if (!project.inputStep2 || project.inputStep2[vt] === false || !inputData) {
+                                if (!project.steps?.[2] || project.steps[2][vt] === false || !inputData) {
                                     return null
                                 }
                                 let inputVt = inputData[vt] as {[key in FuelType]: boolean}

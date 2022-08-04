@@ -34,12 +34,12 @@ export default function ProjectStep3(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    let vtypes = Object.keys(data.project.inputStep2)
-                    let init:InputStep3 = {vktSource: data.project.inputStep3?.vktSource || '', vktGrowthSource: data.project.inputStep3?.vktGrowthSource || ''}
+                    let vtypes = Object.keys(data.project.steps[2])
+                    let init:InputStep3 = {vktSource: data.project.steps[3]?.vktSource || '', vktGrowthSource: data.project.steps[3]?.vktGrowthSource || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.inputStep3?.[vtype]) {
-                            init[vtype] = data.project.inputStep3[vtype]
+                        if (data.project.steps[3]?.[vtype]) {
+                            init[vtype] = data.project.steps[3][vtype]
                         } else {
                             init[vtype] = {
                                 vkt: "0",
@@ -136,8 +136,8 @@ export default function ProjectStep3(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.keys(project.inputStep2 || []).map((vtype, index) => {
-                                    if (!project.inputStep2 || project.inputStep2[vtype] === false || !inputData) {
+                                {Object.keys(project.steps?.[2] || []).map((vtype, index) => {
+                                    if (!project.steps?.[2] || project.steps[2][vtype] === false || !inputData) {
                                         return <></>
                                     }
                                     let inputVt = inputData[vtype]

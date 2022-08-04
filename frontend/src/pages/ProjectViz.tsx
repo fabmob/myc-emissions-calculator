@@ -110,7 +110,7 @@ export default function ProjectViz(){
     let defaultColors = ["#FF7C7C", "#FFEB7C", "#7BFFE3", "#7C81FF", "#DF7CFF", "#FF9F7C", "#CAFF7C", "#7CDDFF", "#9E7CFF", "#FF7CEC", "#FFB77C"," #8AFF89", "#7CB1FF", "#FF7CB2"]
     let colors = defaultColors.slice()
     let colorsPerVtype : {[key: string]: string} = {}
-    let vtypes = Object.keys(project?.inputStep2 || {}).filter(vtype => project?.inputStep2?.[vtype])
+    let vtypes = Object.keys(project?.steps?.[2] || {}).filter(vtype => project?.steps?.[2]?.[vtype])
     for (let i = 0; i < vtypes.length; i++) {
         colorsPerVtype[vtypes[i]] = colors.shift() || "black"
         if (colors.length === 0) {

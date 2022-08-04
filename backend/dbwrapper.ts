@@ -4,12 +4,32 @@ const db = new Database('data.db', {verbose: console.log})
 
 export function init() {
     try {
-        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYear STRING, inputStep1 STRING, inputStep2 STRING, inputStep3 STRING, inputStep4 STRING, inputStep5 STRING, inputStep6 STRING, inputStep7 STRING, emissionFactors STRING, UNIQUE(name))")
+        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYear INTEGER, UNIQUE(name))")
+        db.exec("CREATE Table ProjectSteps (projectId INTEGER, stepNumber INTEGER, value STRING, FOREIGN KEY(projectId) REFERENCES Projects(id),  UNIQUE(projectId, stepNumber) ON CONFLICT REPLACE)")
     } catch (err) {
         console.log("Table alredy exists")
     }
 }
 
+type ProjectsDbEntry = {
+    id: number,
+    owner: string,
+    name: string,
+    country: string,
+    city: string,
+    partnerLocation: string,
+    area: string,
+    referenceYear: number
+}
+type ProjectStepsDbEntry = {
+    projectId: number,
+    stepNumber: number,
+    value: string
+}
+type Project = ProjectsDbEntry & {
+    steps: any[],
+    step: number
+}
 export function createProject(project: types.Project, owner: string): [string | null, Database.RunResult | null] {
     const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, country, city, partnerLocation, area, referenceYear) values (NULL, ?, ?, ?, ?, ?, ?, ?)")
     try {
@@ -28,92 +48,42 @@ export function createProject(project: types.Project, owner: string): [string | 
     }
 }
 
-function parseProject(project: any) {
+function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectStepsDbEntry[]) {
+    let project = projectEntry as Project
+    // Skipping index 0 to match stepNumber with index in array
+    project.steps = [null]
     project.step = 1
-    if (project.inputStep1) {
-        project.inputStep1 = JSON.parse(project.inputStep1)
-        project.step = 2
-    }
-    if (project.inputStep2) {
-        project.inputStep2 = JSON.parse(project.inputStep2)
-        project.step = 3
-    }
-    if (project.inputStep3) {
-        project.inputStep3 = JSON.parse(project.inputStep3)
-        project.step = 4
-    }
-    if (project.inputStep4) {
-        project.inputStep4 = JSON.parse(project.inputStep4)
-        project.step = 5
-    }
-    if (project.inputStep5) {
-        project.inputStep5 = JSON.parse(project.inputStep5)
-        project.step = 6
-    }
-    if (project.inputStep6) {
-        project.inputStep6 = JSON.parse(project.inputStep6)
-        project.step = 7
-    }
-    if (project.inputStep7) {
-        project.inputStep7 = JSON.parse(project.inputStep7)
-        project.step = 100 // All done
-    }
-    if (project.emissionFactors) {
-        project.emissionFactors = JSON.parse(project.emissionFactors)
+    if (projectSteps) {
+        project.step = projectSteps.length + 1
+        for (let i = 0; i < projectSteps.length; i++) {
+            const step = projectSteps[i];
+            project.steps[step.stepNumber] = JSON.parse(step.value)
+        }
     }
     return project
 }
 export function getProjectsByOwner(owner: string) {
     const getProjectsByOwnerStmt = db.prepare("SELECT * FROM Projects WHERE owner = ?")
-    let res = getProjectsByOwnerStmt.all(owner)
-    return res.map(parseProject)
+    let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
+    return res.map(projectEntry => parseProject(projectEntry))
 }
 
 export function getProject(owner: string, id: number) {
     const getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ? AND owner = ?")
-    let res = getProjectStmt.get([id, owner])
-    return parseProject(res)
+    let resProject: ProjectsDbEntry = getProjectStmt.get([id, owner])
+    const getProjectStepsStmt = db.prepare("SELECT * FROM ProjectSteps WHERE projectId = ?")
+    let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([id])
+    return parseProject(resProject, resProjectSteps)
 }
 
-export function updateProject(owner: string, id: number, stepNumber: number, inputData: string) {
-    const updateProjectStep1Stmt = db.prepare("UPDATE Projects set inputStep1 = ? WHERE id = ? AND owner = ?")
-    const updateProjectStep2Stmt = db.prepare("UPDATE Projects set inputStep2 = ? WHERE id = ? AND owner = ?")
-    const updateProjectStep3Stmt = db.prepare("UPDATE Projects set inputStep3 = ? WHERE id = ? AND owner = ?")
-    const updateProjectStep4Stmt = db.prepare("UPDATE Projects set inputStep4 = ? WHERE id = ? AND owner = ?")
-    const updateProjectStep5Stmt = db.prepare("UPDATE Projects set inputStep5 = ? WHERE id = ? AND owner = ?")
-    const updateProjectStep6Stmt = db.prepare("UPDATE Projects set inputStep6 = ? WHERE id = ? AND owner = ?")
-    const updateProjectStep7Stmt = db.prepare("UPDATE Projects set inputStep7 = ? WHERE id = ? AND owner = ?")
-    let res
-    switch (stepNumber) {
-        case 1:
-            res = updateProjectStep1Stmt.run([inputData, id, owner])
-            break;
-        case 2:
-            res = updateProjectStep2Stmt.run([inputData, id, owner])
-            break;
-        case 3:
-            res = updateProjectStep3Stmt.run([inputData, id, owner])
-            break;
-        case 4:
-            res = updateProjectStep4Stmt.run([inputData, id, owner])
-            break;
-        case 5:
-            res = updateProjectStep5Stmt.run([inputData, id, owner])
-            break;
-        case 6:
-            res = updateProjectStep6Stmt.run([inputData, id, owner])
-            break;
-        case 7:
-            res = updateProjectStep7Stmt.run([inputData, id, owner])
-            break;
-        default:
-            break;
-    }
+export function addProjectStep(id: number, stepNumber: number, inputData: string) {
+    const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stepNumber, value) values (?, ?, ?)")
+    let res = addProjectStepStmt.run([id, stepNumber, inputData])
     return res
 }
 
-export function updateProjectEmissionFactors(owner: string, id: number, emissionFactorsString: string) {
-    const updateProjectEmissionFactorStmt = db.prepare("UPDATE Projects set emissionFactors = ? WHERE id = ? AND owner = ?")
-    let res = updateProjectEmissionFactorStmt.run([emissionFactorsString, id, owner])
-    return res
-}
+// export function updateProjectEmissionFactors(owner: string, id: number, emissionFactorsString: string) {
+//     const updateProjectEmissionFactorStmt = db.prepare("UPDATE Projects set emissionFactors = ? WHERE id = ? AND owner = ?")
+//     let res = updateProjectEmissionFactorStmt.run([emissionFactorsString, id, owner])
+//     return res
+// }

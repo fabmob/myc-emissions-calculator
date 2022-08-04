@@ -43,8 +43,8 @@ export default function ProjectStep1(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    if (data.project.inputStep1 !== null){
-                        setInputData(data.project.inputStep1)
+                    if (data.project.steps[1]){
+                        setInputData(data.project.steps[1])
                     }
                 });
             }

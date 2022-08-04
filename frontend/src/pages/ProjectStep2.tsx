@@ -95,11 +95,11 @@ export default function ProjectStep2(){
                 .then(response => response.json())
                 .then(data => {
                     setProject(data.project)
-                    if (data.project.inputStep2 !== null){
+                    if (data.project.steps[2]){
                         setInputData((prevInputData) => {
-                            let vtypes = Object.keys(data.project.inputStep2)
+                            let vtypes = Object.keys(data.project.steps[2])
                             for (let i = 0; i < vtypes.length; i++) {
-                                prevInputData[vtypes[i]] = data.project.inputStep2[vtypes[i]]
+                                prevInputData[vtypes[i]] = data.project.steps[2][vtypes[i]]
                             }
                             return prevInputData
                         })

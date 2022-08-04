@@ -43,12 +43,12 @@ export default function ProjectStep7(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    let vtypes = Object.keys(data.project.inputStep2)
-                    let init:InputStep7 = {energySource: data.project.inputStep7?.energySource || '', energyGrowthSource: data.project.inputStep7?.energyGrowthSource || ''}
+                    let vtypes = Object.keys(data.project.steps[2])
+                    let init:InputStep7 = {energySource: data.project.steps[7]?.energySource || '', energyGrowthSource: data.project.steps[7]?.energyGrowthSource || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.inputStep7?.[vtype]) {
-                            init[vtype] = data.project.inputStep7[vtype]
+                        if (data.project.steps[7]?.[vtype]) {
+                            init[vtype] = data.project.steps[7][vtype]
                         } else {
                             let tmp = {} as {[key in FuelType]: string[]}
                             for (let j = 0; j < ftypes.length; j++) {
@@ -133,16 +133,16 @@ export default function ProjectStep7(){
                                 </tr>
                             </thead>
                             <tbody>
-                            {Object.keys(project.inputStep2 || []).map((vtype, index) => {
-                                if (!project.inputStep2 || project.inputStep2[vtype] === false || !inputData) {
+                            {Object.keys(project.steps?.[2] || []).map((vtype, index) => {
+                                if (!project.steps?.[2] || project.steps[2][vtype] === false || !inputData) {
                                     return null
                                 }
                                 let inputVt = inputData[vtype] as {[key in FuelType]: string[]}
-                                if (inputVt !== undefined && project.inputStep5) {
-                                    let fuelJsx = Object.keys(project.inputStep5[vtype] || []).map((ft, i) => {
+                                if (inputVt !== undefined && project.steps?.[5]) {
+                                    let fuelJsx = Object.keys(project.steps[5][vtype] || []).map((ft, i) => {
                                         let ftype = ft as FuelType
                                         let inputFt = inputVt?.[ftype]
-                                        let tmp = project?.inputStep5?.[vtype] as {[key in FuelType]: boolean}
+                                        let tmp = project?.steps[5]?.[vtype] as {[key in FuelType]: boolean}
                                         if (!tmp || tmp[ftype] === false || !inputData) {
                                             return  null
                                         }
