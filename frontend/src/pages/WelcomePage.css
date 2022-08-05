@@ -1,0 +1,46 @@
+.partnerLine {
+    margin-bottom: 20px;
+}
+.partnerLine img {
+    max-width: 150px;
+    margin: 5px;
+    max-height: 80px;
+}
+header {
+    height: calc(100vh - 76px);
+    box-shadow: 0 12px 12px -10px rgba(48, 41, 41, 0.1);
+    background: linear-gradient(90deg, #9e2886 -100%, #1bb9d9);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+header #container {
+    color: white;
+    width: 80%;
+    height: 70%;
+
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    margin: 0 auto;
+    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+header #container h1 {
+    margin: 1.2rem 0;
+    color: white;
+    width: 100%;
+}
+header #container p {
+    font-size: 100%;
+}
+header button {
+    width: 300px;
+}
+footer {
+    background: linear-gradient(90deg, #9e2886 -100%, #1bb9d9);
+}
+.shadowbelow {
+    box-shadow: 0 9px 13px -13px grey
+}

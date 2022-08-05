@@ -2,10 +2,6 @@
   color: rgb(102, 102, 102);
 }
 
-h1 {
-    color: black
-}
-
 .btn-primary {
     background-color: #1bb9d9;
     border-color: #1bb9d9;
@@ -16,5 +12,5 @@ h1 {
 }
 .inputTable thead th {
     background-color: #9e2886;
-    color: white
+    color: white;
 }
