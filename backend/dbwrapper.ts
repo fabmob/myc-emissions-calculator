@@ -52,7 +52,7 @@ function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectSteps
     let project = projectEntry as Project
     // Skipping index 0 to match stepNumber with index in array
     project.steps = [null]
-    project.step = 1
+    project.step = (project.step + 1) || 1
     if (projectSteps) {
         project.step = projectSteps.length + 1
         for (let i = 0; i < projectSteps.length; i++) {
@@ -63,7 +63,7 @@ function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectSteps
     return project
 }
 export function getProjectsByOwner(owner: string) {
-    const getProjectsByOwnerStmt = db.prepare("SELECT * FROM Projects WHERE owner = ?")
+    const getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner = ? group by id")
     let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
     return res.map(projectEntry => parseProject(projectEntry))
 }
@@ -81,9 +81,3 @@ export function addProjectStep(id: number, stepNumber: number, inputData: string
     let res = addProjectStepStmt.run([id, stepNumber, inputData])
     return res
 }
-
-// export function updateProjectEmissionFactors(owner: string, id: number, emissionFactorsString: string) {
-//     const updateProjectEmissionFactorStmt = db.prepare("UPDATE Projects set emissionFactors = ? WHERE id = ? AND owner = ?")
-//     let res = updateProjectEmissionFactorStmt.run([emissionFactorsString, id, owner])
-//     return res
-// }
