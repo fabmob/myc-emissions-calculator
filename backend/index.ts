@@ -68,6 +68,28 @@ app.get('/api/project/:projectId', keycloak.protect(), (req: Request, res: Respo
         project: dbres
     });
 });
+app.put('/api/project/:projectId', keycloak.protect(), (req: Request, res: Response) => {
+    let owner = (req as any).kauth.grant.access_token.content.email
+    let inputProject : types.Project = req.body.project
+    let [errorCode, dbres] = dbwrapper.updateProject(parseInt(req.params.projectId), owner, inputProject)
+    if (dbres !== null) {
+        res.json({
+            status: "ok"
+        });
+    } else {
+        if (errorCode === "SQLITE_CONSTRAINT_UNIQUE") {
+            res.status(409).json({
+                status: "err",
+                errorCode: errorCode
+            })
+        } else {
+            res.status(400).json({
+                status: "err",
+                errorCode: errorCode
+            })
+        }
+    }
+});
 app.delete('/api/project/:projectId', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
     let dbres = dbwrapper.deleteProject(parseInt(req.params.projectId), owner)

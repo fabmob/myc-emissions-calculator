@@ -1,6 +1,6 @@
-import React, {useState, useMemo} from 'react'
+import React, {useState, useMemo, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import countryList from 'react-select-country-list'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
@@ -10,10 +10,13 @@ import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import Progress from '../components/Progress'
+import { ProjectType } from '../frontendTypes'
 
 
 export default function CreateProject() {
     const navigate = useNavigate();
+    let params = useParams();
     const { keycloak, initialized } = useKeycloak();
     const [ projectName, setProjectName ] = useState("")
     const [ projectCity, setProjectCity ] = useState("")
@@ -23,17 +26,42 @@ export default function CreateProject() {
     const [ projectReferenceYear, setProjectReferenceYear ] = useState("2020")
     const [validated, setValidated] = useState(false)
     const [ createWarning, setCreateWarning ] = useState(false)
+    let [project, setProject ] = useState({} as ProjectType)
     const countryOptions = useMemo(() => countryList().getData(), [])
+    const projectId = params.projectId
+    useEffect(() => {
+        if (initialized && keycloak.authenticated && projectId){ 
+            // We are not creating a new project, but editing one
+            const requestOptions = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
+            };
+            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("get projetcs reply", data)
+                    let loadedProject = data.project as ProjectType
+                    setProject(loadedProject)
+                    setProjectName(loadedProject.name)
+                    setProjectCity(loadedProject.city)
+                    setProjectCountry(loadedProject.country)
+                    setPartnerLocation(loadedProject.partnerLocation)
+                    setProjectArea(loadedProject.area)
+                    setProjectReferenceYear(loadedProject.referenceYear)
+                });
+            }
+    }, [keycloak, initialized])
     if (initialized && !keycloak.authenticated){
         return <Navigate to='/'  />
     }
 
+
     const createProject = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         const form = event.currentTarget;
         setValidated(true)
         setCreateWarning(false)
         if (form.checkValidity() === false) {
-            event.preventDefault();
             event.stopPropagation();
             return
         }
@@ -45,26 +73,47 @@ export default function CreateProject() {
             projectArea: projectArea,
             projectReferenceYear: projectReferenceYear
         }
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
-            body: JSON.stringify({ project: projectDict })
-        };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/createProject', requestOptions)
-            .then(response => {
-                if (response.status === 409) {
-                    // Unique constraint failed, project name already exists
-                    setCreateWarning(true)
-                    setValidated(false)
-                }
-                return response.json()
-            })
-            .then(data => {
-                if (data.status !== "err") {
-                    navigate('/project/' + data.projectId + '/step/1')
-                }
-            });
-        event.preventDefault();
+        if (!projectId) {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
+                body: JSON.stringify({ project: projectDict })
+            };
+            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/createProject', requestOptions)
+                .then(response => {
+                    if (response.status === 409) {
+                        // Unique constraint failed, project name already exists
+                        setCreateWarning(true)
+                        setValidated(false)
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    if (data.status !== "err") {
+                        navigate('/project/' + data.projectId + '/step/1')
+                    }
+                });
+        } else {
+            const requestOptions = {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
+                body: JSON.stringify({ project: projectDict })
+            };
+            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
+                .then(response => {
+                    if (response.status === 409) {
+                        // Unique constraint failed, project name already exists
+                        setCreateWarning(true)
+                        setValidated(false)
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    if (data.status !== "err") {
+                        navigate('/project/' + projectId + '/step/1')
+                    }
+                });
+        }
     }
     const referenceYearTooltip = (props:any) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -72,7 +121,8 @@ export default function CreateProject() {
         </Tooltip>
     );
     return (
-        <Container>
+        <Container style={{paddingTop: "30px"}}>
+            <Progress project={project} currentStep={0} />
             <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
                 <Col xs lg="5">
                     <h1 style={{marginBottom: "40px"}}>Project Information</h1>

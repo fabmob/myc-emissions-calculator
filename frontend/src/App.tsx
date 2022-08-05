@@ -25,6 +25,8 @@ function App() {
                     <Route path="/" element={<WelcomePage />} />
                     <Route path="/getStarted" element={<GetStarted />} />
                     <Route path="/createProject" element={<CreateProject />} />
+                    {/* Step 0 is also using createproject page, as a way of editing project info */}
+                    <Route path="/project/:projectId/step/0" element={<CreateProject />} />
                     <Route path="/project/:projectId/step/1" element={<ProjectStep1 />} />
                     <Route path="/project/:projectId/step/2" element={<ProjectStep2 />} />
                     <Route path="/project/:projectId/step/3" element={<ProjectStep3 />} />

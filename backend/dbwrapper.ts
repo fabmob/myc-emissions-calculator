@@ -93,7 +93,24 @@ export function updateProjectStatus(id: number, owner: string, status: string) {
     let res = updateProjectStatusStmt.run([status, id, owner])
     return res
 }
-
+export function updateProject(id: number, owner: string, project: types.Project) {
+    const updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYear = ? where id = ? and owner = ?")
+    try {
+        let res = updateProjectStatusStmt.run([
+            project.projectName,
+            project.projectCountry,
+            project.projectCity,
+            project.partnerLocation,
+            project.projectArea,
+            project.projectReferenceYear,
+            id, 
+            owner
+        ])
+        return [null, res]
+    } catch (error: any) {
+        return [error?.code, null]
+    }
+}
 export function deleteProject(id: number, owner: string) {
     const updateProjectStatusStmt = db.prepare("DELETE FROM Projects where id = ? and owner = ?")
     let res = updateProjectStatusStmt.run([id, owner])

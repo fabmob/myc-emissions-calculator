@@ -75,7 +75,7 @@ export default function GetStarted(){
                         <p>
                             To compile an inventory and obtain the BAU scenario, you will require different input data - for the 
                             <OverlayTrigger placement="right" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
-                                <span> year of reference🛈 </span>
+                                <span style={{whiteSpace: "nowrap"}}> year of reference🛈 </span>
                             </OverlayTrigger> 
                             and its projected evolution until 2050 (if you want to calculate BAU).<br/> 
                             You can find the details <a href='#' onClick={handleShow}>here</a>

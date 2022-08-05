@@ -34,6 +34,13 @@ const Progress = (props: {project: ProjectType, currentStep: number}) => {
     return (
         <div className="progressMenu" style={{marginTop: "-20px"}}>
             <Button
+                className={getClassName(0)}
+                disabled={props.project.step < 0}
+                onClick={() => link('0')}>
+                Project info
+            </Button>
+            →
+            <Button
                 className={getClassName(1)}
                 disabled={props.project.step < 1}
                 onClick={() => link('1')}>
