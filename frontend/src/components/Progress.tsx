@@ -9,6 +9,10 @@ const Progress = (props: {project: ProjectType, currentStep: number}) => {
     const link = (step: string) => navigate('/project/' + props.project.id + '/step/' + step)
     const viz = () => navigate('/project/' + props.project.id + '/viz')
     const getClassName = (step: number) => {
+        if (props.project.step === 8) {
+            // Step 8: overview is done by default
+            props.project.step = 100
+        }
         if (props.currentStep === step) {
             if (props.project.step > props.currentStep) {
                 return "currentStepDone"
