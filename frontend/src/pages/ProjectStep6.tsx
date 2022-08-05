@@ -151,9 +151,9 @@ export default function ProjectStep6(){
                     {sumWarning? <Alert variant="danger">
                         Error: At least one of the sums of share is not 100%.
                     </Alert> : <></>}
-                    <h2>Please enter <b>the percentage of vehicle kilometers travelled (vkt)</b>  per vehicle category and fuel type for the reference year and for future years. </h2>
+                    <p>Please enter <b>the percentage of vehicle kilometers travelled (vkt)</b>  per vehicle category and fuel type for the reference year and for future years. </p>
 
-                    <h2>Remark 1: The sum of shares in each vehicle category must be 100 %.</h2>
+                    <p>Remark 1: The sum of shares in each vehicle category must be 100 %.</p>
 
                     <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
@@ -260,7 +260,7 @@ export default function ProjectStep6(){
                             </Form.Group>
                         :''}
 
-                        <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></h2>
+                        <p>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></p>
                         <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                             Previous
                         </Button>

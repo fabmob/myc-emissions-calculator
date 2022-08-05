@@ -112,11 +112,11 @@ export default function ProjectStep3(){
                 <Col xs lg="8">
                     <h1>Set up transport activity data</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                    <h2>Please enter the <b> vehicle kilometers travelled (Mio km)</b> in the table delivered by the transport plannig tool for the reference year.</h2>
+                    <p>Please enter the <b> vehicle kilometers travelled (Mio km)</b> in the table delivered by the transport plannig tool for the reference year.</p>
 
-                    <h2>For BAU calculations, please enter the expected % of growth or decrease for the corresponding years in the same way. </h2>
+                    <p>For BAU calculations, please enter the expected % of growth or decrease for the corresponding years in the same way. </p>
 
-                    <h2><i>Data input for the vehicle kilometers travelled in the reference year is mandatory.</i></h2>
+                    <p><i>Data input for the vehicle kilometers travelled in the reference year is mandatory.</i></p>
                     <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>
@@ -194,7 +194,7 @@ export default function ProjectStep3(){
                                 </Col>
                             </Form.Group>
                         :''}
-                        <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></h2>
+                        <p>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></p>
                         <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                             Previous
                         </Button>

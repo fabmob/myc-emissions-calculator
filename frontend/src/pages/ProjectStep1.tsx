@@ -94,11 +94,11 @@ export default function ProjectStep1(){
                 <Col xs lg="8">
                     <h1>Set up socio economic data</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                    <h2>Please enter the <b>population</b> and the <b>gross domestic product (GDP)</b>  of your city for the reference year in the table below. For BAU scenario calculations please also enter corresponding annual growth rates.  </h2>
+                    <p>Please enter the <b>population</b> and the <b>gross domestic product (GDP)</b>  of your city for the reference year in the table below. For BAU scenario calculations please also enter corresponding annual growth rates.  </p>
 
-                    <h2><i>Data input for the population in the reference year is mandatory, data input for the GDP is optional.</i></h2>
+                    <p><i>Data input for the population in the reference year is mandatory, data input for the GDP is optional.</i></p>
                     
-                    <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></h2>
+                    <p>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></p>
                     <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>

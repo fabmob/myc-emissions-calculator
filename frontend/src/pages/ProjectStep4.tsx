@@ -109,16 +109,16 @@ export default function ProjectStep4(){
                 <Col xs lg="8">
                     <h1>Set up occupancy</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                    <h2>Please enter <b>the occupancy for passenger vehicles</b> (average number of passengers per vehicle).</h2>
+                    <p>Please enter <b>the occupancy for passenger vehicles</b> (average number of passengers per vehicle).</p>
 
-                    <h2>Remark 1: These values are used both for inventory and BAU purposes. <br/>
-                        Remark 2: Conventionally drivers of public transport are not included as there are not passengers (incl. taxi), but for private transport drivers should be included if they travel for their own sake. </h2>
+                    <p>Remark 1: These values are used both for inventory and BAU purposes. <br/>
+                        Remark 2: Conventionally drivers of public transport are not included as there are not passengers (incl. taxi), but for private transport drivers should be included if they travel for their own sake. </p>
 
-                    <h2><i>Local city data can be used if available and robust.<br/>
+                    <p><i>Local city data can be used if available and robust.<br/>
                     Otherwise for cities it is recommended to use national data and for countries to use regional specific data. If you do not have data available please get in touch with MYC secretariat to check if data are available for your city.<br/>
 
                      
-                    </i></h2>
+                    </i></p>
                     <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>
@@ -162,7 +162,7 @@ export default function ProjectStep4(){
                             </Form.Group>
                         :''}
 
-                        <h2>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></h2>
+                        <p>Need some help to find the data, <a href="mailto:contact@myc.com">click here to send us an email</a></p>
                         <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
                             Previous
                         </Button>

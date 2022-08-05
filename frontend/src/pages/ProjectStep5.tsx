@@ -162,8 +162,8 @@ export default function ProjectStep5(){
                 <Col xs lg="8">
                     <h1>Select the fuel types of the means of transport</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
-                    <h2><a href="#" onClick={()=>setShowEmissionsFactors(true)}>Show and configure emissions factors</a></h2>
-                    <h2>Please select the fuel types of the means of transport existing or expected on your territory.</h2>
+                    <p><a href="#" onClick={()=>setShowEmissionsFactors(true)}>Show and configure emissions factors</a></p>
+                    <p>Please select the fuel types of the means of transport existing or expected on your territory.</p>
                     <Table className="inputTable">
                         <thead>
                             <tr>
