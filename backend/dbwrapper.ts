@@ -4,7 +4,7 @@ const db = new Database('data.db', {verbose: console.log})
 
 export function init() {
     try {
-        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYear INTEGER, UNIQUE(name))")
+        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYear INTEGER, status STRING, UNIQUE(name))")
         db.exec("CREATE Table ProjectSteps (projectId INTEGER, stepNumber INTEGER, value STRING, FOREIGN KEY(projectId) REFERENCES Projects(id),  UNIQUE(projectId, stepNumber) ON CONFLICT REPLACE)")
     } catch (err) {
         console.log("Table alredy exists")
@@ -19,7 +19,8 @@ type ProjectsDbEntry = {
     city: string,
     partnerLocation: string,
     area: string,
-    referenceYear: number
+    referenceYear: number,
+    status: string
 }
 type ProjectStepsDbEntry = {
     projectId: number,
@@ -31,7 +32,7 @@ type Project = ProjectsDbEntry & {
     step: number
 }
 export function createProject(project: types.Project, owner: string): [string | null, Database.RunResult | null] {
-    const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, country, city, partnerLocation, area, referenceYear) values (NULL, ?, ?, ?, ?, ?, ?, ?)")
+    const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, country, city, partnerLocation, area, referenceYear, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?)")
     try {
         let res = createProjectStmt.run([
             owner,
@@ -40,7 +41,8 @@ export function createProject(project: types.Project, owner: string): [string | 
             project.projectCity,
             project.partnerLocation,
             project.projectArea,
-            project.projectReferenceYear
+            project.projectReferenceYear,
+            "draft"
         ])
         return [null, res]
     } catch (error: any) {
@@ -67,9 +69,13 @@ export function getProjectsByOwner(owner: string) {
     let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
     return res.map(projectEntry => parseProject(projectEntry))
 }
-
+export function getPublicProjectsNotOwned(owner: string) {
+    const getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? AND status = 'validated' group by id")
+    let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
+    return res.map(projectEntry => parseProject(projectEntry))
+}
 export function getProject(owner: string, id: number) {
-    const getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ? AND owner = ?")
+    const getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ? AND (owner = ? OR status = 'validated')")
     let resProject: ProjectsDbEntry = getProjectStmt.get([id, owner])
     const getProjectStepsStmt = db.prepare("SELECT * FROM ProjectSteps WHERE projectId = ?")
     let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([id])
@@ -79,5 +85,17 @@ export function getProject(owner: string, id: number) {
 export function addProjectStep(id: number, stepNumber: number, inputData: string) {
     const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stepNumber, value) values (?, ?, ?)")
     let res = addProjectStepStmt.run([id, stepNumber, inputData])
+    return res
+}
+
+export function updateProjectStatus(id: number, owner: string, status: string) {
+    const updateProjectStatusStmt = db.prepare("UPDATE Projects set status = ? where id = ? and owner = ?")
+    let res = updateProjectStatusStmt.run([status, id, owner])
+    return res
+}
+
+export function deleteProject(id: number, owner: string) {
+    const updateProjectStatusStmt = db.prepare("DELETE FROM Projects where id = ? and owner = ?")
+    let res = updateProjectStatusStmt.run([id, owner])
     return res
 }

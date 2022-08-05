@@ -51,6 +51,14 @@ app.get('/api/myProjects', keycloak.protect(), (req: Request, res: Response) => 
         projects: dbres
     });
 });
+app.get('/api/projects', keycloak.protect(), (req: Request, res: Response) => {
+    let owner = (req as any).kauth.grant.access_token.content.email
+    let dbres = dbwrapper.getPublicProjectsNotOwned(owner)
+    res.json({
+        status: "ok",
+        projects: dbres
+    });
+});
 
 app.get('/api/project/:projectId', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
@@ -60,7 +68,14 @@ app.get('/api/project/:projectId', keycloak.protect(), (req: Request, res: Respo
         project: dbres
     });
 });
-
+app.delete('/api/project/:projectId', keycloak.protect(), (req: Request, res: Response) => {
+    let owner = (req as any).kauth.grant.access_token.content.email
+    let dbres = dbwrapper.deleteProject(parseInt(req.params.projectId), owner)
+    console.log(dbres)
+    res.json({
+        status: "ok"
+    });
+});
 app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
     let dbProject = dbwrapper.getProject(owner, parseInt(req.params.projectId))
@@ -123,22 +138,34 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
 
 app.put('/api/project/:projectId/step/:stepNumber', keycloak.protect(), (req: Request, res: Response) => {
     let inputDataString = JSON.stringify(req.body.inputData)
-    let dbres = dbwrapper.addProjectStep(parseInt(req.params.projectId), parseInt(req.params.stepNumber), inputDataString)
+
+    // Check ownership before making an edit
+    let owner = (req as any).kauth.grant.access_token.content.email
+    let projectdbres = dbwrapper.getProject(owner, parseInt(req.params.projectId))
+    
+    if (projectdbres?.owner === owner) {
+        let dbres = dbwrapper.addProjectStep(parseInt(req.params.projectId), parseInt(req.params.stepNumber), inputDataString)
+        console.log(dbres)
+        res.json({
+            status: "ok"
+        });
+    } else {
+        res.status(403).json({
+            status: "not allowed to edit this project"
+        });
+    }
+});
+
+app.post('/api/project/:projectId/validate', keycloak.protect(), (req: Request, res: Response) => {
+    let owner = (req as any).kauth.grant.access_token.content.email
+    let dbres = dbwrapper.updateProjectStatus(parseInt(req.params.projectId), owner, "validated")
     console.log(dbres)
     res.json({
         status: "ok"
     });
 });
 
-// app.put('/api/project/:projectId/emissionFactors', keycloak.protect(), (req: Request, res: Response) => {
-//     let owner = (req as any).kauth.grant.access_token.content.email
-//     let emissionFactorsString = JSON.stringify(req.body.emissionFactors)
-//     let dbres = dbwrapper.updateProjectEmissionFactors(owner, parseInt(req.params.projectId), emissionFactorsString)
-//     console.log(dbres)
-//     res.json({
-//         status: "ok"
-//     });
-// });
+
 
 app.all('/api/*', function(_, res) {
     res.status(404).json({

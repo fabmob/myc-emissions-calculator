@@ -8,6 +8,7 @@ export type ProjectType = {
     referenceYear: string,
     step: number,
     steps: any[],
+    status: 'draft' | 'validated',
     outputSocioEconomicDataComputed?: {
         population: number[],
         gdp: number[]

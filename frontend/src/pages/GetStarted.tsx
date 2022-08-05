@@ -1,21 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
-import { Navigate } from 'react-router-dom'
-import Button from 'react-bootstrap/Button'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Stack from 'react-bootstrap/Stack'
-import Form from 'react-bootstrap/Form'
-import Modal from 'react-bootstrap/Modal'
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import Tooltip from 'react-bootstrap/Tooltip'
+import { Navigate, useNavigate } from 'react-router-dom'
 import {ProjectType} from '../frontendTypes'
+import { Container, Button, Row, Col, Stack, Form, Modal, OverlayTrigger, Tooltip, Table, Badge } from 'react-bootstrap'
 
 export default function GetStarted(){
     const { keycloak, initialized } = useKeycloak();
     const [ projects, setProjects ] = useState([] as ProjectType[])
-    const [ selectedProject, setSelectedProject ] = useState("")
+    const [ publicProjects, setPublicProjects ] = useState([] as ProjectType[])
     const [ gotoCreate, setGotoCreate ] = useState(false)
 
     const [show, setShow] = useState(false);
@@ -24,41 +16,50 @@ export default function GetStarted(){
     const handleShow = () => setShow(true);
     useEffect(() => {
         if (initialized && keycloak.authenticated){
-            const requestOptions = {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
-            };
-            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/myProjects', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("get projetcs reply", data)
-                    setProjects(data.projects)
-                });
-            }
+            loadProjects()
+        }
     }, [initialized, keycloak])
     if (initialized && !keycloak.authenticated){
         return <Navigate to='/'  />
     }
-    if (selectedProject !== ""){
-        let p = projects.find(project => project.id === parseInt(selectedProject))
-        let step = p?.step
-        let url = "/project/" + selectedProject + "/step/" + step
-        if (step === 8) {
-            url = "/project/" + selectedProject + "/viz"
-        }
-        return <Navigate to={url}  />
-    }
     if (gotoCreate) {
         return <Navigate to='/createProject'  />
     }
-    let options = []
-    for (let i = 0; i < projects.length; i++) {
-        let project = projects[i] as ProjectType
-        options.push(<option key={i} value={project.id}>{project.name}</option>)
+    const loadProjects = () => {
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
+        };
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/myProjects', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                console.log("get projetcs reply", data)
+                setProjects(data.projects)
+            });
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/projects', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                setPublicProjects(data.projects)
+            });
     }
-    let projectSelected = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value
-        setSelectedProject(value)
+    const handleEditProject = (projectBeingEdited: ProjectType, action: 'validate' | 'delete') => {
+        if (action === 'validate') {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
+            };
+            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectBeingEdited.id + '/validate', requestOptions)
+                .then(response => response.json())
+                .then(loadProjects)
+        } else {
+            const requestOptions = {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
+            };
+            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectBeingEdited.id, requestOptions)
+                .then(response => response.json())
+                .then(loadProjects)
+        }
     }
     const referenceYearTooltip = (props:any) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -68,24 +69,30 @@ export default function GetStarted(){
     return (
         <>
             <Container>
-                <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
+                <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)", paddingTop: "20px"}}>
                     <Col xs lg="8">
                         <h1 style={{marginBottom: "40px"}}>Get Started</h1>
-                        <h2>To compile an inventory and obtain the BAU scenario, you will require different input data - for the <OverlayTrigger placement="right" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}><span>year of reference 🛈</span></OverlayTrigger> and its projected evolution until 2050 (if you want to calculate BAU).<br/> You can find the details <a href='#' onClick={handleShow}>here</a></h2>
+                        <p>
+                            To compile an inventory and obtain the BAU scenario, you will require different input data - for the 
+                            <OverlayTrigger placement="right" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
+                                <span> year of reference🛈 </span>
+                            </OverlayTrigger> 
+                            and its projected evolution until 2050 (if you want to calculate BAU).<br/> 
+                            You can find the details <a href='#' onClick={handleShow}>here</a>
+                        </p>
 
-                        <h2>Cities which can not provide all of the required data can contact the <a href="https://www.mobiliseyourcity.net/about_the_partnership">MobiliseYourCity Secretariat </a> to check if suitable data are available.</h2>
+                        <p>Cities which can not provide all of the required data can contact the <a href="https://www.mobiliseyourcity.net/about_the_partnership">MobiliseYourCity Secretariat </a> to check if suitable data are available.</p>
                         
                         {initialized ?
                         <Stack gap={2} className="col-md-5 mx-auto">
-                            <Button variant="primary" onClick={_ => setGotoCreate(true)}>Create a project</Button>
-                            <Form.Select aria-label="Select a project" onChange={projectSelected}>
-                                <option key="select">Select an existing project</option>
-                                {options}
-                            </Form.Select>
+                            <Button variant="primary" onClick={_ => setGotoCreate(true)}>Create a new project</Button>
                         </Stack>
                         : <div>Loading...</div>
                         }
                     </Col>
+                    <Row>
+                        {initialized && <Projects ownedProjects={projects} publicProjects={publicProjects} handleEditProject={handleEditProject}/>}
+                    </Row>
                 </Row>
             </Container>
             <Modal size="lg" centered show={show} onHide={handleClose}>
@@ -122,5 +129,169 @@ export default function GetStarted(){
                 </Modal.Footer>
             </Modal>
         </>
+    )
+}
+
+const Projects = ({ownedProjects, publicProjects, handleEditProject}: {ownedProjects: ProjectType[], publicProjects: ProjectType[], handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void}) => (
+    <div style={{textAlign: "left"}}>
+        <h2>Your projects</h2>
+        <OwnedProjects ownedProjects={ownedProjects} handleEditProject={handleEditProject}/>
+        <h2>Public projects</h2>
+        <PublicProjects publicProjects={publicProjects} handleEditProject={handleEditProject}/>
+    </div>
+)
+const OwnedProjects = ({ownedProjects, handleEditProject}: {ownedProjects: ProjectType[], handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void}) => {
+    const navigate = useNavigate()
+    const { keycloak, initialized } = useKeycloak();
+    const [showValidateConfirmModal, setShowValidateConfirmModal] = useState(false);
+    const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+    const [projectBeingEdited, setProjectBeingEdited] = useState({} as ProjectType);
+
+    const handleCloseValidateConfirmModal = (shouldValidate: boolean) => {
+        setShowValidateConfirmModal(false)
+        if (shouldValidate && projectBeingEdited !== undefined) {
+            handleEditProject(projectBeingEdited, 'validate')
+        }
+    }
+    const handleShowValidateConfirmModal = (project: ProjectType) => {
+        setProjectBeingEdited(project)
+        setShowValidateConfirmModal(true)
+    }
+    const handleCloseDeleteConfirmModal = (shouldDelete: boolean) => {
+        setShowDeleteConfirmModal(false)
+        if (shouldDelete && projectBeingEdited !== undefined) {
+            handleEditProject(projectBeingEdited, 'delete')
+        }
+    }
+    const handleShowDeleteConfirmModal = (project: ProjectType) => {
+        setProjectBeingEdited(project)
+        setShowDeleteConfirmModal(true)
+    }
+    const openProject = (p: ProjectType) => {
+        let url = "/project/" + p.id + "/step/" + p.step
+        if (p.step === 8) {
+            url = "/project/" + p.id + "/viz"
+        }
+        return navigate(url)
+    }
+    return (
+        <div>
+            <Table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Progress</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody style={{verticalAlign: "middle"}}>
+                    {ownedProjects.map(project => 
+                        <tr key={project.id}>
+                            <td>{project.id}</td>
+                            <td>{project.name}</td>
+                            <td>{project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="success">Validated</Badge>}</td>
+                            <td><ProjectProgress step={project.step}/></td>
+                            <td style={{whiteSpace: "nowrap"}}>
+                                <Button variant="primary" className="btn-sm" style={{marginRight: "2px"}} onClick={() => openProject(project)}>Open</Button>
+                                <Button variant="success" className="btn-sm" style={{marginRight: "2px"}} disabled={project.step < 8} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
+                                <Button variant="danger" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}>Delete</Button>
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </Table>
+            <ValidateConfirmModal 
+                showValidateConfirmModal={showValidateConfirmModal}
+                handleCloseValidateConfirmModal={handleCloseValidateConfirmModal}
+                projectBeingEdited={projectBeingEdited}
+            />
+            <DeleteConfirmModal 
+                showDeleteConfirmModal={showDeleteConfirmModal}
+                handleCloseDeleteConfirmModal={handleCloseDeleteConfirmModal}
+                projectBeingEdited={projectBeingEdited}
+            />
+        </div>
+    )
+}
+const ValidateConfirmModal = ({showValidateConfirmModal, handleCloseValidateConfirmModal, projectBeingEdited}: 
+    {showValidateConfirmModal: boolean, handleCloseValidateConfirmModal: (shouldValidate: boolean) => void, projectBeingEdited: ProjectType}) => (
+    <Modal size="lg" centered show={showValidateConfirmModal} onHide={() => handleCloseValidateConfirmModal(false)}>
+        <Modal.Header closeButton>
+            <Modal.Title>Validate confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>Are you sure you want to validate the project {projectBeingEdited.name} ?</p>
+            <p>Validated projects are marked as complete, and might later be published to every user</p>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="success" onClick={() => handleCloseValidateConfirmModal(true)}>
+                Confirm validate
+            </Button>
+            <Button variant="secondary" onClick={() => handleCloseValidateConfirmModal(false)}>
+                Close
+            </Button>
+        </Modal.Footer>
+    </Modal>
+)
+const DeleteConfirmModal = ({showDeleteConfirmModal, handleCloseDeleteConfirmModal, projectBeingEdited}: 
+    {showDeleteConfirmModal: boolean, handleCloseDeleteConfirmModal: (shouldDelete: boolean) => void, projectBeingEdited: ProjectType}) => (
+    <Modal size="lg" centered show={showDeleteConfirmModal} onHide={() => handleCloseDeleteConfirmModal(false)}>
+        <Modal.Header closeButton>
+            <Modal.Title>Delete confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>Are you sure you want to delete the project {projectBeingEdited.name} ?</p>
+            <p>This operation is definitive, all data related to this project will be lost.</p>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="danger" onClick={() => handleCloseDeleteConfirmModal(true)}>
+                Confirm delete
+            </Button>
+            <Button variant="secondary" onClick={() => handleCloseDeleteConfirmModal(false)}>
+                Close
+            </Button>
+        </Modal.Footer>
+    </Modal>
+)
+const ProjectProgress = ({step} : {step: number}) => {
+    let res = ""
+    for (let i = 0; i < step; i++) {
+        res += '🟩'
+    }
+    for (let i = step; i < 8; i++) {
+        res += '🟧'
+    }
+    return <span style={{whiteSpace: "nowrap"}}>{res}</span>
+}
+const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: ProjectType[], handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void}) => {
+    const navigate = useNavigate()
+    const openProject = (p: ProjectType) => {
+        return navigate("/project/" + p.id + "/viz")
+    }
+    return (
+        <Table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Author</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {publicProjects.map(project => 
+                    <tr key={project.id}>
+                        <td>{project.id}</td>
+                        <td>{project.name}</td>
+                        <td>{project.owner}</td>
+                        <td>
+                            <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}>Open</Button>
+                        </td>
+                    </tr>
+                )}
+            </tbody>
+        </Table>
     )
 }
