@@ -10,6 +10,8 @@ import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import { Typeahead } from 'react-bootstrap-typeahead'
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 import Progress from '../components/Progress'
 import { ProjectType } from '../frontendTypes'
 
@@ -19,15 +21,59 @@ export default function CreateProject() {
     let params = useParams();
     const { keycloak, initialized } = useKeycloak();
     const [ projectName, setProjectName ] = useState("")
-    const [ projectCity, setProjectCity ] = useState("")
-    const [ projectCountry, setProjectCountry ] = useState("")
+    const [ projectCity, setProjectCity ] = useState([] as any[])
+    const [ projectCountry, setProjectCountry ] = useState([] as any[])
     const [ partnerLocation, setPartnerLocation ] = useState("")
     const [ projectArea, setProjectArea ] = useState("")
     const [ projectReferenceYear, setProjectReferenceYear ] = useState("2020")
     const [validated, setValidated] = useState(false)
     const [ createWarning, setCreateWarning ] = useState(false)
     let [project, setProject ] = useState({} as ProjectType)
-    const countryOptions = useMemo(() => countryList().getData(), [])
+    const blacklistCountries: {[key:string]:boolean} = {
+        "Guadeloupe": true,
+        "Martinique": true,
+        "French Guiana": true,
+        "Réunion": true,
+        "Saint Pierre and Miquelon": true,
+        "Mayotte": true,
+        "Saint Barthélemy": true,
+        "Saint Martin (French part)": true,
+        "Wallis and Futuna": true,
+        "French Polynesia": true,
+        "New Caledonia": true,
+        "French Southern Territories": true
+    }
+    const cityOptions: {[key:string]:string[]}= {
+        "Mexico": ["Guadalajara"],
+        "Cuba": ["La Havana"],
+        "Dominican Republic": ["Santo Domingo"],
+        "Colombia": ["Ibagué"],
+        "Ecuador": ["Ambato", "Cuenca", "Loja", "Quito"],
+        "Peru": ["Arequipa", "Trujillo"],
+        "Chile": ["Antofagasta"],
+        "Brazil": ["Bajada Santista", "Belo Horizonte", "Brasilia", "Curitiba", "Fortaleza", "Recife", "Teresina"],
+        "Argentina": ["Córdoba"],
+        "Morocco": ["Agadir", "Beni Mellal", "Casablanca", "El Jadida", "Fes", "Kenitra", "Khemisset", "Khouribga", "Marrakesh", "Oujda", "Rabat", "Sefi", "Settat"],
+        "Tunisia": ["Sfax"],
+        "Senegal": ["Dakar"],
+        "Burkina Faso": ["Bobo Dioulasso", "Ougadougou"],
+        "Côte d'Ivoire": ["Abidjan", "Bouaké"],
+        "Ghana": ["Kumasi"],
+        "Niger": ["Niamey"],
+        "Togo": ["Lomé"],
+        "Cameroon": ["Douala", "Yaoundé"],
+        "Namibia": ["Windhoek"],
+        "Ethiopia": ["Dire Dawa", "Hawassa"],
+        "Tanzania, United Republic of": ["Dodoma"],
+        "Mozambique": ["Maputo"],
+        "Madagascar": ["Antananarivo", "Mahajanga"],
+        "Ukraine": ["Chernivtsi", "Lviv", "Poltava", "Vinnitsa", "Zhytomyr"],
+        "Georgia": ["Tbilisi"],
+        "Pakistan": ["Peshawar"],
+        "India": ["Ahmedabad", "Kochi", "Nagpur"],
+        "Sri Lanka": ["Kurunegala"]
+    }
+    const countryOptions = useMemo(() => countryList().getData().filter(c => !blacklistCountries[c.label]), [])
     const projectId = params.projectId
     useEffect(() => {
         if (initialized && keycloak.authenticated && projectId){ 
@@ -43,8 +89,8 @@ export default function CreateProject() {
                     let loadedProject = data.project as ProjectType
                     setProject(loadedProject)
                     setProjectName(loadedProject.name)
-                    setProjectCity(loadedProject.city)
-                    setProjectCountry(loadedProject.country)
+                    setProjectCity([loadedProject.city])
+                    setProjectCountry([loadedProject.country])
                     setPartnerLocation(loadedProject.partnerLocation)
                     setProjectArea(loadedProject.area)
                     setProjectReferenceYear(loadedProject.referenceYear)
@@ -67,8 +113,8 @@ export default function CreateProject() {
         }
         let projectDict = {
             projectName: projectName,
-            projectCountry: projectCountry,
-            projectCity: projectCity,
+            projectCountry: projectCountry[0],
+            projectCity: projectCity[0]?.label ? projectCity[0]?.label : projectCity[0],
             partnerLocation: partnerLocation,
             projectArea: projectArea,
             projectReferenceYear: projectReferenceYear
@@ -135,16 +181,30 @@ export default function CreateProject() {
 
                         <Form.Group className="mb-3">
                             <Form.Label className="reqStar">Select country</Form.Label>
-                            <Form.Select aria-label="Select a country" value={projectCountry} onChange={e => setProjectCountry(e.target.value)}>
-                                {countryOptions.map(e => (<option value={e.label} key={e.label}>{e.label}</option>))}
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">Please specify a country</Form.Control.Feedback>
+                            <Typeahead
+                                inputProps={{ required: true }}
+                                id="countryselector"
+                                selected={projectCountry}
+                                onInputChange={e => { setProjectCountry([e])}}
+                                onChange={o => { o.length && setProjectCountry(o)}}
+                                options={countryOptions.map(e => e.label)}
+                            />
+                            <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCountry[0]) ? "block": ''}}>Please specify a country</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label className="reqStar">City</Form.Label>
-                            <Form.Control type="input" required placeholder="" value={projectCity} onChange={e => setProjectCity(e.target.value)}/>
-                            <Form.Control.Feedback type="invalid">Please specify a city</Form.Control.Feedback>
+                            <Typeahead
+                                allowNew
+                                inputProps={{ required: true }}
+                                id="cityselector"
+                                newSelectionPrefix="Use this city: "
+                                selected={projectCity}
+                                onInputChange={e => setProjectCity([e])}
+                                onChange={o => { o.length && setProjectCity(o)}}
+                                options={cityOptions[projectCountry[0]] || []}
+                            />
+                            <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCity[0]) ? "block": ''}}>Please specify a city</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3">   
