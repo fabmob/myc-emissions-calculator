@@ -120,12 +120,12 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
         })
     }
     let inputSocioEconomicData : types.SocioEconomicData = project.steps[1]
-    project.outputSocioEconomicDataComputed = models.computeSocioEconomicData(inputSocioEconomicData, project.referenceYear)
+    project.outputSocioEconomicDataComputed = models.computeSocioEconomicData(inputSocioEconomicData, project.referenceYears)
 
     delete project.steps[3].vktSource
     delete project.steps[3].vktGrowthSource
     let inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = project.steps[3]
-    project.vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, project.referenceYear)
+    project.vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, project.referenceYears)
 
     delete project.steps[6].source
     let inputVktPerFuel : types.VktPerFuel = project.steps[6]
@@ -139,7 +139,7 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     delete project.steps[7].energySource
     delete project.steps[7].energyGrowthSource
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.steps[7]
-    project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYear)
+    project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYears)
 
     if (project.steps[5].emissionFactors?.WTW) {
         project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.steps[5].emissionFactors.WTW, project.outputVktPerFuelComputed)

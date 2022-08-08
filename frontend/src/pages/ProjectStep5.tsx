@@ -233,12 +233,12 @@ export default function ProjectStep5(){
                                 <th colSpan={6}>Cost of electricity production</th>
                             </tr>
                             <tr>
-                                <td>{project.referenceYear} (RY)</td>
-                                <td>{project.referenceYear}-2025</td>
-                                <td>2025-2030</td>
-                                <td>2030-2035</td>
-                                <td>2035-2040</td>
-                                <td>2040-2050</td>
+                                <td>{ project.referenceYears?.[0]} (RY)</td>
+                                <td>{ project.referenceYears?.[0]}-{ project.referenceYears?.[1]}</td>
+                                <td>{ project.referenceYears?.[1]}-{ project.referenceYears?.[2]}</td>
+                                <td>{ project.referenceYears?.[2]}-{ project.referenceYears?.[3]}</td>
+                                <td>{ project.referenceYears?.[3]}-{ project.referenceYears?.[4]}</td>
+                                <td>{ project.referenceYears?.[4]}-{ project.referenceYears?.[5]}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -267,12 +267,12 @@ export default function ProjectStep5(){
                                 <td></td>
                                 <td>Lower heating value</td>
                                 <td>Density</td>
-                                <td>{project.referenceYear} (RY)</td>
-                                <td>{project.referenceYear}-2025</td>
-                                <td>2025-2030</td>
-                                <td>2030-2035</td>
-                                <td>2035-2040</td>
-                                <td>2040-2050</td>
+                                <td>{ project.referenceYears?.[0]} (RY)</td>
+                                <td>{ project.referenceYears?.[0]}-{ project.referenceYears?.[1]}</td>
+                                <td>{ project.referenceYears?.[1]}-{ project.referenceYears?.[2]}</td>
+                                <td>{ project.referenceYears?.[2]}-{ project.referenceYears?.[3]}</td>
+                                <td>{ project.referenceYears?.[3]}-{ project.referenceYears?.[4]}</td>
+                                <td>{ project.referenceYears?.[4]}-{ project.referenceYears?.[5]}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -334,12 +334,12 @@ export default function ProjectStep5(){
                                 <td></td>
                                 <td>Lower heating value</td>
                                 <td>Density</td>
-                                <td>{project.referenceYear} (RY)</td>
-                                <td>{project.referenceYear}-2025</td>
-                                <td>2025-2030</td>
-                                <td>2030-2035</td>
-                                <td>2035-2040</td>
-                                <td>2040-2050</td>
+                                <td>{ project.referenceYears?.[0]} (RY)</td>
+                                <td>{ project.referenceYears?.[0]}-{ project.referenceYears?.[1]}</td>
+                                <td>{ project.referenceYears?.[1]}-{ project.referenceYears?.[2]}</td>
+                                <td>{ project.referenceYears?.[2]}-{ project.referenceYears?.[3]}</td>
+                                <td>{ project.referenceYears?.[3]}-{ project.referenceYears?.[4]}</td>
+                                <td>{ project.referenceYears?.[4]}-{ project.referenceYears?.[5]}</td>
                             </tr>
                         </thead>
                         <tbody>

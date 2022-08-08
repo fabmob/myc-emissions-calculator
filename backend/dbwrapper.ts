@@ -4,7 +4,7 @@ const db = new Database('data.db', {verbose: console.log})
 
 export function init() {
     try {
-        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYear INTEGER, status STRING, UNIQUE(owner, name))")
+        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYears INTEGER, status STRING, UNIQUE(owner, name))")
         db.exec("CREATE Table ProjectSteps (projectId INTEGER, stepNumber INTEGER, value STRING, FOREIGN KEY(projectId) REFERENCES Projects(id),  UNIQUE(projectId, stepNumber) ON CONFLICT REPLACE)")
     } catch (err) {
         console.log("Table alredy exists")
@@ -19,20 +19,30 @@ type ProjectsDbEntry = {
     city: string,
     partnerLocation: string,
     area: string,
-    referenceYear: number,
-    status: string
+    referenceYears: string,
+    status: string,
+    step?: number
 }
 type ProjectStepsDbEntry = {
     projectId: number,
     stepNumber: number,
     value: string
 }
-type Project = ProjectsDbEntry & {
+type Project = {
+    id: number,
+    owner: string,
+    name: string,
+    country: string,
+    city: string,
+    partnerLocation: string,
+    area: string,
+    status: string
+    referenceYears: number[],
     steps: any[],
     step: number
 }
 export function createProject(project: types.Project, owner: string): [string | null, Database.RunResult | null] {
-    const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, country, city, partnerLocation, area, referenceYear, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?)")
+    const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, country, city, partnerLocation, area, referenceYears, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?)")
     try {
         let res = createProjectStmt.run([
             owner,
@@ -41,7 +51,7 @@ export function createProject(project: types.Project, owner: string): [string | 
             project.projectCity,
             project.partnerLocation,
             project.projectArea,
-            project.projectReferenceYear,
+            project.projectReferenceYears.join(','),
             "draft"
         ])
         return [null, res]
@@ -51,10 +61,21 @@ export function createProject(project: types.Project, owner: string): [string | 
 }
 
 function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectStepsDbEntry[]) {
-    let project = projectEntry as Project
-    // Skipping index 0 to match stepNumber with index in array
-    project.steps = [null]
-    project.step = (project.step + 1) || 1
+    let project : Project = {
+        id: projectEntry.id,
+        owner: projectEntry.owner, 
+        name: projectEntry.name, 
+        country: projectEntry.country, 
+        city: projectEntry.city, 
+        partnerLocation: projectEntry.partnerLocation, 
+        area: projectEntry.area, 
+        status: projectEntry.status, 
+        referenceYears: projectEntry.referenceYears.split(',').map(s => parseInt(s)),
+        // Skipping index 0 to match stepNumber with index in array
+        steps: [null],
+        step: ((projectEntry.step || 0) + 1) || 1
+    }
+
     if (projectSteps) {
         project.step = projectSteps.length + 1
         for (let i = 0; i < projectSteps.length; i++) {
@@ -94,7 +115,7 @@ export function updateProjectStatus(id: number, owner: string, status: string) {
     return res
 }
 export function updateProject(id: number, owner: string, project: types.Project) {
-    const updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYear = ? where id = ? and owner = ?")
+    const updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ? where id = ? and owner = ?")
     try {
         let res = updateProjectStatusStmt.run([
             project.projectName,
@@ -102,7 +123,7 @@ export function updateProject(id: number, owner: string, project: types.Project)
             project.projectCity,
             project.partnerLocation,
             project.projectArea,
-            project.projectReferenceYear,
+            project.projectReferenceYears.join(","),
             id, 
             owner
         ])

@@ -1,19 +1,15 @@
 import * as types from './types'
-let dates : types.date[] = [0, 2025, 2030, 2035, 2040, 2050]
 
 export function computeSocioEconomicData(
     inputSocioEconomicData : types.SocioEconomicData,
-    referenceYear: number
+    referenceYears: number[]
 ) : types.SocioEconomicDataComputed {
     let outputSocioEconomicDataComputed: types.SocioEconomicDataComputed = {
         population: [inputSocioEconomicData.population, 0, 0, 0, 0, 0],
         gdp: [inputSocioEconomicData.gdp, 0, 0, 0, 0, 0]
     }
-    for (let i = 1; i < dates.length; i++) {
-        let numberOfYears = dates[i] - dates[i - 1]
-        if (i === 1) {
-            numberOfYears = dates[i] - referenceYear
-        }
+    for (let i = 1; i < 6; i++) {
+        let numberOfYears = referenceYears[i] - referenceYears[i - 1]
         let lastValue = outputSocioEconomicDataComputed.population[i-1]
         let percentIncrease = inputSocioEconomicData.populationRate[i-1]
         outputSocioEconomicDataComputed.population[i] = lastValue * Math.pow((1 + percentIncrease / 100), numberOfYears)
@@ -28,7 +24,7 @@ export function computeSocioEconomicData(
 
 export function computeVehicleKilometresTravelled(
     inputVehicleKilometresTravelled : types.VehicleKilometresTravelled,
-    referenceYear: number
+    referenceYears: number[]
 ) : types.VehicleKilometresTravelledComputed {
     let outputVehicleKilometresTravelledComputed = <types.VehicleKilometresTravelledComputed>{}
     let vehicleTypeArray = Object.keys(inputVehicleKilometresTravelled)
@@ -40,11 +36,8 @@ export function computeVehicleKilometresTravelled(
     // Compute increases according to rate
     for (let k = 0; k < vehicleTypeArray.length; k++) {
         let vtype = vehicleTypeArray[k]
-        for (let i = 1; i < dates.length; i++) {
-            let numberOfYears = dates[i] - dates[i - 1]
-            if (i === 1) {
-                numberOfYears = dates[i] - referenceYear
-            }
+        for (let i = 1; i < 6; i++) {
+            let numberOfYears = referenceYears[i] - referenceYears[i - 1]
             let lastValue = outputVehicleKilometresTravelledComputed[vtype][i-1]
             let percentIncrease = inputVehicleKilometresTravelled[vtype]?.vktRate[i-1] || 0
             outputVehicleKilometresTravelledComputed[vtype][i] = lastValue * Math.pow((1 + percentIncrease / 100), numberOfYears)
@@ -123,7 +116,7 @@ export function computeModalShare (
     for (let i = 0; i < vehicleTypes.length; i++) {
         let vtype = vehicleTypes[i]
         outputModalShare[vtype] = [0, 0, 0, 0, 0, 0]
-        for (let d = 0; d < dates.length; d++) {
+        for (let d = 0; d < 6; d++) {
             let a = transportPerformance[vtype]
             if (a) {
                 let b = a[d]
@@ -137,7 +130,7 @@ export function computeModalShare (
 
 export function computeAverageEnergyConsumption(
     inputAverageEnergyConsumption: types.AverageEnergyConsumption,
-    referenceYear: number
+    referenceYears: number[]
 ) : types.AverageEnergyConsumptionComputed {
     let outputAverageEnergyConsumptionComputed: types.AverageEnergyConsumptionComputed = {}
     let vehicleTypes = Object.keys(inputAverageEnergyConsumption)
@@ -160,11 +153,8 @@ export function computeAverageEnergyConsumption(
                     0
                 ]
 
-                for (let i = 1; i < dates.length; i++) {
-                    let numberOfYears = dates[i] - dates[i - 1]
-                    if (i === 1) {
-                        numberOfYears = dates[i] - referenceYear
-                    }
+                for (let i = 1; i < 6; i++) {
+                    let numberOfYears = referenceYears[i] - referenceYears[i - 1]
                     let lastValue = outputConsomationCurrentCarburant[i-1]
                     let percentIncrease = inputAnnualChangePerCarburant[i] || 0
                     outputConsomationCurrentCarburant[i] = lastValue * Math.pow((1 + percentIncrease / 100), numberOfYears)
@@ -194,7 +184,7 @@ export function computeTotalEnergyAndEmissions(
                 energy: [0, 0, 0, 0, 0, 0],
                 co2: [0, 0, 0, 0, 0, 0]
             }
-            for (let k = 0; k < dates.length; k++) {
+            for (let k = 0; k < 6; k++) {
                 let tmp = outputTotalEnergyAndEmissions[vtype][fuelTypes[j]]
                 let pci = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.pci || 0
                 let co2default = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.ges[k] || 0
@@ -224,7 +214,7 @@ export function sumTotalEnergyAndEmissions(
         }
         let fuelTypes = Object.keys(totalEnergyAndEmissions[vtype]) as types.FuelType[]
         for (let j = 0; j < fuelTypes.length; j++) {
-            for (let k = 0; k < dates.length; k++) {
+            for (let k = 0; k < 6; k++) {
                 outputSumTotalEnergyAndEmissions[vtype].energy[k] += totalEnergyAndEmissions?.[vtype]?.[fuelTypes[j]]?.energy?.[k] || 0
                 outputSumTotalEnergyAndEmissions[vtype].co2[k] += totalEnergyAndEmissions?.[vtype]?.[fuelTypes[j]]?.co2?.[k] || 0
             }

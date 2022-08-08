@@ -2,19 +2,11 @@ import React, {useState, useMemo, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import countryList from 'react-select-country-list'
-import Button from 'react-bootstrap/Button'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Form from 'react-bootstrap/Form'
-import InputGroup from 'react-bootstrap/InputGroup'
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import Tooltip from 'react-bootstrap/Tooltip'
+import { Button, Container, Row, Col, Form, InputGroup, OverlayTrigger, Tooltip, Table } from 'react-bootstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 import Progress from '../components/Progress'
 import { ProjectType } from '../frontendTypes'
-
 
 export default function CreateProject() {
     const navigate = useNavigate();
@@ -25,7 +17,7 @@ export default function CreateProject() {
     const [ projectCountry, setProjectCountry ] = useState([] as any[])
     const [ partnerLocation, setPartnerLocation ] = useState("")
     const [ projectArea, setProjectArea ] = useState("")
-    const [ projectReferenceYear, setProjectReferenceYear ] = useState("2020")
+    const [ projectReferenceYears, setProjectReferenceYears ] = useState(["2020","2025","2030","2035","2040","2050"])
     const [validated, setValidated] = useState(false)
     const [ createWarning, setCreateWarning ] = useState(false)
     let [project, setProject ] = useState({} as ProjectType)
@@ -93,7 +85,7 @@ export default function CreateProject() {
                     setProjectCountry([loadedProject.country])
                     setPartnerLocation(loadedProject.partnerLocation)
                     setProjectArea(loadedProject.area)
-                    setProjectReferenceYear(loadedProject.referenceYear)
+                    setProjectReferenceYears(loadedProject.referenceYears.map(e => e.toString()))
                 });
             }
     }, [keycloak, initialized])
@@ -117,7 +109,7 @@ export default function CreateProject() {
             projectCity: projectCity[0]?.label ? projectCity[0]?.label : projectCity[0],
             partnerLocation: partnerLocation,
             projectArea: projectArea,
-            projectReferenceYear: projectReferenceYear
+            projectReferenceYears: projectReferenceYears.map(year => parseInt(year))
         }
         if (!projectId) {
             const requestOptions = {
@@ -166,11 +158,16 @@ export default function CreateProject() {
             You can choose the year of reference based on your needs
         </Tooltip>
     );
+    const setProjectReferenceYear = (index: number, year: string) => {
+        setProjectReferenceYears((prevProjectReferenceYears) => {
+            return prevProjectReferenceYears.map((e,i) => i == index ? year : e)
+        })
+    }
     return (
         <Container style={{paddingTop: "30px"}}>
             <Progress project={project} currentStep={0} />
             <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
-                <Col xs lg="5">
+                <Col xs xl="8" lg="12">
                     <h1 style={{marginBottom: "40px"}}>Project Information</h1>
                     <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
                         <Form.Group className="mb-3">
@@ -220,16 +217,36 @@ export default function CreateProject() {
                             </InputGroup>
                         </Form.Group>
 
-                        <Form.Group className="mb-3">
-                            <OverlayTrigger placement="right" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
-                                <Form.Label className="reqStar">
-                                    Reference year (RY) 🛈
-                                </Form.Label>
-                            </OverlayTrigger>
-                            <Form.Control type="input" required placeholder="2020" value={projectReferenceYear} onChange={e => setProjectReferenceYear(e.target.value)}/>
-                            <Form.Control.Feedback type="invalid">Please specify the reference year</Form.Control.Feedback>
-                        </Form.Group>
-
+                        <Table className="inputTable">
+                            <thead>
+                                <tr>
+                                    <th className="reqStar">
+                                        <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
+                                            <span>Reference year (RY) 🛈</span>
+                                        </OverlayTrigger>
+                                    </th>
+                                    <th className="reqStar">Y1</th>
+                                    <th className="reqStar">Y2</th>
+                                    <th className="reqStar">Y3</th>
+                                    <th className="reqStar">Y4</th>
+                                    <th className="reqStar">Y5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {projectReferenceYears.map((year,i) => (
+                                        <td key={i}>
+                                            <Form.Group>
+                                                <InputGroup>
+                                                    <Form.Control type="number" required min="1900" max="2500" value={projectReferenceYears[i]} onChange={e => setProjectReferenceYear(i, e.target.value)} />
+                                                    <Form.Control.Feedback type="invalid">Please enter a year between 1900 and 2500, avoid white spaces</Form.Control.Feedback>
+                                                </InputGroup>
+                                            </Form.Group>
+                                        </td>
+                                    ))}
+                                </tr>
+                            </tbody>
+                        </Table>
                         <Button variant="primary" type="submit">
                             Next
                         </Button>

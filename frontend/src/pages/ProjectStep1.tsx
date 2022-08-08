@@ -107,12 +107,12 @@ export default function ProjectStep1(){
                                     <th colSpan={5}>Annual growth of population² (%)</th>
                                 </tr>
                                 <tr>
-                                    <td className="reqStar">{project.referenceYear}</td>
-                                    <td className="reqStar">{project.referenceYear}-2025</td>
-                                    <td className="reqStar">2025-2030</td>
-                                    <td className="reqStar">2030-2035</td>
-                                    <td className="reqStar">2030-2040</td>
-                                    <td className="reqStar">2040-2050</td>
+                                    <td className="reqStar">{ project.referenceYears?.[0]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[0]}-{ project.referenceYears?.[1]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[1]}-{ project.referenceYears?.[2]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[2]}-{ project.referenceYears?.[3]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[3]}-{ project.referenceYears?.[4]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[4]}-{ project.referenceYears?.[5]}</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -142,7 +142,7 @@ export default function ProjectStep1(){
                             </tbody>
                         </Table>
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label className="reqStar" column sm={3}>[1] {project.referenceYear} population source</Form.Label>
+                            <Form.Label className="reqStar" column sm={3}>[1] { project.referenceYears?.[0]} population source</Form.Label>
                             <Col sm={9}>
                                 <Form.Control type="input" required name="populationSource" value={inputData.populationSource} onChange={updateInput} placeholder="INSEE, 2022"/>
                                 <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
@@ -162,12 +162,12 @@ export default function ProjectStep1(){
                                     <th colSpan={5}>Annual growth of GDP² (%)</th>
                                 </tr>
                                 <tr>
-                                    <td className="reqStar">{project.referenceYear}</td>
-                                    <td className="reqStar">{project.referenceYear}-2025</td>
-                                    <td className="reqStar">2025-2030</td>
-                                    <td className="reqStar">2030-2035</td>
-                                    <td className="reqStar">2035-2040</td>
-                                    <td className="reqStar">2040-2050</td>
+                                    <td className="reqStar">{ project.referenceYears?.[0]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[0]}-{ project.referenceYears?.[1]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[1]}-{ project.referenceYears?.[2]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[2]}-{ project.referenceYears?.[3]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[3]}-{ project.referenceYears?.[4]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[4]}-{ project.referenceYears?.[5]}</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -200,7 +200,7 @@ export default function ProjectStep1(){
                             </tbody>
                         </Table>
                         <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                            <Form.Label className="reqStar" column sm={3}>[1] {project.referenceYear} gdp source</Form.Label>
+                            <Form.Label className="reqStar" column sm={3}>[1] { project.referenceYears?.[0]} gdp source</Form.Label>
                             <Col sm={9}>
                                 <Form.Control type="input" required name="gdpSource" value={inputData.gdpSource} onChange={updateInput}  placeholder="INSEE, 2022"/>
                                 <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>

@@ -27,11 +27,12 @@ export default function ProjectViz(){
             fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + "/viz", requestOptions)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data.project)
                     setProject(data.project)
                 });
             }
     }, [keycloak, initialized, projectId])
-    let dates = [parseInt(project.referenceYear) || 2020, 2025, 2030, 2035, 2040, 2050]
+    let dates = project.referenceYears || [2020, 2025, 2030, 2035, 2040, 2050]
     const goPreviousStep = () => {
         navigate('/project/' + projectId + '/step/7')
     }

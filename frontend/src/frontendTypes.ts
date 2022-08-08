@@ -6,7 +6,7 @@ export type ProjectType = {
     country: string,
     partnerLocation: string,
     area: string,
-    referenceYear: string,
+    referenceYears: [number, number, number, number, number, number],
     step: number,
     steps: any[],
     status: 'draft' | 'validated',

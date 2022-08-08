@@ -127,12 +127,12 @@ export default function ProjectStep3(){
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td className="reqStar">{project.referenceYear} (RY)</td>
-                                    <td className="reqStar">{project.referenceYear}-2025</td>
-                                    <td className="reqStar">2025-2030</td>
-                                    <td className="reqStar">2030-2035</td>
-                                    <td className="reqStar">2035-2040</td>
-                                    <td className="reqStar">2040-2050</td>
+                                    <td className="reqStar">{ project.referenceYears?.[0]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[0]}-{ project.referenceYears?.[1]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[1]}-{ project.referenceYears?.[2]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[2]}-{ project.referenceYears?.[3]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[3]}-{ project.referenceYears?.[4]}</td>
+                                    <td className="reqStar">{ project.referenceYears?.[4]}-{ project.referenceYears?.[5]}</td>
                                 </tr>
                             </thead>
                             <tbody>

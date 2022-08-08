@@ -195,12 +195,12 @@ export default function ProjectStep7(){
                                     return [
                                         <tr key={index}>
                                             <td style={{backgroundColor: "#989898"}}>{vtype}</td>
-                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{project.referenceYear}</td>
-                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{project.referenceYear}-2025</td>
-                                            <td style={{backgroundColor: "#989898"}} className="reqStar">2025-2030</td>
-                                            <td style={{backgroundColor: "#989898"}} className="reqStar">2030-2035</td>
-                                            <td style={{backgroundColor: "#989898"}} className="reqStar">2035-2040</td>
-                                            <td style={{backgroundColor: "#989898"}} className="reqStar">2040-2050</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{ project.referenceYears?.[0]}</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{ project.referenceYears?.[0]}-{ project.referenceYears?.[1]}</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{ project.referenceYears?.[1]}-{ project.referenceYears?.[2]}</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{ project.referenceYears?.[2]}-{ project.referenceYears?.[3]}</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{ project.referenceYears?.[3]}-{ project.referenceYears?.[4]}</td>
+                                            <td style={{backgroundColor: "#989898"}} className="reqStar">{ project.referenceYears?.[4]}-{ project.referenceYears?.[5]}</td>
                                         </tr>
                                         ,
                                         fuelJsx,
