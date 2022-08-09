@@ -15,7 +15,10 @@ export type ProjectType = {
         population: number[],
         gdp: number[]
     },
-    outputModalShare?: {
+    outputPassengersModalShare?: {
+        [key: string]: number[]
+    },
+    outputFreightModalShare?: {
         [key: string]: number[]
     },
     outputSumTotalEnergyAndEmissionsWTW?: {
@@ -57,7 +60,7 @@ export type InputStep1 = {
 }
 
 export type InputStep2 = {
-    [key: string]: boolean
+    [key: string]: {isActive: boolean, isFreight: boolean}
 }
 
 export type InputStep3 = {

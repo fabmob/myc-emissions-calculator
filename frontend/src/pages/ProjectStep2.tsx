@@ -26,12 +26,18 @@ const defaultVehicles = [
         "🚕 Individual taxi",
         "🛺 Motorcycle taxi",
         "🚐 Minibus",
-    ],
-    [
         "🚌 Bus",
         "🚌 Bus rapid transit",
+        "🚄 Long distance train",
         "🚃 Urban train",
         "🚈 Metro",
+    ],
+    [
+        "🛺 Very light LCV",
+        "🛻 LCV",
+        "🚚 Solo truck",
+        "🚛 Articulated truck",
+        "🚄 Freight train",
     ]
 ]
 const defaultVehiclesTooltips : {[key: string]: string} = {
@@ -44,8 +50,14 @@ const defaultVehiclesTooltips : {[key: string]: string} = {
     "🚐 Minibus": 'Any motor vehicle intended for the collective transport of persons whose number of seats is less than nine, including hirings, collective taxis and rural transportation.',
     "🚌 Bus": 'Any motor vehicle intended for the collective transport of persons, the number of seats of which is greater than nine or the permissible total weight exceeds 3.5t.',
     "🚌 Bus rapid transit": 'Bus Rapid Transit (BRT) is a high-quality bus-based transit system. It is typically specified with dedicated lanes, iconic stations, off-board fare collection, and fast and frequent operations.',
+    "🚄 Long distance train": 'Passenger train mainly traveling outside the city - long distance train',
     "🚃 Urban train": 'Passenger train mainly traveling within the city territory - short distance train.',
-    "🚈 Metro": 'Passenger train mainly traveling within the city territory - Tram and Metro.'
+    "🚈 Metro": 'Passenger train mainly traveling within the city territory - Tram and Metro.',
+    "🛺 Very light LCV": "A mostly three-wheeled motorized vehicle used for goods transport",
+    "🛻 LCV": "Motor vehicle intended for the transport of freight, the permissible gross weight does not exceed 3.5t",
+    "🚚 Solo truck": "Motor vehicle intended for the transport of freight, the permissible load is up to 10t",
+    "🚛 Articulated truck": "Motor vehicle intended for the transport of freight and the total authorized load exceeds 10t. Trucks consist of trucks and tractors (truck with trailer)",
+    "🚄 Freight train": "Any freight train, usually for long distance transport",
 }
 const defaultVehiclesList = [
     "👟 Walking",
@@ -60,6 +72,11 @@ const defaultVehiclesList = [
     "🚄 Long distance train",
     "🚃 Urban train",
     "🚈 Metro",
+    "🛺 Very light LCV",
+    "🛻 LCV",
+    "🚚 Solo truck",
+    "🚛 Articulated truck",
+    "🚄 Freight train"
 ]
 export default function ProjectStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -68,22 +85,23 @@ export default function ProjectStep2(){
     let init:InputStep2 = {}
     for (let i = 0; i < defaultVehiclesList.length; i++) {
         let vtype = defaultVehiclesList[i]
-        init[vtype] = false
+        init[vtype] = {isActive: false, isFreight: i>11}
     }
-    let [inputData, setInputData ] = useState(init)
+    const [inputData, setInputData ] = useState(init)
 
     const [showAddCustomType, setShowAddCustomType] = useState(false);
     const handleCloseAddCustomType = () => setShowAddCustomType(false);
     const handleShowAddCustomType = () => setShowAddCustomType(true);
     
-    let [categoryName, setCategoryName ] = useState("")
-    let [validated, setValidated ] = useState(false)
+    const [categoryName, setCategoryName ] = useState("")
+    const [categoryIsFreight, setCategoryIsFreight] = useState(false)
+    const [validated, setValidated ] = useState(false)
 
     const [showInfo, setShowInfo] = useState(false);
     const handleCloseInfo = () => setShowInfo(false);
     const handleShowInfo = () => setShowInfo(true);
 
-    let [project, setProject ] = useState({} as ProjectType)
+    const [project, setProject ] = useState({} as ProjectType)
     let projectId = params.projectId
     useEffect(() => {
         if (initialized && keycloak.authenticated){
@@ -99,7 +117,12 @@ export default function ProjectStep2(){
                         setInputData((prevInputData) => {
                             let vtypes = Object.keys(data.project.steps[2])
                             for (let i = 0; i < vtypes.length; i++) {
-                                prevInputData[vtypes[i]] = data.project.steps[2][vtypes[i]]
+                                let val = data.project.steps[2][vtypes[i]]
+                                if (val.isActive !== undefined) {
+                                    prevInputData[vtypes[i]] = val
+                                } else {
+                                    prevInputData[vtypes[i]] = {isActive: val, isFreight: false}
+                                }
                             }
                             return prevInputData
                         })
@@ -112,7 +135,7 @@ export default function ProjectStep2(){
         let vtype = target.name
         setInputData((prevInputData) => ({
             ...prevInputData,
-            [vtype]: !prevInputData[vtype]
+            [vtype]: {isActive: !prevInputData[vtype].isActive, isFreight: prevInputData[vtype].isFreight}
         }))
     }
     // Only send selected vtypes to backend
@@ -120,8 +143,8 @@ export default function ProjectStep2(){
         let output: InputStep2 = {}
         let keys = Object.keys(inp)
         for (let i = 0; i < keys.length; i++) {
-            if (inp[keys[i]]) {
-                output[keys[i]] = true
+            if (inp[keys[i]].isActive) {
+                output[keys[i]] = inp[keys[i]]
             }
         }
         return output
@@ -135,7 +158,7 @@ export default function ProjectStep2(){
             return
         }
         setInputData((prevInputData) => {
-            prevInputData[categoryName] = true
+            prevInputData[categoryName] = {isActive: true, isFreight: categoryIsFreight}
             return prevInputData
         })
         event.preventDefault();
@@ -178,7 +201,7 @@ export default function ProjectStep2(){
                                         {vCol.map((vtype, index) => {
                                             return (
                                                 <Form.Switch style={{margin: "15px"}} id={"custom-switch-" + vtype} key={index}>
-                                                    <Form.Switch.Input style={{marginRight: "10px"}} name={vtype} checked={inputData[vtype]} onChange={updateInput}/>
+                                                    <Form.Switch.Input style={{marginRight: "10px"}} name={vtype} checked={inputData[vtype].isActive} onChange={updateInput}/>
                                                     <OverlayTrigger 
                                                         key={index} 
                                                         placement="right"
@@ -204,7 +227,7 @@ export default function ProjectStep2(){
                                             label={vtype}
                                             key={index}
                                             name={vtype}
-                                            checked={inputData[vtype]}
+                                            checked={inputData[vtype].isActive}
                                             onChange={updateInput}
                                         />
                                     </Col>
@@ -249,6 +272,21 @@ export default function ProjectStep2(){
                             <Form.Control type="input" required placeholder="" value={categoryName} onChange={e => setCategoryName(e.target.value)}/>
                             <Form.Control.Feedback type="invalid">Please specify a name</Form.Control.Feedback>
                         </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Category type</Form.Label>
+                            <Form.Check
+                                type="radio"
+                                checked={categoryIsFreight}
+                                onChange={() => setCategoryIsFreight(true)}
+                                label="Freight"
+                            />
+                            <Form.Check
+                                type="radio"
+                                checked={!categoryIsFreight}
+                                onChange={() => setCategoryIsFreight(false)}
+                                label="Passengers"
+                            />
+                        </Form.Group>
                         <div style={{display: "flex", color: "gray"}}>
                             <div style={{lineHeight: "40px"}}>Click to add an emoji: </div>
                             <div className='emojiChoice' onClick={() => addEmoji("👟")}>👟</div>
@@ -261,6 +299,10 @@ export default function ProjectStep2(){
                             <div className='emojiChoice' onClick={() => addEmoji("🚌")}>🚌</div>
                             <div className='emojiChoice' onClick={() => addEmoji("🚃")}>🚃</div>
                             <div className='emojiChoice' onClick={() => addEmoji("🚈")}>🚈</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚄")}>🚄</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🛻")}>🛻</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚚")}>🚚</div>
+                            <div className='emojiChoice' onClick={() => addEmoji("🚛")}>🚛</div>
                         </div>
                         <div style={{textAlign: "center", marginTop: "10px"}}>
                             <Button variant="primary" type="submit">

@@ -106,7 +106,8 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
         vehicleKilometresTravelledComputed: types.VehicleKilometresTravelledComputed,
         outputVktPerFuelComputed: types.VktPerFuelComputed,
         outputTransportPerformance: types.TransportPerformance,
-        outputModalShare: types.ModalShare,
+        outputPassengersModalShare: types.ModalShare,
+        outputFreightModalShare: types.ModalShare,
         outputAverageEnergyConsumptionComputed: types.AverageEnergyConsumptionComputed,
         outputComputeTotalEnergyAndEmissionsWTW: types.TotalEnergyAndEmissions,
         outputComputeTotalEnergyAndEmissionsTTW: types.TotalEnergyAndEmissions,
@@ -136,7 +137,8 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     delete project.steps[4].source
     let inputVehicleStats : types.VehicleStats = project.steps[4]
     project.outputTransportPerformance = models.computeTransportPerformance(project.vehicleKilometresTravelledComputed, inputVehicleStats)
-    project.outputModalShare = models.computeModalShare(project.outputTransportPerformance)
+    project.outputPassengersModalShare = models.computeModalShare(Object.fromEntries(Object.entries(project.outputTransportPerformance).filter(([k,v]) => !project.steps[2][k].isFreight)))
+    project.outputFreightModalShare = models.computeModalShare(Object.fromEntries(Object.entries(project.outputTransportPerformance).filter(([k,v]) => project.steps[2][k].isFreight)))
 
     delete project.steps[7].energySource
     delete project.steps[7].energyGrowthSource

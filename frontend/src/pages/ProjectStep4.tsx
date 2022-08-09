@@ -7,8 +7,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import InputGroup from 'react-bootstrap/InputGroup'
-import {InputStep4, ProjectType} from '../frontendTypes'
+import {InputStep2, InputStep4, ProjectType} from '../frontendTypes'
 import Progress from '../components/Progress'
 
 
@@ -102,6 +101,19 @@ export default function ProjectStep4(){
             .then(response => response.json())
             .then(() => navigate('/project/' + projectId + '/step/5'));
     }
+    const inputStep2 = project.steps?.[2] as InputStep2;
+    let populationVehicleNames: string[] = []
+    let freightVehicleNames: string[] = []
+    for (const vtype in inputStep2) {
+        if (Object.prototype.hasOwnProperty.call(inputStep2, vtype)) {
+            if (inputStep2[vtype].isFreight) {
+                freightVehicleNames.push(vtype)
+            } else {
+                populationVehicleNames.push(vtype)
+            }
+            
+        }
+    }
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={4} />
@@ -120,7 +132,7 @@ export default function ProjectStep4(){
                      
                     </i></p>
                     <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
-                        <Table className="inputTable">
+                        {populationVehicleNames.length > 0 && <Table className="inputTable">
                             <thead>
                                 <tr>
                                     <th>Vehicle type</th>
@@ -128,9 +140,9 @@ export default function ProjectStep4(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.keys(project.steps?.[2] || []).map((vtype, index) => {
+                                {populationVehicleNames.map((vtype, index) => {
                                     let vt = vtype
-                                    if (!project.steps?.[2] || project.steps[2][vt] === false || !inputData) {
+                                    if (!inputData) {
                                         return <></>
                                     }
                                     let inputVt = inputData[vt]
@@ -151,7 +163,39 @@ export default function ProjectStep4(){
                                 }
 
                             </tbody>
-                        </Table>
+                        </Table>}
+                        {freightVehicleNames.length > 0 && <Table className="inputTable">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle type</th>
+                                    <th className="reqStar">Average load (tons)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {freightVehicleNames.map((vtype, index) => {
+                                    let vt = vtype
+                                    if (!inputData) {
+                                        return <></>
+                                    }
+                                    let inputVt = inputData[vt]
+                                    if (inputVt && typeof(inputVt) !== 'string')
+                                        return (
+                                            <tr key={index}>
+                                                <td style={{backgroundColor: "#989898"}}>{vtype}</td>
+                                                <td>
+                                                    <Form.Group>
+                                                        <Form.Control type="number" required min="0" step="0.1" name={vtype} value={inputVt.occupancy} onChange={updateOccupancy} placeholder="" />
+                                                        <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
+                                                    </Form.Group>
+                                                </td>
+                                            </tr>
+                                        )
+                                    return <></>
+                                })
+                                }
+
+                            </tbody>
+                        </Table>}
                         {inputData?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
                                 <Form.Label className="reqStar" column sm={2}>Source</Form.Label>

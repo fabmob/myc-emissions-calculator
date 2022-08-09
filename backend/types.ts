@@ -1,7 +1,7 @@
 export type NbPop = number & {}  // Population number
 export type MrdUsd = number & {}
 export type Percent = number & {}
-export type MillPersonKm = number & {}
+export type MillUnitKm = number & {} // unit can be passengers or tons
 export type MillKmPerYear = number & {}
 export type MillKm = number & {}
 export type Km = number & {}
@@ -65,14 +65,14 @@ export type VktPerFuelComputed = {
 }
 
 export type TransportPerformance = {
-    [key: string]: YearlyValues<MillPersonKm> // mill pkm
+    [key: string]: YearlyValues<MillUnitKm> // mill pkm or mill tkm
 }
 
 export type ModalShare = {
     [key: string]: YearlyValues<Part>
 }
 export type SumsPerVehicleType = {
-    [key: string]: YearlyValues<MillPersonKm>
+    [key: string]: YearlyValues<MillUnitKm>
 }
 
 export type AverageEnergyConsumption = {
