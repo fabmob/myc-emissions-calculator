@@ -124,6 +124,8 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
 
     delete project.steps[3].vktSource
     delete project.steps[3].vktGrowthSource
+    delete project.steps[3].vehicleStockSource
+    delete project.steps[3].averageMileageSource
     let inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = project.steps[3]
     project.vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, project.referenceYears)
 
