@@ -19,8 +19,9 @@ export default function ProjectStep3(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
-    let [inputData, setInputData ] = useState({vktSource: '', vktGrowthSource: ''} as InputStep3)
-    let [project, setProject ] = useState({} as ProjectType)
+    const [inputData, setInputData ] = useState({vktSource: '', vktGrowthSource: ''} as InputStep3)
+    const [project, setProject ] = useState({} as ProjectType)
+    const [vktInput, setVktInput] = useState(true)
     let projectId = params.projectId
     const [validated, setValidated] = useState(false)
     useEffect(() => {
@@ -34,8 +35,15 @@ export default function ProjectStep3(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
+                    // If not specified otherwise, SUMPs are using vkt, NUMPs are using the fleet approach
+                    let isUsingVkt = data.project.isSump
                     let vtypes = Object.keys(data.project.steps[2])
-                    let init:InputStep3 = {vktSource: data.project.steps[3]?.vktSource || '', vktGrowthSource: data.project.steps[3]?.vktGrowthSource || ''}
+                    let init:InputStep3 = {
+                        vktSource: data.project.steps[3]?.vktSource || '',
+                        vktGrowthSource: data.project.steps[3]?.vktGrowthSource || '',
+                        vehicleStockSource: data.project.steps[3]?.vehicleStockSource || '',
+                        averageMileageSource: data.project.steps[3]?.averageMileageSource || ''
+                    }
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
                         if (data.project.steps[3]?.[vtype]) {
@@ -43,36 +51,48 @@ export default function ProjectStep3(){
                         } else {
                             init[vtype] = {
                                 vkt: "0",
+                                vehicleStock: "0",
+                                averageMileage: "0",
                                 vktRate: ["0", "0", "0", "0", "0"]
                             }
                         }
+                        let ivt = init[vtype]
+                        if (typeof(ivt) !== 'string' && ivt.vehicleStock !== "0") {
+                            // We have at least one vtype with vehicleStock specified, thus we are not using vkt inputs
+                            isUsingVkt = false
+                        }
                     }
                     setInputData(init)
+                    setVktInput(isUsingVkt)
                 });
             }
     }, [keycloak, initialized, projectId])
     const updateSource = (event: React.BaseSyntheticEvent) => {
+        let target = event.target as HTMLInputElement
+        let sourceName = target.name
         setInputData((prevInputData: InputStep3) => ({
             ...prevInputData,
-            vktSource: event.target.value
+            [sourceName]: event.target.value
         }))
     }
-    const updateGrowthSource = (event: React.BaseSyntheticEvent) => {
-        setInputData((prevInputData: InputStep3) => ({
-            ...prevInputData,
-            vktGrowthSource: event.target.value
-        }))
-    }
-    const updateInput = (event: React.BaseSyntheticEvent, index?: number) => {
+    const updateInput = (event: React.BaseSyntheticEvent, field: "vkt" | "vehicleStock" | "averageMileage" | "vktRate", index?: number) => {
         let target = event.target as HTMLInputElement
         let vtype = target.name
 
         setInputData((prevInputData: InputStep3) => {
             let vtypeobj = prevInputData[vtype]
             if (vtypeobj && typeof(vtypeobj) != 'string') {
-                if (index === undefined) {
-                    vtypeobj.vkt = target.value
-                } else {
+                if (field != "vktRate") {
+                    vtypeobj[field] = target.value
+                    if (field != "vkt") {
+                        // Edits to computation values should trigger a hidden vkt computation
+                        vtypeobj.vkt = ((parseFloat(vtypeobj.vehicleStock) || 0) * (parseFloat(vtypeobj.averageMileage) || 0) * 0.000001).toString()
+                    } else {
+                        // Edits to vkt should erase computation values
+                        vtypeobj.vehicleStock = "0"
+                        vtypeobj.averageMileage = "0"
+                    }
+                } else if (index !== undefined) {
                     vtypeobj.vktRate[index] = target.value
                 }
                 return {
@@ -117,17 +137,29 @@ export default function ProjectStep3(){
                     <p>For BAU calculations, please enter the expected % of growth or decrease for the corresponding years in the same way. </p>
 
                     <p><i>Data input for the vehicle kilometers travelled in the reference year is mandatory.</i></p>
+                    <Form.Switch
+                        style={{margin: "10px", textAlign: "left"}}
+                        id="custom-switch-vkt"
+                        label="Use pre-computed vehicle kilometers travelled information"
+                        checked={vktInput}
+                        onChange={() => setVktInput(prev => !prev)}
+                    />
                     <Form noValidate validated={validated} onSubmit={saveAndGoNextStep}>
                         <Table className="inputTable">
                             <thead>
                                 <tr>
                                     <th>Vehicle type</th>
-                                    <th style={{width: "200px"}}>VKT¹ (Mkm/year)</th>
-                                    <th colSpan={5}>Annual growth of VKT² (%)</th>
+                                    {vktInput ? 
+                                        <th style={{width: "200px"}}>VKT¹ (Mkm/year)</th>
+                                        :
+                                        <><th>Vehicle stock¹ (nb vehicles)</th>
+                                        <th>Average annual mileage² (km/vehicle/year)</th></>
+                                    }
+                                    <th colSpan={5}>Annual growth of VKT{vktInput ? '²' : '³'} (%)</th>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td className="reqStar">{ project.referenceYears?.[0]}</td>
+                                    <td className="reqStar" colSpan={vktInput? 1: 2}>{ project.referenceYears?.[0]}</td>
                                     <td className="reqStar">{ project.referenceYears?.[0]}-{ project.referenceYears?.[1]}</td>
                                     <td className="reqStar">{ project.referenceYears?.[1]}-{ project.referenceYears?.[2]}</td>
                                     <td className="reqStar">{ project.referenceYears?.[2]}-{ project.referenceYears?.[3]}</td>
@@ -145,28 +177,45 @@ export default function ProjectStep3(){
                                         return (
                                             <tr key={index}>
                                                 <td style={{backgroundColor: "#989898"}}>{vtype}</td>
+                                                {vktInput ? 
+                                                    <td>
+                                                        <InputGroup>
+                                                            <Form.Control type="number" required min="0" step="any" name={vtype} value={inputVt.vkt} onChange={(e:any) => updateInput(e, "vkt")} placeholder="" />
+                                                            <InputGroup.Text>Mkm/y</InputGroup.Text>
+                                                            <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
+                                                        </InputGroup>
+                                                    </td>
+                                                    :
+                                                    <>
+                                                        <td>
+                                                            <InputGroup>
+                                                                <Form.Control type="number" required min="0" step="any" name={vtype} value={inputVt.vehicleStock} onChange={(e:any) => updateInput(e, "vehicleStock")} placeholder="" />
+                                                                <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
+                                                            </InputGroup>
+                                                        </td>
+                                                        <td>
+                                                            <InputGroup>
+                                                                <Form.Control type="number" required min="0" step="any" name={vtype} value={inputVt.averageMileage} onChange={(e:any) => updateInput(e, "averageMileage")} placeholder="" />
+                                                                <InputGroup.Text>km/v/y</InputGroup.Text>
+                                                                <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
+                                                            </InputGroup>
+                                                        </td>
+                                                    </>
+                                                }
                                                 <td>
-                                                    <InputGroup>
-                                                        <Form.Control type="number" required min="0" step="any" name={vtype} value={inputVt.vkt} onChange={updateInput} placeholder="" />
-                                                        <InputGroup.Text>Mkm/y</InputGroup.Text>
-                                                        <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
-                                                    </InputGroup>
-
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[0]} onChange={(e:any) => updateInput(e, "vktRate", 0)}/>
                                                 </td>
                                                 <td>
-                                                    <PercentInput name={vtype} value={inputVt.vktRate[0]} onChange={(e:any) => updateInput(e, 0)}/>
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[1]} onChange={(e:any) => updateInput(e, "vktRate", 1)}/>
                                                 </td>
                                                 <td>
-                                                    <PercentInput name={vtype} value={inputVt.vktRate[1]} onChange={(e:any) => updateInput(e, 1)}/>
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[2]} onChange={(e:any) => updateInput(e, "vktRate", 2)}/>
                                                 </td>
                                                 <td>
-                                                    <PercentInput name={vtype} value={inputVt.vktRate[2]} onChange={(e:any) => updateInput(e, 2)}/>
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[3]} onChange={(e:any) => updateInput(e, "vktRate", 3)}/>
                                                 </td>
                                                 <td>
-                                                    <PercentInput name={vtype} value={inputVt.vktRate[3]} onChange={(e:any) => updateInput(e, 3)}/>
-                                                </td>
-                                                <td>
-                                                    <PercentInput name={vtype} value={inputVt.vktRate[4]} onChange={(e:any) => updateInput(e, 4)}/>
+                                                    <PercentInput name={vtype} value={inputVt.vktRate[4]} onChange={(e:any) => updateInput(e, "vktRate", 4)}/>
                                                 </td>
                                             </tr>
                                         )
@@ -176,7 +225,7 @@ export default function ProjectStep3(){
 
                             </tbody>
                         </Table>
-                        {inputData ?
+                        {inputData && vktInput ?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
                                 <Form.Label className="reqStar" column sm={2}>[1] Vkt source</Form.Label>
                                 <Col sm={10}>
@@ -185,11 +234,29 @@ export default function ProjectStep3(){
                                 </Col>
                             </Form.Group>
                         :''}
+                        {inputData && !vktInput ?
+                            <>
+                                <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                                    <Form.Label className="reqStar" column sm={2}>[1] Vehicle stock source</Form.Label>
+                                    <Col sm={10}>
+                                        <Form.Control type="input" name="vehicleStockSource" required value={inputData.vehicleStockSource as string} onChange={updateSource} placeholder="DGT Spain, 2022"/>
+                                        <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group as={Row} style={{"marginBottom": "20px"}}>
+                                <Form.Label className="reqStar" column sm={2}>[2] Average mileage source</Form.Label>
+                                <Col sm={10}>
+                                    <Form.Control type="input" name="averageMileageSource" required value={inputData.averageMileageSource as string} onChange={updateSource} placeholder="DGT Spain, 2022"/>
+                                    <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
+                                </Col>
+                                </Form.Group>
+                            </>
+                        :''}
                         {inputData ?
                             <Form.Group as={Row} style={{"marginBottom": "20px"}}>
-                                <Form.Label className="reqStar" column sm={2}>[2] Vkt growth source</Form.Label>
+                                <Form.Label className="reqStar" column sm={2}>[{vktInput ? '2' : '3'}] Vkt growth source</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control type="input" name="vktGrowthSource" required value={inputData.vktGrowthSource as string} onChange={updateGrowthSource} placeholder="EIA, 2022"/>
+                                    <Form.Control type="input" name="vktGrowthSource" required value={inputData.vktGrowthSource as string} onChange={updateSource} placeholder="EIA, 2022"/>
                                     <Form.Control.Feedback type="invalid">A source is required</Form.Control.Feedback>
                                 </Col>
                             </Form.Group>

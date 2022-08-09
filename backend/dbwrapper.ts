@@ -4,7 +4,7 @@ const db = new Database('data.db', {verbose: console.log})
 
 export function init() {
     try {
-        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYears INTEGER, status STRING, UNIQUE(owner, name))")
+        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, isSump INTEGER, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYears INTEGER, status STRING, UNIQUE(owner, name))")
         db.exec("CREATE Table ProjectSteps (projectId INTEGER, stepNumber INTEGER, value STRING, FOREIGN KEY(projectId) REFERENCES Projects(id),  UNIQUE(projectId, stepNumber) ON CONFLICT REPLACE)")
     } catch (err) {
         console.log("Table alredy exists")
@@ -15,6 +15,7 @@ type ProjectsDbEntry = {
     id: number,
     owner: string,
     name: string,
+    isSump: number,
     country: string,
     city: string,
     partnerLocation: string,
@@ -32,6 +33,7 @@ type Project = {
     id: number,
     owner: string,
     name: string,
+    isSump: boolean,
     country: string,
     city: string,
     partnerLocation: string,
@@ -42,11 +44,12 @@ type Project = {
     step: number
 }
 export function createProject(project: types.Project, owner: string): [string | null, Database.RunResult | null] {
-    const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, country, city, partnerLocation, area, referenceYears, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?)")
+    const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, isSump, country, city, partnerLocation, area, referenceYears, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
     try {
         let res = createProjectStmt.run([
             owner,
             project.projectName,
+            project.isSump,
             project.projectCountry,
             project.projectCity,
             project.partnerLocation,
@@ -64,7 +67,8 @@ function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectSteps
     let project : Project = {
         id: projectEntry.id,
         owner: projectEntry.owner, 
-        name: projectEntry.name, 
+        name: projectEntry.name,
+        isSump: projectEntry.isSump === 1,
         country: projectEntry.country, 
         city: projectEntry.city, 
         partnerLocation: projectEntry.partnerLocation, 
@@ -115,10 +119,11 @@ export function updateProjectStatus(id: number, owner: string, status: string) {
     return res
 }
 export function updateProject(id: number, owner: string, project: types.Project) {
-    const updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ? where id = ? and owner = ?")
+    const updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, isSump = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ? where id = ? and owner = ?")
     try {
         let res = updateProjectStatusStmt.run([
             project.projectName,
+            project.isSump ? 1 : 0,
             project.projectCountry,
             project.projectCity,
             project.partnerLocation,

@@ -18,6 +18,7 @@ export default function CreateProject() {
     const [ partnerLocation, setPartnerLocation ] = useState("")
     const [ projectArea, setProjectArea ] = useState("")
     const [ projectReferenceYears, setProjectReferenceYears ] = useState(["2020","2025","2030","2035","2040","2050"])
+    const [ isSump, setIsSump ] = useState(true)
     const [validated, setValidated] = useState(false)
     const [ createWarning, setCreateWarning ] = useState(false)
     let [project, setProject ] = useState({} as ProjectType)
@@ -86,6 +87,7 @@ export default function CreateProject() {
                     setPartnerLocation(loadedProject.partnerLocation)
                     setProjectArea(loadedProject.area)
                     setProjectReferenceYears(loadedProject.referenceYears.map(e => e.toString()))
+                    setIsSump(loadedProject.isSump)
                 });
             }
     }, [keycloak, initialized])
@@ -106,7 +108,7 @@ export default function CreateProject() {
         let projectDict = {
             projectName: projectName,
             projectCountry: projectCountry[0],
-            projectCity: projectCity[0]?.label ? projectCity[0]?.label : projectCity[0],
+            projectCity: (projectCity[0]?.label ? projectCity[0]?.label : projectCity[0]) || '',
             partnerLocation: partnerLocation,
             projectArea: projectArea,
             projectReferenceYears: projectReferenceYears.map(year => parseInt(year))
@@ -160,7 +162,7 @@ export default function CreateProject() {
     );
     const setProjectReferenceYear = (index: number, year: string) => {
         setProjectReferenceYears((prevProjectReferenceYears) => {
-            return prevProjectReferenceYears.map((e,i) => i == index ? year : e)
+            return prevProjectReferenceYears.map((e,i) => i === index ? year : e)
         })
     }
     return (
@@ -172,10 +174,26 @@ export default function CreateProject() {
                     <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
                         <Form.Group className="mb-3">
                             <Form.Label className="reqStar">Project name</Form.Label>
-                            <Form.Control type="input" required placeholder="SUMP City" value={projectName} onChange={e => setProjectName(e.target.value)} isInvalid={createWarning}/>
+                            <Form.Control type="input" required placeholder={(isSump ? "SUMP City" : "NUMP Country") + " - " + projectReferenceYears[0]} value={projectName} onChange={e => setProjectName(e.target.value)} isInvalid={createWarning}/>
                             <Form.Control.Feedback type="invalid">{createWarning ? "This project name already exists" : "Please specify a project name"}</Form.Control.Feedback>
                         </Form.Group>
-
+                        <Form.Group className="mb-3">
+                            <Form.Label className="reqStar">Project type</Form.Label>
+                            <Form.Check
+                                id="custom-switch-sump"
+                                type="radio"
+                                checked={isSump}
+                                onChange={() => setIsSump(true)}
+                                label="Sustainable Urban Mobility Plan (SUMP)"
+                            />
+                            <Form.Check
+                                id="custom-switch-nump"
+                                type="radio"
+                                checked={!isSump}
+                                onChange={() => setIsSump(false)}
+                                label="National Urban Mobility Plan (NUMP)"
+                            />
+                        </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label className="reqStar">Select country</Form.Label>
                             <Typeahead
@@ -189,7 +207,7 @@ export default function CreateProject() {
                             <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCountry[0]) ? "block": ''}}>Please specify a country</Form.Control.Feedback>
                         </Form.Group>
 
-                        <Form.Group className="mb-3">
+                        {isSump && <Form.Group className="mb-3">
                             <Form.Label className="reqStar">City</Form.Label>
                             <Typeahead
                                 allowNew
@@ -202,7 +220,7 @@ export default function CreateProject() {
                                 options={cityOptions[projectCountry[0]] || []}
                             />
                             <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCity[0]) ? "block": ''}}>Please specify a city</Form.Control.Feedback>
-                        </Form.Group>
+                        </Form.Group> }
 
                         <Form.Group className="mb-3">   
                             <Form.Label>Partner name in city</Form.Label>

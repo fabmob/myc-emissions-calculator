@@ -181,6 +181,7 @@ const OwnedProjects = ({ownedProjects, handleEditProject}: {ownedProjects: Proje
                     <tr>
                         <th>#</th>
                         <th>Name</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Progress</th>
                         <th>Action</th>
@@ -191,6 +192,11 @@ const OwnedProjects = ({ownedProjects, handleEditProject}: {ownedProjects: Proje
                         <tr key={project.id}>
                             <td>{project.id}</td>
                             <td>{project.name}</td>
+                            <td>
+                                <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>}>
+                                    {project.isSump ? <Badge bg="primary">SUMP</Badge> : <Badge bg="info">NUMP</Badge>}              
+                                </OverlayTrigger>
+                            </td>
                             <td>{project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="success">Validated</Badge>}</td>
                             <td><ProjectProgress step={project.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
@@ -276,6 +282,7 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
                 <tr>
                     <th>#</th>
                     <th>Name</th>
+                    <th>Type</th>
                     <th>Author</th>
                     <th>Action</th>
                 </tr>
@@ -285,6 +292,11 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
                     <tr key={project.id}>
                         <td>{project.id}</td>
                         <td>{project.name}</td>
+                        <td>
+                            <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>}>
+                                {project.isSump ? <Badge bg="primary">SUMP</Badge> : <Badge bg="info">NUMP</Badge>}
+                            </OverlayTrigger>
+                        </td>
                         <td>{project.owner}</td>
                         <td>
                             <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}>Open</Button>

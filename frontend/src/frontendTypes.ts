@@ -2,6 +2,7 @@ export type ProjectType = {
     id: number,
     owner: string,
     name: string,
+    isSump: boolean,
     city: string,
     country: string,
     partnerLocation: string,
@@ -62,6 +63,8 @@ export type InputStep2 = {
 export type InputStep3 = {
     [key: string]: {
         vkt: string,
+        vehicleStock: string,
+        averageMileage: string,
         vktRate: string[]
     } | string
 }
