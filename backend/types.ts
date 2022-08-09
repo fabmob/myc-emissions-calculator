@@ -116,6 +116,7 @@ export type EnergyAndEmissionsDefaultValues = {
 
 export type Project = {
     projectName: string,
+    isSump: boolean,
     projectCountry: string,
     projectCity: string,
     partnerLocation: string,
