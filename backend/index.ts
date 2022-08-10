@@ -93,7 +93,6 @@ app.put('/api/project/:projectId', keycloak.protect(), (req: Request, res: Respo
 app.delete('/api/project/:projectId', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
     let dbres = dbwrapper.deleteProject(parseInt(req.params.projectId), owner)
-    console.log(dbres)
     res.json({
         status: "ok"
     });
@@ -123,31 +122,42 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     let inputSocioEconomicData : types.SocioEconomicData = project.steps[1]
     project.outputSocioEconomicDataComputed = models.computeSocioEconomicData(inputSocioEconomicData, project.referenceYears)
 
+    let sources = [project.steps[3].vktSource, project.steps[3].vktGrowthSource, project.steps[3].vehicleStockSource, project.steps[3].averageMileageSource]
     delete project.steps[3].vktSource
     delete project.steps[3].vktGrowthSource
     delete project.steps[3].vehicleStockSource
     delete project.steps[3].averageMileageSource
     let inputVehicleKilometresTravelled : types.VehicleKilometresTravelled = project.steps[3]
     project.vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, project.referenceYears)
+    project.steps[3].vktSource = sources[0]
+    project.steps[3].vktGrowthSource = sources[1]
+    project.steps[3].vehicleStockSource = sources[2]
+    project.steps[3].averageMileageSource = sources[3]
 
+    sources = [project.steps[6].source]
     delete project.steps[6].source
     let inputVktPerFuel : types.VktPerFuel = project.steps[6]
     project.outputVktPerFuelComputed = models.computeVktPerFuel(inputVktPerFuel, project.vehicleKilometresTravelledComputed)
+    project.steps[6].source = sources[0]
 
+    sources = [project.steps[4].source]
     delete project.steps[4].source
     let inputVehicleStats : types.VehicleStats = project.steps[4]
     project.outputTransportPerformance = models.computeTransportPerformance(project.vehicleKilometresTravelledComputed, inputVehicleStats)
     project.outputPassengersModalShare = models.computeModalShare(Object.fromEntries(Object.entries(project.outputTransportPerformance).filter(([k,v]) => !project.steps[2][k].isFreight)))
     project.outputFreightModalShare = models.computeModalShare(Object.fromEntries(Object.entries(project.outputTransportPerformance).filter(([k,v]) => project.steps[2][k].isFreight)))
+    project.steps[4].source = sources[0]
 
+    sources = [project.steps[7].energySource, project.steps[7].energyGrowthSource]
     delete project.steps[7].energySource
     delete project.steps[7].energyGrowthSource
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = project.steps[7]
     project.outputAverageEnergyConsumptionComputed = models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYears)
+    project.steps[7].energySource = sources[0]
+    project.steps[7].energyGrowthSource = sources[1]
 
     if (project.steps[5].emissionFactors?.WTW) {
         project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.steps[5].emissionFactors.WTW, project.outputVktPerFuelComputed)
-        console.log(project.outputComputeTotalEnergyAndEmissionsWTW)
         project.outputComputeTotalEnergyAndEmissionsTTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.steps[5].emissionFactors.TTW, project.outputVktPerFuelComputed)
         project.outputSumTotalEnergyAndEmissionsTTW = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissionsTTW)
     } else {
@@ -170,8 +180,8 @@ app.put('/api/project/:projectId/step/:stepNumber', keycloak.protect(), (req: Re
     let projectdbres = dbwrapper.getProject(owner, parseInt(req.params.projectId))
     
     if (projectdbres?.owner === owner) {
-        let dbres = dbwrapper.addProjectStep(parseInt(req.params.projectId), parseInt(req.params.stepNumber), inputDataString)
-        console.log(dbres)
+        // TODO: err handling
+        dbwrapper.addProjectStep(parseInt(req.params.projectId), parseInt(req.params.stepNumber), inputDataString)
         res.json({
             status: "ok"
         });
@@ -184,8 +194,8 @@ app.put('/api/project/:projectId/step/:stepNumber', keycloak.protect(), (req: Re
 
 app.post('/api/project/:projectId/validate', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
-    let dbres = dbwrapper.updateProjectStatus(parseInt(req.params.projectId), owner, "validated")
-    console.log(dbres)
+    // TODO: err handling
+    dbwrapper.updateProjectStatus(parseInt(req.params.projectId), owner, "validated")
     res.json({
         status: "ok"
     });

@@ -84,3 +84,16 @@ h1 {
     content:"*";
     color:red;
 }
+.form-switch {
+    white-space: nowrap;
+}
+h2 .badge {
+    font-size: 12px;
+    vertical-align: middle;
+}
+.stickyOptions {
+    position: fixed !important;
+    top: 10px;
+    z-index: 1;
+    width: 60vw;
+}

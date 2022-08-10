@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 const MyNav = () => {
     const { keycloak, initialized } = useKeycloak();
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light" expand="lg" className="d-print-none">
             <Container>
                 <Navbar.Brand href="/">
                     <img style={{height: "50px", marginRight: "20px"}}src="/mobiliseyourcity.png" alt="Moblise Your City" />
