@@ -95,5 +95,5 @@ h2 .badge {
     position: fixed !important;
     top: 10px;
     z-index: 1;
-    width: 60vw;
+    width: inherit;
 }

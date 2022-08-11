@@ -54,7 +54,7 @@ export default function ProjectViz(){
         return <Navigate to='/'  />
     }
     const goPreviousStep = () => {
-        navigate('/project/' + projectId + '/step/7')
+        navigate('/project/' + projectId + '/step/8')
     }
     const init = (_project: ProjectType) => {
         console.log(_project)
@@ -268,7 +268,7 @@ export default function ProjectViz(){
     }
     return (
         <Container className="projectStepContainer">
-            <Progress project={project} currentStep={8} />
+            <Progress project={project} currentStep={9} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Project overview</h1>

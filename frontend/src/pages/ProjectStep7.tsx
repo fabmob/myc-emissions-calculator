@@ -110,7 +110,7 @@ export default function ProjectStep7(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/7', requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/viz'));
+            .then(() => navigate('/project/' + projectId + '/step/8'));
     }
     return (
         <Container className="projectStepContainer">

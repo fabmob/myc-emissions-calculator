@@ -152,7 +152,7 @@ export default function ProjectStep4(){
                                                 <td style={{backgroundColor: "#989898"}}>{vtype}</td>
                                                 <td>
                                                     <Form.Group>
-                                                        <Form.Control type="number" required min="0" step="0.1" name={vtype} value={inputVt.occupancy} onChange={updateOccupancy} placeholder="" />
+                                                        <Form.Control type="number" required min="0" step="0.001" name={vtype} value={inputVt.occupancy} onChange={updateOccupancy} placeholder="" />
                                                         <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
                                                     </Form.Group>
                                                 </td>

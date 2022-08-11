@@ -35,6 +35,14 @@ export type ProjectType = {
     },
     vehicleKilometresTravelledComputed?: {
         [key: string]: number[]
+    },
+    outputEnergyBalance?: {
+        passengers: {
+            [key in FuelType]?: number
+        },
+        freight: {
+            [key in FuelType]?: number
+        }
     }
 }
 
@@ -114,4 +122,13 @@ export type InputStep7 = {
     [key: string]: {
         [key in FuelType]: string[]
     } | string
+}
+
+export type InputTopDown = {
+    passengers: {
+        [key in FuelType]: {toe: string, source: string}
+    },
+    freight: {
+        [key in FuelType]: {toe: string, source: string}
+    }
 }

@@ -10,6 +10,7 @@ import ProjectStep4 from './pages/ProjectStep4'
 import ProjectStep5 from './pages/ProjectStep5'
 import ProjectStep6 from './pages/ProjectStep6'
 import ProjectStep7 from './pages/ProjectStep7'
+import TopDown from './pages/TopDown'
 import ProjectViz from './pages/ProjectViz'
 import Nav from "./components/Nav"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/project/:projectId/step/5" element={<ProjectStep5 />} />
                     <Route path="/project/:projectId/step/6" element={<ProjectStep6 />} />
                     <Route path="/project/:projectId/step/7" element={<ProjectStep7 />} />
+                    <Route path="/project/:projectId/step/8" element={<TopDown />} />
                     <Route path="/project/:projectId/viz" element={<ProjectViz />} />
                 </Routes>
             </BrowserRouter>

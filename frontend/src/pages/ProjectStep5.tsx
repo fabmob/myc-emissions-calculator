@@ -76,8 +76,8 @@ export default function ProjectStep5(){
                         }
                     }
                     setInputData(init)
-                    if (data.project.emissionFactors) {
-                        setEmissionFactors(data.project.emissionFactors)
+                    if (data.project?.steps?.[5]?.emissionFactors) {
+                        setEmissionFactors(data.project.steps[5].emissionFactors)
                     }
                 });
             }
@@ -92,7 +92,7 @@ export default function ProjectStep5(){
                     }
                 } else {
                     pfuel[key] = value
-                    pfuel.pci = ((parseInt(pfuel.density) || 0) * (parseInt(pfuel.lowerHeatingValue) || 0)).toString()
+                    pfuel.pci = ((parseFloat(pfuel.density) || 0) * (parseFloat(pfuel.lowerHeatingValue) || 0)).toString()
                 }
             }
             prevEmissionFactors[format][fuel] = pfuel

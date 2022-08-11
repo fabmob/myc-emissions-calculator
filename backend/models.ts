@@ -222,3 +222,25 @@ export function sumTotalEnergyAndEmissions(
     }
     return outputSumTotalEnergyAndEmissions
 }
+
+export function computeEnergyBalance(totalEnergyAndEmissions: types.TotalEnergyAndEmissions, vtypesInfo: types.InputStep2) : types.EnergyBalance {
+    let outputEnergyBalance = {passengers: {}, freight: {}} as types.EnergyBalance
+    let vehicleTypeArray = Object.keys(totalEnergyAndEmissions)
+    let ftypes = Object.values(types.FuelType)
+    for (let j = 0; j < ftypes.length; j++) {
+        const ftype = ftypes[j];
+        let ftypeEnergyBalancePassengers = 0
+        let ftypeEnergyBalanceFreight = 0
+        for (let i = 0; i < vehicleTypeArray.length; i++) {
+            const vtype = vehicleTypeArray[i]
+            if (vtypesInfo[vtype].isFreight) {
+                ftypeEnergyBalanceFreight += totalEnergyAndEmissions?.[vtype]?.[ftype]?.energy[0] || 0
+            } else {
+                ftypeEnergyBalancePassengers += totalEnergyAndEmissions?.[vtype]?.[ftype]?.energy[0] || 0
+            }
+        }
+        outputEnergyBalance.passengers[ftype] = ftypeEnergyBalancePassengers * 1000 / 41868 * 1000
+        outputEnergyBalance.freight[ftype] = ftypeEnergyBalanceFreight * 1000 / 41868 * 1000
+    }
+    return outputEnergyBalance
+}

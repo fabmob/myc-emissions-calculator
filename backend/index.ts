@@ -111,7 +111,8 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
         outputComputeTotalEnergyAndEmissionsWTW: types.TotalEnergyAndEmissions,
         outputComputeTotalEnergyAndEmissionsTTW: types.TotalEnergyAndEmissions,
         outputSumTotalEnergyAndEmissionsTTW: types.SumTotalEnergyAndEmissions,
-        outputSumTotalEnergyAndEmissionsWTW: types.SumTotalEnergyAndEmissions
+        outputSumTotalEnergyAndEmissionsWTW: types.SumTotalEnergyAndEmissions,
+        outputEnergyBalance: types.EnergyBalance
     }
     if (!project.steps[7]) {
         return res.json({
@@ -165,6 +166,8 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     }
 
     project.outputSumTotalEnergyAndEmissionsWTW = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissionsWTW)
+
+    project.outputEnergyBalance = models.computeEnergyBalance(project.outputComputeTotalEnergyAndEmissionsWTW, project.steps[2])
 
     res.json({
         status: "ok",

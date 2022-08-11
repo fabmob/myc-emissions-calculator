@@ -9,8 +9,8 @@ const Progress = (props: {project: ProjectType, currentStep: number}) => {
     const link = (step: string) => navigate('/project/' + props.project.id + '/step/' + step)
     const viz = () => navigate('/project/' + props.project.id + '/viz')
     const getClassName = (step: number) => {
-        if (props.project.step === 8) {
-            // Step 8: overview is done by default
+        if (props.project.step === 9) {
+            // Step 9: overview is done by default
             props.project.step = 100
         }
         if (props.currentStep === step) {
@@ -92,6 +92,13 @@ const Progress = (props: {project: ProjectType, currentStep: number}) => {
             <Button
                 className={getClassName(8)}
                 disabled={props.project.step < 8}
+                onClick={() => link('8')}>
+                Top down validation
+            </Button>
+            →
+            <Button
+                className={getClassName(9)}
+                disabled={props.project.step < 9}
                 onClick={() => viz()}>
                 Overview
             </Button>

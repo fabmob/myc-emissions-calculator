@@ -169,7 +169,7 @@ const OwnedProjects = ({ownedProjects, handleEditProject}: {ownedProjects: Proje
     }
     const openProject = (p: ProjectType) => {
         let url = "/project/" + p.id + "/step/" + p.step
-        if (p.step === 8) {
+        if (p.step === 9) {
             url = "/project/" + p.id + "/viz"
         }
         return navigate(url)
@@ -266,7 +266,7 @@ const ProjectProgress = ({step} : {step: number}) => {
     for (let i = 0; i < step; i++) {
         res += '🟩'
     }
-    for (let i = step; i < 8; i++) {
+    for (let i = step; i < 9; i++) {
         res += '🟧'
     }
     return <span style={{whiteSpace: "nowrap"}}>{res}</span>

@@ -31,7 +31,9 @@ export type YearlyGrowth = YearlyValues<Percent>
 export type VehicleKilometresTravelled = {
     [key: string]: {vkt: MillKmPerYear, vktRate: YearlyGrowth}
 }
-
+export type InputStep2 = {
+    [key: string]: {isActive: boolean, isFreight: boolean}
+}
 export type VehicleKilometresTravelledComputed = {
     [key: string]: YearlyValues<MillKm>
 }
@@ -111,6 +113,15 @@ export type EnergyAndEmissionsDefaultValues = {
     [key in FuelType]?: {
         pci: number,
         ges: YearlyValues<number>
+    }
+}
+
+export type EnergyBalance = {
+    passengers: {
+        [key in FuelType]?: number
+    },
+    freight: {
+        [key in FuelType]?: number
     }
 }
 
