@@ -8,7 +8,9 @@ export default function GetStarted(){
     const { keycloak, initialized } = useKeycloak();
     const [ projects, setProjects ] = useState([] as ProjectType[])
     const [ publicProjects, setPublicProjects ] = useState([] as ProjectType[])
+    const [ adminProjects, setAdminProjects ] = useState([] as ProjectType[])
     const [ gotoCreate, setGotoCreate ] = useState(false)
+    const [ isAdmin, setIsAdmin ] = useState(false)
 
     const [show, setShow] = useState(false);
 
@@ -16,7 +18,13 @@ export default function GetStarted(){
     const handleShow = () => setShow(true);
     useEffect(() => {
         if (initialized && keycloak.authenticated){
-            loadProjects()
+            const roles = keycloak?.tokenParsed?.realm_access?.roles
+            let _isAdmin = false
+            if (roles && roles.indexOf('app-admin') > -1) {
+                setIsAdmin(true)
+                _isAdmin = true
+            }
+            loadProjects(_isAdmin)
         }
     }, [initialized, keycloak])
     if (initialized && !keycloak.authenticated){
@@ -25,7 +33,7 @@ export default function GetStarted(){
     if (gotoCreate) {
         return <Navigate to='/createProject'  />
     }
-    const loadProjects = () => {
+    const loadProjects = (_isAdmin: boolean) => {
         const requestOptions = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
@@ -39,7 +47,10 @@ export default function GetStarted(){
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/projects', requestOptions)
             .then(response => response.json())
             .then(data => {
-                setPublicProjects(data.projects)
+                setPublicProjects(data.projects.filter((project: ProjectType) => project.status !== "draft"))
+                if (_isAdmin) {
+                    setAdminProjects(data.projects.filter((project: ProjectType) => project.status === "draft"))
+                }
             });
     }
     const handleEditProject = (projectBeingEdited: ProjectType, action: 'validate' | 'delete') => {
@@ -91,7 +102,7 @@ export default function GetStarted(){
                         }
                     </Col>
                     <Row>
-                        {initialized && <Projects ownedProjects={projects} publicProjects={publicProjects} handleEditProject={handleEditProject}/>}
+                        {initialized && <Projects ownedProjects={projects} publicProjects={publicProjects} adminProjects={adminProjects} handleEditProject={handleEditProject} isAdmin={isAdmin}/>}
                     </Row>
                 </Row>
             </Container>
@@ -132,15 +143,33 @@ export default function GetStarted(){
     )
 }
 
-const Projects = ({ownedProjects, publicProjects, handleEditProject}: {ownedProjects: ProjectType[], publicProjects: ProjectType[], handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void}) => (
+const Projects = ({ownedProjects, publicProjects, adminProjects, handleEditProject, isAdmin}: 
+    {
+        ownedProjects: ProjectType[], 
+        publicProjects: ProjectType[], 
+        adminProjects: ProjectType[], 
+        handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void,
+        isAdmin: boolean
+    }) => (
     <div style={{textAlign: "left"}}>
         <h2>Your projects</h2>
-        <OwnedProjects ownedProjects={ownedProjects} handleEditProject={handleEditProject}/>
-        <h2>Public projects</h2>
-        <PublicProjects publicProjects={publicProjects} handleEditProject={handleEditProject}/>
+        <DetailedProjects projects={ownedProjects} handleEditProject={handleEditProject} showOwner={false}/>
+        {isAdmin ?
+            <>
+                <h2>(Admin) Public projects</h2>
+                <DetailedProjects projects={publicProjects} handleEditProject={handleEditProject} showOwner={true}/>
+                <h2>(Admin) Private projects</h2>
+                <DetailedProjects projects={adminProjects} handleEditProject={handleEditProject} showOwner={true}/>
+            </>
+            : <>
+                <h2>Public projects</h2>
+                <PublicProjects publicProjects={publicProjects} handleEditProject={handleEditProject}/>
+            </>
+        }
     </div>
 )
-const OwnedProjects = ({ownedProjects, handleEditProject}: {ownedProjects: ProjectType[], handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void}) => {
+const DetailedProjects = ({projects, handleEditProject, showOwner}: 
+    {projects: ProjectType[], handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void, showOwner: boolean}) => {
     const navigate = useNavigate()
     const { keycloak, initialized } = useKeycloak();
     const [showValidateConfirmModal, setShowValidateConfirmModal] = useState(false);
@@ -182,13 +211,14 @@ const OwnedProjects = ({ownedProjects, handleEditProject}: {ownedProjects: Proje
                         <th>#</th>
                         <th>Name</th>
                         <th>Type</th>
+                        {showOwner && <th>Author</th>}
                         <th>Status</th>
                         <th>Progress</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody style={{verticalAlign: "middle"}}>
-                    {ownedProjects.map(project => 
+                    {projects.map(project => 
                         <tr key={project.id}>
                             <td>{project.id}</td>
                             <td>{project.name}</td>
@@ -197,11 +227,12 @@ const OwnedProjects = ({ownedProjects, handleEditProject}: {ownedProjects: Proje
                                     {project.isSump ? <Badge bg="primary">SUMP</Badge> : <Badge bg="info">NUMP</Badge>}              
                                 </OverlayTrigger>
                             </td>
+                            {showOwner && <td>{project.owner}</td>}
                             <td>{project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="success">Validated</Badge>}</td>
                             <td><ProjectProgress step={project.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
                                 <Button variant="primary" className="btn-sm" style={{marginRight: "2px"}} onClick={() => openProject(project)}>Open</Button>
-                                <Button variant="success" className="btn-sm" style={{marginRight: "2px"}} disabled={project.step < 8} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
+                                <Button variant="success" className="btn-sm" style={{marginRight: "2px"}} disabled={project.step < 9 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
                                 <Button variant="danger" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}>Delete</Button>
                             </td>
                         </tr>

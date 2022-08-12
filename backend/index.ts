@@ -52,8 +52,9 @@ app.get('/api/myProjects', keycloak.protect(), (req: Request, res: Response) => 
     });
 });
 app.get('/api/projects', keycloak.protect(), (req: Request, res: Response) => {
-    let owner = (req as any).kauth.grant.access_token.content.email
-    let dbres = dbwrapper.getPublicProjectsNotOwned(owner)
+    const owner = (req as any).kauth.grant.access_token.content.email
+    const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
+    const dbres = dbwrapper.getPublicProjectsNotOwned(owner, isAdmin)
     res.json({
         status: "ok",
         projects: dbres
@@ -61,8 +62,9 @@ app.get('/api/projects', keycloak.protect(), (req: Request, res: Response) => {
 });
 
 app.get('/api/project/:projectId', keycloak.protect(), (req: Request, res: Response) => {
-    let owner = (req as any).kauth.grant.access_token.content.email
-    let dbres = dbwrapper.getProject(owner, parseInt(req.params.projectId))
+    const owner = (req as any).kauth.grant.access_token.content.email
+    const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
+    const dbres = dbwrapper.getProject(owner, parseInt(req.params.projectId), isAdmin)
     if (!dbres) {
         return res.status(404).json({
             status: "not found",
@@ -75,9 +77,10 @@ app.get('/api/project/:projectId', keycloak.protect(), (req: Request, res: Respo
     });
 });
 app.put('/api/project/:projectId', keycloak.protect(), (req: Request, res: Response) => {
-    let owner = (req as any).kauth.grant.access_token.content.email
-    let inputProject : types.Project = req.body.project
-    let [errorCode, dbres] = dbwrapper.updateProject(parseInt(req.params.projectId), owner, inputProject)
+    const owner = (req as any).kauth.grant.access_token.content.email
+    const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
+    const inputProject : types.Project = req.body.project
+    const [errorCode, dbres] = dbwrapper.updateProject(parseInt(req.params.projectId), owner, inputProject, isAdmin)
     if (dbres !== null) {
         res.json({
             status: "ok"
@@ -97,15 +100,17 @@ app.put('/api/project/:projectId', keycloak.protect(), (req: Request, res: Respo
     }
 });
 app.delete('/api/project/:projectId', keycloak.protect(), (req: Request, res: Response) => {
-    let owner = (req as any).kauth.grant.access_token.content.email
-    let dbres = dbwrapper.deleteProject(parseInt(req.params.projectId), owner)
+    const owner = (req as any).kauth.grant.access_token.content.email
+    const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
+    const dbres = dbwrapper.deleteProject(parseInt(req.params.projectId), owner, isAdmin)
     res.json({
         status: "ok"
     });
 });
 app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: Response) => {
-    let owner = (req as any).kauth.grant.access_token.content.email
-    let dbProject = dbwrapper.getProject(owner, parseInt(req.params.projectId))
+    const owner = (req as any).kauth.grant.access_token.content.email
+    const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
+    const dbProject = dbwrapper.getProject(owner, parseInt(req.params.projectId), isAdmin)
     if (!dbProject) {
         return res.status(404).json({
             status: "not found",
@@ -188,13 +193,14 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
 });
 
 app.put('/api/project/:projectId/step/:stepNumber', keycloak.protect(), (req: Request, res: Response) => {
-    let inputDataString = JSON.stringify(req.body.inputData)
+    const inputDataString = JSON.stringify(req.body.inputData)
 
     // Check ownership before making an edit
-    let owner = (req as any).kauth.grant.access_token.content.email
-    let projectdbres = dbwrapper.getProject(owner, parseInt(req.params.projectId))
+    const owner = (req as any).kauth.grant.access_token.content.email
+    const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
+    const projectdbres = dbwrapper.getProject(owner, parseInt(req.params.projectId), isAdmin)
     
-    if (projectdbres?.owner === owner) {
+    if (projectdbres?.owner === owner || isAdmin) {
         // TODO: err handling
         dbwrapper.addProjectStep(parseInt(req.params.projectId), parseInt(req.params.stepNumber), inputDataString)
         res.json({
@@ -208,9 +214,10 @@ app.put('/api/project/:projectId/step/:stepNumber', keycloak.protect(), (req: Re
 });
 
 app.post('/api/project/:projectId/validate', keycloak.protect(), (req: Request, res: Response) => {
-    let owner = (req as any).kauth.grant.access_token.content.email
+    const owner = (req as any).kauth.grant.access_token.content.email
+    const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
     // TODO: err handling
-    dbwrapper.updateProjectStatus(parseInt(req.params.projectId), owner, "validated")
+    dbwrapper.updateProjectStatus(parseInt(req.params.projectId), owner, "validated", isAdmin)
     res.json({
         status: "ok"
     });

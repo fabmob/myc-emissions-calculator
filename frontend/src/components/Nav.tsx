@@ -9,6 +9,11 @@ import { NavLink } from "react-router-dom";
 
 const MyNav = () => {
     const { keycloak, initialized } = useKeycloak();
+    const roles = keycloak?.tokenParsed?.realm_access?.roles
+    let isAdmin = false
+    if (roles && roles.indexOf('app-admin') > -1) {
+        isAdmin = true
+    }
     return (
         <Navbar bg="light" expand="lg" className="d-print-none">
             <Container>
@@ -24,7 +29,7 @@ const MyNav = () => {
                     </Nav>
                     {!!keycloak.authenticated && (
                         <Nav>
-                            <NavDropdown title={keycloak?.tokenParsed?.preferred_username} id="navbarScrollingDropdown">
+                            <NavDropdown title={keycloak?.tokenParsed?.preferred_username + (isAdmin ? " (admin)" : '')} id="navbarScrollingDropdown">
                             <NavDropdown.Item onClick={() => keycloak.logout()}>logout</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>

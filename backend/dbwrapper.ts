@@ -94,14 +94,26 @@ export function getProjectsByOwner(owner: string) {
     let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
     return res.map(projectEntry => parseProject(projectEntry))
 }
-export function getPublicProjectsNotOwned(owner: string) {
-    const getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? AND status = 'validated' group by id")
+export function getPublicProjectsNotOwned(owner: string, isAdmin: boolean) {
+    let getProjectsByOwnerStmt
+    if (isAdmin) {
+        getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? group by id")
+    } else {
+        getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? AND status = 'validated' group by id")
+    }
     let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
     return res.map(projectEntry => parseProject(projectEntry))
 }
-export function getProject(owner: string, id: number) {
-    const getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ? AND (owner = ? OR status = 'validated')")
-    let resProject: ProjectsDbEntry = getProjectStmt.get([id, owner])
+export function getProject(owner: string, id: number, isAdmin: boolean) {
+    let getProjectStmt
+    let resProject: ProjectsDbEntry
+    if (isAdmin) {
+        getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ?")
+        resProject = getProjectStmt.get([id])
+    } else {
+        getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ? AND (owner = ? OR status = 'validated')")
+        resProject = getProjectStmt.get([id, owner])
+    }
     if (!resProject) {
         return null
     }
@@ -116,32 +128,62 @@ export function addProjectStep(id: number, stepNumber: number, inputData: string
     return res
 }
 
-export function updateProjectStatus(id: number, owner: string, status: string) {
-    const updateProjectStatusStmt = db.prepare("UPDATE Projects set status = ? where id = ? and owner = ?")
-    let res = updateProjectStatusStmt.run([status, id, owner])
+export function updateProjectStatus(id: number, owner: string, status: string, isAdmin: boolean) {
+    let updateProjectStatusStmt
+    let res
+    if (isAdmin) {
+        updateProjectStatusStmt = db.prepare("UPDATE Projects set status = ? where id = ?")
+        res = updateProjectStatusStmt.run([status, id])
+    } else {
+        updateProjectStatusStmt = db.prepare("UPDATE Projects set status = ? where id = ? and owner = ?")
+        res = updateProjectStatusStmt.run([status, id, owner])
+    }
     return res
 }
-export function updateProject(id: number, owner: string, project: types.Project) {
-    const updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, isSump = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ? where id = ? and owner = ?")
+export function updateProject(id: number, owner: string, project: types.Project, isAdmin: boolean) {
+    let updateProjectStatusStmt
+    let res
     try {
-        let res = updateProjectStatusStmt.run([
-            project.projectName,
-            project.isSump ? 1 : 0,
-            project.projectCountry,
-            project.projectCity,
-            project.partnerLocation,
-            project.projectArea,
-            project.projectReferenceYears.join(","),
-            id, 
-            owner
-        ])
+        if (isAdmin) {
+            updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, isSump = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ? where id = ?")
+            res = updateProjectStatusStmt.run([
+                project.projectName,
+                project.isSump ? 1 : 0,
+                project.projectCountry,
+                project.projectCity,
+                project.partnerLocation,
+                project.projectArea,
+                project.projectReferenceYears.join(","),
+                id
+            ])
+        } else {
+            updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, isSump = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ? where id = ? and owner = ?")
+            res = updateProjectStatusStmt.run([
+                project.projectName,
+                project.isSump ? 1 : 0,
+                project.projectCountry,
+                project.projectCity,
+                project.partnerLocation,
+                project.projectArea,
+                project.projectReferenceYears.join(","),
+                id, 
+                owner
+            ])
+        }
         return [null, res]
     } catch (error: any) {
         return [error?.code, null]
     }
 }
-export function deleteProject(id: number, owner: string) {
-    const updateProjectStatusStmt = db.prepare("DELETE FROM Projects where id = ? and owner = ?")
-    let res = updateProjectStatusStmt.run([id, owner])
+export function deleteProject(id: number, owner: string, isAdmin: boolean) {
+    let updateProjectStatusStmt
+    let res
+    if (isAdmin) {
+        updateProjectStatusStmt = db.prepare("DELETE FROM Projects where id = ?")
+        res = updateProjectStatusStmt.run([id])
+    } else {
+        updateProjectStatusStmt = db.prepare("DELETE FROM Projects where id = ? and owner = ?")
+        res = updateProjectStatusStmt.run([id, owner])
+    }
     return res
 }
