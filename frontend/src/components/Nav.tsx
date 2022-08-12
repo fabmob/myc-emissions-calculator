@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 
 
 const MyNav = () => {
-    const { keycloak, initialized } = useKeycloak();
+    const { keycloak } = useKeycloak();
     const roles = keycloak?.tokenParsed?.realm_access?.roles
     let isAdmin = false
     if (roles && roles.indexOf('app-admin') > -1) {

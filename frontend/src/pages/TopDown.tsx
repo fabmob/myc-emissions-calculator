@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import {InputTopDown, ProjectType, FuelType} from '../frontendTypes'
 import Progress from '../components/Progress'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Label } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import './Project.css'
 

@@ -32,7 +32,7 @@ export default function ProjectStep3(){
             };
             fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
                 .then(response => {
-                    if (response.status != 200) {
+                    if (response.status !== 200) {
                         navigate('/')
                     }
                     return response.json()
@@ -87,9 +87,9 @@ export default function ProjectStep3(){
         setInputData((prevInputData: InputStep3) => {
             let vtypeobj = prevInputData[vtype]
             if (vtypeobj && typeof(vtypeobj) != 'string') {
-                if (field != "vktRate") {
+                if (field !== "vktRate") {
                     vtypeobj[field] = target.value
-                    if (field != "vkt") {
+                    if (field !== "vkt") {
                         // Edits to computation values should trigger a hidden vkt computation
                         vtypeobj.vkt = ((parseFloat(vtypeobj.vehicleStock) || 0) * (parseFloat(vtypeobj.averageMileage) || 0) * 0.000001).toString()
                     } else {

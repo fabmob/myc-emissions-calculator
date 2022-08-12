@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { Navigate, useNavigate } from 'react-router-dom'
 import {ProjectType} from '../frontendTypes'
-import { Container, Button, Row, Col, Stack, Form, Modal, OverlayTrigger, Tooltip, Table, Badge } from 'react-bootstrap'
+import { Container, Button, Row, Col, Stack, Modal, OverlayTrigger, Tooltip, Table, Badge } from 'react-bootstrap'
 
 export default function GetStarted(){
     const { keycloak, initialized } = useKeycloak();
@@ -171,7 +171,6 @@ const Projects = ({ownedProjects, publicProjects, adminProjects, handleEditProje
 const DetailedProjects = ({projects, handleEditProject, showOwner}: 
     {projects: ProjectType[], handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void, showOwner: boolean}) => {
     const navigate = useNavigate()
-    const { keycloak, initialized } = useKeycloak();
     const [showValidateConfirmModal, setShowValidateConfirmModal] = useState(false);
     const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
     const [projectBeingEdited, setProjectBeingEdited] = useState({} as ProjectType);

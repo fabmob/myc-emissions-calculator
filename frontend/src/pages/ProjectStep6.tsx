@@ -1,17 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import Table from 'react-bootstrap/Table'
-import Form from 'react-bootstrap/Form'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
-import InputGroup from 'react-bootstrap/InputGroup'
+import { Table, Form, Container, Row, Col, Alert, Button } from 'react-bootstrap'
 import {InputStep6, ProjectType, FuelType} from '../frontendTypes'
 import Progress from '../components/Progress'
 import PercentInput from '../components/PercentInput'
-import Alert from 'react-bootstrap/Alert'
 
 import './Project.css'
 
@@ -33,7 +26,7 @@ export default function ProjectStep6(){
             };
             fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
                 .then(response => {
-                    if (response.status != 200) {
+                    if (response.status !== 200) {
                         navigate('/')
                     }
                     return response.json()
@@ -110,7 +103,7 @@ export default function ProjectStep6(){
                     }
                 }
                 for (let k = 0; k < sums.length; k++) {
-                    if (sums[k] != 100) {
+                    if (sums[k] !== 100) {
                         return false
                     }
                 }

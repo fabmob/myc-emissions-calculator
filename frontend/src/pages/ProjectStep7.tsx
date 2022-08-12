@@ -40,7 +40,7 @@ export default function ProjectStep7(){
             };
             fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
                 .then(response => {
-                    if (response.status != 200) {
+                    if (response.status !== 200) {
                         navigate('/')
                     }
                     return response.json()

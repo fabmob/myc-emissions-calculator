@@ -46,7 +46,7 @@ export default function ProjectViz(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + "/viz", requestOptions)
             .then(response => {
-                if (response.status != 200) {
+                if (response.status !== 200) {
                     navigate('/')
                 }
                 return response.json()
@@ -112,6 +112,7 @@ export default function ProjectViz(){
                     _csvExport.push(["input", "fuelBreakdown", _project.steps[6].source, "", vtype, ftype].concat(_project.steps[6][vtype][ftype]))
                     _csvExport.push(["input", "fuelConsumption", _project.steps[7].energySource, _project.steps[7].energyGrowthSource, vtype, ftype].concat(_project.steps[7][vtype][ftype]))
                 }
+                return null
             })
         }
         for (let j = 1; j < 6; j++) {
@@ -354,7 +355,7 @@ export default function ProjectViz(){
                                         {activeVtypesVkt.map((e, i) => (
                                             <Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' Mkm'>
                                                 <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey={e} content={CustomLabel} />
-                                                {i==0 && showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
+                                                {i===0 && showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
                                             </Bar>
                                         ))}
                                 </BarChart>
@@ -434,7 +435,7 @@ export default function ProjectViz(){
                                     {dataEnergyWTW[0].map((e:string, i:number) => (
                                         <Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' tons GHG'>
                                             <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey={e} content={CustomLabel} />
-                                            {i==0 && showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
+                                            {i===0 && showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
                                         </Bar>
                                     ))}
                                 </BarChart>
@@ -478,7 +479,7 @@ const CustomLabel = (props: any) => {
       );
 }
 const PercentLabel = (props: any) => {
-    const { x, y, width, height, value, offset, className } = props
+    const { x, width, value, className } = props
     return (
         <g className={className}>
           <text x={x + width / 2} y={12} fontSize="12" fill="black" textAnchor="middle" dominantBaseline="middle">
@@ -503,7 +504,7 @@ const Options = (
     useEffect(() => {
         if (selectedVtypes)
             filterByVtype(selectedVtypes)
-    }, [selectedVtypes])
+    }, [selectedVtypes, filterByVtype])
     if (!project?.steps?.[2]) {
         return <></>
     }
