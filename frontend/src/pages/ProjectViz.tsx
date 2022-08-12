@@ -45,7 +45,12 @@ export default function ProjectViz(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + "/viz", requestOptions)
-            .then(response => response.json())
+            .then(response => {
+                if (response.status != 200) {
+                    navigate('/')
+                }
+                return response.json()
+            })
             .then(data => {
                 init(data.project)
             });

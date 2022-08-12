@@ -63,6 +63,12 @@ app.get('/api/projects', keycloak.protect(), (req: Request, res: Response) => {
 app.get('/api/project/:projectId', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
     let dbres = dbwrapper.getProject(owner, parseInt(req.params.projectId))
+    if (!dbres) {
+        return res.status(404).json({
+            status: "not found",
+            project: null
+        })
+    }
     res.json({
         status: "ok",
         project: dbres
@@ -100,6 +106,12 @@ app.delete('/api/project/:projectId', keycloak.protect(), (req: Request, res: Re
 app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: Response) => {
     let owner = (req as any).kauth.grant.access_token.content.email
     let dbProject = dbwrapper.getProject(owner, parseInt(req.params.projectId))
+    if (!dbProject) {
+        return res.status(404).json({
+            status: "not found",
+            project: null
+        })
+    }
     let project = dbProject as typeof dbProject & {
         outputSocioEconomicDataComputed: types.SocioEconomicDataComputed,
         vehicleKilometresTravelledComputed: types.VehicleKilometresTravelledComputed,

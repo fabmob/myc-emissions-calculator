@@ -110,7 +110,12 @@ export default function ProjectStep2(){
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
             };
             fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
-                .then(response => response.json())
+                .then(response => {
+                    if (response.status != 200) {
+                        return navigate('/')
+                    }
+                    return response.json()
+                })
                 .then(data => {
                     setProject(data.project)
                     if (data.project.steps[2]){

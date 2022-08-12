@@ -102,6 +102,9 @@ export function getPublicProjectsNotOwned(owner: string) {
 export function getProject(owner: string, id: number) {
     const getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ? AND (owner = ? OR status = 'validated')")
     let resProject: ProjectsDbEntry = getProjectStmt.get([id, owner])
+    if (!resProject) {
+        return null
+    }
     const getProjectStepsStmt = db.prepare("SELECT * FROM ProjectSteps WHERE projectId = ?")
     let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([id])
     return parseProject(resProject, resProjectSteps)
