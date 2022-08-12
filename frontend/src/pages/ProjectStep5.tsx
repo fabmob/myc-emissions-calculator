@@ -26,21 +26,21 @@ export default function ProjectStep5(){
     const handleCloseEmissionsFactors = () => setShowEmissionsFactors(false);
     let [emissionFactors, setEmissionFactors] = useState({
         "WTW": {
-            "Gasoline": {lowerHeatingValue: "44", density: "0.740740740740741", pci: "32.8", ges: ["86241", "86241", "86241", "86241", "86241", "86241"]},
+            "Gasoline": {lowerHeatingValue: "44.3", density: "0.740740740740741", pci: "32.8", ges: ["86241", "86241", "86241", "86241", "86241", "86241"]},
             "Diesel": {lowerHeatingValue: "43", density: "0.843881856540084", pci: "36.3", ges: ["91369", "91369", "91369", "91369", "91369", "91369"]},
-            "LPG": {lowerHeatingValue: "47", density: "0.522193211488251", pci: "24.7", ges: ["72692", "72692", "72692", "72692", "72692", "72692"]},
+            "LPG": {lowerHeatingValue: "47.3", density: "0.522193211488251", pci: "24.7", ges: ["72692", "72692", "72692", "72692", "72692", "72692"]},
             "NG": {lowerHeatingValue: "48", density: "1", pci: "48.0", ges: ["67772", "67772", "67772", "67772", "67772", "67772"]},
             "Hybrid": {lowerHeatingValue: "44", density: "0.740740740740741", pci: "32.8", ges: ["85192", "85192", "85192", "85192", "85192", "85192"]},
-            "Electric": {lowerHeatingValue: "4", density: "1", pci: "3.6", ges: ["20556", "20556", "20556", "20556", "20556", "20556"]},
+            "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: ["20556", "20556", "20556", "20556", "20556", "20556"]},
             "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: ["0","0","0","0","0","0"]}
         },
         "TTW": {
-            "Gasoline": {lowerHeatingValue: "44", density: "0.740740740740741", pci: "32.8", ges: ["72120", "72120", "72120", "72120", "72120", "72120"]},
+            "Gasoline": {lowerHeatingValue: "44.3", density: "0.740740740740741", pci: "32.8", ges: ["72120", "72120", "72120", "72120", "72120", "72120"]},
             "Diesel": {lowerHeatingValue: "43", density: "0.843881856540084", pci: "36.3", ges: ["75360", "75360", "75360", "75360", "75360", "75360"]},
-            "LPG": {lowerHeatingValue: "47", density: "0.522193211488251", pci: "24.7", ges: ["64710", "64710", "64710", "64710", "64710", "64710"]},
+            "LPG": {lowerHeatingValue: "47.3", density: "0.522193211488251", pci: "24.7", ges: ["64710", "64710", "64710", "64710", "64710", "64710"]},
             "NG": {lowerHeatingValue: "48", density: "1", pci: "48.0", ges: ["59292", "59292", "59292", "59292", "59292", "59292"]},
             "Hybrid": {lowerHeatingValue: "44", density: "0.740740740740741", pci: "32.8", ges: ["71072", "71072", "71072", "71072", "71072", "71072"]},
-            "Electric": {lowerHeatingValue: "4", density: "1", pci: "3.6", ges: ["0", "0", "0", "0", "0", "0"]},
+            "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: ["0", "0", "0", "0", "0", "0"]},
             "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: ["0","0","0","0","0","0"]}
         }
     } as EmissionsFactors)
