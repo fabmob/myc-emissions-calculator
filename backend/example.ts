@@ -23,14 +23,14 @@ console.log("vehicleKilometresTravelledComputed", vehicleKilometresTravelledComp
 
 const inputVktPerFuel: types.VktPerFuel = {
     "Private car": {
-        "Gasoline": [50, 50, 50, 55, 60],
-        "Diesel": [50, 50, 50, 45, 40]
+        "Gasoline": [50, 50, 50, 55, 60, 60],
+        "Diesel": [50, 50, 50, 45, 40, 40]
     },
     "Individual taxi": {
-        "Diesel": [100, 100, 100, 100, 100]
+        "Diesel": [100, 100, 100, 100, 100, 100]
     },
     "Some random category": {
-        "Diesel": [100, 100, 100, 100, 100]
+        "Diesel": [100, 100, 100, 100, 100, 100]
     }
 }
 
