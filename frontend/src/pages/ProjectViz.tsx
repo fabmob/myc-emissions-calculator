@@ -88,7 +88,7 @@ export default function ProjectViz(){
         ]
         for (let i = 0; i < vtypesvkt.length; i++) {
             let vtype = vtypesvkt[i]
-            if (!_project.steps[2][vtype].isActive)
+            if (!_project?.steps?.[2]?.[vtype]?.isActive)
                 continue
             for (let j = 0; j < 6; j++) {
                 if (vehicleKilometresTravelledComputed?.[vtype]?.[j]) {
@@ -131,7 +131,7 @@ export default function ProjectViz(){
         ]
         for (let i = 0; i < vTypesPassengersModalShare.length; i++) {
             let vtype = vTypesPassengersModalShare[i]
-            if (!_project.steps[2][vtype].isActive)
+            if (!_project?.steps?.[2]?.[vtype]?.isActive)
                 continue
             for (let j = 0; j < 6; j++) {
                 if (outputPassengersModalShare?.[vtype]?.[j]) {
@@ -155,7 +155,7 @@ export default function ProjectViz(){
         ]
         for (let i = 0; i < vTypesFreightModalShare.length; i++) {
             let vtype = vTypesFreightModalShare[i]
-            if (!_project.steps[2][vtype].isActive)
+            if (!_project?.steps?.[2]?.[vtype]?.isActive)
                 continue
             for (let j = 0; j < 6; j++) {
                 if (outputFreightModalShare?.[vtype]?.[j]) {
@@ -182,7 +182,7 @@ export default function ProjectViz(){
             ]
             for (let i = 0; i < vTypesPassengersModalShare.length; i++) {
                 let vtype = vTypesPassengersModalShare[i]
-                if (!_project.steps[2][vtype].isActive)
+                if (!_project?.steps?.[2]?.[vtype]?.isActive)
                     continue
                 for (let j = 0; j < 6; j++) {
                     let val = outputSumTotalEnergyAndEmissions?.[vtype]?.co2?.[j]
@@ -197,7 +197,7 @@ export default function ProjectViz(){
             }
             for (let i = 0; i < vTypesFreightModalShare.length; i++) {
                 let vtype = vTypesFreightModalShare[i]
-                if (!_project.steps[2][vtype].isActive)
+                if (!_project?.steps?.[2]?.[vtype]?.isActive)
                     continue
                 for (let j = 0; j < 6; j++) {
                     let val = outputSumTotalEnergyAndEmissions?.[vtype]?.co2?.[j]
@@ -504,7 +504,7 @@ const Options = (
     useEffect(() => {
         if (selectedVtypes)
             filterByVtype(selectedVtypes)
-    }, [selectedVtypes, filterByVtype])
+    }, [selectedVtypes])
     if (!project?.steps?.[2]) {
         return <></>
     }
