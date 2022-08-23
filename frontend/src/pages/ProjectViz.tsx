@@ -134,7 +134,7 @@ export default function ProjectViz(){
             if (!_project?.steps?.[2]?.[vtype]?.isActive)
                 continue
             for (let j = 0; j < 6; j++) {
-                if (outputPassengersModalShare?.[vtype]?.[j]) {
+                if (outputPassengersModalShare?.[vtype]?.[j] !== undefined) {
                     _dataPassengersModalShare[j][vtype] = Math.round((outputPassengersModalShare?.[vtype]?.[j] || 0) * 100)
                     if (_activeVTypesPassengersModalShare.indexOf(vTypesPassengersModalShare[i]) === -1)
                         _activeVTypesPassengersModalShare.push(vTypesPassengersModalShare[i])
@@ -158,7 +158,7 @@ export default function ProjectViz(){
             if (!_project?.steps?.[2]?.[vtype]?.isActive)
                 continue
             for (let j = 0; j < 6; j++) {
-                if (outputFreightModalShare?.[vtype]?.[j]) {
+                if (outputFreightModalShare?.[vtype]?.[j] !== undefined) {
                     _dataFreightModalShare[j][vtype] = Math.round((outputFreightModalShare?.[vtype]?.[j] || 0) * 100)
                     if (_activeVTypesFreightModalShare.indexOf(vTypesFreightModalShare[i]) === -1)
                         _activeVTypesFreightModalShare.push(vTypesFreightModalShare[i])
@@ -186,7 +186,7 @@ export default function ProjectViz(){
                     continue
                 for (let j = 0; j < 6; j++) {
                     let val = outputSumTotalEnergyAndEmissions?.[vtype]?.co2?.[j]
-                    if (val) {
+                    if (val !== undefined) {
                         dataEnergy[j][vtype] = Math.round(val * 1000)
                         dataEnergy[j].total += Math.round(val * 1000)
                         if (activeVtypesEnergy.indexOf(vtype) === -1)
@@ -201,7 +201,7 @@ export default function ProjectViz(){
                     continue
                 for (let j = 0; j < 6; j++) {
                     let val = outputSumTotalEnergyAndEmissions?.[vtype]?.co2?.[j]
-                    if (val) {
+                    if (val !== undefined) {
                         dataEnergy[j][vtype] = Math.round(val * 1000)
                         dataEnergy[j].total += Math.round(val * 1000)
                         if (activeVtypesEnergy.indexOf(vtype) === -1)
