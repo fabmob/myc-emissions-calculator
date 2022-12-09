@@ -53,6 +53,7 @@ export enum FuelType {
     "NG" = "NG",
     "Hybrid" = "Hybrid",
     "Electric" = "Electric",
+    "Hydrogen" = "Hydrogen",
     "None" = "None"
 }
 

@@ -27,6 +27,7 @@ export default function TopDown(){
             "NG": {toe: "0", source: "NA"},
             "Hybrid": {toe: "0", source: "NA"},
             "Electric": {toe: "0", source: "NA"},
+            "Hydrogen": {toe: "0", source: "NA"},
             "None": {toe: "0", source: "NA"}
         },
         freight: {
@@ -36,12 +37,13 @@ export default function TopDown(){
             "NG": {toe: "0", source: "NA"},
             "Hybrid": {toe: "0", source: "NA"},
             "Electric": {toe: "0", source: "NA"},
+            "Hydrogen": {toe: "0", source: "NA"},
             "None": {toe: "0", source: "NA"}
         }
     } as InputTopDown)
     let params = useParams();
     let projectId = params.projectId
-    let ftypes = ["Gasoline", "Diesel", "LPG", "NG", "Hybrid", "Electric"]
+    let ftypes = ["Gasoline", "Diesel", "LPG", "NG", "Hybrid", "Electric", "Hydrogen"]
     useEffect(() => {
         if (initialized && keycloak.authenticated){
             const requestOptions = {
@@ -54,6 +56,17 @@ export default function TopDown(){
                     console.log(data.project)
                     setProject(data.project)
                     if (data?.project?.steps?.[8]) {
+                        // Patch old project with missing fuel types
+                        for (let j = 0; j < ftypes.length; j++) {
+                            let ftype = ftypes[j] as FuelType
+                            if (!data.project.steps[8].passengers[ftype]) {
+                                data.project.steps[8].passengers[ftype] = {toe: "0", source: "NA"}
+                            }
+                            if (!data.project.steps[8].freight[ftype]) {
+                                data.project.steps[8].freight[ftype] = {toe: "0", source: "NA"}
+                            }
+                        }
+                        
                         setInputData(data.project.steps[8] as InputTopDown)
                     }
                 });

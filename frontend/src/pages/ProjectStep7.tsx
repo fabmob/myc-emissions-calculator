@@ -30,6 +30,7 @@ export default function ProjectStep7(){
         "NG": "kg",
         "Hybrid": "l",
         "Electric": "kWh",
+        "Hydrogen": "kg",
         "None": ""
     }
     useEffect(() => {
@@ -54,14 +55,15 @@ export default function ProjectStep7(){
                         let vtype = vtypes[i]
                         if (data.project.steps[7]?.[vtype]) {
                             init[vtype] = data.project.steps[7][vtype]
-                        } else {
-                            let tmp = {} as {[key in FuelType]: string[]}
-                            for (let j = 0; j < ftypes.length; j++) {
-                                let ftype = ftypes[j] as FuelType
-                                tmp[ftype] = ["0", "0", "0", "0", "0", "0"]
-                            }
-                            init[vtype] = tmp
                         }
+                        let tmp = {} as {[key in FuelType]: string[]}
+                        for (let j = 0; j < ftypes.length; j++) {
+                            let ftype = ftypes[j] as FuelType
+                            let a = init[vtype] as {[key in FuelType]: string[]}
+                            tmp[ftype] = a[ftype] || ["0", "0", "0", "0", "0", "0"]
+                        }
+                        init[vtype] = tmp
+                        
                     }
                     setInputData(init)
                 });

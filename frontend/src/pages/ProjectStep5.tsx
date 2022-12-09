@@ -26,21 +26,25 @@ export default function ProjectStep5(){
     const handleCloseEmissionsFactors = () => setShowEmissionsFactors(false);
     let [emissionFactors, setEmissionFactors] = useState({
         "WTW": {
-            "Gasoline": {lowerHeatingValue: "44.3", density: "0.740740740740741", pci: "32.8", ges: ["86241", "86241", "86241", "86241", "86241", "86241"]},
-            "Diesel": {lowerHeatingValue: "43", density: "0.843881856540084", pci: "36.3", ges: ["91369", "91369", "91369", "91369", "91369", "91369"]},
-            "LPG": {lowerHeatingValue: "47.3", density: "0.522193211488251", pci: "24.7", ges: ["72692", "72692", "72692", "72692", "72692", "72692"]},
-            "NG": {lowerHeatingValue: "48", density: "1", pci: "48.0", ges: ["67772", "67772", "67772", "67772", "67772", "67772"]},
-            "Hybrid": {lowerHeatingValue: "44", density: "0.740740740740741", pci: "32.8", ges: ["85192", "85192", "85192", "85192", "85192", "85192"]},
+            "Gasoline": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: ["89400", "89400", "89400", "89400", "89400", "89400"]},
+            "Diesel": {lowerHeatingValue: "43", density: "0.832", pci: "35.776", ges: ["90400", "90400", "90400", "90400", "90400", "90400"]},
+            "NG": {lowerHeatingValue: "45.1", density: "1", pci: "45.1", ges: ["68100", "68100", "68100", "68100", "68100", "68100"]},
+            "LPG": {lowerHeatingValue: "46", density: "0.522193211488251", pci: "24.020887728", ges: ["75300", "75300", "75300", "75300", "75300", "75300"]},
+            "LNG": {lowerHeatingValue: "45.1", density: "0.39", pci: "17.589", ges: ["80270", "80270", "80270", "80270", "80270", "80270"]},
+            "Hybrid": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: ["89400", "89400", "89400", "89400", "89400", "89400"]},
             "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: ["20556", "20556", "20556", "20556", "20556", "20556"]},
+            "Hydrogen": {lowerHeatingValue: "119.88", density: "1", pci: "119.88", ges: ["132900", "132900", "132900", "132900", "132900", "132900"]},
             "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: ["0","0","0","0","0","0"]}
         },
         "TTW": {
-            "Gasoline": {lowerHeatingValue: "44.3", density: "0.740740740740741", pci: "32.8", ges: ["72120", "72120", "72120", "72120", "72120", "72120"]},
-            "Diesel": {lowerHeatingValue: "43", density: "0.843881856540084", pci: "36.3", ges: ["75360", "75360", "75360", "75360", "75360", "75360"]},
-            "LPG": {lowerHeatingValue: "47.3", density: "0.522193211488251", pci: "24.7", ges: ["64710", "64710", "64710", "64710", "64710", "64710"]},
-            "NG": {lowerHeatingValue: "48", density: "1", pci: "48.0", ges: ["59292", "59292", "59292", "59292", "59292", "59292"]},
-            "Hybrid": {lowerHeatingValue: "44", density: "0.740740740740741", pci: "32.8", ges: ["71072", "71072", "71072", "71072", "71072", "71072"]},
+            "Gasoline": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: ["75200", "75200", "75200", "75200", "75200", "75200"]},
+            "Diesel": {lowerHeatingValue: "43", density: "0.832", pci: "35.776", ges: ["74500", "74500", "74500", "74500", "74500", "74500"]},
+            "NG": {lowerHeatingValue: "45.1", density: "1", pci: "45.1", ges: ["59400", "59400", "59400", "59400", "59400", "59400"]},
+            "LPG": {lowerHeatingValue: "46", density: "0.522193211488251", pci: "24.020887728", ges: ["67300", "67300", "67300", "67300", "67300", "67300"]},
+            "LNG": {lowerHeatingValue: "45.1", density: "0.39", pci: "17.589", ges: ["59420", "59420", "59420", "59420", "59420", "59420"]},
+            "Hybrid": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: ["75200", "75200", "75200", "75200", "75200", "75200"]},
             "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: ["0", "0", "0", "0", "0", "0"]},
+            "Hydrogen": {lowerHeatingValue: "119.88", density: "1", pci: "119.88", ges: ["0", "0", "0", "0", "0", "0"]},
             "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: ["0","0","0","0","0","0"]}
         }
     } as EmissionsFactors)
@@ -67,21 +71,31 @@ export default function ProjectStep5(){
                         let vtype = vtypes[i]
                         if (data.project.steps[5]?.[vtype]){
                             init[vtype] = data.project.steps[5][vtype]
-                        } else {
-                            let tmp = {} as {[key in FuelType]: boolean}
-                            for (let j = 0; j < ftypes.length; j++) {
-                                let ftype = ftypes[j] as FuelType
-                                if (vtype.includes("alking") && ftype === "None") {
-                                    tmp[ftype] = true
-                                } else {
-                                    tmp[ftype] = false
-                                }
-                            }
-                            init[vtype] = tmp
                         }
+                        let tmp = {} as {[key in FuelType]: boolean}
+                        for (let j = 0; j < ftypes.length; j++) {
+                            let ftype = ftypes[j] as FuelType
+                            if (vtype.includes("alking") && ftype === "None") {
+                                tmp[ftype] = true
+                            } else {
+                                let a = init[vtype] as {[key in FuelType]: boolean}
+                                tmp[ftype] = a[ftype] || false
+                            }
+                        }
+                        init[vtype] = tmp
                     }
                     setInputData(init)
                     if (data.project?.steps?.[5]?.emissionFactors) {
+                        // Patch old project with missing fuel types
+                        for (let j = 0; j < ftypes.length; j++) {
+                            let ftype = ftypes[j] as FuelType
+                            if (!data.project.steps[5].emissionFactors.WTW[ftype]) {
+                                data.project.steps[5].emissionFactors.WTW[ftype] = emissionFactors.WTW[ftype]
+                            }
+                            if (!data.project.steps[5].emissionFactors.TTW[ftype]) {
+                                data.project.steps[5].emissionFactors.TTW[ftype] = emissionFactors.TTW[ftype]
+                            }
+                        }
                         setEmissionFactors(data.project.steps[5].emissionFactors)
                     }
                 });
