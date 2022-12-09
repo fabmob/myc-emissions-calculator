@@ -92,8 +92,7 @@ h2 .badge {
     vertical-align: middle;
 }
 .stickyOptions {
-    position: fixed !important;
+    position: sticky !important;
     top: 10px;
     z-index: 1;
-    width: inherit;
 }

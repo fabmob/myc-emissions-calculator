@@ -522,7 +522,6 @@ const Options = (
     }
     return (
         <>
-            {pin && showBody && <div style={{height: "200px"}}></div>}
             <Card className={"d-print-none" + (pin ? " stickyOptions" : "")} style={{textAlign: "left", marginBottom: "20px"}}>
                 <Card.Header onClick={() => setShowBody(p=>!p)} style={{cursor: "pointer"}}>
                     Vizualisations option (click to display)
