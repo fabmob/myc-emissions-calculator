@@ -19,6 +19,7 @@ const defaultVehicles = [
     [
         "👟 Walking",
         "🚲 Cycling",
+        "🚲 Cargo bike",
         "🚘 Private car",
         "🏍️ Motorcycle",
     ],
@@ -27,6 +28,7 @@ const defaultVehicles = [
         "🛺 Motorcycle taxi",
         "🚐 Minibus",
         "🚌 Bus",
+        "🚌 Coach",
         "🚌 Bus rapid transit",
         "🚄 Long distance train",
         "🚃 Urban train",
@@ -43,12 +45,14 @@ const defaultVehicles = [
 const defaultVehiclesTooltips : {[key: string]: string} = {
     "👟 Walking": 'Walking',
     "🚲 Cycling": 'Cycling and other Non Motorised Transport like small-wheeled transport (e.g.skateboards, e-scooters...)',
+    "🚲 Cargo bike": 'Cycle designed for transporting loads',
     "🚘 Private car": 'Any motor vehicle intended for passenger transport, the seat capacity does not exceed nine seats (including driver), the total permissible gross weight does not exceed 3,5t.',
     "🏍️ Motorcycle": 'A two-wheeled vehicle with an engine.',
     "🚕 Individual taxi": 'Cars which transport passengers in return for payment of a fare and which are typically fitted with a taximeter.',
     "🛺 Motorcycle taxi": 'Motorcycles which transport passengers in return for payment of a fare (e.g. Go-jek, Grab).',
     "🚐 Minibus": 'Any motor vehicle intended for the collective transport of persons whose number of seats is less than nine, including hirings, collective taxis and rural transportation.',
     "🚌 Bus": 'Any motor vehicle intended for the collective transport of persons, the number of seats of which is greater than nine or the permissible total weight exceeds 3.5t.',
+    "🚌 Coach": 'Bus used for longer-distance service.',
     "🚌 Bus rapid transit": 'Bus Rapid Transit (BRT) is a high-quality bus-based transit system. It is typically specified with dedicated lanes, iconic stations, off-board fare collection, and fast and frequent operations.',
     "🚄 Long distance train": 'Passenger train mainly traveling outside the city - long distance train',
     "🚃 Urban train": 'Passenger train mainly traveling within the city territory - short distance train.',
@@ -62,12 +66,14 @@ const defaultVehiclesTooltips : {[key: string]: string} = {
 const defaultVehiclesList = [
     "👟 Walking",
     "🚲 Cycling",
+    "🚲 Cargo bike",
     "🚘 Private car",
     "🏍️ Motorcycle",
     "🚕 Individual taxi",
     "🛺 Motorcycle taxi",
     "🚐 Minibus",
     "🚌 Bus",
+    "🚌 Coach",
     "🚌 Bus rapid transit",
     "🚄 Long distance train",
     "🚃 Urban train",
@@ -85,7 +91,7 @@ export default function ProjectStep2(){
     let init:InputStep2 = {}
     for (let i = 0; i < defaultVehiclesList.length; i++) {
         let vtype = defaultVehiclesList[i]
-        init[vtype] = {isActive: false, isFreight: i>11}
+        init[vtype] = {isActive: false, isFreight: i>13}
     }
     const [inputData, setInputData ] = useState(init)
 
