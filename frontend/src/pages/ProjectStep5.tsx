@@ -79,7 +79,7 @@ export default function ProjectStep5(){
                                 tmp[ftype] = true
                             } else {
                                 let a = init[vtype] as {[key in FuelType]: boolean}
-                                tmp[ftype] = a[ftype] || false
+                                tmp[ftype] = a?.[ftype] || false
                             }
                         }
                         init[vtype] = tmp

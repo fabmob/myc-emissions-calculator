@@ -60,7 +60,7 @@ export default function ProjectStep7(){
                         for (let j = 0; j < ftypes.length; j++) {
                             let ftype = ftypes[j] as FuelType
                             let a = init[vtype] as {[key in FuelType]: string[]}
-                            tmp[ftype] = a[ftype] || ["0", "0", "0", "0", "0", "0"]
+                            tmp[ftype] = a?.[ftype] || ["0", "0", "0", "0", "0", "0"]
                         }
                         init[vtype] = tmp
                         
