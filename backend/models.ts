@@ -142,18 +142,10 @@ export function computeAverageEnergyConsumption(
         if (inputAnnualChangePerVehicle) {
             let fuelTypes = Object.keys(inputAnnualChangePerVehicle) as types.FuelType[]
             for (let k = 0; k < fuelTypes.length; k++) {
-                let inputAnnualChangePerCarburant = inputAnnualChangePerVehicle[fuelTypes[k]] || [0, 0, 0, 0, 0]
-                let outputConsomationCurrentCarburant = outputConsomationCurrentVehicle[fuelTypes[k]]
-                outputConsomationCurrentCarburant = [
-                    inputAnnualChangePerCarburant[0] || 0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
-                ]
-
-                for (let i = 1; i < 6; i++) {
+                let inputAnnualChangePerCarburant = inputAnnualChangePerVehicle[fuelTypes[k]] || referenceYears.map(_=>0)
+                let outputConsomationCurrentCarburant = referenceYears.map(_=>0)
+                outputConsomationCurrentCarburant[0] = inputAnnualChangePerCarburant[0] || 0
+                for (let i = 1; i < referenceYears.length; i++) {
                     let numberOfYears = referenceYears[i] - referenceYears[i - 1]
                     let lastValue = outputConsomationCurrentCarburant[i-1]
                     let percentIncrease = inputAnnualChangePerCarburant[i] || 0
@@ -171,7 +163,8 @@ export function computeAverageEnergyConsumption(
 export function computeTotalEnergyAndEmissions(
     averageEnergyConsumptionComputed: types.AverageEnergyConsumptionComputed,
     energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues,
-    vktPerFuelComputed: types.VktPerFuelComputed
+    vktPerFuelComputed: types.VktPerFuelComputed,
+    referenceYears: number[]
 ) : types.TotalEnergyAndEmissions {
     let outputTotalEnergyAndEmissions = <types.TotalEnergyAndEmissions>{}
     let vehicleTypeArray = Object.keys(averageEnergyConsumptionComputed)
@@ -181,10 +174,10 @@ export function computeTotalEnergyAndEmissions(
         let fuelTypes = Object.keys(energyAndEmissionsDefaultValues) as types.FuelType[]
         for (let j = 0; j < fuelTypes.length; j++) {
             outputTotalEnergyAndEmissions[vtype][fuelTypes[j]] = {
-                energy: [0, 0, 0, 0, 0, 0],
-                co2: [0, 0, 0, 0, 0, 0]
+                energy: referenceYears.map(_=>0),
+                co2: referenceYears.map(_=>0)
             }
-            for (let k = 0; k < 6; k++) {
+            for (let k = 0; k < referenceYears.length; k++) {
                 let tmp = outputTotalEnergyAndEmissions[vtype][fuelTypes[j]]
                 let pci = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.pci || 0
                 let co2default = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.ges[k] || 0
@@ -202,19 +195,20 @@ export function computeTotalEnergyAndEmissions(
 }
 
 export function sumTotalEnergyAndEmissions(
-    totalEnergyAndEmissions: types.TotalEnergyAndEmissions
+    totalEnergyAndEmissions: types.TotalEnergyAndEmissions,
+    referenceYears: number[]
 ) : types.SumTotalEnergyAndEmissions {
     let outputSumTotalEnergyAndEmissions = <types.SumTotalEnergyAndEmissions>{}
     let vehicleTypeArray = Object.keys(totalEnergyAndEmissions)
     for (let i = 0; i < vehicleTypeArray.length; i++) {
         let vtype = vehicleTypeArray[i]
         outputSumTotalEnergyAndEmissions[vtype] = {
-            energy: [0, 0, 0, 0, 0, 0],
-            co2: [0, 0, 0, 0, 0, 0]
+            energy: referenceYears.map(_=>0),
+            co2: referenceYears.map(_=>0)
         }
         let fuelTypes = Object.keys(totalEnergyAndEmissions[vtype]) as types.FuelType[]
         for (let j = 0; j < fuelTypes.length; j++) {
-            for (let k = 0; k < 6; k++) {
+            for (let k = 0; k < referenceYears.length; k++) {
                 outputSumTotalEnergyAndEmissions[vtype].energy[k] += totalEnergyAndEmissions?.[vtype]?.[fuelTypes[j]]?.energy?.[k] || 0
                 outputSumTotalEnergyAndEmissions[vtype].co2[k] += totalEnergyAndEmissions?.[vtype]?.[fuelTypes[j]]?.co2?.[k] || 0
             }
@@ -243,4 +237,163 @@ export function computeEnergyBalance(totalEnergyAndEmissions: types.TotalEnergyA
         outputEnergyBalance.freight[ftype] = ftypeEnergyBalanceFreight * 1000 / 41868 * 1000
     }
     return outputEnergyBalance
+}
+
+export function computeScenarioWithUpstreamGHGEmissions(
+    // transportPerformance: types.TransportPerformance, // pkm per year per 
+    referenceYears: number[],
+    vkt: types.VehicleKilometresTravelledComputed, // vkt per year per vtype
+    inputVktPerFuel : types.VktPerFuel, // %vkt share per year per ftype per vtype (3 - improve) (aka. fuel breakdown)
+    inputAverageEnergyConsumption : types.AverageEnergyConsumption, // l/100km per year per ftype per vtype (4 - improve) (aka. fuel consumption)
+    energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues
+): types.SumTotalEnergyAndEmissions {
+    // const averageEnergyConsumptionComputed = computeAverageEnergyConsumption(inputAverageEnergyConsumption, referenceYears)
+    const vktPerFuelComputed = computeVktPerFuel(inputVktPerFuel, vkt)
+    const totalEnergyAndEmissions = computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, energyAndEmissionsDefaultValues, vktPerFuelComputed, referenceYears)
+    return sumTotalEnergyAndEmissions(totalEnergyAndEmissions, referenceYears)
+}
+
+export function computeVktBaseAfterAvoid(
+    vtype: string, // Vehicle type
+    y: number, // Year index in referenceYears, 0 is reference year, >0 are climate milestones
+    BAUVkt: types.VehicleKilometresTravelledComputed, // 1) Base vkt table (vkt per year per vtype)
+    inputAvoidedVkt: types.AvoidedMotorisedVkt, // 1) avoided vkt (% per year per vtype)
+    baseVkt: types.TransportPerformance // Vkt at the end of each climate milestone
+) : number {
+    let originalVkt = BAUVkt[vtype][y]
+    if (y>0) {
+        // BAUVKT for this year minus what was removed from previous years
+        originalVkt = (BAUVkt[vtype][y] - BAUVkt[vtype][y-1] + (baseVkt?.[vtype]?.[y-1] || 0))
+    }
+    const avoidPercent = inputAvoidedVkt?.[vtype]?.[y] || 0
+    if (!baseVkt[vtype]) {
+        baseVkt[vtype] = []
+    }
+    return originalVkt - (originalVkt * avoidPercent / 100)
+}
+
+export function distributeReductionInReducedPkm(
+    reducedPkm: {[key: string]: number}, // total pkm(tkm) to be reduced for each vtype, this is altered by this function
+    inputOriginModeMatrix: types.OriginModeMatrix, // 2.3) origin mode of transportation (% per year per vtype per vtype)
+    vehicleStats: types.VehicleStats, // 2.2) BAU occupancy table (pass per vtype) +  2.3) avg BAU trip length (km per vtye)
+    vtype: string, // origin of pkm(tkm)
+    pkmAddedThisYear: number, // Number of pkm(tkm) coming from origin vtype, to be dispatched according to inputOriginModeMatrix
+    y: number // Year index in referenceYears, 0 is reference year, >0 are climate milestones
+) {
+    const originVehicleTypeArray = Object.keys(inputOriginModeMatrix?.[vtype] || [])
+    let sumOfCoeffs : number[] = []
+    for (let j = 0; j < originVehicleTypeArray.length; j++) {
+        const originVtype = originVehicleTypeArray[j];
+        const matrixYearVal = inputOriginModeMatrix[vtype][originVtype][y] / 100;
+        if (!sumOfCoeffs[y]) {
+            sumOfCoeffs[y] = 0
+        }
+        sumOfCoeffs[y] += vehicleStats[originVtype].triplength * matrixYearVal
+    }
+    
+    for (let j = 0; j < originVehicleTypeArray.length; j++) {
+        const originVtype = originVehicleTypeArray[j]
+        const matrixYearVal = inputOriginModeMatrix[vtype][originVtype][y] / 100
+        if (!reducedPkm[originVtype]) reducedPkm[originVtype] = 0
+        const coeff = matrixYearVal * vehicleStats[originVtype].triplength
+        const reducedPkmForOrigin = (pkmAddedThisYear) * coeff / sumOfCoeffs[y]
+        reducedPkm[originVtype] += reducedPkmForOrigin || 0
+    }
+}
+
+export function computeVktAfterASI(
+    referenceYears: number[],
+    inputAvoidedVkt: types.AvoidedMotorisedVkt, // 1) avoided vkt (% per year per vtype)
+    BAUVkt: types.VehicleKilometresTravelledComputed, // 1) Base vkt table (vkt per year per vtype)
+    inputAdditionalVkt: types.VehicleKilometresTravelledComputed, // 2.1) additional vkt (vkt per year per vtype)
+    inputOccupancyRate: types.OccupancyRate, // 2.2) occupancy rate (pass per year per vtype)
+    vehicleStats: types.VehicleStats, // 2.2) BAU occupancy table (pass per vtype) +  2.3) avg BAU trip length (km per vtye)
+    inputOriginModeMatrix: types.OriginModeMatrix, // 2.3) origin mode of transportation (% per year per vtype per vtype)
+) : types.TransportPerformance {
+    let baseVkt : types.TransportPerformance = {}
+    const vehicleTypeArray = Object.keys(BAUVkt)
+    for (let y = 0; y < referenceYears.length; y++) {
+        let reducedPkm : {[key: string]: number} = {}
+        for (let i = 0; i < vehicleTypeArray.length; i++) {
+            let vtype = vehicleTypeArray[i]
+            
+            // compute base vkt for this year after avoid
+            const vktStartOfYear = computeVktBaseAfterAvoid(vtype, y, BAUVkt, inputAvoidedVkt, baseVkt)
+            baseVkt[vtype].push(vktStartOfYear)
+
+            // Add additional vkt, if any in input
+            baseVkt[vtype][y] += inputAdditionalVkt?.[vtype]?.[y] || 0
+
+            // From here on, the vkt cannot increase, only reduce. The table above is the maximum theorical vkt for each vtype
+            // The goal now is to remove part of what was added depending on sources
+            // Let's move to pkm(tkm)
+            const occupancy = inputOccupancyRate?.[vtype]?.[y] || vehicleStats[vtype].occupancy
+            let pkm = baseVkt[vtype][y] * occupancy // pkm(tkm) is always vkt * occupancy(load)
+
+            // We can now figure out how much pkm was added during the year
+            const pkmStartOfYear = vktStartOfYear * (inputOccupancyRate?.[vtype]?.[y-1] || vehicleStats[vtype].occupancy)
+            const pkmAddedThisYear = pkm - pkmStartOfYear
+
+            //console.log("pkm Added in", referenceYears[y] , "for", vtype, "is", pkmAddedThisYear)
+
+            // This value is the one that should be divided in trips and imputed from the other vtypes
+            distributeReductionInReducedPkm(reducedPkm, inputOriginModeMatrix, vehicleStats, vtype, pkmAddedThisYear, y)
+
+            //console.log("leading to the following reductions:", reducedPkm) // should match Q144 table
+        }
+        // Once all reduction are computed, we can move that back to vkt, and remove them from this year base
+        const sourceVehicleTypeArray = Object.keys(reducedPkm)
+        for (let j = 0; j < sourceVehicleTypeArray.length; j++) {
+            const sourceVtype = sourceVehicleTypeArray[j]
+            const occupancy = inputOccupancyRate?.[sourceVtype]?.[y] || vehicleStats[sourceVtype].occupancy
+            baseVkt[sourceVtype][y] -= reducedPkm[sourceVtype] / occupancy // vkt is always pkm(tkm) / occupancy(load)
+        }
+    }
+    return baseVkt
+}
+
+export function computeScenarioWithoutUpstreamGHGEmissions(
+    referenceYears: number[],
+    inputAvoidedVkt: types.AvoidedMotorisedVkt, // 1) avoided vkt (% per year per vtype)
+    BAUVkt: types.VehicleKilometresTravelledComputed, // 1) Base vkt table (vkt per year per vtype)
+    inputAdditionalVkt: types.VehicleKilometresTravelledComputed, // 2.1) additional vkt (vkt per year per vtype)
+    inputOccupancyRate: types.OccupancyRate, // 2.2) occupancy rate (pass per year per vtype)
+    vehicleStats: types.VehicleStats, // 2.2) BAU occupancy table (pass per vtype) +  2.3) avg BAU trip length (km per vtye)
+    inputOriginModeMatrix: types.OriginModeMatrix, // 2.3) origin mode of transportation (% per year per vtype per vtype)
+    inputVktPerFuel : types.VktPerFuel, // %vkt share per year per ftype per vtype (3 - improve) (aka. fuel breakdown)
+    inputAverageEnergyConsumption : types.AverageEnergyConsumption, // l/100km per year per ftype per vtype (4 - improve) (aka. fuel consumption)
+    energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues
+): types.SumTotalEnergyAndEmissions {
+    const baseVkt = computeVktAfterASI(referenceYears, inputAvoidedVkt, BAUVkt, inputAdditionalVkt, inputOccupancyRate, vehicleStats, inputOriginModeMatrix)
+    return computeScenarioWithUpstreamGHGEmissions(referenceYears, baseVkt, inputVktPerFuel, inputAverageEnergyConsumption, energyAndEmissionsDefaultValues)
+}
+
+export function computeScenarioModalShare(
+    referenceYears: number[],
+    baseVkt: types.TransportPerformance, // vkt after ASI
+    inputOccupancyRate: types.OccupancyRate, // 2.2) occupancy rate (pass per year per vtype)
+    vehicleStats: types.VehicleStats, // 2.2) BAU occupancy table (pass per vtype)
+) : {"passengers": types.ModalShare, "freight": types.ModalShare} {
+    // Convert vkt into pkm, and split into passengers and freight
+    let passengersTransportPerformance : types.TransportPerformance = {}
+    let freightTransportPerformance : types.TransportPerformance = {}
+    const vehicleTypeArray = Object.keys(vehicleStats)
+    for (let y = 0; y < referenceYears.length; y++) {
+        for (let i = 0; i < vehicleTypeArray.length; i++) {
+            const vtype = vehicleTypeArray[i]
+            const occupancy = inputOccupancyRate?.[vtype]?.[y] || vehicleStats[vtype].occupancy
+            const vkt = baseVkt?.[vtype]?.[y] || 0
+            if (vehicleStats[vtype].type === "Freight") {
+                if (!freightTransportPerformance[vtype]) freightTransportPerformance[vtype] = []
+                freightTransportPerformance[vtype][y] = occupancy * vkt
+            } else {
+                if (!passengersTransportPerformance[vtype]) passengersTransportPerformance[vtype] = []
+                passengersTransportPerformance[vtype][y] = occupancy * vkt
+            }
+        }
+    }
+    return {
+        "passengers": computeModalShare(passengersTransportPerformance),
+        "freight": computeModalShare(freightTransportPerformance)
+    }
 }

@@ -175,14 +175,14 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     project.steps[7].energyGrowthSource = sources[1]
 
     if (project.steps[5].emissionFactors?.WTW) {
-        project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.steps[5].emissionFactors.WTW, project.outputVktPerFuelComputed)
-        project.outputComputeTotalEnergyAndEmissionsTTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.steps[5].emissionFactors.TTW, project.outputVktPerFuelComputed)
-        project.outputSumTotalEnergyAndEmissionsTTW = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissionsTTW)
+        project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.steps[5].emissionFactors.WTW, project.outputVktPerFuelComputed, project.referenceYears)
+        project.outputComputeTotalEnergyAndEmissionsTTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, project.steps[5].emissionFactors.TTW, project.outputVktPerFuelComputed, project.referenceYears)
+        project.outputSumTotalEnergyAndEmissionsTTW = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissionsTTW, project.referenceYears)
     } else {
-        project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, project.outputVktPerFuelComputed)
+        project.outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(project.outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, project.outputVktPerFuelComputed, project.referenceYears)
     }
 
-    project.outputSumTotalEnergyAndEmissionsWTW = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissionsWTW)
+    project.outputSumTotalEnergyAndEmissionsWTW = models.sumTotalEnergyAndEmissions(project.outputComputeTotalEnergyAndEmissionsWTW, project.referenceYears)
 
     project.outputEnergyBalance = models.computeEnergyBalance(project.outputComputeTotalEnergyAndEmissionsWTW, project.steps[2])
 
