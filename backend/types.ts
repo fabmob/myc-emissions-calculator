@@ -131,6 +131,8 @@ export type EnergyBalance = {
 
 export type Project = {
     projectName: string,
+    createdDate: Date,
+    modifiedDate: Date,
     isSump: boolean,
     projectCountry: string,
     projectCity: string,

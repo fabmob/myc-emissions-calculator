@@ -2,11 +2,12 @@ import React, {useState, useMemo, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import countryList from 'react-select-country-list'
-import { Button, Container, Row, Col, Form, InputGroup, OverlayTrigger, Tooltip, Table } from 'react-bootstrap'
+import { Button, Container, Row, Col, Form, InputGroup, OverlayTrigger, Tooltip, Badge, ButtonGroup } from 'react-bootstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
-import Progress from '../components/Progress'
 import { ProjectType } from '../frontendTypes'
+import ChoiceModal from '../components/ChoiceModal'
+import ProjectNav from '../components/ProjectNav'
 
 export default function CreateProject() {
     const navigate = useNavigate();
@@ -18,9 +19,11 @@ export default function CreateProject() {
     const [ partnerLocation, setPartnerLocation ] = useState("")
     const [ projectArea, setProjectArea ] = useState("")
     const [ projectReferenceYears, setProjectReferenceYears ] = useState(["2020","2025","2030","2035","2040","2050"])
+    const [ geoData, setGeoData ] = useState("")
     const [ isSump, setIsSump ] = useState(true)
     const [validated, setValidated] = useState(false)
     const [ createWarning, setCreateWarning ] = useState(false)
+    const [ showProjectReferenceYearsModal, setShowProjectReferenceYearsModal ] = useState(false)
     let [project, setProject ] = useState({} as ProjectType)
     const blacklistCountries: {[key:string]:boolean} = {
         "Guadeloupe": true,
@@ -170,113 +173,141 @@ export default function CreateProject() {
             return prevProjectReferenceYears.map((e,i) => i === index ? year : e)
         })
     }
+    const addProjectReferenceYear = (year: string) => {
+        setProjectReferenceYears((prevProjectReferenceYears) => {
+            prevProjectReferenceYears.push(year)
+            prevProjectReferenceYears.sort()
+            return prevProjectReferenceYears
+        })
+    }
+    const removeProjectReferenceYear = (index: number) => {
+        setProjectReferenceYears((prevProjectReferenceYears) => {
+            return prevProjectReferenceYears.filter((_,i) => i !== index)
+        })
+    }
+
     return (
-        <Container style={{paddingTop: "30px"}}>
-            <Progress project={project} currentStep={0} />
-            <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
-                <Col xs xl="8" lg="12">
-                    <h1 style={{marginBottom: "40px"}}>Project Information</h1>
-                    <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className="reqStar">Project name</Form.Label>
-                            <Form.Control type="input" required placeholder={(isSump ? "SUMP City" : "NUMP Country") + " - " + projectReferenceYears[0]} value={projectName} onChange={e => setProjectName(e.target.value)} isInvalid={createWarning}/>
-                            <Form.Control.Feedback type="invalid">{createWarning ? "This project name already exists" : "Please specify a project name"}</Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label className="reqStar">Project type</Form.Label>
-                            <Form.Check
-                                id="custom-switch-sump"
-                                type="radio"
-                                checked={isSump}
-                                onChange={() => setIsSump(true)}
-                                label="Sustainable Urban Mobility Plan (SUMP)"
-                            />
-                            <Form.Check
-                                id="custom-switch-nump"
-                                type="radio"
-                                checked={!isSump}
-                                onChange={() => setIsSump(false)}
-                                label="National Urban Mobility Plan (NUMP)"
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label className="reqStar">Select country</Form.Label>
-                            <Typeahead
-                                inputProps={{ required: true }}
-                                id="countryselector"
-                                selected={projectCountry}
-                                onInputChange={e => { setProjectCountry([e])}}
-                                onChange={o => { o.length && setProjectCountry(o)}}
-                                options={countryOptions.map(e => e.label)}
-                            />
-                            <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCountry[0]) ? "block": ''}}>Please specify a country</Form.Control.Feedback>
-                        </Form.Group>
+        <>
+            <Container style={{paddingTop: "30px"}}>
+                <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
+                    <Col xs xl="8" lg="12">
+                        {project.id && <ProjectNav current="Config" project={project} />}
+                        <h1 style={{marginBottom: "40px"}}>{project.id ? projectName : "New Project"}</h1>
+                        <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
+                            <h2>Study</h2>
+                            <Form.Group className="mb-3">
+                                <Form.Label className="reqStar">Study name</Form.Label>
+                                <Form.Control type="input" required placeholder={(isSump ? "SUMP City" : "NUMP Country") + " - " + projectReferenceYears[0]} value={projectName} onChange={e => setProjectName(e.target.value)} isInvalid={createWarning}/>
+                                <Form.Control.Feedback type="invalid">{createWarning ? "This project name already exists" : "Please specify a project name"}</Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label className="reqStar">Plan type</Form.Label>
+                                <Form.Check
+                                    id="custom-switch-sump"
+                                    type="radio"
+                                    checked={isSump}
+                                    onChange={() => setIsSump(true)}
+                                    label="Sustainable Urban Mobility Plan (SUMP)"
+                                />
+                                <Form.Check
+                                    id="custom-switch-nump"
+                                    type="radio"
+                                    checked={!isSump}
+                                    onChange={() => setIsSump(false)}
+                                    label="National Urban Mobility Plan (NUMP)"
+                                />
+                            </Form.Group>
+                            {project.createdDate && <Form.Group className="mb-3">
+                                <Form.Label>Created</Form.Label>
+                                <Form.Control type="input" value={new Date(project.createdDate).toLocaleString()} readOnly/>
+                            </Form.Group>}
+                            {project.modifiedDate && <Form.Group className="mb-3">
+                                <Form.Label>Modified</Form.Label>
+                                <Form.Control type="input" value={new Date(project.modifiedDate).toLocaleString()} readOnly/>
+                            </Form.Group>}
+                            <h2>Area of study</h2>
+                            <Form.Group className="mb-3">
+                                <Form.Label className="reqStar">Select country</Form.Label>
+                                <Typeahead
+                                    inputProps={{ required: true }}
+                                    id="countryselector"
+                                    selected={projectCountry}
+                                    onInputChange={e => { setProjectCountry([e])}}
+                                    onChange={o => { o.length && setProjectCountry(o)}}
+                                    options={countryOptions.map(e => e.label)}
+                                />
+                                <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCountry[0]) ? "block": ''}}>Please specify a country</Form.Control.Feedback>
+                            </Form.Group>
 
-                        {isSump && <Form.Group className="mb-3">
-                            <Form.Label className="reqStar">City</Form.Label>
-                            <Typeahead
-                                allowNew
-                                inputProps={{ required: true }}
-                                id="cityselector"
-                                newSelectionPrefix="Use this city: "
-                                selected={projectCity}
-                                onInputChange={e => setProjectCity([e])}
-                                onChange={o => { o.length && setProjectCity(o)}}
-                                options={cityOptions[projectCountry[0]] || []}
-                            />
-                            <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCity[0]) ? "block": ''}}>Please specify a city</Form.Control.Feedback>
-                        </Form.Group> }
+                            {isSump && <Form.Group className="mb-3">
+                                <Form.Label className="reqStar">Area</Form.Label>
+                                <Typeahead
+                                    allowNew
+                                    inputProps={{ required: true }}
+                                    id="cityselector"
+                                    newSelectionPrefix="Use this city: "
+                                    selected={projectCity}
+                                    onInputChange={e => setProjectCity([e])}
+                                    onChange={o => { o.length && setProjectCity(o)}}
+                                    options={cityOptions[projectCountry[0]] || []}
+                                />
+                                <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCity[0]) ? "block": ''}}>Please specify a city</Form.Control.Feedback>
+                            </Form.Group> }
 
-                        <Form.Group className="mb-3">   
-                            <Form.Label>Partner name in city</Form.Label>
-                            <Form.Control type="input" placeholder="" value={partnerLocation} onChange={e => setPartnerLocation(e.target.value)}/>
-                        </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Geo. Data</Form.Label>
+                                <Form.Control type="input" placeholder="" value={geoData} onChange={e => setGeoData(e.target.value)}/>
+                            </Form.Group>
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Territory area (km²)</Form.Label>
-                            <InputGroup>
-                                <Form.Control type="input" placeholder="" value={projectArea} onChange={e => setProjectArea(e.target.value)}/>
-                                <InputGroup.Text>km²</InputGroup.Text>
-                            </InputGroup>
-                        </Form.Group>
+                            <Form.Group className="mb-3">   
+                                <Form.Label>Partner name in city</Form.Label>
+                                <Form.Control type="input" placeholder="" value={partnerLocation} onChange={e => setPartnerLocation(e.target.value)}/>
+                            </Form.Group>
 
-                        <Table className="inputTable">
-                            <thead>
-                                <tr>
-                                    <th className="reqStar">
-                                        <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
-                                            <span>Reference year (RY) 🛈</span>
-                                        </OverlayTrigger>
-                                    </th>
-                                    <th className="reqStar">Y1</th>
-                                    <th className="reqStar">Y2</th>
-                                    <th className="reqStar">Y3</th>
-                                    <th className="reqStar">Y4</th>
-                                    <th className="reqStar">Y5</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Territory area (km²)</Form.Label>
+                                <InputGroup>
+                                    <Form.Control type="input" placeholder="" value={projectArea} onChange={e => setProjectArea(e.target.value)}/>
+                                    <InputGroup.Text>km²</InputGroup.Text>
+                                </InputGroup>
+                            </Form.Group>
+
+                            <h2>Years of study</h2>
+                            <Form.Group className="mb-3">
+                                <Form.Label>
+                                    <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
+                                        <span>🛈 Ref. year</span>
+                                    </OverlayTrigger>
+                                </Form.Label>
+                                <InputGroup>
+                                    <Form.Control type="number" required min="1900" max="2500" value={projectReferenceYears[0]} onChange={e => setProjectReferenceYear(0, e.target.value)} />
+                                    <Form.Control.Feedback type="invalid">Please enter a year between 1900 and 2500, avoid white spaces</Form.Control.Feedback>
+                                </InputGroup>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Proj. Year(s)</Form.Label>
+                                <InputGroup>
                                     {projectReferenceYears.map((year,i) => (
-                                        <td key={i}>
-                                            <Form.Group>
-                                                <InputGroup>
-                                                    <Form.Control type="number" required min="1900" max="2500" value={projectReferenceYears[i]} onChange={e => setProjectReferenceYear(i, e.target.value)} />
-                                                    <Form.Control.Feedback type="invalid">Please enter a year between 1900 and 2500, avoid white spaces</Form.Control.Feedback>
-                                                </InputGroup>
-                                            </Form.Group>
-                                        </td>
+                                        (i>1) && <Badge key={i} bg="secondary">{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}>X</span></Badge>
                                     ))}
-                                </tr>
-                            </tbody>
-                        </Table>
-                        <Button variant="primary" type="submit">
-                            Next
-                        </Button>
-                    </Form>
+                                    <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}>+</Badge>
+                                </InputGroup>
+                            </Form.Group>
+                            
+                            <Button variant="primary" type="submit">
+                                {project.id ? "Edit" : "Create"}
+                            </Button>
+                        </Form>
 
-                </Col>
-            </Row>
-        </Container>
+                    </Col>
+                </Row>
+            </Container>
+            <ChoiceModal 
+                showModal={showProjectReferenceYearsModal} 
+                setShowModal={setShowProjectReferenceYearsModal} 
+                valRange={[projectReferenceYears[0], "2500"]}
+                callback={addProjectReferenceYear}
+            ></ChoiceModal>
+        </>
     )
 }

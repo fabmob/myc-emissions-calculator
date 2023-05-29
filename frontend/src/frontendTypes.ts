@@ -1,5 +1,7 @@
 export type ProjectType = {
     id: number,
+    createdDate: Date,
+    modifiedDate: Date,
     owner: string,
     name: string,
     isSump: boolean,

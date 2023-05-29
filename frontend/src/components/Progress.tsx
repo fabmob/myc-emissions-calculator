@@ -8,6 +8,7 @@ const Progress = (props: {project: ProjectType, currentStep: number}) => {
     const navigate = useNavigate()
     const link = (step: string) => navigate('/project/' + props.project.id + '/step/' + step)
     const viz = () => navigate('/project/' + props.project.id + '/viz')
+    const config = () => navigate('/project/' + props.project.id + '/config')
     const getClassName = (step: number) => {
         if (props.project.step === 9) {
             // Step 9: overview is done by default
@@ -36,7 +37,7 @@ const Progress = (props: {project: ProjectType, currentStep: number}) => {
             <Button
                 className={getClassName(0)}
                 disabled={props.project.step < 0}
-                onClick={() => link('0')}>
+                onClick={() => config()}>
                 Project info
             </Button>
             →

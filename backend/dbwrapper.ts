@@ -4,7 +4,7 @@ const db = new Database('data.db', {verbose: console.log})
 
 export function init() {
     try {
-        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, owner STRING, name STRING, isSump INTEGER, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYears INTEGER, status STRING, UNIQUE(owner, name))")
+        db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, createdDate STRING, modifiedDate STRING, owner STRING, name STRING, isSump INTEGER, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYears INTEGER, status STRING, UNIQUE(owner, name))")
         db.exec("CREATE Table ProjectSteps (projectId INTEGER, stepNumber INTEGER, value STRING, FOREIGN KEY(projectId) REFERENCES Projects(id),  UNIQUE(projectId, stepNumber) ON CONFLICT REPLACE)")
     } catch (err) {
         console.log("Table alredy exists")
@@ -13,6 +13,8 @@ export function init() {
 
 type ProjectsDbEntry = {
     id: number,
+    createdDate: string,
+    modifiedDate: string,
     owner: string,
     name: string,
     isSump: number,
@@ -31,6 +33,8 @@ type ProjectStepsDbEntry = {
 }
 type Project = {
     id: number,
+    createdDate: Date,
+    modifiedDate: Date,
     owner: string,
     name: string,
     isSump: boolean,
@@ -44,10 +48,12 @@ type Project = {
     step: number
 }
 export function createProject(project: types.Project, owner: string): [string | null, Database.RunResult | null] {
-    const createProjectStmt = db.prepare("INSERT INTO Projects (id, owner, name, isSump, country, city, partnerLocation, area, referenceYears, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+    const createProjectStmt = db.prepare("INSERT INTO Projects (id, createdDate, modifiedDate, owner, name, isSump, country, city, partnerLocation, area, referenceYears, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
     try {
         let res = createProjectStmt.run([
             owner,
+            new Date().toString(),
+            new Date().toString(),
             project.projectName,
             project.isSump,
             project.projectCountry,
@@ -66,6 +72,8 @@ export function createProject(project: types.Project, owner: string): [string | 
 function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectStepsDbEntry[]) {
     let project : Project = {
         id: projectEntry.id,
+        createdDate: new Date(projectEntry.createdDate),
+        modifiedDate: new Date(projectEntry.modifiedDate),
         owner: projectEntry.owner, 
         name: projectEntry.name,
         isSump: projectEntry.isSump === 1,
@@ -125,6 +133,8 @@ export function getProject(owner: string, id: number, isAdmin: boolean) {
 export function addProjectStep(id: number, stepNumber: number, inputData: string) {
     const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stepNumber, value) values (?, ?, ?)")
     let res = addProjectStepStmt.run([id, stepNumber, inputData])
+    const updateProjectDateStmt = db.prepare("UPDATE Projects set modifiedDate = ? where id = ?")
+    updateProjectDateStmt.run([new Date().toString(), id])
     return res
 }
 
@@ -132,11 +142,11 @@ export function updateProjectStatus(id: number, owner: string, status: string, i
     let updateProjectStatusStmt
     let res
     if (isAdmin) {
-        updateProjectStatusStmt = db.prepare("UPDATE Projects set status = ? where id = ?")
-        res = updateProjectStatusStmt.run([status, id])
+        updateProjectStatusStmt = db.prepare("UPDATE Projects set status = ?, modifiedDate = ? where id = ?")
+        res = updateProjectStatusStmt.run([status, new Date().toString(), id])
     } else {
-        updateProjectStatusStmt = db.prepare("UPDATE Projects set status = ? where id = ? and owner = ?")
-        res = updateProjectStatusStmt.run([status, id, owner])
+        updateProjectStatusStmt = db.prepare("UPDATE Projects set status = ?, modifiedDate = ? where id = ? and owner = ?")
+        res = updateProjectStatusStmt.run([status, new Date().toString(), id, owner])
     }
     return res
 }
@@ -145,7 +155,7 @@ export function updateProject(id: number, owner: string, project: types.Project,
     let res
     try {
         if (isAdmin) {
-            updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, isSump = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ? where id = ?")
+            updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, isSump = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ?, modifiedDate = ? where id = ?")
             res = updateProjectStatusStmt.run([
                 project.projectName,
                 project.isSump ? 1 : 0,
@@ -154,10 +164,11 @@ export function updateProject(id: number, owner: string, project: types.Project,
                 project.partnerLocation,
                 project.projectArea,
                 project.projectReferenceYears.join(","),
+                new Date().toString(),
                 id
             ])
         } else {
-            updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, isSump = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ? where id = ? and owner = ?")
+            updateProjectStatusStmt = db.prepare("UPDATE Projects set name = ?, isSump = ?, country = ?, city = ?, partnerLocation = ?, area = ?, referenceYears = ?, modifiedDate = ? where id = ? and owner = ?")
             res = updateProjectStatusStmt.run([
                 project.projectName,
                 project.isSump ? 1 : 0,
@@ -166,6 +177,7 @@ export function updateProject(id: number, owner: string, project: types.Project,
                 project.partnerLocation,
                 project.projectArea,
                 project.projectReferenceYears.join(","),
+                new Date().toString(),
                 id, 
                 owner
             ])
