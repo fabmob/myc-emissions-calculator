@@ -8,13 +8,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import {InputStep7, ProjectType, FuelType} from '../frontendTypes'
-import Progress from '../components/Progress'
-import PercentInput from '../components/PercentInput'
+import {InputStep7, ProjectType, FuelType} from '../../frontendTypes'
+import Progress from '../../components/Progress'
+import PercentInput from '../../components/PercentInput'
 
-import './Project.css'
+import '../Project.css'
 
-export default function ProjectStep7(){
+export default function InventoryStep7(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
@@ -27,7 +27,8 @@ export default function ProjectStep7(){
         "Gasoline": "l",
         "Diesel": "l",
         "LPG": "l",
-        "NG": "kg",
+        "CNG": "kg",
+        "LNG": "kg",
         "Hybrid": "l",
         "Electric": "kWh",
         "Hydrogen": "kg",
@@ -49,12 +50,12 @@ export default function ProjectStep7(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    let vtypes = Object.keys(data.project.steps[2])
-                    let init:InputStep7 = {energySource: data.project.steps[7]?.energySource || '', energyGrowthSource: data.project.steps[7]?.energyGrowthSource || ''}
+                    let vtypes = Object.keys(data.project.stages['Inventory'][0].steps[2])
+                    let init:InputStep7 = {energySource: data.project.stages['Inventory'][0].steps[7]?.energySource || '', energyGrowthSource: data.project.stages['Inventory'][0].steps[7]?.energyGrowthSource || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.steps[7]?.[vtype]) {
-                            init[vtype] = data.project.steps[7][vtype]
+                        if (data.project.stages['Inventory'][0].steps[7]?.[vtype]) {
+                            init[vtype] = data.project.stages['Inventory'][0].steps[7][vtype]
                         }
                         let tmp = {} as {[key in FuelType]: string[]}
                         for (let j = 0; j < ftypes.length; j++) {
@@ -99,7 +100,7 @@ export default function ProjectStep7(){
     }
 
     const goPreviousStep = () => {
-        navigate('/project/' + projectId + '/step/6');
+        navigate('/project/' + projectId + '/Inventory/step/6');
     }
     const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -115,13 +116,13 @@ export default function ProjectStep7(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: inputData })
         };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/7', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/7', requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/step/8'));
+            .then(() => navigate('/project/' + projectId + '/Inventory/step/8'));
     }
     return (
         <Container className="projectStepContainer">
-            <Progress project={project} currentStep={7} />
+            <Progress project={project} stage="BAU" currentStep={7} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Set up average fuel consumption</h1>
@@ -140,16 +141,16 @@ export default function ProjectStep7(){
                                 </tr>
                             </thead>
                             <tbody>
-                            {Object.keys(project.steps?.[2] || []).map((vtype, index) => {
-                                if (!project.steps?.[2] || project.steps[2][vtype] === false || !inputData) {
+                            {Object.keys(project.stages?.['Inventory'][0].steps?.[2] || []).map((vtype, index) => {
+                                if (!project.stages['Inventory'][0].steps?.[2] || project.stages['Inventory'][0].steps[2][vtype] === false || !inputData) {
                                     return null
                                 }
                                 let inputVt = inputData[vtype] as {[key in FuelType]: string[]}
-                                if (inputVt !== undefined && project.steps?.[5]) {
-                                    let fuelJsx = Object.keys(project.steps[5][vtype] || []).map((ft, i) => {
+                                if (inputVt !== undefined && project.stages['Inventory'][0].steps?.[5]) {
+                                    let fuelJsx = Object.keys(project.stages['Inventory'][0].steps[5][vtype] || []).map((ft, i) => {
                                         let ftype = ft as FuelType
                                         let inputFt = inputVt?.[ftype]
-                                        let tmp = project?.steps[5]?.[vtype] as {[key in FuelType]: boolean}
+                                        let tmp = project?.stages?.['Inventory']?.[0]?.steps[5]?.[vtype] as {[key in FuelType]: boolean}
                                         if (!tmp || tmp[ftype] === false || !inputData) {
                                             return  null
                                         }

@@ -7,14 +7,14 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import {InputStep2, InputStep4, ProjectType} from '../frontendTypes'
-import Progress from '../components/Progress'
+import {InputStep2, InputStep4, ProjectType} from '../../frontendTypes'
+import Progress from '../../components/Progress'
 
 
-import './Project.css'
+import '../Project.css'
 
 
-export default function ProjectStep4(){
+export default function InventoryStep4(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
@@ -38,12 +38,12 @@ export default function ProjectStep4(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    let vtypes = Object.keys(data.project.steps[2])
-                    let init:InputStep4 = {source: data.project.steps[4]?.source || ''}
+                    let vtypes = Object.keys(data.project.stages['Inventory'][0].steps[2])
+                    let init:InputStep4 = {source: data.project.stages['Inventory'][0].steps[4]?.source || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.steps[4]?.[vtype]){
-                            init[vtype] = data.project.steps[4][vtype]
+                        if (data.project.stages['Inventory'][0].steps[4]?.[vtype]){
+                            init[vtype] = data.project.stages['Inventory'][0].steps[4][vtype]
                         } else {
                             if (vtype.includes("alking")) {
                                 init[vtype] = {
@@ -87,7 +87,7 @@ export default function ProjectStep4(){
         updateInput(vtype, "occupancy", value)
     }
     const goPreviousStep = () => {
-        navigate('/project/' + projectId + '/step/3');
+        navigate('/project/' + projectId + '/Inventory/step/3');
     }
     const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -102,11 +102,11 @@ export default function ProjectStep4(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: inputData })
         };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/4', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/4', requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/step/5'));
+            .then(() => navigate('/project/' + projectId + '/Inventory/step/5'));
     }
-    const inputStep2 = project.steps?.[2] as InputStep2;
+    const inputStep2 = project.stages?.['Inventory'][0].steps?.[2] as InputStep2;
     let populationVehicleNames: string[] = []
     let freightVehicleNames: string[] = []
     for (const vtype in inputStep2) {
@@ -121,7 +121,7 @@ export default function ProjectStep4(){
     }
     return (
         <Container className="projectStepContainer">
-            <Progress project={project} currentStep={4} />
+            <Progress project={project} stage="BAU" currentStep={4} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Set up occupancy</h1>

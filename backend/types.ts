@@ -9,7 +9,7 @@ export type UsersPerVehicle = number & {}
 export type Part = number & {} // [0:1]
 export type UnitPerHundredKm = number & {} // l-kW-kg / 100 km
 export type Tj = number & {} // l-kW-kg / 100 km
-export type MilTons = number & {} // l-kW-kg / 100 km
+export type MilTons = number & {} // // mton CO2e
 
 export interface SocioEconomicData {
     population: NbPop,
@@ -42,8 +42,8 @@ export type VehicleStats = {
     [key: string]: {
         occupancy: UsersPerVehicle // passagers / vehicle ou tonnes / vehicles,
         triplength: number
-        network: "Road" | "Rail",
-        type: "Freight" | "Private passengers" | "Public transport"
+        network: "road" | "rail",
+        type: "freight" | "private transport" | "public transport"
     }
 }
 
@@ -51,7 +51,8 @@ export enum FuelType {
     "Gasoline" = "Gasoline",
     "Diesel" = "Diesel",
     "LPG" = "LPG",
-    "NG" = "NG",
+    "CNG" = "CNG",
+    "LNG" = "LNG",
     "Hybrid" = "Hybrid",
     "Electric" = "Electric",
     "Hydrogen" = "Hydrogen",
@@ -113,11 +114,18 @@ export type SumTotalEnergyAndEmissions = {
         co2: YearlyValues<MilTons>
     }
 }
+type EmissionParams = {
+    lowerHeatingValue: string,
+    density: string,
+    pci: string,
+    ges: string,
+    source?: string
+}
 export type EnergyAndEmissionsDefaultValues = {
-    [key in FuelType]?: {
-        pci: number,
-        ges: YearlyValues<number>
-    }
+    [key in FuelType]: EmissionParams
+} & {
+    ElectricRail?: EmissionParams,
+    ElectricRoad?: EmissionParams
 }
 
 export type EnergyBalance = {
@@ -141,6 +149,8 @@ export type Project = {
     projectReferenceYears: number[]
 }
 
+export type ProjectStage = "Inventory" | "BAU" | "Scenario"
+
 export type AvoidedMotorisedVkt = {
     [key: string]: YearlyValues<Percent>
 }
@@ -151,6 +161,94 @@ export type OriginModeMatrix = {
     [key: string]: { // vtype goal
         [key: string]: YearlyValues<Percent> // vtype origin : Yearly vals
     }
+}
+
+
+export type InputInventoryStep1 = {
+    vtypes: {
+        [key: string]: {
+            network: "road" | "rail",
+            type: "freight" | "public transport" | "private transport",
+            fuels: {[key in FuelType]?: boolean}
+        }
+    },
+    note: string | undefined
+}
+export type InputInventoryStep2 = {
+    vtypes: {
+        [vtype: string]: {
+            vkt: string,
+            vktSource: string
+            fuels: {
+                [key in FuelType]?: {
+                    percent: string,
+                    percentSource: string
+                }
+            },
+            fleetStock: string,
+            fleetMileage: string
+        }
+    },
+    note: string | undefined
+}
+export type InputInventoryStep3 = {
+    vtypes: {
+        [vtype: string]: {
+            fuels: {
+                [key in FuelType]?: {
+                    cons: string,
+                    consSource: string
+                }
+            }
+        }
+    },
+    note: string | undefined
+}
+export type InputInventoryStep4 = {
+    road: {
+        source: string | undefined,
+        value: string
+    },
+    rail: {
+        source: string | undefined,
+        value: string
+    },
+    note: string | undefined
+}
+
+type ClassicFuels = {
+    fuels: {
+        [key in FuelType]?: {
+            source: string,
+            value: string
+        }
+    }
+}
+type TopDownSubType = {
+    road: ClassicFuels,
+    rail: ClassicFuels
+}
+export type InputInventoryStep5 = {
+    energy: TopDownSubType,
+    emissions: TopDownSubType,
+    note: string | undefined
+}
+export type InputInventoryStep6 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            value: string // occupancy or
+        }
+    },
+    note: string | undefined
+}
+export type EmissionsFactors = {
+    "WTW": EnergyAndEmissionsDefaultValues,
+    "TTW": EnergyAndEmissionsDefaultValues
+}
+export type InputInventoryStep7 = {
+    emissionFactors: EmissionsFactors,
+    note: string | undefined
 }
 // Scenario types
 // With upstream calculations

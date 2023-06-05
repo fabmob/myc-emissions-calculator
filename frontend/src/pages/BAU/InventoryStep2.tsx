@@ -9,10 +9,10 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
-import {InputStep2, ProjectType} from '../frontendTypes'
-import Progress from '../components/Progress'
+import {InputStep2, ProjectType} from '../../frontendTypes'
+import Progress from '../../components/Progress'
 
-import './Project.css'
+import '../Project.css'
 
 
 const defaultVehicles = [
@@ -84,7 +84,7 @@ const defaultVehiclesList = [
     "🚛 Articulated truck",
     "🚄 Freight train"
 ]
-export default function ProjectStep2(){
+export default function InventoryStep2(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
@@ -124,11 +124,11 @@ export default function ProjectStep2(){
                 })
                 .then(data => {
                     setProject(data.project)
-                    if (data.project.steps[2]){
+                    if (data.project.stages['Inventory'][0].steps[2]){
                         setInputData((prevInputData) => {
-                            let vtypes = Object.keys(data.project.steps[2])
+                            let vtypes = Object.keys(data.project.stages['Inventory'][0].steps[2])
                             for (let i = 0; i < vtypes.length; i++) {
-                                let val = data.project.steps[2][vtypes[i]]
+                                let val = data.project.stages['Inventory'][0].steps[2][vtypes[i]]
                                 if (val.isActive !== undefined) {
                                     prevInputData[vtypes[i]] = val
                                 } else {
@@ -179,7 +179,7 @@ export default function ProjectStep2(){
         setCategoryName((prevCategoryName) => emoji + " " + prevCategoryName)
     }
     const goPreviousStep = () => {
-        navigate('/project/' + projectId + '/step/1');
+        navigate('/project/' + projectId + '/Inventory/step/1');
     }
     const saveAndGoNextStep = () => {
         const requestOptions = {
@@ -187,14 +187,14 @@ export default function ProjectStep2(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: filterData(inputData) })
         };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/2', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/2', requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/step/3'));
+            .then(() => navigate('/project/' + projectId + '/Inventory/step/3'));
     }
     return (
         <>
             <Container className="projectStepContainer">
-                <Progress project={project} currentStep={2} />
+                <Progress project={project} stage="BAU" currentStep={2} />
                 <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                     <Col xs lg="8">
                         <h1>Select / add category of transport</h1>

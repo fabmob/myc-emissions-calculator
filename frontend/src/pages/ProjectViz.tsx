@@ -64,14 +64,14 @@ export default function ProjectViz(){
     const init = (_project: ProjectType) => {
         console.log(_project)
         setProject(_project)
-        if (!_project.steps) {
+        if (!_project.stages['Inventory'][0].steps) {
             return
         }
         let _csvExport: string[][] = []
         _csvExport = [
             ["dataType", "dataName", "dataSource1", "dataSource2", "vehicleType", "fuelType"].concat(_project.referenceYears.map(e => e.toString())),
-            ["input", "population", _project.steps[1].populationSource, _project.steps[1].populationGrowthSource, "NA", "NA", _project.steps[1].population].concat(_project.steps[1].populationRate),
-            ["input", "gdp", _project.steps[1].gdpSource, _project.steps[1].gdpGrowthSource, "NA", "NA", _project.steps[1].gdp].concat(_project.steps[1].gdpRate),
+            ["input", "population", _project.stages['Inventory'][0].steps[1].populationSource, _project.stages['Inventory'][0].steps[1].populationGrowthSource, "NA", "NA", _project.stages['Inventory'][0].steps[1].population].concat(_project.stages['Inventory'][0].steps[1].populationRate),
+            ["input", "gdp", _project.stages['Inventory'][0].steps[1].gdpSource, _project.stages['Inventory'][0].steps[1].gdpGrowthSource, "NA", "NA", _project.stages['Inventory'][0].steps[1].gdp].concat(_project.stages['Inventory'][0].steps[1].gdpRate),
             ["output", "population", "computed", "", "NA", "NA"].concat((_project?.outputSocioEconomicDataComputed?.population || []).map(e => Math.round(e).toString())),
             ["output", "gdp", "computed", "", "NA", "NA"].concat((_project?.outputSocioEconomicDataComputed?.gdp || []).map(e => e.toString()))
         ]
@@ -88,7 +88,7 @@ export default function ProjectViz(){
         ]
         for (let i = 0; i < vtypesvkt.length; i++) {
             let vtype = vtypesvkt[i]
-            if (!_project?.steps?.[2]?.[vtype]?.isActive)
+            if (!_project?.stages?.['Inventory']?.[0]?.steps?.[2]?.[vtype]?.isActive)
                 continue
             for (let j = 0; j < 6; j++) {
                 if (vehicleKilometresTravelledComputed?.[vtype]?.[j]) {
@@ -99,18 +99,18 @@ export default function ProjectViz(){
                     }
                 }
             _csvExport.push(["output", "vkt", "computed", "", vtype, "NA"].concat(_dataVkt.map(e => e[vtype].toString())))
-            if (_project.steps[3][vtype].averageMileage && _project.steps[3][vtype].averageMileage !== "0") {
-                _csvExport.push(["input", "averageMileage", _project.steps[3].averageMileageSource, _project.steps[3].vktGrowthSource, vtype, "NA", _project.steps[3][vtype].averageMileage].concat(_project.steps[3][vtype].vktRate))
-                _csvExport.push(["input", "vehicleStock", _project.steps[3].vehicleStockSource, _project.steps[3].vktGrowthSource, vtype, "NA", _project.steps[3][vtype].vehicleStock].concat(_project.steps[3][vtype].vktRate))
-                _csvExport.push(["input", "vkt", "computed", _project.steps[3].vktGrowthSource, vtype, "NA", _project.steps[3][vtype].vkt].concat(_project.steps[3][vtype].vktRate))
+            if (_project.stages['Inventory'][0].steps[3][vtype].averageMileage && _project.stages['Inventory'][0].steps[3][vtype].averageMileage !== "0") {
+                _csvExport.push(["input", "averageMileage", _project.stages['Inventory'][0].steps[3].averageMileageSource, _project.stages['Inventory'][0].steps[3].vktGrowthSource, vtype, "NA", _project.stages['Inventory'][0].steps[3][vtype].averageMileage].concat(_project.stages['Inventory'][0].steps[3][vtype].vktRate))
+                _csvExport.push(["input", "vehicleStock", _project.stages['Inventory'][0].steps[3].vehicleStockSource, _project.stages['Inventory'][0].steps[3].vktGrowthSource, vtype, "NA", _project.stages['Inventory'][0].steps[3][vtype].vehicleStock].concat(_project.stages['Inventory'][0].steps[3][vtype].vktRate))
+                _csvExport.push(["input", "vkt", "computed", _project.stages['Inventory'][0].steps[3].vktGrowthSource, vtype, "NA", _project.stages['Inventory'][0].steps[3][vtype].vkt].concat(_project.stages['Inventory'][0].steps[3][vtype].vktRate))
             } else {
-                _csvExport.push(["input", "vkt", _project.steps[3].vktSource, _project.steps[3].vktGrowthSource, vtype, "NA", _project.steps[3][vtype].vkt].concat(_project.steps[3][vtype].vktRate))
+                _csvExport.push(["input", "vkt", _project.stages['Inventory'][0].steps[3].vktSource, _project.stages['Inventory'][0].steps[3].vktGrowthSource, vtype, "NA", _project.stages['Inventory'][0].steps[3][vtype].vkt].concat(_project.stages['Inventory'][0].steps[3][vtype].vktRate))
             }
-            _csvExport.push(["input", "occupancy", _project.steps[4].source, "", vtype, "NA", _project.steps[4][vtype].occupancy, "", "", "", "", ""])
-            Object.keys(_project.steps[6][vtype]).map(ftype => {
+            _csvExport.push(["input", "occupancy", _project.stages['Inventory'][0].steps[4].source, "", vtype, "NA", _project.stages['Inventory'][0].steps[4][vtype].occupancy, "", "", "", "", ""])
+            Object.keys(_project.stages['Inventory'][0].steps[6][vtype]).map(ftype => {
                 if (ftype !== "None") {
-                    _csvExport.push(["input", "fuelBreakdown", _project.steps[6].source, "", vtype, ftype].concat(_project.steps[6][vtype][ftype]))
-                    _csvExport.push(["input", "fuelConsumption", _project.steps[7].energySource, _project.steps[7].energyGrowthSource, vtype, ftype].concat(_project.steps[7][vtype][ftype]))
+                    _csvExport.push(["input", "fuelBreakdown", _project.stages['Inventory'][0].steps[6].source, "", vtype, ftype].concat(_project.stages['Inventory'][0].steps[6][vtype][ftype]))
+                    _csvExport.push(["input", "fuelConsumption", _project.stages['Inventory'][0].steps[7].energySource, _project.stages['Inventory'][0].steps[7].energyGrowthSource, vtype, ftype].concat(_project.stages['Inventory'][0].steps[7][vtype][ftype]))
                 }
                 return null
             })
@@ -131,7 +131,7 @@ export default function ProjectViz(){
         ]
         for (let i = 0; i < vTypesPassengersModalShare.length; i++) {
             let vtype = vTypesPassengersModalShare[i]
-            if (!_project?.steps?.[2]?.[vtype]?.isActive)
+            if (!_project?.stages?.['Inventory']?.[0]?.steps?.[2]?.[vtype]?.isActive)
                 continue
             for (let j = 0; j < 6; j++) {
                 if (outputPassengersModalShare?.[vtype]?.[j] !== undefined) {
@@ -155,7 +155,7 @@ export default function ProjectViz(){
         ]
         for (let i = 0; i < vTypesFreightModalShare.length; i++) {
             let vtype = vTypesFreightModalShare[i]
-            if (!_project?.steps?.[2]?.[vtype]?.isActive)
+            if (!_project?.stages?.['Inventory']?.[0]?.steps?.[2]?.[vtype]?.isActive)
                 continue
             for (let j = 0; j < 6; j++) {
                 if (outputFreightModalShare?.[vtype]?.[j] !== undefined) {
@@ -182,7 +182,7 @@ export default function ProjectViz(){
             ]
             for (let i = 0; i < vTypesPassengersModalShare.length; i++) {
                 let vtype = vTypesPassengersModalShare[i]
-                if (!_project?.steps?.[2]?.[vtype]?.isActive)
+                if (!_project?.stages?.['Inventory']?.[0]?.steps?.[2]?.[vtype]?.isActive)
                     continue
                 for (let j = 0; j < 6; j++) {
                     let val = outputSumTotalEnergyAndEmissions?.[vtype]?.co2?.[j]
@@ -197,7 +197,7 @@ export default function ProjectViz(){
             }
             for (let i = 0; i < vTypesFreightModalShare.length; i++) {
                 let vtype = vTypesFreightModalShare[i]
-                if (!_project?.steps?.[2]?.[vtype]?.isActive)
+                if (!_project?.stages?.['Inventory']?.[0]?.steps?.[2]?.[vtype]?.isActive)
                     continue
                 for (let j = 0; j < 6; j++) {
                     let val = outputSumTotalEnergyAndEmissions?.[vtype]?.co2?.[j]
@@ -225,7 +225,7 @@ export default function ProjectViz(){
         let defaultColors = ["#FF7C7C", "#FFEB7C", "#7BFFE3", "#7C81FF", "#DF7CFF", "#FF9F7C", "#CAFF7C", "#7CDDFF", "#9E7CFF", "#FF7CEC", "#FFB77C"," #8AFF89", "#7CB1FF", "#FF7CB2"]
         let colors = defaultColors.slice()
         let _colorsPerVtype : {[key: string]: string} = {}
-        let vtypes = Object.keys(_project?.steps?.[2] || {}).filter(vtype => _project?.steps?.[2]?.[vtype])
+        let vtypes = Object.keys(_project?.stages?.['Inventory']?.[0]?.steps?.[2] || {}).filter(vtype => _project?.stages?.['Inventory']?.[0]?.steps?.[2]?.[vtype])
         for (let i = 0; i < vtypes.length; i++) {
             _colorsPerVtype[vtypes[i]] = colors.shift() || "black"
             if (colors.length === 0) {
@@ -248,8 +248,8 @@ export default function ProjectViz(){
         setDataEnergyDomain(_dataEnergyDomain)
     }
     const filterByVtype = (selectedVtypes: InputStep2) => {
-        if (project?.steps?.[2]) {
-            project.steps[2] = selectedVtypes
+        if (project?.stages?.['Inventory']?.[0]?.steps?.[2]) {
+            project.stages['Inventory'][0].steps[2] = selectedVtypes
             init(project)
         }
     }
@@ -274,7 +274,7 @@ export default function ProjectViz(){
     }
     return (
         <Container className="projectStepContainer">
-            <Progress project={project} currentStep={9} />
+            <Progress project={project} currentStep={9} stage='Inventory' />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Project overview</h1>
@@ -497,7 +497,7 @@ const Options = (
     const [pin, setPin] = useState(false)
     const [selectedVtypes, setSelectedVtypes] = useState({} as InputStep2)
     useEffect(() => {
-        const inputStep2 = project?.steps?.[2] as InputStep2
+        const inputStep2 = project?.stages?.['Inventory']?.[0]?.steps?.[2] as InputStep2
         if (inputStep2)
             setSelectedVtypes(inputStep2)
     }, [project])
@@ -505,7 +505,7 @@ const Options = (
         if (selectedVtypes)
             filterByVtype(selectedVtypes)
     }, [selectedVtypes])
-    if (!project?.steps?.[2]) {
+    if (!project?.stages?.['Inventory']?.[0]?.steps?.[2]) {
         return <></>
     }
     const vtypes = Object.keys(selectedVtypes)

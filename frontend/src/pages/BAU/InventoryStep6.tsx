@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
 import { Table, Form, Container, Row, Col, Alert, Button } from 'react-bootstrap'
-import {InputStep6, ProjectType, FuelType} from '../frontendTypes'
-import Progress from '../components/Progress'
-import PercentInput from '../components/PercentInput'
+import {InputStep6, ProjectType, FuelType} from '../../frontendTypes'
+import Progress from '../../components/Progress'
+import PercentInput from '../../components/PercentInput'
 
-import './Project.css'
+import '../Project.css'
 
-export default function ProjectStep6(){
+export default function InventoryStep6(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
@@ -34,17 +34,17 @@ export default function ProjectStep6(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    if (data.project.steps[5]) {
-                        let vtypes = Object.keys(data.project.steps[2])
+                    if (data.project.stages['Inventory'][0].steps[5]) {
+                        let vtypes = Object.keys(data.project.stages['Inventory'][0].steps[2])
                         setInputData(prevInputData => {
-                            prevInputData.source = data.project.steps[6]?.source || ''
+                            prevInputData.source = data.project.stages['Inventory'][0].steps[6]?.source || ''
                             for (let i = 0; i < vtypes.length; i++) {
                                 let vtype = vtypes[i]
-                                if (!data.project.steps[5][vtype]) {
+                                if (!data.project.stages['Inventory'][0].steps[5][vtype]) {
                                     setVtypeWarning(true)
                                     continue
                                 }
-                                let ftypes = Object.keys(data.project.steps[5][vtype]).filter(ftype => data.project.steps[5][vtype][ftype])
+                                let ftypes = Object.keys(data.project.stages['Inventory'][0].steps[5][vtype]).filter(ftype => data.project.stages['Inventory'][0].steps[5][vtype][ftype])
                                 let tmp = {} as {[key in FuelType]: string[]}
                                 if (ftypes.length === 1) {
                                     // If we only have one fuel type, we can initalize everything at 100%
@@ -54,7 +54,7 @@ export default function ProjectStep6(){
                                 } else {
                                     for (let j = 0; j < ftypes.length; j++) {
                                         let ftype = ftypes[j] as FuelType
-                                        tmp[ftype] = data.project.steps[6]?.[vtype]?.[ftype] || ["0", "0", "0", "0", "0", "0"]
+                                        tmp[ftype] = data.project.stages['Inventory'][0].steps[6]?.[vtype]?.[ftype] || ["0", "0", "0", "0", "0", "0"]
                                     }
                                     prevInputData[vtype] = tmp
                                 }
@@ -112,7 +112,7 @@ export default function ProjectStep6(){
         return true
     }
     const goPreviousStep = () => {
-        navigate('/project/' + projectId + '/step/5');
+        navigate('/project/' + projectId + '/Inventory/step/5');
     }
     const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -132,13 +132,13 @@ export default function ProjectStep6(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: inputData })
         };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/6', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/6', requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/step/7'));
+            .then(() => navigate('/project/' + projectId + '/Inventory/step/7'));
     }
     return (
         <Container className="projectStepContainer">
-            <Progress project={project} currentStep={6} />
+            <Progress project={project} stage="BAU" currentStep={6} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Fuel breakdown</h1>
@@ -171,16 +171,16 @@ export default function ProjectStep6(){
                                 </tr>
                             </thead>
                             <tbody>
-                            {Object.keys(project.steps?.[2] || []).map((vtype, index) => {
-                                if (!project.steps?.[2] || project.steps[2][vtype] === false || !inputData) {
+                            {Object.keys(project.stages?.['Inventory'][0].steps?.[2] || []).map((vtype, index) => {
+                                if (!project.stages['Inventory'][0].steps?.[2] || project.stages['Inventory'][0].steps[2][vtype] === false || !inputData) {
                                     return <></>
                                 }
                                 let inputVt = inputData[vtype] as {[key in FuelType]: string[]}
-                                if (inputVt !== undefined && project.steps?.[5]) {
-                                    let fuelJsx: any = Object.keys(project.steps[5][vtype] || []).map((ft, i) => {
+                                if (inputVt !== undefined && project.stages['Inventory'][0].steps?.[5]) {
+                                    let fuelJsx: any = Object.keys(project.stages['Inventory'][0].steps[5][vtype] || []).map((ft, i) => {
                                         let ftype = ft as FuelType
                                         let inputFt = inputVt?.[ftype]
-                                        let tmp = project?.steps[5]?.[vtype]  as {[key in FuelType]: boolean}
+                                        let tmp = project?.stages?.['Inventory']?.[0]?.steps[5]?.[vtype]  as {[key in FuelType]: boolean}
                                         if (!tmp || tmp[ftype] === false || !inputData) {
                                             return null
                                         }
@@ -217,7 +217,7 @@ export default function ProjectStep6(){
                                     let inp = inputData?.[vtype]
                                     let sums = [0,0,0,0,0,0]
                                     if (inp && typeof(inp) !== 'string') {
-                                        let fuels = Object.keys(project.steps?.[5][vtype] || [])
+                                        let fuels = Object.keys(project.stages['Inventory'][0].steps?.[5][vtype] || [])
                                         for (let i = 0; i < fuels.length; i++) {
                                             let ftype = fuels[i] as FuelType
                                             for (let j = 0; j < sums.length; j++) {

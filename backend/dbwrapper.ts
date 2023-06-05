@@ -5,7 +5,8 @@ const db = new Database('data.db', {verbose: console.log})
 export function init() {
     try {
         db.exec("CREATE Table Projects (id INTEGER PRIMARY KEY, createdDate STRING, modifiedDate STRING, owner STRING, name STRING, isSump INTEGER, country STRING, city STRING, partnerLocation STRING, area STRING, referenceYears INTEGER, status STRING, UNIQUE(owner, name))")
-        db.exec("CREATE Table ProjectSteps (projectId INTEGER, stepNumber INTEGER, value STRING, FOREIGN KEY(projectId) REFERENCES Projects(id),  UNIQUE(projectId, stepNumber) ON CONFLICT REPLACE)")
+        db.exec("CREATE Table ProjectSteps (projectId INTEGER, stage STRING, stageId INTEGER, stepNumber INTEGER, value STRING, FOREIGN KEY(projectId) REFERENCES Projects(id),  UNIQUE(projectId, stage, stageId, stepNumber) ON CONFLICT REPLACE)")
+        db.exec("CREATE Table ProjectSources (sourceId INTEGER PRIMARY KEY AUTOINCREMENT, projectId INTEGER, value STRING, FOREIGN KEY(projectId) REFERENCES Projects(id))")
     } catch (err) {
         console.log("Table alredy exists")
     }
@@ -24,11 +25,26 @@ type ProjectsDbEntry = {
     area: string,
     referenceYears: string,
     status: string,
-    step?: number
+    stage?: types.ProjectStage,
+    stageId: number,
+    step: number,
+    stages: {
+        [stage in types.ProjectStage]: {
+            steps: any[],
+            step: number
+        }[]
+    }
 }
 type ProjectStepsDbEntry = {
     projectId: number,
+    stage: types.ProjectStage,
+    stageId: number,
     stepNumber: number,
+    value: string
+}
+type ProjectSourcesDbEntry = {
+    sourceId: number,
+    projectId: number,
     value: string
 }
 type Project = {
@@ -44,8 +60,14 @@ type Project = {
     area: string,
     status: string
     referenceYears: number[],
-    steps: any[],
-    step: number
+    stages: {
+        [stage in types.ProjectStage]: {
+            steps: any[],
+            step: number
+        }[]
+    },
+    sources: ProjectSourcesDbEntry[]
+    
 }
 export function createProject(project: types.Project, owner: string): [string | null, Database.RunResult | null] {
     const createProjectStmt = db.prepare("INSERT INTO Projects (id, createdDate, modifiedDate, owner, name, isSump, country, city, partnerLocation, area, referenceYears, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
@@ -69,7 +91,7 @@ export function createProject(project: types.Project, owner: string): [string | 
     }
 }
 
-function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectStepsDbEntry[]) {
+function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectStepsDbEntry[], projectSources?: ProjectSourcesDbEntry[]) {
     let project : Project = {
         id: projectEntry.id,
         createdDate: new Date(projectEntry.createdDate),
@@ -83,34 +105,80 @@ function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectSteps
         area: projectEntry.area, 
         status: projectEntry.status, 
         referenceYears: projectEntry.referenceYears.split(',').map(s => parseInt(s)),
-        // Skipping index 0 to match stepNumber with index in array
-        steps: [null],
-        step: ((projectEntry.step || 0) + 1) || 1
+        stages: projectEntry.stages || {
+            "BAU": [],
+            "Inventory": [],
+            "Scenario": []
+        },
+        sources: projectSources || []
     }
-
     if (projectSteps) {
-        project.step = projectSteps.length + 1
         for (let i = 0; i < projectSteps.length; i++) {
-            const step = projectSteps[i];
-            project.steps[step.stepNumber] = JSON.parse(step.value)
+            const step = projectSteps[i]
+            if (!project.stages[step.stage][step.stageId]) {
+                project.stages[step.stage][step.stageId] = {
+                    // Skipping index 0 to match stepNumber with index in array
+                    step: 1,
+                    steps: []
+                }
+            }
+            project.stages[step.stage][step.stageId || 0].step += 1
+            project.stages[step.stage][step.stageId || 0].steps[step.stepNumber] = JSON.parse(step.value)
         }
     }
     return project
 }
+function concatProjects(res: ProjectsDbEntry[]) : ProjectsDbEntry[] {
+    let concatRes: ProjectsDbEntry[] = []
+    for (let i = 0; i < res.length; i++) {
+        const project = res[i]
+        if (project.stage && project.stageId >= 0) {
+            const index = concatRes.findIndex((p) => p.id === project.id)
+            
+            if (index < 0) {
+                project.stages = {
+                    "BAU": [],
+                    "Inventory": [],
+                    "Scenario": []
+                }
+                project.stages[project.stage][project.stageId] = {
+                    step: project.step,
+                    steps: []
+                }
+                concatRes.push(project)
+            } else {
+                concatRes[index].stages[project.stage][project.stageId] = {
+                    step: project.step,
+                    steps: []
+                }
+            }
+        } else {
+            project.stages = {
+                "BAU": [],
+                "Inventory": [],
+                "Scenario": []
+            }
+            concatRes.push(project)
+        }
+    }
+    return concatRes
+}
 export function getProjectsByOwner(owner: string) {
-    const getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner = ? group by id")
+    const getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, stage, stageId, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner = ? group by id, stage, stageId")
     let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
-    return res.map(projectEntry => parseProject(projectEntry))
+    const concatRes: ProjectsDbEntry[] = concatProjects(res)
+    return concatRes.map(projectEntry => parseProject(projectEntry))
 }
 export function getPublicProjectsNotOwned(owner: string, isAdmin: boolean) {
     let getProjectsByOwnerStmt
     if (isAdmin) {
-        getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? group by id")
+        getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, stage, stageId, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? group by id, stage, stageId")
     } else {
-        getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? AND status = 'validated' group by id")
+        getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, stage, stageId, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? AND status = 'validated' group by id, stage, stageId")
     }
     let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
-    return res.map(projectEntry => parseProject(projectEntry))
+    const concatRes: ProjectsDbEntry[] = concatProjects(res)
+    return concatRes.map(projectEntry => parseProject(projectEntry))
 }
 export function getProject(owner: string, id: number, isAdmin: boolean) {
     let getProjectStmt
@@ -127,14 +195,24 @@ export function getProject(owner: string, id: number, isAdmin: boolean) {
     }
     const getProjectStepsStmt = db.prepare("SELECT * FROM ProjectSteps WHERE projectId = ?")
     let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([id])
-    return parseProject(resProject, resProjectSteps)
+    const getProjectSourcesStmt = db.prepare("SELECT * FROM ProjectSources WHERE projectId = ?")
+    let resProjectSources: ProjectSourcesDbEntry[] = getProjectSourcesStmt.all([id])
+    return parseProject(resProject, resProjectSteps, resProjectSources)
 }
 
-export function addProjectStep(id: number, stepNumber: number, inputData: string) {
-    const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stepNumber, value) values (?, ?, ?)")
-    let res = addProjectStepStmt.run([id, stepNumber, inputData])
+export function addProjectStep(id: number, stage: types.ProjectStage, stageId: number, stepNumber: number, inputData: string) {
+    const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stage, stageId, stepNumber, value) values (?, ?, ?, ?, ?)")
+    let res = addProjectStepStmt.run([id, stage, stageId, stepNumber, inputData])
     const updateProjectDateStmt = db.prepare("UPDATE Projects set modifiedDate = ? where id = ?")
     updateProjectDateStmt.run([new Date().toString(), id])
+    return res
+}
+
+export function addProjectSource(projectId: number, value: string) {
+    const addProjectSourceStmt = db.prepare("INSERT INTO ProjectSources (sourceId, projectId, value) values (?, ?, ?)")
+    let res = addProjectSourceStmt.run([null, projectId, value])
+    const updateProjectDateStmt = db.prepare("UPDATE Projects set modifiedDate = ? where id = ?")
+    updateProjectDateStmt.run([new Date().toString(), projectId])
     return res
 }
 

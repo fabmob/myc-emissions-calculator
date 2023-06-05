@@ -8,14 +8,14 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import {InputStep3, ProjectType} from '../frontendTypes'
-import Progress from '../components/Progress'
-import PercentInput from '../components/PercentInput'
+import {InputStep3, ProjectType} from '../../frontendTypes'
+import Progress from '../../components/Progress'
+import PercentInput from '../../components/PercentInput'
 
-import './Project.css'
+import '../Project.css'
 
 
-export default function ProjectStep3(){
+export default function InventoryStep3(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
@@ -42,17 +42,17 @@ export default function ProjectStep3(){
                     setProject(data.project)
                     // If not specified otherwise, SUMPs are using vkt, NUMPs are using the fleet approach
                     let isUsingVkt = data.project.isSump
-                    let vtypes = Object.keys(data.project.steps[2])
+                    let vtypes = Object.keys(data.project.stages['Inventory'][0].steps[2])
                     let init:InputStep3 = {
-                        vktSource: data.project.steps[3]?.vktSource || '',
-                        vktGrowthSource: data.project.steps[3]?.vktGrowthSource || '',
-                        vehicleStockSource: data.project.steps[3]?.vehicleStockSource || '',
-                        averageMileageSource: data.project.steps[3]?.averageMileageSource || ''
+                        vktSource: data.project.stages['Inventory'][0].steps[3]?.vktSource || '',
+                        vktGrowthSource: data.project.stages['Inventory'][0].steps[3]?.vktGrowthSource || '',
+                        vehicleStockSource: data.project.stages['Inventory'][0].steps[3]?.vehicleStockSource || '',
+                        averageMileageSource: data.project.stages['Inventory'][0].steps[3]?.averageMileageSource || ''
                     }
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.steps[3]?.[vtype]) {
-                            init[vtype] = data.project.steps[3][vtype]
+                        if (data.project.stages['Inventory'][0].steps[3]?.[vtype]) {
+                            init[vtype] = data.project.stages['Inventory'][0].steps[3][vtype]
                         } else {
                             init[vtype] = {
                                 vkt: "0",
@@ -111,7 +111,7 @@ export default function ProjectStep3(){
 
     }
     const goPreviousStep = () => {
-        navigate('/project/' + projectId + '/step/2');
+        navigate('/project/' + projectId + '/Inventory/step/2');
     }
     const saveAndGoNextStep = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -126,13 +126,13 @@ export default function ProjectStep3(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: inputData })
         };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/3', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/3', requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/step/4'));
+            .then(() => navigate('/project/' + projectId + '/Inventory/step/4'));
     }
     return (
         <Container className="projectStepContainer">
-            <Progress project={project} currentStep={3} />
+            <Progress project={project} stage="BAU" currentStep={3} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Set up transport activity data</h1>
@@ -173,8 +173,8 @@ export default function ProjectStep3(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.keys(project.steps?.[2] || []).map((vtype, index) => {
-                                    if (!project.steps?.[2] || project.steps[2][vtype] === false || !inputData) {
+                                {Object.keys(project.stages?.['Inventory'][0].steps?.[2] || []).map((vtype, index) => {
+                                    if (!project.stages['Inventory'][0].steps?.[2] || project.stages['Inventory'][0].steps[2][vtype] === false || !inputData) {
                                         return <></>
                                     }
                                     let inputVt = inputData[vtype]

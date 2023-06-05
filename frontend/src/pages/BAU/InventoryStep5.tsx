@@ -9,12 +9,12 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Modal from 'react-bootstrap/Modal'
-import {InputStep5, ProjectType, FuelType, EmissionsFactors} from '../frontendTypes'
-import Progress from '../components/Progress'
+import {InputStep5, ProjectType, FuelType, EmissionsFactors} from '../../frontendTypes'
+import Progress from '../../components/Progress'
 
-import './Project.css'
+import '../Project.css'
 
-export default function ProjectStep5(){
+export default function InventoryStep5(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
@@ -26,26 +26,26 @@ export default function ProjectStep5(){
     const handleCloseEmissionsFactors = () => setShowEmissionsFactors(false);
     let [emissionFactors, setEmissionFactors] = useState({
         "WTW": {
-            "Gasoline": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: ["89400", "89400", "89400", "89400", "89400", "89400"]},
-            "Diesel": {lowerHeatingValue: "43", density: "0.832", pci: "35.776", ges: ["90400", "90400", "90400", "90400", "90400", "90400"]},
-            "NG": {lowerHeatingValue: "45.1", density: "1", pci: "45.1", ges: ["68100", "68100", "68100", "68100", "68100", "68100"]},
-            "LPG": {lowerHeatingValue: "46", density: "0.522193211488251", pci: "24.020887728", ges: ["75300", "75300", "75300", "75300", "75300", "75300"]},
-            "LNG": {lowerHeatingValue: "45.1", density: "0.39", pci: "17.589", ges: ["80270", "80270", "80270", "80270", "80270", "80270"]},
-            "Hybrid": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: ["89400", "89400", "89400", "89400", "89400", "89400"]},
-            "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: ["20556", "20556", "20556", "20556", "20556", "20556"]},
-            "Hydrogen": {lowerHeatingValue: "119.88", density: "1", pci: "119.88", ges: ["132900", "132900", "132900", "132900", "132900", "132900"]},
-            "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: ["0","0","0","0","0","0"]}
+            "Gasoline": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: "89400", source: ''},
+            "Diesel": {lowerHeatingValue: "43", density: "0.832", pci: "35.776", ges: "90400", source: ''},
+            "CNG": {lowerHeatingValue: "45.1", density: "1", pci: "45.1", ges: "68100", source: ''},
+            "LPG": {lowerHeatingValue: "46", density: "0.522193211488251", pci: "24.020887728", ges: "75300", source: ''},
+            "LNG": {lowerHeatingValue: "45.1", density: "0.39", pci: "17.589", ges: "80270", source: ''},
+            "Hybrid": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: "89400", source: ''},
+            "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: "20556", source: ''},
+            "Hydrogen": {lowerHeatingValue: "119.88", density: "1", pci: "119.88", ges: "132900", source: ''},
+            "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: "0", source: ''}
         },
         "TTW": {
-            "Gasoline": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: ["75200", "75200", "75200", "75200", "75200", "75200"]},
-            "Diesel": {lowerHeatingValue: "43", density: "0.832", pci: "35.776", ges: ["74500", "74500", "74500", "74500", "74500", "74500"]},
-            "NG": {lowerHeatingValue: "45.1", density: "1", pci: "45.1", ges: ["59400", "59400", "59400", "59400", "59400", "59400"]},
-            "LPG": {lowerHeatingValue: "46", density: "0.522193211488251", pci: "24.020887728", ges: ["67300", "67300", "67300", "67300", "67300", "67300"]},
-            "LNG": {lowerHeatingValue: "45.1", density: "0.39", pci: "17.589", ges: ["59420", "59420", "59420", "59420", "59420", "59420"]},
-            "Hybrid": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: ["75200", "75200", "75200", "75200", "75200", "75200"]},
-            "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: ["0", "0", "0", "0", "0", "0"]},
-            "Hydrogen": {lowerHeatingValue: "119.88", density: "1", pci: "119.88", ges: ["0", "0", "0", "0", "0", "0"]},
-            "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: ["0","0","0","0","0","0"]}
+            "Gasoline": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: "75200", source: ''},
+            "Diesel": {lowerHeatingValue: "43", density: "0.832", pci: "35.776", ges: "74500", source: ''},
+            "CNG": {lowerHeatingValue: "45.1", density: "1", pci: "45.1", ges: "59400", source: ''},
+            "LPG": {lowerHeatingValue: "46", density: "0.522193211488251", pci: "24.020887728", ges: "67300", source: ''},
+            "LNG": {lowerHeatingValue: "45.1", density: "0.39", pci: "17.589", ges: "59420", source: ''},
+            "Hybrid": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: "75200", source: ''},
+            "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: "0", source: ''},
+            "Hydrogen": {lowerHeatingValue: "119.88", density: "1", pci: "119.88", ges: "0", source: ''},
+            "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: "0, source: ''"}
         }
     } as EmissionsFactors)
     let [electricityProductionEmissions, setElectricityProductionEmissions] = useState(["74","74","74","74","74","74"])
@@ -65,12 +65,12 @@ export default function ProjectStep5(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    let vtypes = Object.keys(data.project.steps[2])
-                    let init:InputStep5 = {source: data.project.steps[5]?.source || ''}
+                    let vtypes = Object.keys(data.project.stages['Inventory'][0].steps[2])
+                    let init:InputStep5 = {source: data.project.stages['Inventory'][0].steps[5]?.source || ''}
                     for (let i = 0; i < vtypes.length; i++) {
                         let vtype = vtypes[i]
-                        if (data.project.steps[5]?.[vtype]){
-                            init[vtype] = data.project.steps[5][vtype]
+                        if (data.project.stages['Inventory'][0].steps[5]?.[vtype]){
+                            init[vtype] = data.project.stages['Inventory'][0].steps[5][vtype]
                         }
                         let tmp = {} as {[key in FuelType]: boolean}
                         for (let j = 0; j < ftypes.length; j++) {
@@ -85,18 +85,18 @@ export default function ProjectStep5(){
                         init[vtype] = tmp
                     }
                     setInputData(init)
-                    if (data.project?.steps?.[5]?.emissionFactors) {
+                    if (data.project?.stages?.['Inventory']?.[0]?.steps?.[5]?.emissionFactors) {
                         // Patch old project with missing fuel types
                         for (let j = 0; j < ftypes.length; j++) {
                             let ftype = ftypes[j] as FuelType
-                            if (!data.project.steps[5].emissionFactors.WTW[ftype]) {
-                                data.project.steps[5].emissionFactors.WTW[ftype] = emissionFactors.WTW[ftype]
+                            if (!data.project.stages['Inventory'][0].steps[5].emissionFactors.WTW[ftype]) {
+                                data.project.stages['Inventory'][0].steps[5].emissionFactors.WTW[ftype] = emissionFactors.WTW[ftype]
                             }
-                            if (!data.project.steps[5].emissionFactors.TTW[ftype]) {
-                                data.project.steps[5].emissionFactors.TTW[ftype] = emissionFactors.TTW[ftype]
+                            if (!data.project.stages['Inventory'][0].steps[5].emissionFactors.TTW[ftype]) {
+                                data.project.stages['Inventory'][0].steps[5].emissionFactors.TTW[ftype] = emissionFactors.TTW[ftype]
                             }
                         }
-                        setEmissionFactors(data.project.steps[5].emissionFactors)
+                        setEmissionFactors(data.project.stages['Inventory'][0].steps[5].emissionFactors)
                     }
                 });
             }
@@ -107,7 +107,7 @@ export default function ProjectStep5(){
             if (pfuel) {
                 if (key === "ges") {
                     if (index !== undefined) {
-                        pfuel[key][index] = value
+                        pfuel[key] = value
                     }
                 } else {
                     pfuel[key] = value
@@ -126,7 +126,7 @@ export default function ProjectStep5(){
         setEmissionFactors((prevEmissionFactors: EmissionsFactors) => {
             let pfuel = prevEmissionFactors["WTW"]["Electric"]
             if (pfuel) {
-                pfuel.ges[index] = Math.round(parseInt(value)/3.6*1000).toString()
+                pfuel.ges = Math.round(parseInt(value)/3.6*1000).toString()
             }
             prevEmissionFactors["WTW"]["Electric"] = pfuel
             return {...prevEmissionFactors}
@@ -150,7 +150,7 @@ export default function ProjectStep5(){
 
     const goPreviousStep = () => {
         // TODO: validate content ?
-        navigate('/project/' + projectId + '/step/4');
+        navigate('/project/' + projectId + '/Inventory/step/4');
     }
     // const saveEmissionFactors = () => {
     //     const requestOptions = {
@@ -170,13 +170,13 @@ export default function ProjectStep5(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: saveData })
         };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/5', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/5', requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/step/6'));
+            .then(() => navigate('/project/' + projectId + '/Inventory/step/6'));
     }
     return (
         <Container className="projectStepContainer">
-            <Progress project={project} currentStep={5} />
+            <Progress project={project} stage="BAU" currentStep={5} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Select the fuel types of the means of transport</h1>
@@ -197,9 +197,9 @@ export default function ProjectStep5(){
                             </tr>
                         </thead>
                         <tbody>
-                            {Object.keys(project.steps?.[2] || []).map((vtype, index) => {
+                            {Object.keys(project.stages?.['Inventory'][0].steps?.[2] || []).map((vtype, index) => {
                                 let vt = vtype
-                                if (!project.steps?.[2] || project.steps[2][vt] === false || !inputData) {
+                                if (!project.stages['Inventory'][0].steps?.[2] || project.stages['Inventory'][0].steps[2][vt] === false || !inputData) {
                                     return null
                                 }
                                 let inputVt = inputData[vt] as {[key in FuelType]: boolean}
@@ -316,27 +316,22 @@ export default function ProjectStep5(){
                                             <Form.Group>
                                                 <InputGroup>
                                                     <Form.Control type="text" value={emissionFactors.WTW[ftype].density}  onChange={e => updateEmissionFactors("WTW", e.target.value, ftype, "density")}/>
-                                                    <InputGroup.Text>{(ftype === "NG") ? "kg/kg" : "kg/l"}</InputGroup.Text>
+                                                    <InputGroup.Text>{(ftype === "CNG") ? "kg/kg" : "kg/l"}</InputGroup.Text>
                                                     <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
                                                 </InputGroup>
                                             </Form.Group>
                                         </td>
-                                        {emissionFactors.WTW[ftype].ges.map((v, j) => {
-                                                if (ftype === 'Electric') {
-                                                    return <td key={j}>
-                                                        {v} kg/J
-                                                    </td>
-                                                }
-                                                return <td key={j}>
-                                                    <Form.Group>
-                                                        <InputGroup>
-                                                            <Form.Control type="text" value={v} onChange={e => updateEmissionFactors("WTW", e.target.value, ftype, "ges", j)} />
-                                                            <InputGroup.Text>kg/J</InputGroup.Text>
-                                                            <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
-                                                        </InputGroup>
-                                                    </Form.Group>
-                                                </td>
-                                            })
+                                        {(ftype === 'Electric') 
+                                            ? <td >{emissionFactors.WTW[ftype].ges} kg/J</td>
+                                            : <td>
+                                                <Form.Group>
+                                                    <InputGroup>
+                                                        <Form.Control type="text" value={emissionFactors.WTW[ftype].ges} onChange={e => updateEmissionFactors("WTW", e.target.value, ftype, "ges")} />
+                                                        <InputGroup.Text>kg/J</InputGroup.Text>
+                                                        <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
+                                                    </InputGroup>
+                                                </Form.Group>
+                                            </td>
                                         }
                                     </tr>
                                 )
@@ -383,22 +378,20 @@ export default function ProjectStep5(){
                                             <Form.Group>
                                                 <InputGroup>
                                                     <Form.Control type="text" value={emissionFactors.TTW[ftype].density}  onChange={e => updateEmissionFactors("TTW", e.target.value, ftype, "density")}/>
-                                                    <InputGroup.Text>{(ftype === "NG") ? "kg/kg" : "kg/l"}</InputGroup.Text>
+                                                    <InputGroup.Text>{(ftype === "CNG") ? "kg/kg" : "kg/l"}</InputGroup.Text>
                                                     <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
                                                 </InputGroup>
                                             </Form.Group>
                                         </td>
-                                        {emissionFactors.TTW[ftype].ges.map((v, j) => (
-                                            <td key={j}>
-                                                <Form.Group>
-                                                    <InputGroup>
-                                                        <Form.Control type="text" value={v} onChange={e => updateEmissionFactors("TTW", e.target.value, ftype, "ges", j)} />
-                                                        <InputGroup.Text>kg/J</InputGroup.Text>
-                                                        <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
-                                                    </InputGroup>
-                                                </Form.Group>
-                                            </td>
-                                        ))}
+                                        <td>
+                                            <Form.Group>
+                                                <InputGroup>
+                                                    <Form.Control type="text" value={emissionFactors.TTW[ftype].ges} onChange={e => updateEmissionFactors("TTW", e.target.value, ftype, "ges")} />
+                                                    <InputGroup.Text>kg/J</InputGroup.Text>
+                                                    <Form.Control.Feedback type="invalid">Please enter a positive number, avoid white spaces</Form.Control.Feedback>
+                                                </InputGroup>
+                                            </Form.Group>
+                                        </td>
                                     </tr>
                                 )
                             })}

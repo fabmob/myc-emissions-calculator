@@ -109,9 +109,9 @@ test('vkt per fuel computation', () => {
 
 const transportPerf = (vehicleKilometresTravelledComputed: types.VehicleKilometresTravelledComputed) => {
     const inputVehicleStats : types.VehicleStats = {
-        "Private car": {"occupancy": 1, triplength: 1, network: "Rail", type: "Private passengers"},
-        "Individual taxi": {"occupancy": 2, triplength: 1, network: "Rail", type: "Public transport"},
-        "Some random category": {"occupancy": 20, triplength: 1, network: "Rail", type: "Private passengers"}
+        "Private car": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
+        "Individual taxi": {"occupancy": 2, triplength: 1, network: "rail", type: "public transport"},
+        "Some random category": {"occupancy": 20, triplength: 1, network: "rail", type: "private transport"}
     }
     
     return models.computeTransportPerformance(vehicleKilometresTravelledComputed, inputVehicleStats)
@@ -162,11 +162,15 @@ test('energy and emissions computation', () => {
     const referenceYears = [2020, 2025, 2030, 2035, 2040, 2050]
     const outputVktPerFuelComputed = computevktfuel()
     const outputAverageEnergyConsumptionComputed = computeAverageEnergyConsumption()
-    const outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues, outputVktPerFuelComputed, referenceYears)
+    const vehicleStats : types.VehicleStats = {
+        "Individual taxi": {"occupancy": 1, triplength: 1, network: "road", type: "public transport"},
+        "Private car": {"occupancy": 1, triplength: 5, network: "road", type: "private transport"}
+    }
+    const outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues.WTW, outputVktPerFuelComputed, vehicleStats, referenceYears)
     const outputSumTotalEnergyAndEmissions = models.sumTotalEnergyAndEmissions(outputComputeTotalEnergyAndEmissions, referenceYears)
-    expect(outputSumTotalEnergyAndEmissions['Private car'].co2.map(e => Math.round(e*100)/100)).toEqual([212.67,234.92,259.49,288.49,320.72,391.34])
-    expect(outputSumTotalEnergyAndEmissions['Individual taxi'].energy.map(e => Math.round(e*100)/100)).toEqual([435.44,469.21,505.60,544.81,587.06,681.64])
-    expect(outputSumTotalEnergyAndEmissions['Individual taxi'].co2.map(e => Math.round(e*100)/100)).toEqual([39.79,42.87,46.20,49.78,53.64,62.28])
+    expect(outputSumTotalEnergyAndEmissions['Private car'].co2.map(e => Math.round(e*100)/100)).toEqual([210.01, 231.98, 256.25, 285.78, 318.68, 388.85])
+    expect(outputSumTotalEnergyAndEmissions['Individual taxi'].energy.map(e => Math.round(e*100)/100)).toEqual([420, 452.57, 487.67, 525.49, 566.24, 657.46])
+    expect(outputSumTotalEnergyAndEmissions['Individual taxi'].co2.map(e => Math.round(e*100)/100)).toEqual([37.97, 40.91, 44.09, 47.5, 51.19, 59.43])
 })
 
 test('computeVktBaseAfterAvoid basic', () => {
@@ -210,9 +214,9 @@ test('distributeReductionInReducedPkm', () => {
         }
     }
     const vehicleStats : types.VehicleStats = {
-        "NMT": {"occupancy": 1, triplength: 1, network: "Rail", type: "Private passengers"},
-        "Private car": {"occupancy": 1, triplength: 5, network: "Road", type: "Private passengers"},
-        "Minibus": {"occupancy": 8, triplength: 10, network: "Road", type: "Public transport"},
+        "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
+        "Private car": {"occupancy": 1, triplength: 5, network: "road", type: "private transport"},
+        "Minibus": {"occupancy": 8, triplength: 10, network: "road", type: "public transport"},
     }
     const vtype = "Minibus"
     const pkmAddedThisYear = 500
@@ -245,9 +249,9 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions', () => {
         "Minibus": [8, 8.1, 8, 8, 8, 8]
     }
     const vehicleStats : types.VehicleStats = {
-        "NMT": {"occupancy": 1, triplength: 1, network: "Rail", type: "Private passengers"},
-        "Private car": {"occupancy": 1, triplength: 5, network: "Road", type: "Private passengers"},
-        "Minibus": {"occupancy": 8, triplength: 10, network: "Road", type: "Public transport"},
+        "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
+        "Private car": {"occupancy": 1, triplength: 5, network: "road", type: "private transport"},
+        "Minibus": {"occupancy": 8, triplength: 10, network: "road", type: "public transport"},
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
@@ -276,10 +280,6 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions', () => {
             "Gasoline": [20, 20, 20, 20, 20, 20]
         }
     }
-    const _energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues = {
-        "Gasoline": {pci: 32.184, ges: [89400, 89400, 89400, 89400, 89400, 89400]},
-        "Diesel": {pci: 35.8592, ges: [90400, 90400, 90400, 90400, 90400, 90400]}
-    }
     const scenarioWithoutUpstreamGHGEmissions = models.computeScenarioWithoutUpstreamGHGEmissions(
         referenceYears,
         inputAvoidedVkt,
@@ -290,11 +290,11 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions', () => {
         inputOriginModeMatrix,
         inputVktPerFuel ,
         inputAverageEnergyConsumption ,
-        _energyAndEmissionsDefaultValues,
+        energyAndEmissionsDefaultValues.WTW,
     )
     console.log(scenarioWithoutUpstreamGHGEmissions)
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].energy.map(e => Math.round(e))).toEqual([3779, 1890, 1890, 1260, 1260, 835])
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([339, 169, 169, 113, 113, 75])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].energy.map(e => Math.round(e))).toEqual([3753,    1877,    1877,    1251,    1251,    829])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([337, 168, 168, 112, 112, 74])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].energy.map(e => Math.round(e))).toEqual([12874, 17825, 23940, 31253, 38237, 47029])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].co2.map(e => Math.round(e))).toEqual([1151, 1594, 2140, 2794, 3418, 4204])
 })
@@ -318,9 +318,9 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, diff values', () =
         "Minibus": [8, 8.1, 7.9, 8, 8, 8]
     }
     const vehicleStats : types.VehicleStats = {
-        "NMT": {"occupancy": 1, triplength: 1, network: "Rail", type: "Private passengers"},
-        "Private car": {"occupancy": 1, triplength: 5, network: "Road", type: "Private passengers"},
-        "Minibus": {"occupancy": 8, triplength: 10, network: "Road", type: "Public transport"},
+        "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
+        "Private car": {"occupancy": 1, triplength: 5, network: "road", type: "private transport"},
+        "Minibus": {"occupancy": 8, triplength: 10, network: "road", type: "public transport"},
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
@@ -349,10 +349,6 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, diff values', () =
             "Gasoline": [20, 20, 20, 20, 20, 20]
         }
     }
-    const _energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues = {
-        "Gasoline": {pci: 32.184, ges: [89400, 89400, 89400, 89400, 89400, 89400]},
-        "Diesel": {pci: 35.8592, ges: [90400, 90400, 90400, 90400, 90400, 90400]}
-    }
     const scenarioWithoutUpstreamGHGEmissions = models.computeScenarioWithoutUpstreamGHGEmissions(
         referenceYears,
         inputAvoidedVkt,
@@ -363,10 +359,10 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, diff values', () =
         inputOriginModeMatrix,
         inputVktPerFuel ,
         inputAverageEnergyConsumption ,
-        _energyAndEmissionsDefaultValues,
+        energyAndEmissionsDefaultValues.WTW,
     )
     console.log(scenarioWithoutUpstreamGHGEmissions)
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([339, 169, 167, 43, 43, 6])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([337, 168, 166, 43, 43, 6])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].co2.map(e => Math.round(e))).toEqual([1151, 1594, 2119, 2773, 3398, 4184])
 })
 
@@ -393,10 +389,10 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, more PT', () => {
         "Metro": [200, 210, 220, 230, 240, 240]
     }
     const vehicleStats : types.VehicleStats = {
-        "NMT": {"occupancy": 1, triplength: 1, network: "Rail", type: "Private passengers"},
-        "Private car": {"occupancy": 1, triplength: 5, network: "Road", type: "Private passengers"},
-        "Minibus": {"occupancy": 8, triplength: 10, network: "Road", type: "Public transport"},
-        "Metro": {"occupancy": 200, triplength: 10, network: "Rail", type: "Public transport"},
+        "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
+        "Private car": {"occupancy": 1, triplength: 5, network: "road", type: "private transport"},
+        "Minibus": {"occupancy": 8, triplength: 10, network: "road", type: "public transport"},
+        "Metro": {"occupancy": 200, triplength: 10, network: "rail", type: "public transport"},
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
@@ -434,11 +430,6 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, more PT', () => {
             "Electric": [150, 150, 150, 150, 150, 150]
         }
     }
-    const _energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues = {
-        "Gasoline": {pci: 32.184, ges: [89400, 89400, 89400, 89400, 89400, 89400]},
-        "Diesel": {pci: 35.8592, ges: [90400, 90400, 90400, 90400, 90400, 90400]},
-        "Electric": {pci: 3.6, ges: [0, 0, 0, 0, 0, 0]}
-    }
     const scenarioWithoutUpstreamGHGEmissions = models.computeScenarioWithoutUpstreamGHGEmissions(
         referenceYears,
         inputAvoidedVkt,
@@ -449,10 +440,10 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, more PT', () => {
         inputOriginModeMatrix,
         inputVktPerFuel ,
         inputAverageEnergyConsumption ,
-        _energyAndEmissionsDefaultValues,
+        energyAndEmissionsDefaultValues.WTW,
     )
     console.log(scenarioWithoutUpstreamGHGEmissions)
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([33894, 29662, 24788, 19375, 13402, 8103])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([33661, 29458, 24673, 19330, 13402, 8103])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].co2.map(e => Math.round(e))).toEqual([1151, 1594, 2119, 2773, 3398, 4184])
     expect(scenarioWithoutUpstreamGHGEmissions['Metro'].co2.map(e => Math.round(e))).toEqual([0, 0, 0, 0, 0, 0])
 })
@@ -484,13 +475,13 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, with freight', () 
         "Metro": [200, 210, 220, 230, 240, 240]
     }
     const vehicleStats : types.VehicleStats = {
-        "NMT": {"occupancy": 1, triplength: 1, network: "Rail", type: "Private passengers"},
-        "Private car": {"occupancy": 1, triplength: 5, network: "Road", type: "Private passengers"},
-        "Minibus": {"occupancy": 8, triplength: 10, network: "Road", type: "Public transport"},
-        "Metro": {"occupancy": 200, triplength: 10, network: "Rail", type: "Public transport"},
-        "Cargo": {"occupancy": 0.1, triplength: 1, network: "Road", type: "Freight"},
-        "LCV": {"occupancy": 10, triplength: 1, network: "Road", type: "Freight"},
-        "Truck": {"occupancy": 20, triplength: 1, network: "Road", type: "Freight"},
+        "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
+        "Private car": {"occupancy": 1, triplength: 5, network: "road", type: "private transport"},
+        "Minibus": {"occupancy": 8, triplength: 10, network: "road", type: "public transport"},
+        "Metro": {"occupancy": 200, triplength: 10, network: "rail", type: "public transport"},
+        "Cargo": {"occupancy": 0.1, triplength: 1, network: "road", type: "freight"},
+        "LCV": {"occupancy": 10, triplength: 1, network: "road", type: "freight"},
+        "Truck": {"occupancy": 20, triplength: 1, network: "road", type: "freight"},
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
@@ -547,11 +538,6 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, with freight', () 
             "Diesel": [120, 120, 120, 120, 120, 120]
         },
     }
-    const _energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues = {
-        "Gasoline": {pci: 32.184, ges: [89400, 89400, 89400, 89400, 89400, 89400]},
-        "Diesel": {pci: 35.8592, ges: [90400, 90400, 90400, 90400, 90400, 90400]},
-        "Electric": {pci: 3.6, ges: [0, 0, 0, 0, 0, 0]}
-    }
     const scenarioWithoutUpstreamGHGEmissions = models.computeScenarioWithoutUpstreamGHGEmissions(
         referenceYears,
         inputAvoidedVkt,
@@ -562,14 +548,14 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, with freight', () 
         inputOriginModeMatrix,
         inputVktPerFuel ,
         inputAverageEnergyConsumption ,
-        _energyAndEmissionsDefaultValues,
+        energyAndEmissionsDefaultValues.WTW,
     )
     console.log(scenarioWithoutUpstreamGHGEmissions)
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([33894, 29662, 24788, 19375, 13402, 8103])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([33661, 29458, 24673, 19330, 13402, 8103])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].co2.map(e => Math.round(e))).toEqual([1151, 1594, 2119, 2773, 3398, 4184])
     expect(scenarioWithoutUpstreamGHGEmissions['Metro'].co2.map(e => Math.round(e))).toEqual([0, 0, 0, 0, 0, 0])
     expect(scenarioWithoutUpstreamGHGEmissions['LCV'].co2.map(e => Math.round(e))).toEqual([16, 16, 16, 16, 16, 16])
-    expect(scenarioWithoutUpstreamGHGEmissions['Truck'].co2.map(e => Math.round(e))).toEqual([389, 389, 388, 388, 387, 387])
+    expect(scenarioWithoutUpstreamGHGEmissions['Truck'].co2.map(e => Math.round(e))).toEqual([380, 379, 379, 378, 378, 377])
 })
 
 test('compute scenario modal share', () => {
@@ -599,13 +585,13 @@ test('compute scenario modal share', () => {
         "Metro": [200, 210, 220, 230, 240, 240]
     }
     const vehicleStats : types.VehicleStats = {
-        "NMT": {"occupancy": 1, triplength: 1, network: "Rail", type: "Private passengers"},
-        "Private car": {"occupancy": 1, triplength: 5, network: "Road", type: "Private passengers"},
-        "Minibus": {"occupancy": 8, triplength: 10, network: "Road", type: "Public transport"},
-        "Metro": {"occupancy": 200, triplength: 10, network: "Rail", type: "Public transport"},
-        "Cargo": {"occupancy": 0.1, triplength: 1, network: "Road", type: "Freight"},
-        "LCV": {"occupancy": 10, triplength: 1, network: "Road", type: "Freight"},
-        "Truck": {"occupancy": 20, triplength: 1, network: "Road", type: "Freight"},
+        "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
+        "Private car": {"occupancy": 1, triplength: 5, network: "road", type: "private transport"},
+        "Minibus": {"occupancy": 8, triplength: 10, network: "road", type: "public transport"},
+        "Metro": {"occupancy": 200, triplength: 10, network: "rail", type: "public transport"},
+        "Cargo": {"occupancy": 0.1, triplength: 1, network: "road", type: "freight"},
+        "LCV": {"occupancy": 10, triplength: 1, network: "road", type: "freight"},
+        "Truck": {"occupancy": 20, triplength: 1, network: "road", type: "freight"},
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
@@ -622,50 +608,6 @@ test('compute scenario modal share', () => {
             "LCV": [0, 50,50,50,50,50],
             "Truck": [0, 50,50,50,50,50],
         }
-    }
-    const inputVktPerFuel: types.VktPerFuel = {
-        "Private car": {
-            "Gasoline": [70, 70, 80, 90, 100, 100],
-            "Diesel": [30, 30, 20, 10, 0, 0]
-        },
-        "Minibus": {
-            "Gasoline": [100, 100, 100, 100, 100, 100]
-        },
-        "Metro": {
-            "Electric": [100, 100, 100, 100, 100, 100]
-        },
-        "Cargp": {
-            "None": [100, 100, 100, 100, 100, 100]
-        },
-        "LCV": {
-            "Diesel": [100, 100, 100, 100, 100, 100]
-        },
-        "Truck": {
-            "Diesel": [100, 100, 100, 100, 100, 100]
-        }
-    }
-    const inputAverageEnergyConsumption : types.AverageEnergyConsumption = {
-        "Private car": {
-            "Gasoline": [6, 6, 5.9, 5.8, 5.7, 5.6],
-            "Diesel": [5, 5, 5, 5, 5, 5]
-        },
-        "Minibus": {
-            "Gasoline": [20, 20, 20, 20, 20, 20]
-        },
-        "Metro": {
-            "Electric": [150, 150, 150, 150, 150, 150]
-        },
-        "LCV": {
-            "Diesel": [5, 5, 5, 5, 5, 5]
-        },
-        "Truck": {
-            "Diesel": [120, 120, 120, 120, 120, 120]
-        },
-    }
-    const _energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues = {
-        "Gasoline": {pci: 32.184, ges: [89400, 89400, 89400, 89400, 89400, 89400]},
-        "Diesel": {pci: 35.8592, ges: [90400, 90400, 90400, 90400, 90400, 90400]},
-        "Electric": {pci: 3.6, ges: [0, 0, 0, 0, 0, 0]}
     }
     const baseVkt = models.computeVktAfterASI(
         referenceYears,

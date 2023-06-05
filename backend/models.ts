@@ -61,14 +61,10 @@ export function computeVktPerFuel (
             let fuelTypes = Object.keys(inputVktParVehicle) as types.FuelType[]
             for (let j = 0; j < fuelTypes.length; j++) {
                 let yearlyVkt = inputVktParVehicle[fuelTypes[j]] as types.YearlyValues<types.MillKm>
-                outputVktCurrentVehicle[fuelTypes[j]] = [
-                    vehicleKilometresTravelledComputed[vtype][0]/100 * yearlyVkt[0],
-                    vehicleKilometresTravelledComputed[vtype][1]/100 * yearlyVkt[1],
-                    vehicleKilometresTravelledComputed[vtype][2]/100 * yearlyVkt[2],
-                    vehicleKilometresTravelledComputed[vtype][3]/100 * yearlyVkt[3],
-                    vehicleKilometresTravelledComputed[vtype][4]/100 * yearlyVkt[4],
-                    vehicleKilometresTravelledComputed[vtype][5]/100 * yearlyVkt[5]
-                ]
+                outputVktCurrentVehicle[fuelTypes[j]] = []
+                for (let y = 0; y < yearlyVkt.length; y++) {
+                    outputVktCurrentVehicle[fuelTypes[j]]?.push(vehicleKilometresTravelledComputed[vtype][y]/100 * yearlyVkt[y])
+                }
             }
         }
         outputVktPerFuelComputed[vtype] = outputVktCurrentVehicle
@@ -86,14 +82,10 @@ export function computeTransportPerformance (
         let vtype = vehicleTypes[i]
         let vTauxOccupation = vehicleStats?.[vtype]?.occupancy || 1 as types.UsersPerVehicle
         let yearlyVkt = vehicleKilometresTravelledComputed[vtype]
-        outputTransportPerformance[vtype] = [
-            vTauxOccupation * yearlyVkt[0],
-            vTauxOccupation * yearlyVkt[1],
-            vTauxOccupation * yearlyVkt[2],
-            vTauxOccupation * yearlyVkt[3],
-            vTauxOccupation * yearlyVkt[4],
-            vTauxOccupation * yearlyVkt[5]
-        ]
+        outputTransportPerformance[vtype] = []
+        for (let y = 0; y < yearlyVkt.length; y++) {
+            outputTransportPerformance[vtype].push(vTauxOccupation * yearlyVkt[y])
+        }
     }
     return outputTransportPerformance
 }
@@ -103,20 +95,20 @@ export function computeModalShare (
 ) : types.ModalShare {
     let outputModalShare : types.ModalShare = {}
     let vehicleTypes = Object.keys(transportPerformance)
-    let totalsPerDate = [0, 0, 0, 0, 0, 0]
+    let totalsPerDate: number[] = []
     for (let i = 0; i < vehicleTypes.length; i++) {
         let vtype = vehicleTypes[i]
-        totalsPerDate[0] += transportPerformance[vtype][0]
-        totalsPerDate[1] += transportPerformance[vtype][1]
-        totalsPerDate[2] += transportPerformance[vtype][2]
-        totalsPerDate[3] += transportPerformance[vtype][3]
-        totalsPerDate[4] += transportPerformance[vtype][4]
-        totalsPerDate[5] += transportPerformance[vtype][5]
+        for (let y = 0; y < transportPerformance[vtype].length; y++) {
+            if (!totalsPerDate[y]) {
+                totalsPerDate[y] = 0
+            }
+            totalsPerDate[y] += transportPerformance[vtype][y]
+        }
     }
     for (let i = 0; i < vehicleTypes.length; i++) {
         let vtype = vehicleTypes[i]
-        outputModalShare[vtype] = [0, 0, 0, 0, 0, 0]
-        for (let d = 0; d < 6; d++) {
+        outputModalShare[vtype] = [] as number[]
+        for (let d = 0; d < totalsPerDate.length; d++) {
             let a = transportPerformance[vtype]
             if (a) {
                 let b = a[d]
@@ -164,6 +156,7 @@ export function computeTotalEnergyAndEmissions(
     averageEnergyConsumptionComputed: types.AverageEnergyConsumptionComputed,
     energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues,
     vktPerFuelComputed: types.VktPerFuelComputed,
+    vehicleStats: types.VehicleStats,
     referenceYears: number[]
 ) : types.TotalEnergyAndEmissions {
     let outputTotalEnergyAndEmissions = <types.TotalEnergyAndEmissions>{}
@@ -171,7 +164,7 @@ export function computeTotalEnergyAndEmissions(
     for (let i = 0; i < vehicleTypeArray.length; i++) {
         let vtype = vehicleTypeArray[i]
         outputTotalEnergyAndEmissions[vtype] = {}
-        let fuelTypes = Object.keys(energyAndEmissionsDefaultValues) as types.FuelType[]
+        let fuelTypes = Object.keys(averageEnergyConsumptionComputed[vtype]) as types.FuelType[]
         for (let j = 0; j < fuelTypes.length; j++) {
             outputTotalEnergyAndEmissions[vtype][fuelTypes[j]] = {
                 energy: referenceYears.map(_=>0),
@@ -179,8 +172,15 @@ export function computeTotalEnergyAndEmissions(
             }
             for (let k = 0; k < referenceYears.length; k++) {
                 let tmp = outputTotalEnergyAndEmissions[vtype][fuelTypes[j]]
-                let pci = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.pci || 0
-                let co2default = energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.ges[k] || 0
+                let pci = parseFloat(energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.pci) || 0
+                let co2default = parseFloat(energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.ges) || 0
+                if (fuelTypes[j] === 'Electric' && vehicleStats[vtype]) {
+                    if (vehicleStats[vtype].network === "rail") {
+                        co2default = parseFloat(energyAndEmissionsDefaultValues?.["ElectricRail"]?.ges || "0")
+                    } else {
+                        co2default = parseFloat(energyAndEmissionsDefaultValues?.["ElectricRoad"]?.ges || "0")
+                    }
+                }
                 let vkt = vktPerFuelComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
                 let avg = averageEnergyConsumptionComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
                 if (tmp) {
@@ -217,6 +217,7 @@ export function sumTotalEnergyAndEmissions(
     return outputSumTotalEnergyAndEmissions
 }
 
+// Obsolete ?
 export function computeEnergyBalance(totalEnergyAndEmissions: types.TotalEnergyAndEmissions, vtypesInfo: types.InputStep2) : types.EnergyBalance {
     let outputEnergyBalance = {passengers: {}, freight: {}} as types.EnergyBalance
     let vehicleTypeArray = Object.keys(totalEnergyAndEmissions)
@@ -245,11 +246,12 @@ export function computeScenarioWithUpstreamGHGEmissions(
     vkt: types.VehicleKilometresTravelledComputed, // vkt per year per vtype
     inputVktPerFuel : types.VktPerFuel, // %vkt share per year per ftype per vtype (3 - improve) (aka. fuel breakdown)
     inputAverageEnergyConsumption : types.AverageEnergyConsumption, // l/100km per year per ftype per vtype (4 - improve) (aka. fuel consumption)
-    energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues
+    energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues,
+    vehicleStats: types.VehicleStats
 ): types.SumTotalEnergyAndEmissions {
     // const averageEnergyConsumptionComputed = computeAverageEnergyConsumption(inputAverageEnergyConsumption, referenceYears)
     const vktPerFuelComputed = computeVktPerFuel(inputVktPerFuel, vkt)
-    const totalEnergyAndEmissions = computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, energyAndEmissionsDefaultValues, vktPerFuelComputed, referenceYears)
+    const totalEnergyAndEmissions = computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, energyAndEmissionsDefaultValues, vktPerFuelComputed, vehicleStats, referenceYears)
     return sumTotalEnergyAndEmissions(totalEnergyAndEmissions, referenceYears)
 }
 
@@ -365,7 +367,7 @@ export function computeScenarioWithoutUpstreamGHGEmissions(
     energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues
 ): types.SumTotalEnergyAndEmissions {
     const baseVkt = computeVktAfterASI(referenceYears, inputAvoidedVkt, BAUVkt, inputAdditionalVkt, inputOccupancyRate, vehicleStats, inputOriginModeMatrix)
-    return computeScenarioWithUpstreamGHGEmissions(referenceYears, baseVkt, inputVktPerFuel, inputAverageEnergyConsumption, energyAndEmissionsDefaultValues)
+    return computeScenarioWithUpstreamGHGEmissions(referenceYears, baseVkt, inputVktPerFuel, inputAverageEnergyConsumption, energyAndEmissionsDefaultValues, vehicleStats)
 }
 
 export function computeScenarioModalShare(
@@ -383,7 +385,7 @@ export function computeScenarioModalShare(
             const vtype = vehicleTypeArray[i]
             const occupancy = inputOccupancyRate?.[vtype]?.[y] || vehicleStats[vtype].occupancy
             const vkt = baseVkt?.[vtype]?.[y] || 0
-            if (vehicleStats[vtype].type === "Freight") {
+            if (vehicleStats[vtype].type === "freight") {
                 if (!freightTransportPerformance[vtype]) freightTransportPerformance[vtype] = []
                 freightTransportPerformance[vtype][y] = occupancy * vkt
             } else {

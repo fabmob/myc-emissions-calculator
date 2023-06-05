@@ -8,14 +8,14 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import {InputStep1, ProjectType} from '../frontendTypes'
-import Progress from '../components/Progress'
-import PercentInput from '../components/PercentInput'
+import {InputStep1, ProjectType} from '../../frontendTypes'
+import Progress from '../../components/Progress'
+import PercentInput from '../../components/PercentInput'
 
-import './Project.css'
+import '../Project.css'
 
 
-export default function ProjectStep1(){
+export default function InventoryStep1(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     let params = useParams();
@@ -48,8 +48,8 @@ export default function ProjectStep1(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    if (data.project.steps[1]){
-                        setInputData(data.project.steps[1])
+                    if (data.project.stages['Inventory'][0].steps[1]){
+                        setInputData(data.project.stages['Inventory'][0].steps[1])
                     }
                 });
             }
@@ -87,14 +87,14 @@ export default function ProjectStep1(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: inputData })
         };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/1', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/1', requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/step/2'));
+            .then(() => navigate('/project/' + projectId + '/Inventory/step/2'));
     }
 
     return (
         <Container className="projectStepContainer">
-            <Progress project={project} currentStep={1} />
+            <Progress project={project} stage="BAU" currentStep={1} />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Set up socio economic data</h1>

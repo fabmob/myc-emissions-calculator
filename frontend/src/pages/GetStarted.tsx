@@ -196,10 +196,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
         setShowDeleteConfirmModal(true)
     }
     const openProject = (p: ProjectType) => {
-        let url = "/project/" + p.id + "/step/" + p.step
-        if (p.step === 9) {
-            url = "/project/" + p.id + "/viz"
-        }
+        let url = "/project/" + p.id + "/edit"
         return navigate(url)
     }
     return (
@@ -228,10 +225,10 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                             </td>
                             {showOwner && <td>{project.owner}</td>}
                             <td>{project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="success">Validated</Badge>}</td>
-                            <td><ProjectProgress step={project.step}/></td>
+                            <td><ProjectProgress step={project.stages["Inventory"][0]?.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
                                 <Button variant="primary" className="btn-sm" style={{marginRight: "2px"}} onClick={() => openProject(project)}>Open</Button>
-                                <Button variant="success" className="btn-sm" style={{marginRight: "2px"}} disabled={project.step < 9 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
+                                <Button variant="success" className="btn-sm" style={{marginRight: "2px"}} disabled={project.stages["Inventory"][0]?.step < 9 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
                                 <Button variant="danger" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}>Delete</Button>
                             </td>
                         </tr>
