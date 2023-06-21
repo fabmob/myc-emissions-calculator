@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Table, Button, Badge, Modal, Form} from 'react-bootstrap'
+import {Table, Button, Badge, Modal, Form, Alert} from 'react-bootstrap'
 import {FuelType, InputInventoryStep2, ProjectType} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 
@@ -19,6 +19,8 @@ export default function InventoryStep2(){
     const [inputData, setInputData ] = useState({vtypes: {}, note: undefined} as InputInventoryStep2)
     const [project, setProject ] = useState({} as ProjectType)
     const projectId = params.projectId
+    const [error, setError] = useState("")
+    const [sourceWarning, setSourceWarning] = useState(false)
     const [ showSourceModal, setShowSourceModal ] = useState(false)
     const [ currentVtype, setCurrentVtype ] = useState("")
     const [ currentFtype, setCurrentFtype ] = useState("")
@@ -29,7 +31,7 @@ export default function InventoryStep2(){
     const handleCloseComputationApproach = () => setShowComputationApproach(false)
     const stepNumber = 2
     useEffect(() => {
-        if (initialized && keycloak.authenticated){
+        if (initialized && keycloak.authenticated && projectId){
             const requestOptions = {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
@@ -52,7 +54,7 @@ export default function InventoryStep2(){
                     const vtypes = Object.keys(inventoryStep1)
                     for (let i = 0; i < vtypes.length; i++) {
                         const vtype = vtypes[i];
-                        if (data.project.stages['Inventory'][0]?.steps[stepNumber].vtypes[vtype]) {
+                        if (data.project.stages['Inventory'][0]?.steps[stepNumber]?.vtypes[vtype]) {
                             init.vtypes[vtype] = data.project.stages['Inventory'][0]?.steps[stepNumber].vtypes[vtype]
                         } else {
                             init.vtypes[vtype] = {
@@ -66,7 +68,7 @@ export default function InventoryStep2(){
                         const ftypes = Object.keys(inventoryStep1[vtype].fuels || {})
                         for (let i = 0; i < ftypes.length; i++) {
                             const ftype = ftypes[i] as FuelType;
-                            if (!data.project.stages['Inventory'][0]?.steps[stepNumber].vtypes?.[vtype]?.fuels[ftype]) {
+                            if (!data.project.stages['Inventory'][0]?.steps[stepNumber]?.vtypes?.[vtype]?.fuels[ftype]) {
                                 init.vtypes[vtype].fuels[ftype] = {
                                     percent: ftypes.length === 1 ? "100" : "",
                                     percentSource: ""
@@ -80,6 +82,7 @@ export default function InventoryStep2(){
             }
     }, [keycloak, initialized, projectId, navigate])
     const updateInputPercent = (vtype: string, ftype: FuelType, percent: string) => {
+        setError("")
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
             tmp.vtypes[vtype].fuels[ftype]!.percent = percent
@@ -156,11 +159,35 @@ export default function InventoryStep2(){
                 return tmp
             })
         }
+        setSourceWarning(false)
     }
 
     const nextTrigger = () => {
         // Error detection
-
+        const vtypes = Object.keys(inputData.vtypes)
+        let srcMissing = false
+        for (let i = 0; i < vtypes.length; i++) {
+            const vtype = vtypes[i]
+            const vehicle = inputData.vtypes[vtype]
+            const ftypes = Object.keys(vehicle.fuels)
+            
+            let totalPercent = 0
+            if (!vehicle.vktSource) srcMissing = true
+            for (let i = 0; i < ftypes.length; i++) {
+                const ftype = ftypes[i] as FuelType
+                const value = vehicle?.fuels[ftype]?.percent || ''
+                totalPercent += parseFloat(value) || 0
+                if (!vehicle?.fuels[ftype]?.percentSource) srcMissing = true
+            }
+            if (totalPercent !== 100) {
+                setError("Error: the sum of fuel shares (VKT %) for at least one vehicle is not 100%")
+                return
+            }
+        }
+        if (srcMissing && !sourceWarning) {
+            setSourceWarning(true)
+            return
+        }
         // save data and nav to next step
         const requestOptions = {
             method: 'PUT',
@@ -175,6 +202,8 @@ export default function InventoryStep2(){
         <>
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
                 <h1>Transport activity</h1>
+                {error && <Alert variant='danger'>{error}</Alert>}
+                {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}

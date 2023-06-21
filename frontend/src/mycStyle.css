@@ -2,16 +2,19 @@
   color: rgb(102, 102, 102);
 }
 
-.btn-primary {
+.btn-primary,.btn-primary:active,.btn-primary:focus {
     background-color: #a2217c;
     border-color: #a2217c;
+}
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.25rem   #a2217b6e;
 }
 .btn-primary:hover {
     background-color: #caa6c0;
     border-color: #caa6c0;
     color: #A2217C;
 }
-.btn-secondary {
+.btn-secondary,.btn-secondary:active,.btn-secondary:focus {
     background-color: #CE8DBB;
     border-color: #CE8DBB;
 }

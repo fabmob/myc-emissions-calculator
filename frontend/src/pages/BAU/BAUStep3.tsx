@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Table, Button, Badge, Form, Alert} from 'react-bootstrap'
-import {FuelType, InputInventoryStep3, ProjectType} from '../../frontendTypes'
+import {Table, Button, Badge, Form, Tabs, Tab, Alert} from 'react-bootstrap'
+import {FuelType, InputBAUStep3, ProjectType} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 
 import '../Project.css'
@@ -10,11 +10,11 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 
-export default function InventoryStep3(){
+export default function BAUStep3(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     const params = useParams();
-    const [inputData, setInputData ] = useState({vtypes: {}, note: undefined} as InputInventoryStep3)
+    const [inputData, setInputData ] = useState({vtypes: {}, note: undefined} as InputBAUStep3)
     const [project, setProject ] = useState({} as ProjectType)
     const projectId = params.projectId
     const [error, setError] = useState("")
@@ -39,16 +39,16 @@ export default function InventoryStep3(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    let init:InputInventoryStep3 = {
-                        vtypes: {}, 
-                        note: data.project.stages?.Inventory?.[0]?.steps?.[stepNumber]?.note || undefined
+                    let init:InputBAUStep3 = {
+                        vtypes: {},
+                        note: data.project.stages?.BAU?.[0]?.steps?.[stepNumber]?.note || undefined
                     }
                     const inventoryStep1 = data.project.stages?.Inventory?.[0]?.steps?.[1].vtypes || {}
                     const vtypes = Object.keys(inventoryStep1)
                     for (let i = 0; i < vtypes.length; i++) {
                         const vtype = vtypes[i];
-                        if (data.project.stages['Inventory'][0]?.steps[stepNumber]?.vtypes[vtype]) {
-                            init.vtypes[vtype] = data.project.stages['Inventory'][0]?.steps[stepNumber].vtypes[vtype]
+                        if (data.project.stages['BAU'][0]?.steps[stepNumber]?.vtypes[vtype]) {
+                            init.vtypes[vtype] = data.project.stages['BAU'][0]?.steps[stepNumber]?.vtypes[vtype]
                         } else {
                             init.vtypes[vtype] = {
                                 fuels: {}
@@ -57,26 +57,28 @@ export default function InventoryStep3(){
                         const ftypes = Object.keys(inventoryStep1[vtype].fuels || {})
                         for (let i = 0; i < ftypes.length; i++) {
                             const ftype = ftypes[i] as FuelType;
-                            if (!data.project.stages['Inventory'][0]?.steps[stepNumber]?.vtypes?.[vtype]?.fuels[ftype]) {
+                            if (!data.project.stages['BAU'][0]?.steps[stepNumber]?.vtypes?.[vtype]?.fuels[ftype]) {
                                 init.vtypes[vtype].fuels[ftype] = {
-                                    cons: "",
+                                    cons: data.project.referenceYears.slice(1).map(() => ""),
                                     consSource: ""
                                 }
                             }
                         }
                     }
                     setInputData(init)
+
                 });
             }
     }, [keycloak, initialized, projectId, navigate])
-    const updateInputCons = (vtype: string, ftype: FuelType, cons: string) => {
+    const updateInputCons = (vtype: string, ftype: FuelType, yearIndex: number, cons: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[vtype].fuels[ftype]!.cons = cons
+            tmp.vtypes[vtype].fuels[ftype]!.cons[yearIndex] = cons
             return tmp
         })
         setError("")
     }
+    
     const configureSource = (vtype: string, ftype?: string) => {
         setCurrentVtype(vtype)
         setCurrentFtype(ftype || "")
@@ -101,15 +103,13 @@ export default function InventoryStep3(){
                 }
             })
         }
-        // Add source to proper input (using currentVtype and currentFtype if any)
-        if (currentFtype) {
-            const ftype = currentFtype as FuelType
-            setInputData((prevInputData) => {
-                let tmp = {...prevInputData}
-                tmp.vtypes[currentVtype].fuels[ftype]!.consSource = source
-                return tmp
-            })
-        }
+        // Add source to proper input (using currentVtype and currentFtype)
+        const ftype = currentFtype as FuelType
+        setInputData((prevInputData) => {
+            let tmp = {...prevInputData}
+            tmp.vtypes[currentVtype].fuels[ftype]!.consSource = source
+            return tmp
+        })
         setSourceWarning(false)
     }
 
@@ -121,10 +121,10 @@ export default function InventoryStep3(){
             const vtype = vtypes[i]
             const vehicle = inputData.vtypes[vtype]
             const ftypes = Object.keys(vehicle.fuels)
-            
             for (let i = 0; i < ftypes.length; i++) {
                 const ftype = ftypes[i] as FuelType
-                if (!vehicle?.fuels[ftype]?.cons) {
+                const value = vehicle?.fuels[ftype]?.cons || []
+                if (!value.reduce((p,c) => p && c !== "", true)) {
                     return setError("Error: At least one fuel consumption isn't set")
                 }
                 if (!vehicle?.fuels[ftype]?.consSource) srcMissing = true
@@ -138,23 +138,23 @@ export default function InventoryStep3(){
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
-            body: JSON.stringify({ inputData: inputData })
+            body: JSON.stringify({ inputData: inputData})
         };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/' + stepNumber, requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/BAU/0/step/' + stepNumber, requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/Inventory/step/' + (stepNumber + 1)));
+            .then(() => navigate('/project/' + projectId + '/BAU/step/' + (stepNumber + 1)));
     }
     return (
         <>
-            <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
+            <ProjectStepContainerWrapper project={project} stage="BAU" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
                 <h1>Fuel consumption factors</h1>
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
+                     <p>
                         Once transport activity i.e. mileage by mode and fuel is known, it needs to be multiplied with adequate fuel consumption factors.
                     </p>
                 </DescAndNav>
@@ -164,45 +164,57 @@ export default function InventoryStep3(){
                 <p>
                     If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.
                 </p>
-                <Table bordered>
-                    <thead>
-                        <tr>
-                            <th className="item-sm">🛈 Vehicle</th>
-                            <th className="item-sm">🛈 Fuels</th>
-                            <th className="item-sm">Src</th>
-                            <th className="item-sm">🛈 Cons (l-kg-kwh/100km)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {Object.keys(inputData.vtypes).map((vtype, index) => {
-                            const vehicle = inputData.vtypes[vtype]
-                            if (!vehicle?.fuels) return <></>
-                            const ftypes = Object.keys(vehicle.fuels)
-                            let fuelJsx = []
-                            for (let i = 0; i < ftypes.length; i++) {
-                                const ftype = ftypes[i] as FuelType
-                                const cons = vehicle.fuels[ftype]?.cons || ''
-                                const consSource = vehicle.fuels[ftype]?.consSource
-                                fuelJsx.push(<tr key={vtype + ftype}>
-                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>}
-                                    <td><Badge bg="disabled">{ftype}</Badge></td>
-                                    <td>
-                                        {consSource 
-                                        ? <ValidSource source={consSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype, ftype)}>+</Button>}
-                                    </td>
-                                    <td>
-                                        <Form.Control value={cons} onChange={e => updateInputCons(vtype, ftype, e.target.value)}></Form.Control>
-                                    </td>
-                                </tr>)
-                            }
-                            return [
-                                fuelJsx
-                            ]
-                        })}
-                        
-                    </tbody>
-                </Table>
+                <Tabs
+                    defaultActiveKey={project.referenceYears?.[1]}
+                    className="mb-3"
+                    fill
+                >
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
+                        <Table bordered>
+                            <thead>
+                                <tr>
+                                    <th className="item-sm">🛈 Vehicle</th>
+                                    <th className="item-sm">🛈 Fuels</th>
+                                    <th className="item-sm">🛈 Inv. Cons</th>
+                                    <th className="item-sm">Src</th>
+                                    <th className="item-sm">🛈 Cons (l-kg-kwh/100km)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {Object.keys(inputData.vtypes).map((vtype, index) => {
+                                    const vehicle = inputData.vtypes[vtype]
+                                    if (!vehicle?.fuels) return <></>
+                                    const ftypes = Object.keys(vehicle.fuels)
+                                    let fuelJsx = []
+                                    for (let i = 0; i < ftypes.length; i++) {
+                                        const ftype = ftypes[i] as FuelType
+                                        const cons = vehicle.fuels[ftype]?.cons?.[yearIndex] || ''
+                                        const consSource = vehicle.fuels[ftype]?.consSource
+                                        const invCons = project.stages.Inventory[0].steps[3].vtypes[vtype].fuels[ftype].cons
+                                        fuelJsx.push(<tr key={vtype + ftype}>
+                                            {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>}
+                                            <td><Badge bg="disabled">{ftype}</Badge></td>
+                                            <td>{invCons}</td>
+                                            <td>
+                                                {consSource 
+                                                ? <ValidSource source={consSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
+                                                : <Button variant="action" onClick={e => configureSource(vtype, ftype)}>+</Button>}
+                                            </td>
+                                            <td>
+                                                <Form.Control value={cons} onChange={e => updateInputCons(vtype, ftype, yearIndex, e.target.value)}></Form.Control>
+                                            </td>
+                                        </tr>)
+                                    }
+                                    return [
+                                        fuelJsx
+                                    ]
+                                })}
+                                
+                            </tbody>
+                        </Table>
+                    </Tab>))}
+                </Tabs>
+                
             </ProjectStepContainerWrapper>
             <ChoiceModal 
                 showModal={showSourceModal} 

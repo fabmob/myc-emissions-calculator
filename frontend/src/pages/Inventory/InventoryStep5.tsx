@@ -26,7 +26,7 @@ export default function InventoryStep5(){
     const [ energyAndEmission, setEnergyAndEmission ] = useState({} as InputInventoryStep5)
     const stepNumber = 5
     useEffect(() => {
-        if (initialized && keycloak.authenticated){
+        if (initialized && keycloak.authenticated && projectId){
             const requestOptions = {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
@@ -164,8 +164,8 @@ export default function InventoryStep5(){
                             for (let i = 0; i < availableFtypes.length; i++) {
                                 const ftype = availableFtypes[i] as FuelType
                                 const computedValue = parseFloat(networkFuels[ftype]?.value || '0') * 1000 / 41868
-                                const value = inputData.energy[networkName].fuels[ftype]?.value || ''
-                                const source = inputData.energy[networkName].fuels[ftype]?.source
+                                const value = inputData.energy?.[networkName]?.fuels?.[ftype]?.value || ''
+                                const source = inputData.energy?.[networkName]?.fuels?.[ftype]?.source || ''
                                 fuelJsx.push(<tr key={net + ftype}>
                                     {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{networkName}</Badge></td>}
                                     <td><Badge bg="disabled">{ftype}</Badge></td>
@@ -197,8 +197,8 @@ export default function InventoryStep5(){
                             <th className="item-sm">🛈 Network</th>
                             <th className="item-sm">🛈 Fuels</th>
                             <th className="item-sm">Src</th>
-                            <th className="item-sm">🛈 Emissions (CO2e)</th>
-                            <th className="item-sm">🛈 Calculated (CO2e)</th>
+                            <th className="item-sm">🛈 Emissions (1000t GHG)</th>
+                            <th className="item-sm">🛈 Calculated (1000t GHG)</th>
                             <th className="item-sm">🛈 Gap (%)</th>
                         </tr>
                     </thead>

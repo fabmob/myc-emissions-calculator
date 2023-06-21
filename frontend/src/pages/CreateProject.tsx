@@ -138,7 +138,7 @@ export default function CreateProject() {
                 })
                 .then(data => {
                     if (data.status !== "err") {
-                        navigate('/project/' + data.projectId + '/step/1')
+                        navigate('/project/' + data.projectId + '/edit')
                     }
                 });
         } else {
@@ -191,8 +191,8 @@ export default function CreateProject() {
             <Container style={{paddingTop: "30px"}}>
                 <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
                     <Col xs xl="8" lg="12">
-                        {project.id && <ProjectNav current="Config" project={project} />}
                         <h1 style={{marginBottom: "40px"}}>{project.id ? projectName : "New Project"}</h1>
+                        {project.id && <ProjectNav current="Config" project={project} />}
                         <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
                             <h2>Study</h2>
                             <Form.Group className="mb-3">
@@ -288,7 +288,7 @@ export default function CreateProject() {
                                 <Form.Label>Proj. Year(s)</Form.Label>
                                 <InputGroup>
                                     {projectReferenceYears.map((year,i) => (
-                                        (i>1) && <Badge key={i} bg="secondary">{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}>X</span></Badge>
+                                        (i>0) && <Badge key={i} bg="secondary">{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}>X</span></Badge>
                                     ))}
                                     <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}>+</Badge>
                                 </InputGroup>

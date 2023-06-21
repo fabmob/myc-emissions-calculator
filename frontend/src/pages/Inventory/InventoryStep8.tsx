@@ -21,7 +21,7 @@ export default function InventoryStep8(){
     const [ currentVtype, setCurrentVtype ] = useState("")
     const stepNumber = 8
     useEffect(() => {
-        if (initialized && keycloak.authenticated){
+        if (initialized && keycloak.authenticated && projectId){
             const requestOptions = {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
@@ -44,15 +44,15 @@ export default function InventoryStep8(){
                     const vtypes = Object.keys(inventoryStep1)
                     for (let i = 0; i < vtypes.length; i++) {
                         const vtype = vtypes[i];
-                        if (inventoryStep1[vtype].type === "public transport") {
-                            // We only care about public transport here
+                        if (inventoryStep1[vtype].type !== "freight") {
+                            // We only care about passenger transport here
                             if (data.project.stages['Inventory'][0]?.steps[stepNumber]?.vtypes[vtype]) {
                                 init.vtypes[vtype] = data.project.stages['Inventory'][0]?.steps[stepNumber].vtypes[vtype]
                             } else {
                                 init.vtypes[vtype] = {source: "", value: ""}
                             }
                         }
-                        // Should I handle the case where a transport was saved and later changed to non-public transport ?
+                        // Should I handle the case where a transport was saved and later changed to freight transport ?
                     }
                     setInputData(init)
                 });
@@ -129,7 +129,7 @@ export default function InventoryStep8(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm">🛈 Public transport</th>
+                            <th className="item-sm">🛈 Passenger transport</th>
                             <th className="item-sm">Src</th>
                             <th className="item-sm">🛈 Average trip length (km)</th>
                         </tr>

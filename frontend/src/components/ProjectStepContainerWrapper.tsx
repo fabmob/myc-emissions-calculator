@@ -9,7 +9,9 @@ const ProjectStepContainerWrapper = (props: {
     stage: ProjectStage,
     currentStep: number,
     noteValue?: string | undefined,
-    setInputData?: Function,
+    setInputData?: Function, 
+    climateScenarioId?: number, 
+    isWithoutUpstream?: boolean,
     children: React.ReactNode}) => {
     const setNote = (note: string | undefined) => {
         if (props.setInputData)
@@ -24,7 +26,7 @@ const ProjectStepContainerWrapper = (props: {
         <Container className="projectStepContainer">
             <Row className="justify-content-md-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs="3" className="stepLeft">
-                    <Progress project={props.project} stage={props.stage} currentStep={props.currentStep}/>
+                    <Progress project={props.project} stage={props.stage} currentStep={props.currentStep} climateScenarioId={props.climateScenarioId} isWithoutUpstream={props.isWithoutUpstream}/>
                 </Col>
                 <Col xs lg="8" className="stepRight">
                     {props.children}

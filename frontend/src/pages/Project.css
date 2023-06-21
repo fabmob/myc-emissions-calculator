@@ -96,3 +96,7 @@ h2 .badge {
     top: 10px;
     z-index: 1;
 }
+
+h3 {
+    margin-top: 40px !important;
+}

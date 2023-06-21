@@ -15,34 +15,67 @@ const steps : {[stage in ProjectStage]: string[]} = {
         "Results",
         "Vehicles trip length"
     ],
-    "BAU": [],
-    "Scenario": []
+    "BAU": [
+        "Transport activity",
+        "Fuel breakdown",
+        "Fuel consumption factors",
+        "Consumption of electricity",
+        "Results"
+    ],
+    "Climate": [
+        "Transport activity",
+        "Transport performance",
+        "Fuel breakdown",
+        "Fuel consumption factors",
+        "Results"
+    ]
 }
+const withoutUpstreamClimateSteps = [
+    "1.1 Use of vehicles : avoided",
+    "2.1 Use of vehicles : added",
+    "2.2 vehicles load",
+    "2.3 vehicles shift",
+    "3.1 Fuel breakdown",
+    "3.2 Fuel consumption factors",
+    "Results"
+]
 
-const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep: number}) => {
+const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep: number, climateScenarioId?: number, isWithoutUpstream?: boolean}) => {
     const navigate = useNavigate()
-    const link = (step: string) => navigate('/project/' + props.project.id + '/' + props.stage + '/step/' + step)
-    const getClassName = (step: number) => {
-        if (props.project.stages[props.stage][0].step === 9) {
-            // Step 9: overview is done by default
-            props.project.stages[props.stage][0].step = 100
+    if (props.project.id === undefined) {
+        return <div></div>
+    }
+    const link = (step: string) => {
+        if (props.stage === "Climate" && props.climateScenarioId !== undefined) {
+            if (props.isWithoutUpstream) {
+                navigate(`/project/${props.project.id}/Climate/${props.climateScenarioId}/Without/step/${step}`)
+            } else {
+                navigate(`/project/${props.project.id}/Climate/${props.climateScenarioId}/With/step/${step}`)
+            }
+        } else {
+            navigate('/project/' + props.project.id + '/' + props.stage + '/step/' + step)
         }
+    }
+    const getClassName = (step: number) => {
+        // if (props.project.stages[props.stage][0].step === 9) {
+        //     // Step 9: overview is done by default
+        //     props.project.stages[props.stage][0].step = 100
+        // }
+        // const isStepResults = steps[props.stage][props.currentStep-1] === "Results"
         if (props.currentStep === step) {
-            if (props.project.stages[props.stage][0].step > props.currentStep) {
+            if (props.project.stages?.[props.stage][0]?.step > props.currentStep ) {
                 return "currentStepDone"
             }
             return "currentStep"
         }
-        if (!(props.project.stages[props.stage][0].step > step)) {
+        if (!(props.project.stages?.[props.stage][0]?.step > step)) {
             return "stepDisabled"
         } else {
             return "stepDone"
         }
     }
-    if (props.project.stages?.[props.stage][0]?.step === undefined) {
-        return <div className="progressMenu"></div>
-    }
-    const progressValue = props.project.stages?.[props.stage][0]?.step / 8 *100;
+    const progressValue = (props.project.stages?.[props.stage][0]?.step - 1) / steps[props.stage].length *100;
+    const stepsToUse = props.isWithoutUpstream ? withoutUpstreamClimateSteps : steps[props.stage]
     return (
         <div className="progressMenu d-print-none">
             <Row className="align-items-center">
@@ -66,12 +99,12 @@ const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep
                 
             </Row>
             <ol style={{"marginTop": "40px"}}>
-                {steps[props.stage].map((step, index) => (
+                {stepsToUse.map((step, index) => (
                     <li key={index + 1}>
                         <Button
                             className={getClassName(index + 1)}
                             variant="link"
-                            disabled={props.project.stages[props.stage][0].step < index + 1}
+                            disabled={props.project.stages?.[props.stage][0]?.step < index + 1}
                             onClick={() => link((index + 1).toString())}>
                             {step}
                         </Button>

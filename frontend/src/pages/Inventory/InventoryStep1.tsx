@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Table, Button, Badge, Modal} from 'react-bootstrap'
+import {Table, Button, Badge, Modal, Alert, Stack} from 'react-bootstrap'
 import {FuelType, InputInventoryStep1, ProjectType} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 
@@ -116,6 +116,7 @@ export default function InventoryStep1(){
     const [inputData, setInputData ] = useState({vtypes: {}, note: undefined} as InputInventoryStep1)
     const [project, setProject ] = useState({} as ProjectType)
     const projectId = params.projectId
+    const [error, setError] = useState("")
     const [ showAddVehicleModal, setShowAddVehicleModal ] = useState(false)
     const [ showAddFuelModal, setShowAddFuelModal ] = useState(false)
     const [ showNetworkModal, setShowNetworkModal ] = useState(false)
@@ -125,7 +126,7 @@ export default function InventoryStep1(){
     const handleCloseInfo = () => setShowInfo(false);
     const stepNumber = 1
     useEffect(() => {
-        if (initialized && keycloak.authenticated){
+        if (initialized && keycloak.authenticated && projectId){
             const requestOptions = {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
@@ -148,6 +149,7 @@ export default function InventoryStep1(){
     }, [keycloak, initialized, projectId, navigate])
 
     const addVehicle = (vtype: string) => {
+        setError("")
         setInputData((prevInputData) => {
             return {
                 ...prevInputData,
@@ -174,6 +176,7 @@ export default function InventoryStep1(){
         setCurrentVtype(vtype)
     }
     const addFuel = (ftype: string) => {
+        setError("")
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
             tmp.vtypes[currentVtype].fuels[ftype as FuelType] = true
@@ -211,7 +214,20 @@ export default function InventoryStep1(){
     }
     const nextTrigger = () => {
         // Error detection
-
+        const vtypes = Object.keys(inputData.vtypes)
+        if (vtypes.length === 0) {
+            setError("Error: Please add at least one vehicle")
+            return
+        }
+        for (let i = 0; i < vtypes.length; i++) {
+            const vtype = vtypes[i]
+            const vehicle = inputData.vtypes[vtype]
+            const fuels = Object.keys(vehicle.fuels)
+            if (fuels.length === 0) {
+                setError("Error: At least one vehicle is missing a fuel")
+                return
+            }
+        }
         // save data and nav to next step
         const requestOptions = {
             method: 'PUT',
@@ -226,6 +242,7 @@ export default function InventoryStep1(){
         <>
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
                 <h1>Vehicles and fuels in use</h1>
+                {error && <Alert variant='danger'>{error}</Alert>}
                 <DescAndNav 
                     prevNav={{link: '/project/' + project.id + '/Inventory/intro', content: "<- Prev", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
@@ -263,10 +280,12 @@ export default function InventoryStep1(){
                                 <td>{networkBadge}</td>
                                 <td>{typeBadge}</td>
                                 <td>
-                                    {Object.keys(vehicle.fuels).map((ftype, index) => (
-                                        <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}>{ftype} X</Badge>
-                                    ))}
-                                    <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}>+</Button>
+                                    <Stack direction="horizontal" gap={2}>
+                                        {Object.keys(vehicle.fuels).map((ftype, index) => (
+                                            <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}>{ftype} X</Badge>
+                                        ))}
+                                        <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}>+</Button>
+                                    </Stack>
                                 </td>
                             </tr>)
                         })}

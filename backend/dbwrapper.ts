@@ -73,9 +73,9 @@ export function createProject(project: types.Project, owner: string): [string | 
     const createProjectStmt = db.prepare("INSERT INTO Projects (id, createdDate, modifiedDate, owner, name, isSump, country, city, partnerLocation, area, referenceYears, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
     try {
         let res = createProjectStmt.run([
+            new Date().toString(),
+            new Date().toString(),
             owner,
-            new Date().toString(),
-            new Date().toString(),
             project.projectName,
             project.isSump,
             project.projectCountry,
@@ -108,7 +108,7 @@ function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectSteps
         stages: projectEntry.stages || {
             "BAU": [],
             "Inventory": [],
-            "Scenario": []
+            "Climate": []
         },
         sources: projectSources || []
     }
@@ -139,7 +139,7 @@ function concatProjects(res: ProjectsDbEntry[]) : ProjectsDbEntry[] {
                 project.stages = {
                     "BAU": [],
                     "Inventory": [],
-                    "Scenario": []
+                    "Climate": []
                 }
                 project.stages[project.stage][project.stageId] = {
                     step: project.step,
@@ -156,7 +156,7 @@ function concatProjects(res: ProjectsDbEntry[]) : ProjectsDbEntry[] {
             project.stages = {
                 "BAU": [],
                 "Inventory": [],
-                "Scenario": []
+                "Climate": []
             }
             concatRes.push(project)
         }

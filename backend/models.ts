@@ -36,7 +36,7 @@ export function computeVehicleKilometresTravelled(
     // Compute increases according to rate
     for (let k = 0; k < vehicleTypeArray.length; k++) {
         let vtype = vehicleTypeArray[k]
-        for (let i = 1; i < 6; i++) {
+        for (let i = 1; i < referenceYears.length; i++) {
             let numberOfYears = referenceYears[i] - referenceYears[i - 1]
             let lastValue = outputVehicleKilometresTravelledComputed[vtype][i-1]
             let percentIncrease = inputVehicleKilometresTravelled[vtype]?.vktRate[i-1] || 0
@@ -155,6 +155,7 @@ export function computeAverageEnergyConsumption(
 export function computeTotalEnergyAndEmissions(
     averageEnergyConsumptionComputed: types.AverageEnergyConsumptionComputed,
     energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues,
+    electricityProductionEmissions: types.InputBAUStep4 | null,
     vktPerFuelComputed: types.VktPerFuelComputed,
     vehicleStats: types.VehicleStats,
     referenceYears: number[]
@@ -174,12 +175,8 @@ export function computeTotalEnergyAndEmissions(
                 let tmp = outputTotalEnergyAndEmissions[vtype][fuelTypes[j]]
                 let pci = parseFloat(energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.pci) || 0
                 let co2default = parseFloat(energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.ges) || 0
-                if (fuelTypes[j] === 'Electric' && vehicleStats[vtype]) {
-                    if (vehicleStats[vtype].network === "rail") {
-                        co2default = parseFloat(energyAndEmissionsDefaultValues?.["ElectricRail"]?.ges || "0")
-                    } else {
-                        co2default = parseFloat(energyAndEmissionsDefaultValues?.["ElectricRoad"]?.ges || "0")
-                    }
+                if (fuelTypes[j] === 'Electric' && vehicleStats[vtype] && electricityProductionEmissions) {
+                    co2default = parseFloat(electricityProductionEmissions[vehicleStats[vtype].network].value[k] || electricityProductionEmissions[vehicleStats[vtype].network].value[0]) / pci * 1000
                 }
                 let vkt = vktPerFuelComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
                 let avg = averageEnergyConsumptionComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
@@ -247,11 +244,12 @@ export function computeScenarioWithUpstreamGHGEmissions(
     inputVktPerFuel : types.VktPerFuel, // %vkt share per year per ftype per vtype (3 - improve) (aka. fuel breakdown)
     inputAverageEnergyConsumption : types.AverageEnergyConsumption, // l/100km per year per ftype per vtype (4 - improve) (aka. fuel consumption)
     energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues,
+    electricityProductionEmissions: types.InputBAUStep4 | null,
     vehicleStats: types.VehicleStats
 ): types.SumTotalEnergyAndEmissions {
     // const averageEnergyConsumptionComputed = computeAverageEnergyConsumption(inputAverageEnergyConsumption, referenceYears)
     const vktPerFuelComputed = computeVktPerFuel(inputVktPerFuel, vkt)
-    const totalEnergyAndEmissions = computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, energyAndEmissionsDefaultValues, vktPerFuelComputed, vehicleStats, referenceYears)
+    const totalEnergyAndEmissions = computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, energyAndEmissionsDefaultValues, electricityProductionEmissions, vktPerFuelComputed, vehicleStats, referenceYears)
     return sumTotalEnergyAndEmissions(totalEnergyAndEmissions, referenceYears)
 }
 
@@ -259,7 +257,7 @@ export function computeVktBaseAfterAvoid(
     vtype: string, // Vehicle type
     y: number, // Year index in referenceYears, 0 is reference year, >0 are climate milestones
     BAUVkt: types.VehicleKilometresTravelledComputed, // 1) Base vkt table (vkt per year per vtype)
-    inputAvoidedVkt: types.AvoidedMotorisedVkt, // 1) avoided vkt (% per year per vtype)
+    inputAvoidedVkt: types.InputClimateWithoutUpstreamStep1, // 1) avoided vkt (% per year per vtype)
     baseVkt: types.TransportPerformance // Vkt at the end of each climate milestone
 ) : number {
     let originalVkt = BAUVkt[vtype][y]
@@ -267,7 +265,7 @@ export function computeVktBaseAfterAvoid(
         // BAUVKT for this year minus what was removed from previous years
         originalVkt = (BAUVkt[vtype][y] - BAUVkt[vtype][y-1] + (baseVkt?.[vtype]?.[y-1] || 0))
     }
-    const avoidPercent = inputAvoidedVkt?.[vtype]?.[y] || 0
+    const avoidPercent = inputAvoidedVkt.vtypes?.[vtype]?.avoidedVkt?.[y-1] || 0 // y-1 because inputAvoidedVkt does NOT include a reference year
     if (!baseVkt[vtype]) {
         baseVkt[vtype] = []
     }
@@ -286,7 +284,7 @@ export function distributeReductionInReducedPkm(
     let sumOfCoeffs : number[] = []
     for (let j = 0; j < originVehicleTypeArray.length; j++) {
         const originVtype = originVehicleTypeArray[j];
-        const matrixYearVal = inputOriginModeMatrix[vtype][originVtype][y] / 100;
+        const matrixYearVal = parseFloat(inputOriginModeMatrix[vtype][originVtype].value[y-1]) / 100 // y-1 because ref year is not included
         if (!sumOfCoeffs[y]) {
             sumOfCoeffs[y] = 0
         }
@@ -295,7 +293,7 @@ export function distributeReductionInReducedPkm(
     
     for (let j = 0; j < originVehicleTypeArray.length; j++) {
         const originVtype = originVehicleTypeArray[j]
-        const matrixYearVal = inputOriginModeMatrix[vtype][originVtype][y] / 100
+        const matrixYearVal = parseFloat(inputOriginModeMatrix[vtype][originVtype].value[y-1]) / 100 // y-1 because ref year is not included
         if (!reducedPkm[originVtype]) reducedPkm[originVtype] = 0
         const coeff = matrixYearVal * vehicleStats[originVtype].triplength
         const reducedPkmForOrigin = (pkmAddedThisYear) * coeff / sumOfCoeffs[y]
@@ -305,13 +303,20 @@ export function distributeReductionInReducedPkm(
 
 export function computeVktAfterASI(
     referenceYears: number[],
-    inputAvoidedVkt: types.AvoidedMotorisedVkt, // 1) avoided vkt (% per year per vtype)
+    inputAvoidedVkt: types.InputClimateWithoutUpstreamStep1, // 1) avoided vkt (% per year per vtype)
     BAUVkt: types.VehicleKilometresTravelledComputed, // 1) Base vkt table (vkt per year per vtype)
-    inputAdditionalVkt: types.VehicleKilometresTravelledComputed, // 2.1) additional vkt (vkt per year per vtype)
-    inputOccupancyRate: types.OccupancyRate, // 2.2) occupancy rate (pass per year per vtype)
+    inputAdditionalVkt: types.InputClimateWithoutUpstreamStep2, // 2.1) additional vkt (vkt per year per vtype)
+    inputOccupancyRate: types.InputClimateWithoutUpstreamStep3, // 2.2) occupancy rate (pass per year per vtype)
     vehicleStats: types.VehicleStats, // 2.2) BAU occupancy table (pass per vtype) +  2.3) avg BAU trip length (km per vtye)
     inputOriginModeMatrix: types.OriginModeMatrix, // 2.3) origin mode of transportation (% per year per vtype per vtype)
-) : types.TransportPerformance {
+) : types.TransportPerformance { // TODO: this should return vkts, not ukms (type error)
+    console.log("referenceYears", JSON.stringify(referenceYears))
+    console.log("inputAvoidedVkt", JSON.stringify(inputAvoidedVkt))
+    console.log("BAUVkt", JSON.stringify(BAUVkt))
+    console.log("inputAdditionalVkt", JSON.stringify(inputAdditionalVkt))
+    console.log("inputOccupancyRate", JSON.stringify(inputOccupancyRate))
+    console.log("vehicleStats", JSON.stringify(vehicleStats))
+    console.log("inputOriginModeMatrix", JSON.stringify(inputOriginModeMatrix))
     let baseVkt : types.TransportPerformance = {}
     const vehicleTypeArray = Object.keys(BAUVkt)
     for (let y = 0; y < referenceYears.length; y++) {
@@ -322,33 +327,35 @@ export function computeVktAfterASI(
             // compute base vkt for this year after avoid
             const vktStartOfYear = computeVktBaseAfterAvoid(vtype, y, BAUVkt, inputAvoidedVkt, baseVkt)
             baseVkt[vtype].push(vktStartOfYear)
-
+            // console.log("vtype", vtype, "y", y, "baseVkt[vtype][y]", baseVkt[vtype][y])
             // Add additional vkt, if any in input
-            baseVkt[vtype][y] += inputAdditionalVkt?.[vtype]?.[y] || 0
-
+            baseVkt[vtype][y] += parseFloat(inputAdditionalVkt.vtypes?.[vtype]?.addedVkt?.[y-1]) || 0 // y = 0 is reference year, which is not included in inputAddtionalVkt, a shift by one is needed
+            // console.log("vtype", vtype, "y", y, "baseVkt[vtype][y]", baseVkt[vtype][y])
             // From here on, the vkt cannot increase, only reduce. The table above is the maximum theorical vkt for each vtype
             // The goal now is to remove part of what was added depending on sources
             // Let's move to pkm(tkm)
-            const occupancy = inputOccupancyRate?.[vtype]?.[y] || vehicleStats[vtype].occupancy
+            const occupancy = parseFloat(inputOccupancyRate?.vtypes[vtype]?.load?.[y-1]) || vehicleStats[vtype].occupancy // y=0 is referenced year, not included in inputOccupancyRate either
             let pkm = baseVkt[vtype][y] * occupancy // pkm(tkm) is always vkt * occupancy(load)
 
             // We can now figure out how much pkm was added during the year
-            const pkmStartOfYear = vktStartOfYear * (inputOccupancyRate?.[vtype]?.[y-1] || vehicleStats[vtype].occupancy)
+            const pkmStartOfYear = vktStartOfYear * (parseFloat(inputOccupancyRate?.vtypes[vtype]?.load?.[y-2]) || vehicleStats[vtype].occupancy)
             const pkmAddedThisYear = pkm - pkmStartOfYear
 
-            //console.log("pkm Added in", referenceYears[y] , "for", vtype, "is", pkmAddedThisYear)
+            console.log("pkm Added in", referenceYears[y] , "for", vtype, "is", pkmAddedThisYear)
 
             // This value is the one that should be divided in trips and imputed from the other vtypes
             distributeReductionInReducedPkm(reducedPkm, inputOriginModeMatrix, vehicleStats, vtype, pkmAddedThisYear, y)
 
-            //console.log("leading to the following reductions:", reducedPkm) // should match Q144 table
+            console.log("leading to the following reductions:", reducedPkm) // should match Q144 table
         }
         // Once all reduction are computed, we can move that back to vkt, and remove them from this year base
         const sourceVehicleTypeArray = Object.keys(reducedPkm)
         for (let j = 0; j < sourceVehicleTypeArray.length; j++) {
             const sourceVtype = sourceVehicleTypeArray[j]
-            const occupancy = inputOccupancyRate?.[sourceVtype]?.[y] || vehicleStats[sourceVtype].occupancy
+            const occupancy = parseFloat(inputOccupancyRate?.vtypes[sourceVtype]?.load?.[y-1]) || vehicleStats[sourceVtype].occupancy
+            console.log("occupancy", occupancy)
             baseVkt[sourceVtype][y] -= reducedPkm[sourceVtype] / occupancy // vkt is always pkm(tkm) / occupancy(load)
+            console.log("baseVkt[sourceVtype][y]", baseVkt[sourceVtype][y])
         }
     }
     return baseVkt
@@ -356,24 +363,25 @@ export function computeVktAfterASI(
 
 export function computeScenarioWithoutUpstreamGHGEmissions(
     referenceYears: number[],
-    inputAvoidedVkt: types.AvoidedMotorisedVkt, // 1) avoided vkt (% per year per vtype)
+    inputAvoidedVkt: types.InputClimateWithoutUpstreamStep1, // 1) avoided vkt (% per year per vtype)
     BAUVkt: types.VehicleKilometresTravelledComputed, // 1) Base vkt table (vkt per year per vtype)
-    inputAdditionalVkt: types.VehicleKilometresTravelledComputed, // 2.1) additional vkt (vkt per year per vtype)
-    inputOccupancyRate: types.OccupancyRate, // 2.2) occupancy rate (pass per year per vtype)
+    inputAdditionalVkt: types.InputClimateWithoutUpstreamStep2, // 2.1) additional vkt (vkt per year per vtype)
+    inputOccupancyRate: types.InputClimateWithoutUpstreamStep3, // 2.2) occupancy rate (pass per year per vtype)
     vehicleStats: types.VehicleStats, // 2.2) BAU occupancy table (pass per vtype) +  2.3) avg BAU trip length (km per vtye)
     inputOriginModeMatrix: types.OriginModeMatrix, // 2.3) origin mode of transportation (% per year per vtype per vtype)
     inputVktPerFuel : types.VktPerFuel, // %vkt share per year per ftype per vtype (3 - improve) (aka. fuel breakdown)
     inputAverageEnergyConsumption : types.AverageEnergyConsumption, // l/100km per year per ftype per vtype (4 - improve) (aka. fuel consumption)
-    energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues
+    energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues,
+    electricityProductionEmissions: types.InputBAUStep4 | null
 ): types.SumTotalEnergyAndEmissions {
     const baseVkt = computeVktAfterASI(referenceYears, inputAvoidedVkt, BAUVkt, inputAdditionalVkt, inputOccupancyRate, vehicleStats, inputOriginModeMatrix)
-    return computeScenarioWithUpstreamGHGEmissions(referenceYears, baseVkt, inputVktPerFuel, inputAverageEnergyConsumption, energyAndEmissionsDefaultValues, vehicleStats)
+    return computeScenarioWithUpstreamGHGEmissions(referenceYears, baseVkt, inputVktPerFuel, inputAverageEnergyConsumption, energyAndEmissionsDefaultValues, electricityProductionEmissions, vehicleStats)
 }
 
 export function computeScenarioModalShare(
     referenceYears: number[],
     baseVkt: types.TransportPerformance, // vkt after ASI
-    inputOccupancyRate: types.OccupancyRate, // 2.2) occupancy rate (pass per year per vtype)
+    inputOccupancyRate: types.InputClimateWithoutUpstreamStep3, // 2.2) occupancy rate (pass per year per vtype)
     vehicleStats: types.VehicleStats, // 2.2) BAU occupancy table (pass per vtype)
 ) : {"passengers": types.ModalShare, "freight": types.ModalShare} {
     // Convert vkt into pkm, and split into passengers and freight
@@ -383,7 +391,7 @@ export function computeScenarioModalShare(
     for (let y = 0; y < referenceYears.length; y++) {
         for (let i = 0; i < vehicleTypeArray.length; i++) {
             const vtype = vehicleTypeArray[i]
-            const occupancy = inputOccupancyRate?.[vtype]?.[y] || vehicleStats[vtype].occupancy
+            const occupancy = parseFloat(inputOccupancyRate?.vtypes?.[vtype]?.load?.[y-1]) || vehicleStats[vtype].occupancy
             const vkt = baseVkt?.[vtype]?.[y] || 0
             if (vehicleStats[vtype].type === "freight") {
                 if (!freightTransportPerformance[vtype]) freightTransportPerformance[vtype] = []
@@ -394,6 +402,7 @@ export function computeScenarioModalShare(
             }
         }
     }
+    console.log("passengersTransportPerformance", passengersTransportPerformance)
     return {
         "passengers": computeModalShare(passengersTransportPerformance),
         "freight": computeModalShare(freightTransportPerformance)

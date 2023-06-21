@@ -1,4 +1,4 @@
-export type ProjectStage = "Inventory" | "BAU" | "Scenario"
+export type ProjectStage = "Inventory" | "BAU" | "Climate"
 export type ProjectType = {
     id: number,
     createdDate: Date,
@@ -248,4 +248,147 @@ export type InputInventoryStep8 = {
         }
     },
     note: string | undefined
+}
+
+export type Percent = string
+export type InputBAUStep1 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            vktRate: YearlyValues<Percent>
+        }
+    },
+    note: string | undefined
+}
+export type InputBAUStep2 = {
+    vtypes: {
+        [vtype: string]: {
+            fuels: {
+                [key in FuelType]?: {
+                    percent: string[],
+                    percentSource: string
+                }
+            }
+        }
+    },
+    note: string | undefined
+}
+export type InputBAUStep3 = {
+    vtypes: {
+        [vtype: string]: {
+            fuels: {
+                [key in FuelType]?: {
+                    cons: string[],
+                    consSource: string
+                }
+            }
+        }
+    },
+    note: string | undefined
+}
+export type InputBAUStep4 = {
+    road: {
+        source: string,
+        value: string[]
+    },
+    rail: {
+        source: string,
+        value: string[]
+    },
+    note: string | undefined
+}
+
+export type InputClimateWithUpstreamStep1 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            vkt: YearlyValues<string>
+        }
+    },
+    note: string | undefined
+}
+
+export type InputClimateWithUpstreamStep2 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            ukm: YearlyValues<string>
+        }
+    },
+    note: string | undefined
+}
+
+export type InputClimateWithoutUpstreamStep1 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            avoidedVkt: YearlyValues<Percent>
+        }
+    },
+    note: string | undefined
+}
+
+export type InputClimateWithoutUpstreamStep2 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            addedVkt: YearlyValues<string>
+        }
+    },
+    note: string | undefined
+}
+export type InputClimateWithoutUpstreamStep3 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            load: YearlyValues<string>
+        }
+    },
+    note: string | undefined
+}
+export type OriginModeMatrix = {
+    [key: string]: { // vtype goal
+        [key: string]: {
+            source: string
+            value: YearlyValues<Percent> // vtype origin : Yearly vals
+        }
+    }
+}
+export type InputClimateWithoutUpstreamStep4 = {
+    vtypes: OriginModeMatrix,
+    note: string | undefined
+}
+
+
+export type MillKm = number & {}
+export type VehicleKilometresTravelledComputed = {
+    [key: string]: YearlyValues<MillKm>
+}
+export type MillUnitKm = number & {} // unit can be passengers or tons
+export type TransportPerformance = {
+    [key: string]: YearlyValues<MillUnitKm> // mill pkm or mill tkm
+}
+export type AvoidedMotorisedVkt = {
+    [key: string]: YearlyValues<Percent>
+}
+export type UsersPerVehicle = number & {}
+export type VehicleStats = {
+    [key: string]: {
+        occupancy: UsersPerVehicle // passagers / vehicle ou tonnes / vehicles,
+        triplength: number
+        network: "road" | "rail",
+        type: "freight" | "private transport" | "public transport"
+    }
+}
+export type OccupancyRate = {
+    [key: string]: YearlyValues<UsersPerVehicle>
+}
+
+export type EmissionsResults = {
+    emissions: {"TTW": {[key: string]: {co2: number[], energy: number[]}}, "WTW": {[key: string]: {co2: number[], energy: number[]}}},
+    vkt: VehicleKilometresTravelledComputed,
+    modalShare: {
+        passengers: ModalShare,
+        freight: ModalShare
+    }
 }

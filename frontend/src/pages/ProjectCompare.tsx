@@ -8,9 +8,11 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts'
 
 import './Project.css'
 import EmissionsTable from '../components/viz/EmissionsTable'
-import EmissionsBarChart from '../components/viz/EmissionsBarChart'
+import EmissionsCompareBarChart from '../components/viz/EmissionsCompareBarChart'
+import VktCompareBarChart from '../components/viz/VktCompareBarChart'
+import ModalShareCompareBarChart from '../components/viz/ModalShareCompareBarChart'
 
-export default function ProjectSummary(){
+export default function ProjectCompare(){
     const { keycloak, initialized } = useKeycloak()
     const navigate = useNavigate()
     const params = useParams()
@@ -154,82 +156,57 @@ export default function ProjectSummary(){
              <Row className="justify-content-md-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>{project.name}</h1>
-                    <ProjectNav current="Edition" project={project} />
-                    <StepCard title='1. Inventory / Base Year ' stage="Inventory">
-                        <span>Indexing - The GHG emission inventory for urban transport is the sum of all transport-related activities emissions that can be attributed to the city or country for a given year (base year).</span>
-                        {project.stages?.Inventory?.[0]?.step >= 7 && <Row className="align-items-center">
-                            <Col sm="8">
-                                <Table bordered>
-                                    <thead>
-                                        <tr>
-                                            <th className="item-sm">🛈 Vehicle</th>
-                                            <th className="item-sm">🛈 Fuel</th>
-                                            <th className="item-sm">🛈 GHG emissions (1000t GHG) ({"WTW"})</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {Object.keys(inventoryTotalEnergyAndEmissions["WTW"]).map((vtype, index) => {
-                                            const fuels = inventoryTotalEnergyAndEmissions["WTW"][vtype]
-                                            const ftypes = Object.keys(fuels)
-                                            let fuelJsx = []
-                                            for (let i = 0; i < ftypes.length; i++) {
-                                                const ftype = ftypes[i] as FuelType
-                                                const co2 = fuels[ftype]?.co2 || ''
-                                                fuelJsx.push(<tr key={vtype + ftype}>
-                                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>}
-                                                    <td><Badge bg="disabled">{ftype}</Badge></td>
-                                                    <td>{co2}</td>
-                                                </tr>)
-                                            }
-                                            return [
-                                                fuelJsx
-                                            ]
-                                        })}
-                                    </tbody>
-                                </Table>
-                            </Col>
-                            <Col sm="4">
-                                <ResponsiveContainer width="100%" height={200}>
-                                    <PieChart width={200} height={200}>
-                                    <Pie
-                                        dataKey="value"
-                                        data={inventoryEmissionsPieData}
-                                        cx="50%"
-                                        cy="50%"
-                                        outerRadius={70}
-                                        innerRadius={40}
-                                    >
-                                        {inventoryEmissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
-                                    </Pie>
-                                    <Tooltip />
-                                    </PieChart>
-                                </ResponsiveContainer>
-                            </Col>
-                        </Row>
-                        }
-                    </StepCard>
-                    <StepCard title='2. Business As Usual (BAU) Scenario' stage="BAU">
-                        <span>Projecting - The Business-as-usual scenario aims to describe the transport related emissions if nothing changed in the years to come from the current status quo.</span>
-                        {bauResults?.emissions && <Row className="align-items-center">
-                            <Col sm="8">
-                                <EmissionsBarChart emissionsData={bauResults?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
-                            </Col>
-                            <Col sm="4">
-                            </Col>
-                        </Row>
-                        }
-                    </StepCard>
-                    <StepCard title='3. Climate Scenario' stage="Climate" stageId={0}>
-                        <span>Comparing - The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
-                        {climateResults?.emissions && <Row className="align-items-center">
-                            <Col sm="8">
-                                <EmissionsBarChart emissionsData={climateResults?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
-                            </Col>
-                            <Col sm="4">
-                            </Col>
-                        </Row>
-                        }
-                    </StepCard>
+                    <ProjectNav current="Compare" project={project} />
+                    <h2>Graphs</h2>
+                    <h3>Emissions</h3>
+                    <EmissionsCompareBarChart project={project} bauEmissionsData={bauResults?.emissions?.WTW || {}} climateEmissionsData={climateResults?.emissions?.WTW || {}}></EmissionsCompareBarChart>
+                    <h3>Vkt</h3>
+                    <VktCompareBarChart project={project} bauVktData={bauResults?.vkt || {}} climateVktData={climateResults?.vkt || {}}></VktCompareBarChart>
+                    <h3>Passenger modal share</h3>
+                    <ModalShareCompareBarChart project={project} bauModalShareData={bauResults?.modalShare?.passengers || {}} climateModalShareData={climateResults?.modalShare?.passengers || {}}></ModalShareCompareBarChart>
+                    <h3>Freight modal share</h3>
+                    <ModalShareCompareBarChart project={project} bauModalShareData={bauResults?.modalShare?.freight || {}} climateModalShareData={climateResults?.modalShare?.freight || {}}></ModalShareCompareBarChart>
+                    
+                    <h2>Datasets</h2>
+                    <Table bordered>
+                        <thead>
+                            <tr>
+                                <th className="item-sm">Dataset</th>
+                                <th className="item-sm">Sources IDs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><Badge bg="disabled">Inventory</Badge></td>
+                                <td>TODO</td>
+                            </tr>
+                            <tr>
+                                <td><Badge bg="disabled">BAU Scenario</Badge></td>
+                                <td>TODO</td>
+                            </tr>
+                            <tr>
+                                <td><Badge bg="disabled">Climate Scenario</Badge></td>
+                                <td>TODO</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    <h2>Sources</h2>
+                    <Table bordered>
+                        <thead>
+                            <tr>
+                                <th className="item-sm">Source</th>
+                                <th className="item-sm">ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {project?.sources?.map(({value, sourceId}, index) => {
+                                return (<tr key={index}>
+                                    <td><Badge bg="disabled">{value}</Badge></td>
+                                    <td>[{sourceId}]</td>
+                                </tr>)
+                            })}
+                        </tbody>
+                    </Table>
                 </Col>
             </Row>
         </Container>

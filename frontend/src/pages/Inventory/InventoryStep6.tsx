@@ -21,7 +21,7 @@ export default function InventoryStep6(){
     const [ currentVType, setCurrentVType ] = useState("")
     const stepNumber = 6
     useEffect(() => {
-        if (initialized && keycloak.authenticated){
+        if (initialized && keycloak.authenticated && projectId){
             const requestOptions = {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }

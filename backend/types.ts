@@ -149,7 +149,7 @@ export type Project = {
     projectReferenceYears: number[]
 }
 
-export type ProjectStage = "Inventory" | "BAU" | "Scenario"
+export type ProjectStage = "Inventory" | "BAU" | "Climate"
 
 export type AvoidedMotorisedVkt = {
     [key: string]: YearlyValues<Percent>
@@ -159,7 +159,10 @@ export type OccupancyRate = {
 }
 export type OriginModeMatrix = {
     [key: string]: { // vtype goal
-        [key: string]: YearlyValues<Percent> // vtype origin : Yearly vals
+        [key: string]: {
+            source: string
+            value: YearlyValues<string> // vtype origin : Yearly vals
+        }
     }
 }
 
@@ -248,6 +251,112 @@ export type EmissionsFactors = {
 }
 export type InputInventoryStep7 = {
     emissionFactors: EmissionsFactors,
+    note: string | undefined
+}
+export type InputInventoryStep8 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            value: string // trip len
+        }
+    },
+    note: string | undefined
+}
+export type InputBAUStep1 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            vktRate: YearlyValues<Percent>
+        }
+    },
+    note: string | undefined
+}
+export type InputBAUStep2 = {
+    vtypes: {
+        [vtype: string]: {
+            fuels: {
+                [key in FuelType]?: {
+                    percent: string[],
+                    percentSource: string
+                }
+            }
+        }
+    },
+    note: string | undefined
+}
+export type InputBAUStep3 = {
+    vtypes: {
+        [vtype: string]: {
+            fuels: {
+                [key in FuelType]?: {
+                    cons: string[],
+                    consSource: string
+                }
+            }
+        }
+    },
+    note: string | undefined
+}
+export type InputBAUStep4 = {
+    road: {
+        source: string,
+        value: string[]
+    },
+    rail: {
+        source: string,
+        value: string[]
+    },
+    note: string | undefined
+}
+export type InputClimateWithUpstreamStep1 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            vkt: YearlyValues<string>
+        }
+    },
+    note: string | undefined
+}
+
+export type InputClimateWithUpstreamStep2 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            ukm: YearlyValues<string>
+        }
+    },
+    note: string | undefined
+}
+export type InputClimateWithoutUpstreamStep1 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            avoidedVkt: YearlyValues<Percent>
+        }
+    },
+    note: string | undefined
+}
+
+export type InputClimateWithoutUpstreamStep2 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            addedVkt: YearlyValues<string>
+        }
+    },
+    note: string | undefined
+}
+export type InputClimateWithoutUpstreamStep3 = {
+    vtypes: {
+        [key: string]: {
+            source: string,
+            load: YearlyValues<string>
+        }
+    },
+    note: string | undefined
+}
+export type InputClimateWithoutUpstreamStep4 = {
+    vtypes: OriginModeMatrix,
     note: string | undefined
 }
 // Scenario types

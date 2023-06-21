@@ -166,11 +166,11 @@ test('energy and emissions computation', () => {
         "Individual taxi": {"occupancy": 1, triplength: 1, network: "road", type: "public transport"},
         "Private car": {"occupancy": 1, triplength: 5, network: "road", type: "private transport"}
     }
-    const outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues.WTW, outputVktPerFuelComputed, vehicleStats, referenceYears)
+    const outputComputeTotalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, energyAndEmissionsDefaultValues.WTW, null, outputVktPerFuelComputed, vehicleStats, referenceYears)
     const outputSumTotalEnergyAndEmissions = models.sumTotalEnergyAndEmissions(outputComputeTotalEnergyAndEmissions, referenceYears)
-    expect(outputSumTotalEnergyAndEmissions['Private car'].co2.map(e => Math.round(e*100)/100)).toEqual([210.01, 231.98, 256.25, 285.78, 318.68, 388.85])
-    expect(outputSumTotalEnergyAndEmissions['Individual taxi'].energy.map(e => Math.round(e*100)/100)).toEqual([420, 452.57, 487.67, 525.49, 566.24, 657.46])
-    expect(outputSumTotalEnergyAndEmissions['Individual taxi'].co2.map(e => Math.round(e*100)/100)).toEqual([37.97, 40.91, 44.09, 47.5, 51.19, 59.43])
+    expect(outputSumTotalEnergyAndEmissions['Private car'].co2.map(e => Math.round(e*100)/100)).toEqual([212.34, 234.56, 259.1, 288.61, 321.46, 392.24])
+    expect(outputSumTotalEnergyAndEmissions['Individual taxi'].energy.map(e => Math.round(e*100)/100)).toEqual([430.31, 463.68, 499.64, 538.39, 580.14, 673.6])
+    expect(outputSumTotalEnergyAndEmissions['Individual taxi'].co2.map(e => Math.round(e*100)/100)).toEqual([38.9, 41.92, 45.17, 48.67, 52.44, 60.89])
 })
 
 test('computeVktBaseAfterAvoid basic', () => {
@@ -178,8 +178,14 @@ test('computeVktBaseAfterAvoid basic', () => {
     const BAUVkt : types.VehicleKilometresTravelledComputed = {
         "Minibus": [2000, 3077, 3927, 5013, 6098, 7434]
     }
-    const inputAvoidedVkt : types.AvoidedMotorisedVkt = {
-        "Minibus": [0, 10, 0, 0, 0, 0]
+    const inputAvoidedVkt : types.InputClimateWithoutUpstreamStep1 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                avoidedVkt: [10, 0, 0, 0, 0]
+            }
+        },
+        note: ""
     }
     let baseVkt : types.TransportPerformance = {}
     const expectedResults = [2000, 3077-2000-(3077-2000)*0.1, 3927-3077, 5013-3927, 6098-5013, 7434-6098]
@@ -194,8 +200,14 @@ test('computeVktBaseAfterAvoid with moving baseVkt', () => {
     const BAUVkt : types.VehicleKilometresTravelledComputed = {
         "Minibus": [2000, 3077, 3927, 5013, 6098, 7434]
     }
-    const inputAvoidedVkt : types.AvoidedMotorisedVkt = {
-        "Minibus": [0, 10, 0, 0, 0, 0]
+    const inputAvoidedVkt : types.InputClimateWithoutUpstreamStep1 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                avoidedVkt: [10, 0, 0, 0, 0]
+            }
+        },
+        note: ""
     }
     let baseVkt : types.TransportPerformance = {"Minibus": []}
     const expectedResults = [2000, 3077-2000+2000-(3077-2000+2000)*0.1, 3619.3, 4705.3, 5790.3, 7126.3]
@@ -209,8 +221,8 @@ test('computeVktBaseAfterAvoid with moving baseVkt', () => {
 test('distributeReductionInReducedPkm', () => {
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
-            "NMT": [0, 100,100,50,100,25],
-            "Private car": [0, 0,0,50,0,75]
+            "NMT": {source: '', value: [100,100,50,100,25].map(e=>e.toString())},
+            "Private car": {source: '', value: [0,0,50,0,75].map(e=>e.toString())}
         }
     }
     const vehicleStats : types.VehicleStats = {
@@ -233,20 +245,41 @@ test('distributeReductionInReducedPkm', () => {
 
 test('da big one: computeScenarioWithoutUpstreamGHGEmissions', () => {
     const referenceYears = [2020, 2025, 2030, 2035, 2040, 2050]
-    const inputAvoidedVkt : types.AvoidedMotorisedVkt = {
-        "Minibus": [0, 10, 0, 0, 0, 0]
+    const inputAvoidedVkt : types.InputClimateWithoutUpstreamStep1 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                avoidedVkt: [10, 0, 0, 0, 0]
+            }
+        },
+        note: ""
     }
     const BAUVkt : types.VehicleKilometresTravelledComputed = {
         "NMT": [1000, 1000, 1000, 1000, 1000, 1000],
         "Private car": [2000, 2000, 2000, 2000, 2000, 2000],
         "Minibus": [2000, 3077, 3927, 5013, 6098, 7434]
     }
-    const inputAdditionalVkt : types.VehicleKilometresTravelledComputed = {
-        "NMT": [0, 1000, 0, 0, 0, 0],
-        "Minibus": [0, 0, 100, 50, 0, 30]
+    const inputAdditionalVkt : types.InputClimateWithoutUpstreamStep2 = {
+        vtypes: {
+            "NMT": {
+                source: "",
+                addedVkt: [1000, 0, 0, 0, 0].map(e => e.toString())
+            },
+            "Minibus": {
+                source: "",
+                addedVkt: [0, 100, 50, 0, 30].map(e => e.toString())
+            }
+        },
+        note: ""
     }
-    const inputOccupancyRate : types.OccupancyRate = {
-        "Minibus": [8, 8.1, 8, 8, 8, 8]
+    const inputOccupancyRate : types.InputClimateWithoutUpstreamStep3 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                load: [8.1, 8, 8, 8, 8].map(e => e.toString())
+            }
+        },
+        note: ""
     }
     const vehicleStats : types.VehicleStats = {
         "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
@@ -255,11 +288,11 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions', () => {
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
-            "NMT": [0, 100,100,50,100,25],
-            "Private car": [0, 0,0,50,0,75]
+            "NMT": {source: '', value: [100,100,50,100,25].map(e=>e.toString())},
+            "Private car": {source: '', value: [0,0,50,0,75].map(e=>e.toString())}
         },
         "NMT": {
-            "Private car": [0, 100,100,100,100,100]
+            "Private car": {source: '', value: [100,100,100,100,100].map(e=>e.toString())}
         }
     }
     const inputVktPerFuel: types.VktPerFuel = {
@@ -291,31 +324,57 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions', () => {
         inputVktPerFuel ,
         inputAverageEnergyConsumption ,
         energyAndEmissionsDefaultValues.WTW,
+        null // TODO: in WTW this should be gco2 for electricity
     )
     console.log(scenarioWithoutUpstreamGHGEmissions)
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].energy.map(e => Math.round(e))).toEqual([3753,    1877,    1877,    1251,    1251,    829])
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([337, 168, 168, 112, 112, 74])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].energy.map(e => Math.round(e))).toEqual([3779, 1890, 1890, 1260, 1260, 835])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([339, 169, 169, 113, 113, 75])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].energy.map(e => Math.round(e))).toEqual([12874, 17825, 23940, 31253, 38237, 47029])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].co2.map(e => Math.round(e))).toEqual([1151, 1594, 2140, 2794, 3418, 4204])
 })
 
 test('da big one: computeScenarioWithoutUpstreamGHGEmissions, diff values', () => {
     const referenceYears = [2020, 2025, 2030, 2035, 2040, 2050]
-    const inputAvoidedVkt : types.AvoidedMotorisedVkt = {
-        "Minibus": [0, 10, 1, 0, 0, 0],
-        "Private car": [0, 0, 1, 0, 0]
+
+    const inputAvoidedVkt : types.InputClimateWithoutUpstreamStep1 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                avoidedVkt: [ 10, 1, 0, 0, 0]
+            },
+            "Private car": {
+                source: "",
+                avoidedVkt: [0, 1, 0, 0, 0]
+            }
+        },
+        note: ""
     }
     const BAUVkt : types.VehicleKilometresTravelledComputed = {
         "NMT": [1000, 1000, 1000, 1000, 1000, 1000],
         "Private car": [2000, 2000, 2000, 2000, 2000, 2000],
         "Minibus": [2000, 3077, 3927, 5013, 6098, 7434]
     }
-    const inputAdditionalVkt : types.VehicleKilometresTravelledComputed = {
-        "NMT": [0, 1000, 0, 0, 0, 0],
-        "Minibus": [0, 0, 100, 50, 0, 30]
+    const inputAdditionalVkt : types.InputClimateWithoutUpstreamStep2 = {
+        vtypes: {
+            "NMT": {
+                source: "",
+                addedVkt: [1000, 0, 0, 0, 0].map(e => e.toString())
+            },
+            "Minibus": {
+                source: "",
+                addedVkt: [0, 100, 50, 0, 30].map(e => e.toString())
+            }
+        },
+        note: ""
     }
-    const inputOccupancyRate : types.OccupancyRate = {
-        "Minibus": [8, 8.1, 7.9, 8, 8, 8]
+    const inputOccupancyRate : types.InputClimateWithoutUpstreamStep3 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                load: [8.1, 7.9, 8, 8, 8].map(e => e.toString())
+            }
+        },
+        note: ""
     }
     const vehicleStats : types.VehicleStats = {
         "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
@@ -324,11 +383,11 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, diff values', () =
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
-            "NMT": [0, 100,100,50,100,25],
-            "Private car": [0, 0,0,50,0,75]
+            "NMT": {source: '', value: [100,100,50,100,25].map(e=>e.toString())},
+            "Private car": {source: '', value: [0,0,50,0,75].map(e=>e.toString())}
         },
         "NMT": {
-            "Private car": [0, 100,100,100,100,100]
+            "Private car": {source: '', value: [100,100,100,100,100].map(e=>e.toString())}
         }
     }
     const inputVktPerFuel: types.VktPerFuel = {
@@ -360,18 +419,32 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, diff values', () =
         inputVktPerFuel ,
         inputAverageEnergyConsumption ,
         energyAndEmissionsDefaultValues.WTW,
+        null // TODO: in WTW this should be gco2 for electricity
     )
     console.log(scenarioWithoutUpstreamGHGEmissions)
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([337, 168, 166, 43, 43, 6])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([339, 169, 167, 43, 43, 6])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].co2.map(e => Math.round(e))).toEqual([1151, 1594, 2119, 2773, 3398, 4184])
 })
 
 test('da big one: computeScenarioWithoutUpstreamGHGEmissions, more PT', () => {
     const referenceYears = [2020, 2025, 2030, 2035, 2040, 2050]
-    const inputAvoidedVkt : types.AvoidedMotorisedVkt = {
-        "Minibus": [0, 10, 1, 0, 0, 0],
-        "Private car": [0, 0, 1, 0, 0, 0],
-        "Metro": [0, 1, 1, 1, 1, 1]
+
+    const inputAvoidedVkt : types.InputClimateWithoutUpstreamStep1 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                avoidedVkt: [ 10, 1, 0, 0, 0]
+            },
+            "Private car": {
+                source: "",
+                avoidedVkt: [0, 1, 0, 0, 0]
+            },
+            "Metro": {
+                source: "",
+                avoidedVkt: [1, 1, 1, 1, 1]
+            }
+        },
+        note: ""
     }
     const BAUVkt : types.VehicleKilometresTravelledComputed = {
         "NMT": [1000, 1000, 1000, 1000, 1000, 1000],
@@ -379,14 +452,35 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, more PT', () => {
         "Minibus": [2000, 3077, 3927, 5013, 6098, 7434],
         "Metro": [300, 300, 300, 300, 300, 300]
     }
-    const inputAdditionalVkt : types.VehicleKilometresTravelledComputed = {
-        "NMT": [0, 1000, 0, 0, 0, 0],
-        "Minibus": [0, 0, 100, 50, 0, 30],
-        "Metro": [0, 100, 100, 110, 120, 130]
+    const inputAdditionalVkt : types.InputClimateWithoutUpstreamStep2 = {
+        vtypes: {
+            "NMT": {
+                source: "",
+                addedVkt: [1000, 0, 0, 0, 0].map(e => e.toString())
+            },
+            "Minibus": {
+                source: "",
+                addedVkt: [0, 100, 50, 0, 30].map(e => e.toString())
+            },
+            "Metro": {
+                source: "",
+                addedVkt: [100, 100, 110, 120, 130].map(e => e.toString())
+            }
+        },
+        note: ""
     }
-    const inputOccupancyRate : types.OccupancyRate = {
-        "Minibus": [8, 8.1, 7.9, 8, 8, 8],
-        "Metro": [200, 210, 220, 230, 240, 240]
+    const inputOccupancyRate : types.InputClimateWithoutUpstreamStep3 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                load: [8.1, 7.9, 8, 8, 8].map(e => e.toString())
+            },
+            "Metro": {
+                source: "",
+                load: [210, 220, 230, 240, 240].map(e => e.toString())
+            }
+        },
+        note: ""
     }
     const vehicleStats : types.VehicleStats = {
         "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
@@ -396,14 +490,14 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, more PT', () => {
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
-            "NMT": [0, 100,100,50,100,25],
-            "Private car": [0, 0,0,50,0,75]
+            "NMT": {source: '', value: [100,100,50,100,25].map(e=>e.toString())},
+            "Private car": {source: '', value: [0,0,50,0,75].map(e=>e.toString())}
         },
         "NMT": {
-            "Private car": [0, 100,100,100,100,100]
+            "Private car": {source: '', value: [100,100,100,100,100].map(e=>e.toString())}
         },
-        "Metro" : {
-            "Private car": [0, 100,100,100,100,100]
+        "Metro": {
+            "Private car": {source: '', value: [100,100,100,100,100].map(e=>e.toString())}
         }
     }
     const inputVktPerFuel: types.VktPerFuel = {
@@ -441,19 +535,33 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, more PT', () => {
         inputVktPerFuel ,
         inputAverageEnergyConsumption ,
         energyAndEmissionsDefaultValues.WTW,
+        null // TODO: in WTW this should be gco2 for electricity
     )
     console.log(scenarioWithoutUpstreamGHGEmissions)
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([33661, 29458, 24673, 19330, 13402, 8103])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([33894, 29662, 24788, 19375, 13402, 8103])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].co2.map(e => Math.round(e))).toEqual([1151, 1594, 2119, 2773, 3398, 4184])
     expect(scenarioWithoutUpstreamGHGEmissions['Metro'].co2.map(e => Math.round(e))).toEqual([0, 0, 0, 0, 0, 0])
 })
 
 test('da big one: computeScenarioWithoutUpstreamGHGEmissions, with freight', () => {
     const referenceYears = [2020, 2025, 2030, 2035, 2040, 2050]
-    const inputAvoidedVkt : types.AvoidedMotorisedVkt = {
-        "Minibus": [0, 10, 1, 0, 0, 0],
-        "Private car": [0, 0, 1, 0, 0, 0],
-        "Metro": [0, 1, 1, 1, 1, 1]
+
+    const inputAvoidedVkt : types.InputClimateWithoutUpstreamStep1 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                avoidedVkt: [10, 1, 0, 0, 0]
+            },
+            "Private car": {
+                source: "",
+                avoidedVkt: [0, 1, 0, 0, 0]
+            },
+            "Metro": {
+                source: "",
+                avoidedVkt: [1, 1, 1, 1, 1]
+            }
+        },
+        note: ""
     }
     const BAUVkt : types.VehicleKilometresTravelledComputed = {
         "NMT": [1000, 1000, 1000, 1000, 1000, 1000],
@@ -464,15 +572,39 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, with freight', () 
         "LCV": [100,100,100,100,100,100],
         "Truck": [100,100,100,100,100,100],
     }
-    const inputAdditionalVkt : types.VehicleKilometresTravelledComputed = {
-        "NMT": [0, 1000, 0, 0, 0, 0],
-        "Minibus": [0, 0, 100, 50, 0, 30],
-        "Metro": [0, 100, 100, 110, 120, 130],
-        "Cargo": [0, 50, 50, 50, 50, 50]
+    const inputAdditionalVkt : types.InputClimateWithoutUpstreamStep2 = {
+        vtypes: {
+            "NMT": {
+                source: "",
+                addedVkt: [1000, 0, 0, 0, 0].map(e => e.toString())
+            },
+            "Minibus": {
+                source: "",
+                addedVkt: [0, 100, 50, 0, 30].map(e => e.toString())
+            },
+            "Metro": {
+                source: "",
+                addedVkt: [100, 100, 110, 120, 130].map(e => e.toString())
+            },
+            "Cargo": {
+                source: "",
+                addedVkt: [50, 50, 50, 50, 50].map(e => e.toString())
+            }
+        },
+        note: ""
     }
-    const inputOccupancyRate : types.OccupancyRate = {
-        "Minibus": [8, 8.1, 7.9, 8, 8, 8],
-        "Metro": [200, 210, 220, 230, 240, 240]
+    const inputOccupancyRate : types.InputClimateWithoutUpstreamStep3 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                load: [8.1, 7.9, 8, 8, 8].map(e => e.toString())
+            },
+            "Metro": {
+                source: "",
+                load: [210, 220, 230, 240, 240].map(e => e.toString())
+            }
+        },
+        note: ""
     }
     const vehicleStats : types.VehicleStats = {
         "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
@@ -485,18 +617,18 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, with freight', () 
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
-            "NMT": [0, 100,100,50,100,25],
-            "Private car": [0, 0,0,50,0,75]
+            "NMT": {source: '', value: [100,100,50,100,25].map(e=>e.toString())},
+            "Private car": {source: '', value: [0,0,50,0,75].map(e=>e.toString())}
         },
         "NMT": {
-            "Private car": [0, 100,100,100,100,100]
+            "Private car": {source: '', value: [100,100,100,100,100].map(e=>e.toString())}
         },
-        "Metro" : {
-            "Private car": [0, 100,100,100,100,100]
+        "Metro": {
+            "Private car": {source: '', value: [100,100,100,100,100].map(e=>e.toString())}
         },
-        "Cargo" : {
-            "LCV": [0, 50,50,50,50,50],
-            "Truck": [0, 50,50,50,50,50],
+        "Cargo": {
+            "LCV": {source: '', value: [50,50,50,50,50].map(e=>e.toString())},
+            "Truck": {source: '', value: [50,50,50,50,50].map(e=>e.toString())},
         }
     }
     const inputVktPerFuel: types.VktPerFuel = {
@@ -510,7 +642,7 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, with freight', () 
         "Metro": {
             "Electric": [100, 100, 100, 100, 100, 100]
         },
-        "Cargp": {
+        "Cargo": {
             "None": [100, 100, 100, 100, 100, 100]
         },
         "LCV": {
@@ -549,21 +681,35 @@ test('da big one: computeScenarioWithoutUpstreamGHGEmissions, with freight', () 
         inputVktPerFuel ,
         inputAverageEnergyConsumption ,
         energyAndEmissionsDefaultValues.WTW,
+        null // TODO: in WTW this should be gco2 for electricity
     )
     console.log(scenarioWithoutUpstreamGHGEmissions)
-    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([33661, 29458, 24673, 19330, 13402, 8103])
+    expect(scenarioWithoutUpstreamGHGEmissions['Private car'].co2.map(e => Math.round(e))).toEqual([33894, 29662, 24788, 19375, 13402, 8103])
     expect(scenarioWithoutUpstreamGHGEmissions['Minibus'].co2.map(e => Math.round(e))).toEqual([1151, 1594, 2119, 2773, 3398, 4184])
     expect(scenarioWithoutUpstreamGHGEmissions['Metro'].co2.map(e => Math.round(e))).toEqual([0, 0, 0, 0, 0, 0])
     expect(scenarioWithoutUpstreamGHGEmissions['LCV'].co2.map(e => Math.round(e))).toEqual([16, 16, 16, 16, 16, 16])
-    expect(scenarioWithoutUpstreamGHGEmissions['Truck'].co2.map(e => Math.round(e))).toEqual([380, 379, 379, 378, 378, 377])
+    expect(scenarioWithoutUpstreamGHGEmissions['Truck'].co2.map(e => Math.round(e))).toEqual([389,389,388,388,387,387])
 })
 
 test('compute scenario modal share', () => {
     const referenceYears = [2020, 2025, 2030, 2035, 2040, 2050]
-    const inputAvoidedVkt : types.AvoidedMotorisedVkt = {
-        "Minibus": [0, 10, 1, 0, 0, 0],
-        "Private car": [0, 0, 1, 0, 0, 0],
-        "Metro": [0, 1, 1, 1, 1, 1]
+
+    const inputAvoidedVkt : types.InputClimateWithoutUpstreamStep1 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                avoidedVkt: [10, 1, 0, 0, 0]
+            },
+            "Private car": {
+                source: "",
+                avoidedVkt: [0, 1, 0, 0, 0]
+            },
+            "Metro": {
+                source: "",
+                avoidedVkt: [1, 1, 1, 1, 1]
+            }
+        },
+        note: ""
     }
     const BAUVkt : types.VehicleKilometresTravelledComputed = {
         "NMT": [1000, 1000, 1000, 1000, 1000, 1000],
@@ -574,15 +720,39 @@ test('compute scenario modal share', () => {
         "LCV": [100,100,100,100,100,100],
         "Truck": [100,100,100,100,100,100],
     }
-    const inputAdditionalVkt : types.VehicleKilometresTravelledComputed = {
-        "NMT": [0, 1000, 0, 0, 0, 0],
-        "Minibus": [0, 0, 100, 50, 0, 30],
-        "Metro": [0, 100, 100, 110, 120, 130],
-        "Cargo": [0, 50, 50, 50, 50, 50]
+    const inputAdditionalVkt : types.InputClimateWithoutUpstreamStep2 = {
+        vtypes: {
+            "NMT": {
+                source: "",
+                addedVkt: [1000, 0, 0, 0, 0].map(e => e.toString())
+            },
+            "Minibus": {
+                source: "",
+                addedVkt: [0, 100, 50, 0, 30].map(e => e.toString())
+            },
+            "Metro": {
+                source: "",
+                addedVkt: [100, 100, 110, 120, 130].map(e => e.toString())
+            },
+            "Cargo": {
+                source: "",
+                addedVkt: [50, 50, 50, 50, 50].map(e => e.toString())
+            }
+        },
+        note: ""
     }
-    const inputOccupancyRate : types.OccupancyRate = {
-        "Minibus": [8, 8.1, 7.9, 8, 8, 8],
-        "Metro": [200, 210, 220, 230, 240, 240]
+    const inputOccupancyRate : types.InputClimateWithoutUpstreamStep3 = {
+        vtypes: {
+            "Minibus": {
+                source: "",
+                load: [8.1, 7.9, 8, 8, 8].map(e => e.toString())
+            },
+            "Metro": {
+                source: "",
+                load: [210, 220, 230, 240, 240].map(e => e.toString())
+            }
+        },
+        note: ""
     }
     const vehicleStats : types.VehicleStats = {
         "NMT": {"occupancy": 1, triplength: 1, network: "rail", type: "private transport"},
@@ -595,18 +765,18 @@ test('compute scenario modal share', () => {
     }
     const inputOriginModeMatrix : types.OriginModeMatrix = {
         "Minibus": {
-            "NMT": [0, 100,100,50,100,25],
-            "Private car": [0, 0,0,50,0,75]
+            "NMT": {source: '', value: [100,100,50,100,25].map(e=>e.toString())},
+            "Private car": {source: '', value: [0,0,50,0,75].map(e=>e.toString())}
         },
         "NMT": {
-            "Private car": [0, 100,100,100,100,100]
+            "Private car": {source: '', value: [100,100,100,100,100].map(e=>e.toString())}
         },
-        "Metro" : {
-            "Private car": [0, 100,100,100,100,100]
+        "Metro": {
+            "Private car": {source: '', value: [100,100,100,100,100].map(e=>e.toString())}
         },
-        "Cargo" : {
-            "LCV": [0, 50,50,50,50,50],
-            "Truck": [0, 50,50,50,50,50],
+        "Cargo": {
+            "LCV": {source: '', value: [50,50,50,50,50].map(e=>e.toString())},
+            "Truck": {source: '', value: [50,50,50,50,50].map(e=>e.toString())},
         }
     }
     const baseVkt = models.computeVktAfterASI(
