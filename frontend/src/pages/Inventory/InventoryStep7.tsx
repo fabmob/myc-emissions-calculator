@@ -9,6 +9,7 @@ import DescAndNav from '../../components/DescAndNav'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import EditEmissionFactors from '../../components/EditEmissionFactors'
+import TdDiagonalBar from '../../components/TdDiagonalBar'
 
 export default function InventoryStep7(){
     const { keycloak, initialized } = useKeycloak();
@@ -152,18 +153,13 @@ export default function InventoryStep7(){
                                 const ftype = ftypes[i] as FuelType
                                 const co2 = fuels[ftype]?.co2 || ''
                                 let ges = emissionFactorsInputData.emissionFactors[ttwOrWtw][ftype].ges
-                                if (ftype === "Electric" && ttwOrWtw === "WTW") {
-                                    const inputInventoryStep1 = project.stages.Inventory[0].steps[1] as InputInventoryStep1
-                                    if (inputInventoryStep1.vtypes[vtype].network === "rail") {
-                                        ges = emissionFactorsWTWComputedForElectric.ElectricRail.ges
-                                    } else {
-                                        ges = emissionFactorsWTWComputedForElectric.ElectricRoad.ges
-                                    }
-                                }
                                 fuelJsx.push(<tr key={vtype + ftype}>
                                     {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>}
                                     <td><Badge bg="disabled">{ftype}</Badge></td>
-                                    <td>{ges}</td>
+                                    {ftype !== "Electric" && ftype !== "Hydrogen" 
+                                        ? <td>{ges}</td>
+                                        : <TdDiagonalBar></TdDiagonalBar>
+                                    }
                                     <td>{co2}</td>
                                 </tr>)
                             }

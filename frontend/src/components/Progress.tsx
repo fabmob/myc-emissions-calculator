@@ -9,7 +9,7 @@ const steps : {[stage in ProjectStage]: string[]} = {
         "Vehicles and fuels in use",
         "Transport activity",
         "Fuel consumption factors",
-        "Consumption of electricity",
+        "Energy production CO2",
         "Top-down validation",
         "Vehicles load",
         "Results",
@@ -19,7 +19,7 @@ const steps : {[stage in ProjectStage]: string[]} = {
         "Transport activity",
         "Fuel breakdown",
         "Fuel consumption factors",
-        "Consumption of electricity",
+        "Energy production CO2",
         "Results"
     ],
     "Climate": [

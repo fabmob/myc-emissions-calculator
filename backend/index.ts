@@ -237,13 +237,19 @@ app.get('/api/project/:projectId/Inventory/0/emissions', keycloak.protect(), (re
             type: inputInventoryStep1.vtypes[vtype].type
         }
     }
-    const electricityProductionEmissions: types.InputBAUStep4 = {
-        road: {source: "", value: [inputInventoryStep4.road.value]},
-        rail: {source: "", value: [inputInventoryStep4.rail.value]},
+    const energyProductionEmissions: types.InputBAUStep4 = {
+        electricity: {
+            road: {source: "", value: [inputInventoryStep4.electricity.road.value]},
+            rail: {source: "", value: [inputInventoryStep4.electricity.rail.value]}
+        },
+        hydrogen: {
+            road: {source: "", value: [inputInventoryStep4.hydrogen.road.value]},
+            rail: {source: "", value: [inputInventoryStep4.hydrogen.rail.value]}
+        },
         note: ""
     }
     const vktPerFuelComputed = models.computeVktPerFuel(inputVktPerFuel, vehicleKilometresTravelledComputed)
-    const totalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, energyAndEmissionsDefaultValues.WTW, electricityProductionEmissions, vktPerFuelComputed, vehicleStats, [project.referenceYears[0]])
+    const totalEnergyAndEmissions = models.computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, energyAndEmissionsDefaultValues.WTW, energyProductionEmissions, vktPerFuelComputed, vehicleStats, [project.referenceYears[0]])
     
     let energyAndEmissions : types.InputInventoryStep5 = {emissions: {road: {fuels:{}}, rail: {fuels:{}}}, energy: {road: {fuels:{}}, rail: {fuels:{}}}, note: undefined}
     for (let i = 0; i < vtypes.length; i++) {
@@ -327,12 +333,18 @@ app.get('/api/project/:projectId/Inventory/0/results', keycloak.protect(), (req:
     const modalShare = models.computeModalShare(transportPerformance)
 
     let emissionFactorsWTW = inputInventoryStep7?.emissionFactors?.WTW || energyAndEmissionsDefaultValues.WTW
-    const electricityProductionEmissions: types.InputBAUStep4 = {
-        road: {source: "", value: [inputInventoryStep4.road.value]},
-        rail: {source: "", value: [inputInventoryStep4.rail.value]},
+    const energyProductionEmissions: types.InputBAUStep4 = {
+        electricity: {
+            road: {source: "", value: [inputInventoryStep4.electricity.road.value]},
+            rail: {source: "", value: [inputInventoryStep4.electricity.rail.value]}
+        },
+        hydrogen: {
+            road: {source: "", value: [inputInventoryStep4.hydrogen.road.value]},
+            rail: {source: "", value: [inputInventoryStep4.hydrogen.rail.value]}
+        },
         note: ""
     }
-    const totalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, emissionFactorsWTW, electricityProductionEmissions, vktPerFuelComputed, vehicleStats, [project.referenceYears[0]])
+    const totalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, emissionFactorsWTW, energyProductionEmissions, vktPerFuelComputed, vehicleStats, [project.referenceYears[0]])
     const emissionFactorsTTW = inputInventoryStep7?.emissionFactors?.TTW || energyAndEmissionsDefaultValues.TTW
     const totalEnergyAndEmissionsTTW = models.computeTotalEnergyAndEmissions(inputAverageEnergyConsumption, emissionFactorsTTW, null, vktPerFuelComputed, vehicleStats, [project.referenceYears[0]])
     
@@ -340,7 +352,6 @@ app.get('/api/project/:projectId/Inventory/0/results', keycloak.protect(), (req:
         status: "ok",
         totalEnergyAndEmissionsWTW: totalEnergyAndEmissionsWTW,
         totalEnergyAndEmissionsTTW: totalEnergyAndEmissionsTTW,
-        emissionFactorsWTWComputedForElectric: {ElectricRail: emissionFactorsWTW.ElectricRail, ElectricRoad: emissionFactorsWTW.ElectricRoad},
         modalShare: modalShare
     });
 });
@@ -426,7 +437,7 @@ app.get('/api/project/:projectId/BAU/0/results', keycloak.protect(), (req: Reque
     const inputInventoryStep4 : types.InputInventoryStep4 = project.stages.Inventory[0].steps[4]
     const inputInventoryStep6 : types.InputInventoryStep6 = project.stages.Inventory[0].steps[6]
     const bauAverageEnergyConsumption : types.InputBAUStep3 = project.stages.BAU[0].steps[3]
-    const inputElectricityProductionEmissions : types.InputBAUStep4 = project.stages.BAU[0].steps[4]
+    const inputEnergyProductionEmissions : types.InputBAUStep4 = project.stages.BAU[0].steps[4]
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = {}
     let vehicleStats : types.VehicleStats = {}
     for (let i = 0; i < vtypes.length; i++) {
@@ -456,12 +467,18 @@ app.get('/api/project/:projectId/BAU/0/results', keycloak.protect(), (req: Reque
     const outputAverageEnergyConsumptionComputed = inputAverageEnergyConsumption// models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYears)
     
     const inventoryInputEmissionFactors : types.InputInventoryStep7 = project.stages.Inventory[0].steps[7] || {emissionFactors: energyAndEmissionsDefaultValues}
-    const electricityProductionEmissions: types.InputBAUStep4 = {
-        road: {source: "", value: [inputInventoryStep4.road.value].concat(inputElectricityProductionEmissions.road.value)},
-        rail: {source: "", value: [inputInventoryStep4.rail.value].concat(inputElectricityProductionEmissions.rail.value)},
+    const energyProductionEmissions: types.InputBAUStep4 = {
+        electricity: {
+            road: {source: "", value: [inputInventoryStep4.electricity.road.value].concat(inputEnergyProductionEmissions.electricity.road.value)},
+            rail: {source: "", value: [inputInventoryStep4.electricity.rail.value].concat(inputEnergyProductionEmissions.electricity.rail.value)}
+        },
+        hydrogen: {
+            road: {source: "", value: [inputInventoryStep4.hydrogen.road.value].concat(inputEnergyProductionEmissions.hydrogen.road.value)},
+            rail: {source: "", value: [inputInventoryStep4.hydrogen.rail.value].concat(inputEnergyProductionEmissions.hydrogen.rail.value)}
+        },
         note: ""
     }
-    const outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, inventoryInputEmissionFactors.emissionFactors.WTW, electricityProductionEmissions, outputVktPerFuelComputed, vehicleStats, project.referenceYears)
+    const outputComputeTotalEnergyAndEmissionsWTW = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, inventoryInputEmissionFactors.emissionFactors.WTW, energyProductionEmissions, outputVktPerFuelComputed, vehicleStats, project.referenceYears)
     const outputComputeTotalEnergyAndEmissionsTTW = models.computeTotalEnergyAndEmissions(outputAverageEnergyConsumptionComputed, inventoryInputEmissionFactors.emissionFactors.TTW, null, outputVktPerFuelComputed, vehicleStats, project.referenceYears)
     const outputSumTotalEnergyAndEmissionsTTW = models.sumTotalEnergyAndEmissions(outputComputeTotalEnergyAndEmissionsTTW, project.referenceYears)
     const outputSumTotalEnergyAndEmissionsWTW = models.sumTotalEnergyAndEmissions(outputComputeTotalEnergyAndEmissionsWTW, project.referenceYears)
@@ -546,14 +563,20 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/With/results', keycl
         }
     }
     const inputInventoryStep4 : types.InputInventoryStep4 = project.stages.Inventory[0].steps[4]
-    const inputElectricityProductionEmissions : types.InputBAUStep4 = project.stages.BAU[0].steps[4]
+    const inputEnergyProductionEmissions : types.InputBAUStep4 = project.stages.BAU[0].steps[4]
     const inventoryInputEmissionFactors : types.InputInventoryStep7 = project.stages.Inventory[0].steps[7] || {emissionFactors: energyAndEmissionsDefaultValues}
-    const electricityProductionEmissions: types.InputBAUStep4 = {
-        road: {source: "", value: [inputInventoryStep4.road.value].concat(inputElectricityProductionEmissions.road.value)},
-        rail: {source: "", value: [inputInventoryStep4.rail.value].concat(inputElectricityProductionEmissions.rail.value)},
+    const energyProductionEmissions: types.InputBAUStep4 = {
+        electricity: {
+            road: {source: "", value: [inputInventoryStep4.electricity.road.value].concat(inputEnergyProductionEmissions.electricity.road.value)},
+            rail: {source: "", value: [inputInventoryStep4.electricity.rail.value].concat(inputEnergyProductionEmissions.electricity.rail.value)}
+        },
+        hydrogen: {
+            road: {source: "", value: [inputInventoryStep4.hydrogen.road.value].concat(inputEnergyProductionEmissions.hydrogen.road.value)},
+            rail: {source: "", value: [inputInventoryStep4.hydrogen.rail.value].concat(inputEnergyProductionEmissions.hydrogen.rail.value)}
+        },
         note: ""
     }
-    const emissionsWTW = models.computeScenarioWithUpstreamGHGEmissions(project.referenceYears, vehicleKilometresTravelledComputed, inputVktPerFuel, inputAverageEnergyConsumption, inventoryInputEmissionFactors.emissionFactors.WTW, electricityProductionEmissions, vehicleStats)
+    const emissionsWTW = models.computeScenarioWithUpstreamGHGEmissions(project.referenceYears, vehicleKilometresTravelledComputed, inputVktPerFuel, inputAverageEnergyConsumption, inventoryInputEmissionFactors.emissionFactors.WTW, energyProductionEmissions, vehicleStats)
     const emissionsTTW = models.computeScenarioWithUpstreamGHGEmissions(project.referenceYears, vehicleKilometresTravelledComputed, inputVktPerFuel, inputAverageEnergyConsumption, inventoryInputEmissionFactors.emissionFactors.TTW, null, vehicleStats)
 
     const inventoryTransportPerformance = models.computeTransportPerformance(vehicleKilometresTravelledComputed, vehicleStats)
@@ -647,11 +670,17 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/Without/results', ke
         }
     }
     const inputInventoryStep4 : types.InputInventoryStep4 = project.stages.Inventory[0].steps[4]
-    const inputElectricityProductionEmissions : types.InputBAUStep4 = project.stages.BAU[0].steps[4]
+    const inputEnergyProductionEmissions : types.InputBAUStep4 = project.stages.BAU[0].steps[4]
     const inventoryInputEmissionFactors : types.InputInventoryStep7 = project.stages.Inventory[0].steps[7] || {emissionFactors: energyAndEmissionsDefaultValues}
-    const electricityProductionEmissions: types.InputBAUStep4 = {
-        road: {source: "", value: [inputInventoryStep4.road.value].concat(inputElectricityProductionEmissions.road.value)},
-        rail: {source: "", value: [inputInventoryStep4.rail.value].concat(inputElectricityProductionEmissions.rail.value)},
+        const energyProductionEmissions: types.InputBAUStep4 = {
+        electricity: {
+            road: {source: "", value: [inputInventoryStep4.electricity.road.value].concat(inputEnergyProductionEmissions.electricity.road.value)},
+            rail: {source: "", value: [inputInventoryStep4.electricity.rail.value].concat(inputEnergyProductionEmissions.electricity.rail.value)}
+        },
+        hydrogen: {
+            road: {source: "", value: [inputInventoryStep4.hydrogen.road.value].concat(inputEnergyProductionEmissions.hydrogen.road.value)},
+            rail: {source: "", value: [inputInventoryStep4.hydrogen.rail.value].concat(inputEnergyProductionEmissions.hydrogen.rail.value)}
+        },
         note: ""
     }
     const baseVkt = models.computeVktAfterASI(
@@ -669,7 +698,7 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/Without/results', ke
         inputVktPerFuel,
         inputAverageEnergyConsumption, 
         inventoryInputEmissionFactors.emissionFactors.WTW,
-        electricityProductionEmissions,
+        energyProductionEmissions,
         vehicleStats
     )
     const emissionsTTW = models.computeScenarioWithUpstreamGHGEmissions(

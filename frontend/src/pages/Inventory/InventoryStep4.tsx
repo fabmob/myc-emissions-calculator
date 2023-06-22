@@ -14,11 +14,15 @@ export default function InventoryStep4(){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     const params = useParams();
-    const [inputData, setInputData ] = useState({road: {value: ''}, rail: {value: ''}} as InputInventoryStep4)
+    const [inputData, setInputData ] = useState({
+        electricity: {road: {value: ''}, rail: {value: ''}},
+        hydrogen: {road: {value: ''}, rail: {value: ''}}
+        } as InputInventoryStep4)
     const [project, setProject ] = useState({} as ProjectType)
     const projectId = params.projectId
     const [ showSourceModal, setShowSourceModal ] = useState(false)
     const [ currentNetwork, setCurrentNetwork ] = useState("" as "road" | "rail")
+    const [ currentEnergy, setCurrentEnergy ] = useState("" as "electricity" | "hydrogen")
     const stepNumber = 4
     useEffect(() => {
         if (initialized && keycloak.authenticated && projectId){
@@ -42,14 +46,15 @@ export default function InventoryStep4(){
                 });
             }
     }, [keycloak, initialized, projectId, navigate])
-    const updateInput = (network: "road" | "rail", value: string) => {
+    const updateInput = (energy: "electricity" | "hydrogen", network: "road" | "rail", value: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp[network].value = value
+            tmp[energy][network].value = value
             return tmp
         })
     }
-    const configureSource = (network: "road" | "rail") => {
+    const configureSource = (energy: "electricity" | "hydrogen", network: "road" | "rail") => {
+        setCurrentEnergy(energy)
         setCurrentNetwork(network)
         setShowSourceModal(true)
     }
@@ -75,7 +80,7 @@ export default function InventoryStep4(){
         // Add source to proper input
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp[currentNetwork].source = source
+            tmp[currentEnergy][currentNetwork].source = source
             return tmp
         })
     }
@@ -96,21 +101,22 @@ export default function InventoryStep4(){
     return (
         <>
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
-                <h1>Consumption of electricity</h1>
+                <h1>CO2 content of alternative energy production</h1>
                 <DescAndNav 
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
                     <p>
-                        In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity (based on national/local energy mix).
+                        In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).
                     </p>
                 </DescAndNav>
                 <p>
                     If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.
                 </p>
                 <p>
-                    Please enter the CO2 content of electricity production.
+                    Please enter the CO2 content of electricity and hydrogen production.
                 </p>
+                <h2>Electricity</h2>
                 <Table bordered>
                     <thead>
                         <tr>
@@ -122,16 +128,42 @@ export default function InventoryStep4(){
                     <tbody>
                         {["road", "rail"].map((networkString) => {
                             const network = networkString as "road" | "rail"
-                            const source = inputData[network].source
+                            const source = inputData.electricity?.[network].source
                             return (<tr key={network}>
                             <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network} (electric)</Badge></td>
                             <td>
                                 {source
-                                ? <ValidSource source={source} onClick={(e:any) => configureSource(network)}/>
-                                : <Button variant="action" onClick={e => configureSource(network)}>+</Button>}
+                                ? <ValidSource source={source} onClick={(e:any) => configureSource("electricity", network)}/>
+                                : <Button variant="action" onClick={e => configureSource("electricity", network)}>+</Button>}
                             </td>
                             <td>
-                                <Form.Control value={inputData[network].value} onChange={e => updateInput(network, e.target.value)}></Form.Control>
+                                <Form.Control value={inputData.electricity?.[network].value} onChange={e => updateInput("electricity", network, e.target.value)}></Form.Control>
+                            </td>
+                        </tr>)})}
+                    </tbody>
+                </Table>
+                <h2>Hydrogen</h2>
+                <Table bordered>
+                    <thead>
+                        <tr>
+                            <th className="item-sm">🛈 Network</th>
+                            <th className="item-sm">Src</th>
+                            <th className="item-sm">🛈 Emissions (gCO2/kWh)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {["road", "rail"].map((networkString) => {
+                            const network = networkString as "road" | "rail"
+                            const source = inputData.hydrogen?.[network].source
+                            return (<tr key={network}>
+                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network} (electric)</Badge></td>
+                            <td>
+                                {source
+                                ? <ValidSource source={source} onClick={(e:any) => configureSource("hydrogen", network)}/>
+                                : <Button variant="action" onClick={e => configureSource("hydrogen", network)}>+</Button>}
+                            </td>
+                            <td>
+                                <Form.Control value={inputData.hydrogen?.[network].value} onChange={e => updateInput("hydrogen", network, e.target.value)}></Form.Control>
                             </td>
                         </tr>)})}
                     </tbody>

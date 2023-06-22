@@ -135,11 +135,11 @@ export default function EditEmissionFactors (props: {
                                         </td>
                                         <td><Form.Control value={fuel.lowerHeatingValue} onChange={e => updateInput(ftype, "lowerHeatingValue", e.target.value)}></Form.Control></td>
                                         <td><Form.Control value={fuel.density} onChange={e => updateInput(ftype, "density", e.target.value)}></Form.Control></td>
-                                        {ftype !== "Electric" 
+                                        {ftype !== "Electric" && ftype !== "Hydrogen" 
                                             ? <td><Form.Control value={props.inputData.emissionFactors.TTW[ftype].ges} onChange={e => updateInput(ftype, "ges", e.target.value, 'TTW')}></Form.Control></td>
                                             : <TdDiagonalBar></TdDiagonalBar>
                                         }
-                                        {ftype !== "Electric" 
+                                        {ftype !== "Electric" && ftype !== "Hydrogen" 
                                             ? <td><Form.Control value={props.inputData.emissionFactors.WTW[ftype].ges} onChange={e => updateInput(ftype, "ges", e.target.value, 'WTW')}></Form.Control></td>
                                             : <TdDiagonalBar></TdDiagonalBar>
                                         }

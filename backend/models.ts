@@ -155,7 +155,7 @@ export function computeAverageEnergyConsumption(
 export function computeTotalEnergyAndEmissions(
     averageEnergyConsumptionComputed: types.AverageEnergyConsumptionComputed,
     energyAndEmissionsDefaultValues: types.EnergyAndEmissionsDefaultValues,
-    electricityProductionEmissions: types.InputBAUStep4 | null,
+    energyProductionEmissions: types.InputBAUStep4 | null,
     vktPerFuelComputed: types.VktPerFuelComputed,
     vehicleStats: types.VehicleStats,
     referenceYears: number[]
@@ -175,8 +175,11 @@ export function computeTotalEnergyAndEmissions(
                 let tmp = outputTotalEnergyAndEmissions[vtype][fuelTypes[j]]
                 let pci = parseFloat(energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.pci) || 0
                 let co2default = parseFloat(energyAndEmissionsDefaultValues?.[fuelTypes[j]]?.ges) || 0
-                if (fuelTypes[j] === 'Electric' && vehicleStats[vtype] && electricityProductionEmissions) {
-                    co2default = parseFloat(electricityProductionEmissions[vehicleStats[vtype].network].value[k] || electricityProductionEmissions[vehicleStats[vtype].network].value[0]) / pci * 1000
+                if (fuelTypes[j] === 'Electric' && vehicleStats[vtype] && energyProductionEmissions) {
+                    co2default = parseFloat(energyProductionEmissions.electricity[vehicleStats[vtype].network].value[k] || energyProductionEmissions.electricity[vehicleStats[vtype].network].value[0]) / pci * 1000
+                }
+                if (fuelTypes[j] === 'Hydrogen' && vehicleStats[vtype] && energyProductionEmissions) {
+                    co2default = parseFloat(energyProductionEmissions.hydrogen[vehicleStats[vtype].network].value[k] || energyProductionEmissions.hydrogen[vehicleStats[vtype].network].value[0]) / pci * 1000
                 }
                 let vkt = vktPerFuelComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0
                 let avg = averageEnergyConsumptionComputed?.[vtype]?.[fuelTypes[j]]?.[k] || 0

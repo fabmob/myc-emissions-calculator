@@ -142,7 +142,7 @@ export default function InventoryIntro(){
                                         <Badge bg="disabled">🛈 CO2 content of electricity and hydrogen production</Badge>
                                     </OverlayTrigger>
                                 </td>
-                                <td className="item">TODO</td>
+                                <td className="item">gCO2/kWh or gCO2/kg</td>
                             </tr>
                             <tr>
                                 <td>

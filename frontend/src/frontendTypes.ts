@@ -198,7 +198,7 @@ export type InputInventoryStep3 = {
     },
     note: string | undefined
 }
-export type InputInventoryStep4 = {
+type NetworksData = {
     road: {
         source: string | undefined,
         value: string
@@ -206,7 +206,11 @@ export type InputInventoryStep4 = {
     rail: {
         source: string | undefined,
         value: string
-    },
+    }
+}
+export type InputInventoryStep4 = {
+    electricity: NetworksData,
+    hydrogen: NetworksData,
     note: string | undefined
 }
 
@@ -286,15 +290,19 @@ export type InputBAUStep3 = {
     },
     note: string | undefined
 }
-export type InputBAUStep4 = {
+type NetworksYearlyData = {
     road: {
-        source: string,
+        source: string | undefined,
         value: string[]
     },
     rail: {
-        source: string,
+        source: string | undefined,
         value: string[]
-    },
+    }
+}
+export type InputBAUStep4 = {
+    electricity: NetworksYearlyData,
+    hydrogen: NetworksYearlyData,
     note: string | undefined
 }
 
