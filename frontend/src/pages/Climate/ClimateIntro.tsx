@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Table, Container, Row, Col, Badge, OverlayTrigger, Tooltip, Modal, Button } from 'react-bootstrap'
+import { Table, Container, Row, Col, Badge, OverlayTrigger, Tooltip, Modal, Button, Dropdown } from 'react-bootstrap'
 import { ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
@@ -15,7 +15,6 @@ export default function ClimateIntro(){
     const [project, setProject ] = useState({} as ProjectType)
     const [showInfo, setShowInfo] = useState(false)
     const handleCloseInfo = () => setShowInfo(false)
-    const [showMethodModal, setShowMethodModal] = useState(false)
     const [method, setMethod] = useState("With upstream calculation" as "With upstream calculation" | "Without upstream calculation")
     const params = useParams()
     const projectId = params.projectId
@@ -50,11 +49,6 @@ export default function ClimateIntro(){
                 });
             }
     }, [keycloak, initialized, projectId, climateScenarioId, navigate])
-    const vehiclesInUseTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            You can choose the year of reference based on your needs
-        </Tooltip>
-    )
     const nextTrigger = () => {
         // Error detection
 
@@ -67,6 +61,22 @@ export default function ClimateIntro(){
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Climate/' + climateScenarioId + '/step/0', requestOptions)
             .then(response => response.json())
             .then(() => navigate('/project/' + project.id + '/Climate/' + climateScenarioId + '/' + method.split(" ")[0] + '/step/1'));
+    }
+    const MethodSelector = () => {
+        return (
+            <div style={{display: "flex", marginBottom: "10px"}}>
+                <Dropdown onSelect={(key:any) => method === "With upstream calculation" ? setMethod("Without upstream calculation") : setMethod("With upstream calculation")}>
+                    <Dropdown.Toggle as={Badge} bg="info" style={{margin: "0 10px 0 10px"}}>
+                        {method === "With upstream calculation" ? "With upstream calculation" : "Without upstream calculation"}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu style={{padding: "10px"}}>
+                        <Dropdown.Item as={Badge} bg="info">
+                            {method === "Without upstream calculation" ? "With upstream calculation" : "Without upstream calculation"}
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
+        )
     }
     return (
         <div>
@@ -86,8 +96,8 @@ export default function ClimateIntro(){
                         <img src='/asi-approach-diagram.png' alt="Avoid-Shift-Improve Approach (Transport NAMA Handbook, GIZ, 2015 based on Dalkmann and Brannigan 2007)" style={{width: '100%'}}></img>
                         <h3>Calculation method</h3>
                         <div style={{display: "flex", marginBottom: "20px", padding: "5px"}}>
-                            <div className="item" style={{marginRight: "20px"}}>Method</div>
-                            <Badge bg="info" onClick={e => setShowMethodModal(true)}>{method} v</Badge>
+                            <div className="item">Method</div>
+                            <MethodSelector></MethodSelector>
                         </div>
                         <h3>{method}, the calculation of transport related emissions requires information on</h3>
                         <Table>
@@ -101,85 +111,65 @@ export default function ClimateIntro(){
                             ? <tbody>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected transport activity - mileage for each transport mode per year</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected transport activity - mileage for each transport mode per year</Badge>
                                     </td>
-                                    <td className="item">vkt: vehicle-kilometre</td>
+                                    <td className="item-sm">vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected transport performance for each transport mode per year</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected transport performance for each transport mode per year</Badge>
                                     </td>
-                                    <td className="item">pkm: passenger-km or tkm: tons-km</td>
+                                    <td className="item-sm">pkm: passenger-km or tkm: tons-km</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected share of the transport activity by vehicle category and fuel type</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected share of the transport activity by vehicle category and fuel type</Badge>
                                     </td>
-                                    <td className="item">%vkt and %tkm</td>
+                                    <td className="item-sm">%vkt and %tkm</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
                                     </td>
-                                    <td className="item">l-kW-kg/100km</td>
+                                    <td className="item-sm">l-kW-kg/100km</td>
                                 </tr>
                             </tbody>
                             : <tbody>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected avoided transport activity</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected avoided transport activity</Badge>
                                     </td>
-                                    <td className="item">vkt: vehicle-kilometre</td>
+                                    <td className="item-sm">vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected added transport activity</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected added transport activity</Badge>
                                     </td>
-                                    <td className="item">vkt: vehicle-kilometre</td>
+                                    <td className="item-sm">vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected vehicle load</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected vehicle load</Badge>
                                     </td>
-                                    <td className="item">passengers or tons</td>
+                                    <td className="item-sm">passengers or tons</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected vehicle shift - orgin of shifted trips</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected vehicle shift - orgin of shifted trips</Badge>
                                     </td>
-                                    <td className="item">% of trips</td>
+                                    <td className="item-sm">% of trips</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected share of the transport activity by vehicle category and fuel type</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected share of the transport activity by vehicle category and fuel type</Badge>
                                     </td>
-                                    <td className="item">%vkt and %tkm</td>
+                                    <td className="item-sm">%vkt and %tkm</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                            <Badge bg="disabled">🛈 Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
-                                        </OverlayTrigger>
+                                        <Badge bg="disabled">Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
                                     </td>
-                                    <td className="item">l-kW-kg/100km</td>
+                                    <td className="item-sm">l-kW-kg/100km</td>
                                 </tr>
                             </tbody>
                             }
@@ -210,13 +200,6 @@ export default function ClimateIntro(){
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <ChoiceModal 
-                showModal={showMethodModal} 
-                setShowModal={setShowMethodModal} 
-                availableChoices={["With upstream calculation", "Without upstream calculation"].filter(e => e !== method)}
-                callback={setMethod}
-                preventCreate={true}
-            ></ChoiceModal>
         </div>
     )
 }

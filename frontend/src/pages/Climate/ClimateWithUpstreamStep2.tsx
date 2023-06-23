@@ -9,6 +9,7 @@ import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function ClimateWithUpstreamStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -152,9 +153,9 @@ export default function ClimateWithUpstreamStep2(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm">🛈 Vehicle</th>
-                                    <th className="item-sm">Src</th>
-                                    <th className="item-sm">🛈 Transport performance (Mpkm or Mtkm)</th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of climate transport performances, it can be the source used to fill the transport tool. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport performance values extracted from upstream calculation for the current climate scenario">Transport performance (Mpkm or Mtkm)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -1,6 +1,7 @@
 import React from "react"
 import { ProjectType } from "../../frontendTypes"
 import {Table, Badge} from 'react-bootstrap'
+import ItemWithOverlay from "../ItemWithOverlay"
 
 export default function EmissionsTable (props: {
     emissionsData: {[key: string]: {co2: number[], energy: number[]}},
@@ -11,9 +12,23 @@ export default function EmissionsTable (props: {
         <Table bordered>
             <thead>
                 <tr>
-                    <th className="item-sm">🛈 Vehicle</th>
+                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
                     {props.project.referenceYears && props.project.referenceYears.map((y, yearIndex) => (
-                        <th key={yearIndex}  className="item-sm" style={{whiteSpace: "initial"}}>GHG {y} (1000t GHG)</th>
+                        <th key={yearIndex}  className="item-sm" style={{whiteSpace: "initial"}}>
+                            <ItemWithOverlay overlayContent={
+                                    <div>
+                                        Emissions (1000 tons of greenhouse gases) computed by the tool, using previous steps inputs. Values for each transport mode and fuel are computed as
+                                        <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
+                                        <Badge bg="disabled">Fuel lower heating value (TJ/1000t)</Badge> / 10^6 x <Badge bg="disabled">Fuel density (kg/kg or kg/l)</Badge> x <Badge bg="disabled">Input VKT per fuel (Mkm)</Badge> x 10^6 x <Badge bg="disabled">Fuel consumption factor (l-kg-kwh/100km)</Badge> / 100 x <Badge bg="disabled">Fuel emission factor (kg/TJ)</Badge> / 10^6
+                                        </div>
+                                        These values per fuel are then summed per transport mode.<br/>
+                                        Lower heating value, fuel density and fuel emission factors use default values that can be edited using the Edit GHG emission factors link above.
+                                    </div>
+                                }>
+                                    🛈 GHG {y} (1000t GHG)
+                                </ItemWithOverlay>
+                            </th>
+                        
                     ))}
                 </tr>
             </thead>

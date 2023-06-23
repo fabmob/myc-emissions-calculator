@@ -6,6 +6,7 @@ import { ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 
 export default function BAUIntro(){
@@ -33,22 +34,7 @@ export default function BAUIntro(){
                 });
             }
     }, [keycloak, initialized, projectId, navigate])
-    const vehiclesInUseTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            You can choose the year of reference based on your needs
-        </Tooltip>
-    )
-    const occupationRateTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”
-        </Tooltip>
-    )
-    const productionCO2Tooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production
-        </Tooltip>
-    )
-    
+
     return (
         <Container>
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
@@ -78,27 +64,25 @@ export default function BAUIntro(){
                         <tbody>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                        <Badge bg="disabled">🛈 Projected transport activity - mileage and transport performance for each transport mode per year</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">
+                                        <ItemWithOverlay overlayContent="mileage and transport performance for each transport mode per year">
+                                            🛈 Projected transport activity 
+                                        </ItemWithOverlay>
+                                    </Badge>
                                 </td>
-                                <td className="item">vkt: vehicle-kilometre and tkm: ton-kilometre</td>
+                                <td className="item-sm">vkt: vehicle-kilometre and tkm: ton-kilometre</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                        <Badge bg="disabled">🛈 Projected share of the transport activity by vehicle category and fuel type</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">Projected share of the transport activity by vehicle category and fuel type</Badge>
                                 </td>
-                                <td className="item">%vkt and %tkm</td>
+                                <td className="item-sm">%vkt and %tkm</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                        <Badge bg="disabled">🛈 Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
                                 </td>
-                                <td className="item">l-kW-kg/100km</td>
+                                <td className="item-sm">l-kW-kg/100km</td>
                             </tr>
                         </tbody>
                     </Table>
@@ -113,19 +97,23 @@ export default function BAUIntro(){
                         <tbody>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={occupationRateTooltip}>
-                                        <Badge bg="disabled">🛈 Projected occupation rate per transport category</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">
+                                        <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
+                                            🛈 Projected occupation rate per transport category
+                                        </ItemWithOverlay>
+                                    </Badge>
                                 </td>
-                                <td className="item">passengers / load (tons)</td>
+                                <td className="item-sm">passengers / load (tons)</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={productionCO2Tooltip}>
-                                        <Badge bg="disabled">🛈 Projected CO2 content of electricity and hydrogen production</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">
+                                        <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
+                                            🛈 Projected CO2 content of electricity and hydrogen production
+                                        </ItemWithOverlay>
+                                    </Badge>
                                 </td>
-                                <td className="item">TODO</td>
+                                <td className="item-sm">gCO2/kWh or gCO2/kg</td>
                             </tr>
                         </tbody>
                     </Table>

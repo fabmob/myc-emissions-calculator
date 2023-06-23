@@ -10,6 +10,7 @@ import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWr
 import EmissionsTable from '../../components/viz/EmissionsTable'
 import EmissionsBarChart from '../../components/viz/EmissionsBarChart'
 import EditEmissionFactors from '../../components/EditEmissionFactors'
+import TTWorWTWSelector from '../../components/TTWorWTWSelector'
 
 export default function ClimateWithUpstreamStep5(){
     const { keycloak, initialized } = useKeycloak();
@@ -112,10 +113,7 @@ export default function ClimateWithUpstreamStep5(){
                         This page displays a short summary of emissions for this climate scenario. More tables and visualisations are available in the Compare section of the project.
                     </p>
                 </DescAndNav>
-                <div>
-                    {ttwOrWtw === "TTW" && <p>Results are computed using the Tank to Wheel (TTW) approach, <Button variant="link" onClick={e=>setTtwOrWtw("WTW")} style={{padding: "0"}}>click here</Button> to switch to the Well To Wheel (WTW) approach.</p>}
-                    {ttwOrWtw === "WTW" && <p>Results are computed using the Well to Wheel (WTW) approach, <Button variant="link" onClick={e=>setTtwOrWtw("TTW")} style={{padding: "0"}}>click here</Button> to switch to the Tank To Wheel (TTW) approach.</p>}
-                </div>
+                <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
                 <EditEmissionFactors 
                     project={project} 
                     stepNumber={stepNumber} 
@@ -125,6 +123,7 @@ export default function ClimateWithUpstreamStep5(){
                     setInputData={setEmissionFactorsInputData}
                 ></EditEmissionFactors>
                 
+                <h2>Emissions</h2>
                 <EmissionsTable emissionsData={emissions} project={project}></EmissionsTable>
                 <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
                 

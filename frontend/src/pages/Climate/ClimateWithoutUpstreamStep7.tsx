@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Button} from 'react-bootstrap'
+import {Badge, Button, Dropdown} from 'react-bootstrap'
 import {EmissionsResults, InputInventoryStep7, ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
@@ -10,6 +10,8 @@ import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWr
 import EmissionsTable from '../../components/viz/EmissionsTable'
 import EmissionsBarChart from '../../components/viz/EmissionsBarChart'
 import EditEmissionFactors from '../../components/EditEmissionFactors'
+import ChoiceModal from '../../components/ChoiceModal'
+import TTWorWTWSelector from '../../components/TTWorWTWSelector'
 
 export default function ClimateWithUpstreamStep7(){
     const { keycloak, initialized } = useKeycloak();
@@ -112,10 +114,8 @@ export default function ClimateWithUpstreamStep7(){
                         This page displays a short summary of emissions for this climate scenario. More tables and visualisations are available in the Compare section of the project.
                     </p>
                 </DescAndNav>
-                <div>
-                    {ttwOrWtw === "TTW" && <p>Results are computed using the Tank to Wheel (TTW) approach, <Button variant="link" onClick={e=>setTtwOrWtw("WTW")} style={{padding: "0"}}>click here</Button> to switch to the Well To Wheel (WTW) approach.</p>}
-                    {ttwOrWtw === "WTW" && <p>Results are computed using the Well to Wheel (WTW) approach, <Button variant="link" onClick={e=>setTtwOrWtw("TTW")} style={{padding: "0"}}>click here</Button> to switch to the Tank To Wheel (TTW) approach.</p>}
-                </div>
+                <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
+                <h2>Emissions</h2>
                 <EditEmissionFactors 
                     project={project} 
                     stepNumber={stepNumber} 

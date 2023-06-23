@@ -9,6 +9,7 @@ import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function InventoryStep6(){
     const { keycloak, initialized } = useKeycloak();
@@ -129,9 +130,9 @@ export default function InventoryStep6(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm">🛈 Vehicle</th>
-                            <th className="item-sm">Src</th>
-                            <th className="item-sm">🛈 Load (pass. or tons per vehicle)</th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of load value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Occupancy for passenger vehicles (average number of passengers per vehicle) or load for freight vehicles (average load per vehicle in tons)">🛈 Load (pass. or tons per vehicle)</ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>

@@ -9,6 +9,7 @@ import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function ClimateWithoutUpstreamStep6(){
     const { keycloak, initialized } = useKeycloak();
@@ -175,11 +176,11 @@ export default function ClimateWithoutUpstreamStep6(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm">🛈 Vehicle</th>
-                                    <th className="item-sm">🛈 Fuels</th>
-                                    <th className="item-sm">🛈 BAU. Cons</th>
-                                    <th className="item-sm">Src</th>
-                                    <th className="item-sm">🛈 Cons (l-kg-kwh/100km)</th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of consumption values used during BAU scenario">🛈 BAU. Cons</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of consumption value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected fuel consumption. Set to zero for fuels not expected to appear in this scenario">🛈 Cons (l-kg-kwh/100km)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

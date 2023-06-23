@@ -10,6 +10,8 @@ import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWr
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import EditEmissionFactors from '../../components/EditEmissionFactors'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
+import TTWorWTWSelector from '../../components/TTWorWTWSelector'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function InventoryStep7(){
     const { keycloak, initialized } = useKeycloak();
@@ -106,13 +108,13 @@ export default function InventoryStep7(){
                 fetchResults()
             });
     }
-    const emissionsPieData = [].concat.apply([], Object.keys(totalEnergyAndEmissions[ttwOrWtw]).map((vtype, index) => {
+    const emissionsPieData: {name: string, value: number}[] = [].concat.apply([], Object.keys(totalEnergyAndEmissions[ttwOrWtw]).map((vtype, index) => {
         let res = []
         const fuels = totalEnergyAndEmissions[ttwOrWtw][vtype]
         const ftypes = Object.keys(fuels)
         for (let i = 0; i < ftypes.length; i++) {
             const ftype = ftypes[i] as FuelType
-            const co2 = fuels[ftype]?.co2[0] || ''
+            const co2 = fuels[ftype]?.co2[0]
             if (co2)
                 res.push({name: vtype + ", " + ftype, value: co2})
         }
@@ -130,18 +132,27 @@ export default function InventoryStep7(){
                         This page displays a short summary of emissions for the reference year. More tables and visualisations are available in the Compare section of the project.
                     </p>
                 </DescAndNav>
-                <div>
-                    {ttwOrWtw === "TTW" && <p>Results are computed using the Tank to Wheel (TTW) approach, <Button variant="link" onClick={e=>setTtwOrWtw("WTW")} style={{padding: "0"}}>click here</Button> to switch to the Well To Wheel (WTW) approach.</p>}
-                    {ttwOrWtw === "WTW" && <p>Results are computed using the Well to Wheel (WTW) approach, <Button variant="link" onClick={e=>setTtwOrWtw("TTW")} style={{padding: "0"}}>click here</Button> to switch to the Tank To Wheel (TTW) approach.</p>}
-                </div>
+                <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
                 <h2>GHG emissions</h2>
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm">🛈 Vehicle</th>
-                            <th className="item-sm">🛈 Fuel</th>
-                            <th className="item-sm">🛈 Emission Factor (kg/TJ) ({ttwOrWtw})</th>
-                            <th className="item-sm">🛈 GHG emissions (1000t GHG) ({ttwOrWtw})</th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Emission factors per fuel. This values can be edited using the Edit GHG emission factors link below the pie chart.">🛈 Emission Factor (kg/TJ) ({ttwOrWtw})</ItemWithOverlay></th>
+                            <th className="item-sm">
+                                <ItemWithOverlay overlayContent={
+                                    <div>
+                                        Emissions (1000 tons of greenhouse gases) computed by the tool, using previous steps inputs. Values for each transport mode and fuel are computed as
+                                        <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
+                                        <Badge bg="disabled">Fuel lower heating value (TJ/1000t)</Badge> / 10^6 x <Badge bg="disabled">Fuel density (kg/kg or kg/l)</Badge> x <Badge bg="disabled">Input VKT per fuel (Mkm)</Badge> x 10^6 x <Badge bg="disabled">Fuel consumption factor (l-kg-kwh/100km)</Badge> / 100 x <Badge bg="disabled">Fuel emission factor (kg/TJ)</Badge> / 10^6
+                                        </div>
+                                        Lower heating value, fuel density and fuel emission factors use default values that can be edited using the Edit GHG emission factors link below the pie chart.
+                                    </div>
+                                }>
+                                    🛈 GHG emissions (1000t GHG) ({ttwOrWtw})
+                                </ItemWithOverlay>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>

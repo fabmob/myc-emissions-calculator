@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Table, Button, Badge, Modal, Form, Alert} from 'react-bootstrap'
+import {Table, Button, Badge, Modal, Form, Alert, Dropdown} from 'react-bootstrap'
 import {FuelType, InputInventoryStep2, ProjectType} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 
@@ -11,6 +11,7 @@ import ValidSource from '../../components/ValidSource'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function InventoryStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -198,6 +199,23 @@ export default function InventoryStep2(){
             .then(response => response.json())
             .then(() => navigate('/project/' + projectId + '/Inventory/step/' + (stepNumber + 1)));
     }
+    const ApproachSelector = () => {
+        return (
+            <div style={{display: "flex", marginBottom: "10px"}}>
+                <Button variant="link" onClick={e => setShowComputationApproach(true)} style={{padding: "0", border: "0", marginRight: "5px"}}>🛈 Vehicle mileage</Button> is computed using the
+                <Dropdown onSelect={(key:any) => computationApproach === "vkt" ? setComputationApproach("fleet") : setComputationApproach("vkt")}>
+                    <Dropdown.Toggle as={Badge} bg="info" style={{margin: "0 10px 0 10px"}}>
+                        {computationApproach === "vkt" ? "Vkt approach" : "Fleet approach"}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu style={{padding: "10px"}}>
+                        <Dropdown.Item as={Badge} bg="info">
+                            {computationApproach === "fleet" ? "Vkt approach" : "Fleet approach"}
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
+        )
+    }
     return (
         <>
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
@@ -214,26 +232,33 @@ export default function InventoryStep2(){
                     </p>
                 </DescAndNav>
                 <p>
-                    Please enter the vehicle kilometers travelled (Mio km) for the reference year. [extra : The total vkt should comply with the actual transport activity within the city or country territory.]
+                    Please enter the vehicle kilometers travelled (Mio km) for the reference year. The total vkt should comply with the actual transport activity within the city or country territory.
                 </p>
                 <p>
-                    Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type [extra: The sum of fuel shares in each vehicle category must be 100 %.]
+                    Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
                 </p>
-                <div>
-                    {computationApproach === "vkt" && <p>Vehicle mileage is computed using the <Button variant="link" onClick={e => setShowComputationApproach(true)} style={{padding: "0"}}>🛈 Vkt approach</Button>, <Button variant="link" onClick={e=>setComputationApproach("fleet")} style={{padding: "0"}}>click here to switch to the fleet approach.</Button></p>}
-                    {computationApproach === "fleet" && <p>Vehicle mileage is computed using the <Button variant="link" onClick={e => setShowComputationApproach(true)} style={{padding: "0"}}>🛈 fleet approach</Button>, <Button variant="link" onClick={e=>setComputationApproach("vkt")} style={{padding: "0"}}>click here to switch to the vkt approach.</Button></p>}
-                </div>
+                <ApproachSelector></ApproachSelector>
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm">🛈 Vehicle</th>
-                            <th className="item-sm">🛈 Fuels</th>
-                            <th className="item-sm">Src</th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
+                            {computationApproach === "fleet" 
+                                ? <th className="item-sm"><ItemWithOverlay overlayContent="Source of vehicle stock and average mileage values, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                : <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            }
                             {computationApproach === "fleet" && <th className="item-sm">🛈 Vehicle stock</th>}
                             {computationApproach === "fleet" && <th className="item-sm">🛈 Avg mileage</th>}
-                            <th className="item-sm">🛈 VKT (Mkm/y)</th>
-                            <th className="item-sm">Src</th>
-                            <th className="item-sm">🛈 VKT (%)</th>
+                            <th className="item-sm">
+                                <ItemWithOverlay overlayContent={
+                                    <div>Vehicle kilometers travelled. Values for each fuel are computed as
+                                    <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}><Badge bg="disabled">Input VKT per vehicle (Mkm/y)</Badge> x <Badge bg="disabled">VKT (%)</Badge> / 100</div>
+                                    Set VKT to zero for vehicles that are not yet used in reference year.
+                                    </div>
+                                }>🛈 VKT (Mkm/y)</ItemWithOverlay>
+                            </th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of share of vkt for a given fuel, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%">🛈 VKT (%)</ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>

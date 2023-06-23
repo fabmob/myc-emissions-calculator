@@ -11,6 +11,7 @@ import ValidSource from '../../components/ValidSource'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function BAUStep1(){
     const { keycloak, initialized } = useKeycloak();
@@ -138,11 +139,11 @@ export default function BAUStep1(){
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
                     <p>
-                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
+                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, expected yearly growth for the business as usual scenario can be added.
                     </p>
                 </DescAndNav>
                 <p>
-                    Please enter the vehicle kilometers travelled (Mio km) for the reference year. [extra : The total vkt should comply with the actual transport activity within the city or country territory.]
+                    The total vkt should comply with the actual transport activity within the city or country territory
                 </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
@@ -153,10 +154,10 @@ export default function BAUStep1(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm">🛈 Vehicle</th>
-                                    <th className="item-sm">🛈 Inventory VKT (Mkm/y)</th>
-                                    <th className="item-sm">Src</th>
-                                    <th className="item-sm">🛈 Yearly VKT growth (%)</th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Vehicle kilometers travelled for reference year. Set during inventory.">🛈 Inventory VKT (Mkm/y)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of yearly VKT growth, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected yearly VKT growth between years, yearly population growth can be used as a proxy">🛈 Yearly VKT growth (%)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

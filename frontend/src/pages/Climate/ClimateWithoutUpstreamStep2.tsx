@@ -10,6 +10,7 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import { computeVktAfterASI } from '../../utils/asiComputations'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function ClimateWithoutUpstreamStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -167,11 +168,20 @@ export default function ClimateWithoutUpstreamStep2(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm">🛈 Vehicle</th>
-                                    <th className="item-sm">🛈 BAU VKT (Mkm)</th>
-                                    <th className="item-sm">Src</th>
-                                    <th className="item-sm">🛈 Added VKT (Mkm)</th>
-                                    <th className="item-sm">🛈 Climate VKT (Mkm)</th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario">🛈 BAU VKT (Mkm)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of added VKT value. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Percent of vehicle kilometer travelled added per time period">🛈 Added VKT (Mkm)</ItemWithOverlay></th>
+                                    <th className="item-sm">
+                                        <ItemWithOverlay overlayContent={
+                                            <div>Computed Climate VKT using avoided VKT results as input
+                                                <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
+                                                    <Badge bg="disabled">VKT at the end of previous year (Mkm)</Badge> + <Badge bg="disabled">Added VKT between years (Mkm)</Badge>
+                                                </div>
+                                                First VKT values come from reference year data (inventory).
+                                            </div>
+                                        }>🛈 Climate VKT (Mkm)</ItemWithOverlay>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>

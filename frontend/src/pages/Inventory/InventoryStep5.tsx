@@ -9,6 +9,8 @@ import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
+import EditEmissionFactors from '../../components/EditEmissionFactors'
 
 export default function InventoryStep5(){
     const { keycloak, initialized } = useKeycloak();
@@ -147,12 +149,40 @@ export default function InventoryStep5(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm">🛈 Network</th>
-                            <th className="item-sm">🛈 Fuels</th>
-                            <th className="item-sm">Src</th>
-                            <th className="item-sm">🛈 Energy balance (1000 TOE)</th>
-                            <th className="item-sm">🛈 Calculated (1000 TOE)</th>
-                            <th className="item-sm">🛈 Gap (%)</th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail">🛈 Network</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type">🛈 Fuels</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of energy value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            <th className="item-sm">
+                                <ItemWithOverlay overlayContent="Energy balance data (1000 Tons of oil equivalent) are based on the total fuel sales within the country. According to the IPCC guidelines 2006, the final energy consumption for the GHG inventory should be calculated as follow: production + import - export - international bunkers - stock change">
+                                    🛈 Energy balance (1000 TOE)
+                                </ItemWithOverlay>
+                            </th>
+                            <th className="item-sm">
+                                <ItemWithOverlay overlayContent={
+                                    <div>
+                                        Energy balance (1000 Tons of oil equivalent) computed by the tool, using previous steps inputs. Values for each fuel are computed as
+                                        <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
+                                            <Badge bg="disabled">Fuel lower heating value (TJ/1000t)</Badge> / 10^6 x <Badge bg="disabled">Fuel density (kg/kg or kg/l)</Badge> x <Badge bg="disabled">Input VKT per fuel (Mkm)</Badge> x 10^6 x <Badge bg="disabled">Fuel consumption factor (l-kg-kwh/100km)</Badge> / 100 / <Badge bg="disabled">TOE factor (0.041868 TJ)</Badge> / 1000
+                                        </div>
+                                        Lower heating value and fuel density use default values that can be edited at a later step.
+                                    </div>
+                                }>
+                                    🛈 Calculated (1000 TOE)
+                                </ItemWithOverlay>
+                            </th>
+                            <th className="item-sm">
+                            <ItemWithOverlay overlayContent={
+                                    <div>
+                                        Difference between energy balance coming from energy sales and calculation. 
+                                        <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
+                                            <Badge bg="disabled">Calculated</Badge> x 100 / <Badge bg="disabled">Energy balance</Badge> - 100
+                                        </div>
+                                        Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
+                                    </div>
+                                }>
+                                    🛈 Gap (%)
+                                </ItemWithOverlay>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -194,12 +224,40 @@ export default function InventoryStep5(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm">🛈 Network</th>
-                            <th className="item-sm">🛈 Fuels</th>
-                            <th className="item-sm">Src</th>
-                            <th className="item-sm">🛈 Emissions (1000t GHG)</th>
-                            <th className="item-sm">🛈 Calculated (1000t GHG)</th>
-                            <th className="item-sm">🛈 Gap (%)</th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail">🛈 Network</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type">🛈 Fuels</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            <th className="item-sm">
+                                <ItemWithOverlay overlayContent="Emissions data (1000 tons of greenhouse gases). It should be proportional to energy balance, if available">
+                                    🛈 Emissions (1000t GHG)
+                                </ItemWithOverlay>
+                            </th>
+                            <th className="item-sm">
+                                <ItemWithOverlay overlayContent={
+                                    <div>
+                                        Emissions (1000 tons of greenhouse gases) computed by the tool, using previous steps inputs. Values for each fuel are computed as
+                                        <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
+                                        <Badge bg="disabled">Fuel lower heating value (TJ/1000t)</Badge> / 10^6 x <Badge bg="disabled">Fuel density (kg/kg or kg/l)</Badge> x <Badge bg="disabled">Input VKT per fuel (Mkm)</Badge> x 10^6 x <Badge bg="disabled">Fuel consumption factor (l-kg-kwh/100km)</Badge> / 100 x <Badge bg="disabled">Fuel emission factor (kg/TJ)</Badge> / 10^6
+                                        </div>
+                                        Lower heating value, fuel density and fuel emission factors use default values that can be edited at a later step.
+                                    </div>
+                                }>
+                                    🛈 Calculated (1000t GHG)
+                                </ItemWithOverlay>
+                            </th>
+                            <th className="item-sm">
+                            <ItemWithOverlay overlayContent={
+                                    <div>
+                                        Difference between emissions comming from energy sales and calculation. 
+                                        <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
+                                            <Badge bg="disabled">Calculated</Badge> x 100 / <Badge bg="disabled">Emissions</Badge> - 100
+                                        </div>
+                                        Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
+                                    </div>
+                                }>
+                                    🛈 Gap (%)
+                                </ItemWithOverlay>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>

@@ -11,6 +11,7 @@ import ValidSource from '../../components/ValidSource'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function ClimateWithUpstreamStep1(){
     const { keycloak, initialized } = useKeycloak();
@@ -154,12 +155,9 @@ export default function ClimateWithUpstreamStep1(){
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
                     <p>
-                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
+                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Please enter VKT computed with your transport planning tool for the current climate scenario.
                     </p>
                 </DescAndNav>
-                <p>
-                    Please enter the vehicle kilometers travelled (Mio km) for the reference year. The total vkt should comply with the actual transport activity within the city or country territory.
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
@@ -169,10 +167,10 @@ export default function ClimateWithUpstreamStep1(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm">🛈 Vehicle</th>
-                                    <th className="item-sm">🛈 BAU VKT (Mkm/y)</th>
-                                    <th className="item-sm">Src</th>
-                                    <th className="item-sm">🛈 Climate VKT (Mkm/y)</th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario">🛈 BAU VKT (Mkm/y)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of climate VKT, it can be the source used to fill the transport tool. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="VKT values extracted from upstream calculation for the current climate scenario">🛈 Climate VKT (Mkm/y)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

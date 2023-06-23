@@ -2,6 +2,11 @@
   color: rgb(102, 102, 102);
 }
 
+.btn-primary, .btn-secondary {
+    padding: 8px 14px;
+    font-weight: 700;
+    border-radius: 10px;
+}
 .btn-primary,.btn-primary:active,.btn-primary:focus {
     background-color: #a2217c;
     border-color: #a2217c;
@@ -127,23 +132,34 @@ td {
 input.cellError {
     background-color: #FF5C771A !important;
 }
-.errorTooltip {
+.infoTooltip, .errorTooltip {
     /* Prevents the tooltip from messing with the page when it's created */
     top:0;
     left:0;
 }
-.errorTooltip.show {
+.infoTooltip.show, .errorTooltip.show {
     opacity: 1 !important;
+    
+}
+.tooltip-inner {
+    padding: 20px;
+    text-align: left;
+    font-weight: 500;
+    max-width: 350px;
 }
 .errorTooltip .tooltip-inner {
     background-color: #ffedf0;
     color: #FF5C77;
-    padding: 20px;
-    text-align: left;
-    font-weight: 500;
 }
 .errorTooltip .tooltip-arrow::before {
     border-bottom-color: #ffedf0;
+}
+.infoTooltip .tooltip-inner {
+    background-color: white;
+    color: #292929;
+}
+.infoTooltip .tooltip-arrow::before {
+    border-top-color: white;
 }
 .stepLeft {
     background-color: rgb(237, 249, 253);

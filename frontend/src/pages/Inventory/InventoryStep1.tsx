@@ -8,6 +8,7 @@ import ChoiceModal from '../../components/ChoiceModal'
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 const defaultVehiclesParams : {[key: string]: {desc: string, network: "road" | "rail", type: "freight" | "public transport" | "private transport", fuels?: {}}} = {
     "👟 Walking": {
@@ -260,10 +261,10 @@ export default function InventoryStep1(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm">🛈 Vehicle</th>
-                            <th className="item-sm">🛈 Network</th>
-                            <th className="item-sm">🛈 Type</th>
-                            <th className="item-sm">🛈 Fuels</th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Used network, can be road or rail. Create a custom vehicle category to edit this field.">🛈 Network</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Type of transport, can be public transport, private transport or freight. Create a custom vehicle category to edit this field.">🛈 Type</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>

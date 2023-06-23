@@ -9,6 +9,7 @@ import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function InventoryStep4(){
     const { keycloak, initialized } = useKeycloak();
@@ -114,15 +115,15 @@ export default function InventoryStep4(){
                     If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.
                 </p>
                 <p>
-                    Please enter the CO2 content of electricity and hydrogen production.
+                    Please enter the CO2 content of electricity and hydrogen production, or skip to next step.
                 </p>
                 <h2>Electricity</h2>
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm">🛈 Network</th>
-                            <th className="item-sm">Src</th>
-                            <th className="item-sm">🛈 Emissions (gCO2/kWh)</th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail">🛈 Network</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Emissions of production of 1kWh of electricity, leave empty or set to zero if unavailable">🛈 Emissions (gCO2/kWh)</ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -130,7 +131,7 @@ export default function InventoryStep4(){
                             const network = networkString as "road" | "rail"
                             const source = inputData.electricity?.[network].source
                             return (<tr key={network}>
-                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network} (electric)</Badge></td>
+                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network}</Badge></td>
                             <td>
                                 {source
                                 ? <ValidSource source={source} onClick={(e:any) => configureSource("electricity", network)}/>
@@ -146,9 +147,9 @@ export default function InventoryStep4(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm">🛈 Network</th>
-                            <th className="item-sm">Src</th>
-                            <th className="item-sm">🛈 Emissions (gCO2/kWh)</th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail">🛈 Network</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Emissions of production of 1kg of hydrogen, leave empty or set to zero if unavailable">🛈 Emissions (gCO2/kg)</ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -156,7 +157,7 @@ export default function InventoryStep4(){
                             const network = networkString as "road" | "rail"
                             const source = inputData.hydrogen?.[network].source
                             return (<tr key={network}>
-                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network} (electric)</Badge></td>
+                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network}</Badge></td>
                             <td>
                                 {source
                                 ? <ValidSource source={source} onClick={(e:any) => configureSource("hydrogen", network)}/>

@@ -9,6 +9,7 @@ import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function BAUStep4(){
     const { keycloak, initialized } = useKeycloak();
@@ -140,10 +141,10 @@ export default function BAUStep4(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm">🛈 Network</th>
-                                    <th className="item-sm">Src</th>
-                                    <th className="item-sm">🛈 Inv. Emissions</th>
-                                    <th className="item-sm">🛈 Emissions (gCO2/kWh)</th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail">🛈 Network</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of emission used during inventory">🛈 Inv. Emissions</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected emissions of production of 1kWh of electricity, leave empty or set to zero if unavailable">🛈 Emissions (gCO2/kWh)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -172,10 +173,10 @@ export default function BAUStep4(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm">🛈 Network</th>
-                                    <th className="item-sm">Src</th>
-                                    <th className="item-sm">🛈 Inv. Emissions</th>
-                                    <th className="item-sm">🛈 Emissions (gCO2/kg)</th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail">🛈 Network</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of emission used during inventory">🛈 Inv. Emissions</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected emissions of production of 1kg of hydrogen, leave empty or set to zero if unavailable">🛈 Emissions (gCO2/kg)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

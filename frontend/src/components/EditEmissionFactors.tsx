@@ -4,6 +4,7 @@ import {Table, Button, Badge, Form, Modal} from 'react-bootstrap'
 import ChoiceModal from "./ChoiceModal"
 import TdDiagonalBar from "./TdDiagonalBar"
 import ValidSource from "./ValidSource"
+import ItemWithOverlay from "./ItemWithOverlay"
 
 export default function EditEmissionFactors (props: {
     project: ProjectType,
@@ -103,10 +104,10 @@ export default function EditEmissionFactors (props: {
                 </Modal.Header>
                 <Modal.Body>
                     <p>
-                        Emission factors are the last data you need to complete your GHG emissions calculation. Specific GHG emission factors (in CO2eq/MJ) apply according to the different fuel types (gasoline, diesel, CNG, LNG).
+                        Emission factors are the last data you need to complete your GHG emissions calculation. Specific GHG emission factors (in kgCO2eq/TJ) apply according to the different fuel types (gasoline, diesel, CNG, LNG).
                     </p>
                     <p>
-                        The chart already integrates international ones that you can use as default values if you don’t have specific values.
+                        The table already integrates international ones that you can use as default values if you don’t have specific values.
                     </p>
                     <p>
                         We would recommend to check out the <Button variant="link" onClick={e => setShowMethodologyModal(true)} style={{padding: "0"}}>🛈 methodology used</Button> to obtain those factors first.
@@ -114,16 +115,16 @@ export default function EditEmissionFactors (props: {
                     <Table bordered>
                         <thead>
                             <tr>
-                                <th className="item-sm">🛈 Fuel</th>
-                                <th className="item-sm">Src</th>
-                                <th className="item-sm">🛈 Lower heating value (TJ/1000t or MJ/kWh)</th>
-                                <th className="item-sm">🛈 Fuel density (kg/kg or kg/l)</th>
-                                <th className="item-sm">🛈 CO2e TTW (kg/Tj)</th>
-                                <th className="item-sm">🛈 CO2e WTW (kg/Tj)</th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Fuels types, current and expected">🛈 Fuels</ItemWithOverlay></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Source of factors, default values use EN 16258. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                <th className="item-sm">Lower heating value (TJ/1000t or MJ/kWh)</th>
+                                <th className="item-sm">Fuel density (kg/kg or kg/l)</th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Tank to wheel emission factor for given fuel">🛈 CO2e TTW (kg/Tj)</ItemWithOverlay></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Well to wheel emission factor for given fuel">🛈 CO2e WTW (kg/Tj)</ItemWithOverlay></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {Object.keys(props.inputData.emissionFactors?.WTW || {}).filter(ftypeString => ftypeString !== "None").map((ftypeString, index) => {
+                            {Object.keys(props.inputData.emissionFactors?.WTW || {}).filter(ftypeString => ftypeString !== "None" && ftypeString !== "Electric" && ftypeString !== "Hydrogen").map((ftypeString, index) => {
                                 const ftype = ftypeString as FuelType
                                 const fuel = props.inputData.emissionFactors.WTW[ftype]
                                 return <tr key={index}>
@@ -135,20 +136,14 @@ export default function EditEmissionFactors (props: {
                                         </td>
                                         <td><Form.Control value={fuel.lowerHeatingValue} onChange={e => updateInput(ftype, "lowerHeatingValue", e.target.value)}></Form.Control></td>
                                         <td><Form.Control value={fuel.density} onChange={e => updateInput(ftype, "density", e.target.value)}></Form.Control></td>
-                                        {ftype !== "Electric" && ftype !== "Hydrogen" 
-                                            ? <td><Form.Control value={props.inputData.emissionFactors.TTW[ftype].ges} onChange={e => updateInput(ftype, "ges", e.target.value, 'TTW')}></Form.Control></td>
-                                            : <TdDiagonalBar></TdDiagonalBar>
-                                        }
-                                        {ftype !== "Electric" && ftype !== "Hydrogen" 
-                                            ? <td><Form.Control value={props.inputData.emissionFactors.WTW[ftype].ges} onChange={e => updateInput(ftype, "ges", e.target.value, 'WTW')}></Form.Control></td>
-                                            : <TdDiagonalBar></TdDiagonalBar>
-                                        }
+                                        <td><Form.Control value={props.inputData.emissionFactors.TTW[ftype].ges} onChange={e => updateInput(ftype, "ges", e.target.value, 'TTW')}></Form.Control></td>
+                                        <td><Form.Control value={props.inputData.emissionFactors.WTW[ftype].ges} onChange={e => updateInput(ftype, "ges", e.target.value, 'WTW')}></Form.Control></td>
                                     </tr>
                             })}
                         </tbody>
                     </Table>
                     {props.inputData.note === undefined 
-                        ? <Button variant="link" onClick={e=>setNote("")}>+ Add a note</Button>
+                        ? <Button variant="link" onClick={e=>setNote("")}><ItemWithOverlay overlayContent="Write a note to keep track of hypothesis and assumptions used to fill this step. For exemple, what arithmetic operations were used to convert data from sources to this tool's expected format.">+ Add a note</ItemWithOverlay></Button>
                         : <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Label><Button variant="link" onClick={e=>setNote(undefined)}>User note X</Button></Form.Label>
                             <Form.Control as="textarea" rows={3} value={props.inputData.note} onChange={e => setNote(e.target.value)} />
@@ -175,7 +170,7 @@ export default function EditEmissionFactors (props: {
                     <Modal.Title>Emission factors methodology</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>GHG emissions consider CO2, CH4 and N20 that are transformed into gCO2eq/MJ.</p>
+                    <p>GHG emissions consider CO2, CH4 and N20 that are transformed into kgCO2eq/TJ.</p>
                     <p>CO2eq is an index created by IPCC to simplify the comparison and cumulate all of the gases in one index. In order to obtain this data, you need to convert other gases emissions in CO2 emissions, multiplying the emission factors by the Global Warming Potential of the gas. It is a measure of how much energy the emissions of 1 ton of a gas will absorb over a given period of time, relative to the emissions of 1 ton of carbon dioxide (CO2) (EPA, 2022).</p>
                     <p>CH4 have a GWP of 28 years average and N20 have a GWP of 265 average. This means that 1ton of CH4 emitted represents 28 tons of CO2.</p>
                 </Modal.Body>

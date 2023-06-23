@@ -12,6 +12,7 @@ import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWr
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import { computeVktAfterASI } from '../../utils/asiComputations'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 export default function ClimateWithoutUpstreamStep5(){
     const { keycloak, initialized } = useKeycloak();
@@ -214,12 +215,20 @@ export default function ClimateWithoutUpstreamStep5(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm">🛈 Vehicle</th>
-                                    <th className="item-sm">🛈 Fuels</th>
-                                    <th className="item-sm">🛈 Computed VKT (Mkm/y)</th>
-                                    <th className="item-sm">🛈 BAU. VKT (%)</th>
-                                    <th className="item-sm">Src</th>
-                                    <th className="item-sm">🛈 VKT (%)</th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
+                                    <th className="item-sm">
+                                        <ItemWithOverlay overlayContent={
+                                            <div>Vehicle kilometers travelled. Values for each fuel are computed as
+                                                <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
+                                                    <Badge bg="disabled">Computed VKT after shift (Mkm/y)</Badge> x <Badge bg="disabled">VKT (%)</Badge> / 100
+                                                </div>
+                                            </div>
+                                        }>🛈 Computed VKT (Mkm/y)</ItemWithOverlay>
+                                    </th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of share values used during BAU scenario">🛈 BAU. VKT (%)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT share, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%">🛈 VKT (%)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

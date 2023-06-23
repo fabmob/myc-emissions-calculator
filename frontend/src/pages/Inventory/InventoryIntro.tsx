@@ -6,6 +6,7 @@ import { ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 
 export default function InventoryIntro(){
@@ -33,36 +34,6 @@ export default function InventoryIntro(){
                 });
             }
     }, [keycloak, initialized, projectId, navigate])
-    const vehiclesInUseTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            You can choose the year of reference based on your needs
-        </Tooltip>
-    )
-    const emissionFactorsTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            Default values are available in the tool but you can customize them if you have local factors
-        </Tooltip>
-    )
-    const occupationRateTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”
-        </Tooltip>
-    )
-    const productionCO2Tooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production
-        </Tooltip>
-    )
-    const energySalesTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            Used to compare your results with the “top-down” approach
-        </Tooltip>
-    )
-    const tripLenTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            It is not useful for the inventory calculation but we encourage you to collect this data during the SUMP/NUMP diagnostic process, as it will be useful for the Climate Scenario
-        </Tooltip>
-    )
     
     return (
         <Container>
@@ -87,35 +58,35 @@ export default function InventoryIntro(){
                         <tbody>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                        <Badge bg="disabled">🛈 Transport activity - mileage and transport performance for each transport mode</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">
+                                        <ItemWithOverlay overlayContent="mileage and transport performance for each transport mode">
+                                            🛈 Transport activity
+                                        </ItemWithOverlay>
+                                    </Badge>
                                 </td>
-                                <td className="item">vkt: vehicle-kilometre and tkm: ton-kilometre</td>
+                                <td className="item-sm">vkt: vehicle-kilometre and tkm: ton-kilometre</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                        <Badge bg="disabled">🛈 Share of the transport activity by vehicle category and fuel type</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">Share of the transport activity by vehicle category and fuel type</Badge>
                                 </td>
-                                <td className="item">%vkt and %tkm</td>
+                                <td className="item-sm">%vkt and %tkm</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={vehiclesInUseTooltip}>
-                                        <Badge bg="disabled">🛈 Vehicle fuel consumption according to vehicle category and fuel type</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">Vehicle fuel consumption according to vehicle category and fuel type</Badge>
                                 </td>
-                                <td className="item">l-kW-kg/100km</td>
+                                <td className="item-sm">l-kW-kg/100km</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={emissionFactorsTooltip}>
-                                        <Badge bg="disabled">🛈 Emissions factors per fuel</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">
+                                        <ItemWithOverlay overlayContent="Default values are available in the tool but you can customize them if you have local factors">
+                                            🛈 Emissions factors per fuel
+                                        </ItemWithOverlay>
+                                    </Badge>
                                 </td>
-                                <td className="item">gC02/l</td>
+                                <td className="item-sm">kgC02/TJ</td>
                             </tr>
                         </tbody>
                     </Table>
@@ -130,35 +101,43 @@ export default function InventoryIntro(){
                         <tbody>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={occupationRateTooltip}>
-                                        <Badge bg="disabled">🛈 Occupation rate per transport category</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">
+                                        <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
+                                            🛈 Occupation rate per transport category
+                                        </ItemWithOverlay>
+                                    </Badge>
                                 </td>
-                                <td className="item">passengers / load (tons)</td>
+                                <td className="item-sm">passengers / load (tons)</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={productionCO2Tooltip}>
-                                        <Badge bg="disabled">🛈 CO2 content of electricity and hydrogen production</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">
+                                        <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
+                                            🛈 CO2 content of electricity and hydrogen production
+                                        </ItemWithOverlay>
+                                    </Badge>
                                 </td>
-                                <td className="item">gCO2/kWh or gCO2/kg</td>
+                                <td className="item-sm">gCO2/kWh or gCO2/kg</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={energySalesTooltip}>
-                                        <Badge bg="disabled">🛈 Energy sales in the territory</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">
+                                        <ItemWithOverlay overlayContent="Used to compare your results with the “top-down” approach">
+                                            🛈 Energy sales in the territory
+                                        </ItemWithOverlay>
+                                    </Badge>
                                 </td>
-                                <td className="item">TOE</td>
+                                <td className="item-sm">TOE: tons of oil equivalent</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={tripLenTooltip}>
-                                        <Badge bg="disabled">🛈 Trip length per transport category</Badge>
-                                    </OverlayTrigger>
+                                    <Badge bg="disabled">
+                                        <ItemWithOverlay overlayContent="It is not useful for the inventory calculation but we encourage you to collect this data during the SUMP/NUMP diagnostic process, as it will be useful for the Climate Scenario">
+                                            🛈 Trip length per transport category
+                                        </ItemWithOverlay>
+                                    </Badge>
                                 </td>
-                                <td className="item">km</td>
+                                <td className="item-sm">km</td>
                             </tr>
                         </tbody>
                     </Table>
