@@ -9,7 +9,7 @@ const ProjectNav = (props: {project: ProjectType, current: "Config" | "Edition" 
     const config = () => navigate('/project/' + props.project.id + '/config')
     const compare = () => navigate('/project/' + props.project.id + '/viz')
     return (
-        <ButtonGroup size="lg" className="mb-2 col-12">
+        <ButtonGroup size="lg" className="col-12" style={{marginBottom: "48px"}}>
             <Button variant={props.current === 'Config'? 'primary' : 'secondary'} onClick={config}>Config</Button>
             <Button variant={props.current === 'Edition'? 'primary' : 'secondary'} onClick={edit}>Edition</Button>
             <Button variant={props.current === 'Compare'? 'primary' : 'secondary'} onClick={compare}>Compare</Button>
