@@ -172,3 +172,26 @@ input.cellError {
         padding: 20px;
     }
 }
+
+.btn-imglink {
+    padding-left: 0;
+}
+.btn-imglink:hover {
+    opacity: 0.6;
+}
+.card {
+    background-color: #E6E6E6;
+    border-radius: 24px;
+    border: none;
+    padding: 30px 36px;
+}
+.card-header {
+    border: none;
+    background-color: inherit;
+}
+.card-header:first-child {
+    border-radius: 24px;
+}
+.card-header h2{
+    font-size: 24px;
+}

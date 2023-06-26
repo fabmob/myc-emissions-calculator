@@ -633,7 +633,7 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/Without/results', ke
         }
     }
     const vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, project.referenceYears)
-    console.log("vehicleKilometresTravelledComputed", vehicleKilometresTravelledComputed)
+    // console.log("vehicleKilometresTravelledComputed", vehicleKilometresTravelledComputed)
     let inputVktPerFuel : types.VktPerFuel = {}
     vtypes = Object.keys(climateVktPerFuel.vtypes)
     for (let i = 0; i < vtypes.length; i++) {
@@ -721,6 +721,20 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/Without/results', ke
         modalShare: modalShare
     })
 })
+app.post('/api/project/:projectId/Climate/:climateScenarioId/duplicate', keycloak.protect(), (req: Request, res: Response) => {
+    const owner = (req as any).kauth.grant.access_token.content.email
+    const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
+    
+    dbwrapper.duplicateClimateScenario(parseInt(req.params.projectId), parseInt(req.params.climateScenarioId), parseInt(req.body.newScenarioId), () => {
+        const project = dbwrapper.getProject(owner, parseInt(req.params.projectId), isAdmin)
+    
+        res.json({
+            status: "ok",
+            project: project
+        });
+    })
+})
+
 app.put('/api/project/:projectId/:stage/:stageId/step/:stepNumber', keycloak.protect(), (req: Request, res: Response) => {
     const inputDataString = JSON.stringify(req.body.inputData)
 

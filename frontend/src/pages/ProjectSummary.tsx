@@ -18,7 +18,7 @@ export default function ProjectSummary(){
     const [hideParams, setHideParams] = useState({} as {[state: string]: boolean})
     const [inventoryTotalEnergyAndEmissions, setInventoryTotalEnergyAndEmissions] = useState({TTW: {} as TotalEnergyAndEmissions, WTW:  {} as TotalEnergyAndEmissions})
     const [bauResults, setBAUResults] = useState({} as EmissionsResults)
-    const [climateResults, setClimateResults] = useState({} as EmissionsResults)
+    const [climateResults, setClimateResults] = useState<EmissionsResults[]>([])
     const projectId = params.projectId
     const defaultColors = ["#2CB1D5", "#A2217C", "#808080", "#67CAE4", "#CE8DBB", "#B3B3B3", "#C5E8F2", "#EBD1E1", "#E6E6E6"]
     
@@ -40,7 +40,9 @@ export default function ProjectSummary(){
                     setProject(data.project)
                     fetchInventoryResults()
                     fetchBAUResults()
-                    fetchClimateResults(data.project, 0)
+                    for (let i = 0; i < data.project.stages.Climate.length; i++) {
+                        fetchClimateResults(data.project, i)
+                    }
                 });
             }
     }, [keycloak, initialized, projectId, navigate])
@@ -61,6 +63,25 @@ export default function ProjectSummary(){
             }
         })
     }
+    const duplicateClimateScenario = (stageId: number) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
+            body: JSON.stringify({newScenarioId: project.stages.Climate.length})
+        };
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + "/Climate/" + stageId + "/duplicate", requestOptions)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                if (data.status !== "ok") {
+                    console.log(data.status)
+                    return
+                }
+                setProject(data.project)
+                fetchClimateResults(data.project, data.project.stages.Climate.length-1)
+            })
+    }
     const StepCard = (props: {title: string, stage: ProjectStage, children: React.ReactNode, stageId?: number}) => {
         let introUrl = `/project/${project.id}/${props.stage}/intro`
         if (props.stageId !== undefined) {
@@ -69,15 +90,15 @@ export default function ProjectSummary(){
         return (<Card className="mb-5">
             <Card.Header>
                 <Row className='align-items-center'>
-                    <Col xs="8"><h2>{props.title}</h2></Col>
-                    <Col xs="2">
+                    <Col xs={props.stage === "Climate" ? "8" : "9"}><h2>{props.title}</h2></Col>
+                    <Col xs={props.stage === "Climate" ? "4" : "3"} style={{display: "flex", justifyContent: "space-between"}}>
                         {!hideParams[props.title] 
-                            ? <Button variant="link" onClick={_=>hide(props.title)}>See less</Button>
-                            : <Button variant="link" onClick={_=>show(props.title)}>See more</Button>
+                            ? <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>hide(props.title)}>See less</Button>
+                            : <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>show(props.title)}>See more</Button>
                         }
-                    </Col>
-                    <Col xs="2">
-                        <Button onClick={e => navigate(introUrl)}>
+                        {props.stage === "Climate" && props.stageId != undefined && <Button variant="imglink" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><img src="/duplicate.svg"></img></Button>}
+                    
+                        <Button onClick={e => navigate(introUrl)} style={{minWidth: "76px"}}>
                         {project.stages?.[props.stage].length ? "Edit": "Create +"}
                         </Button>
                     </Col>
@@ -134,7 +155,11 @@ export default function ProjectSummary(){
             })
             .then(data => {
                 console.log("get Climate results reply", data)
-                setClimateResults(data)
+                setClimateResults((prevClimateResults) => {
+                    const newClimateResults = prevClimateResults.slice()
+                    newClimateResults[climateScenarioId] = data
+                    return newClimateResults
+                })
             })
     }
     const inventoryEmissionsPieData = [].concat.apply([], Object.keys(inventoryTotalEnergyAndEmissions["WTW"]).map((vtype, index) => {
@@ -188,7 +213,7 @@ export default function ProjectSummary(){
                                     </tbody>
                                 </Table>
                             </Col>
-                            <Col sm="4">
+                            <Col sm="4" style={{background: "white", padding: "20px"}}>
                                 <ResponsiveContainer width="100%" height={200}>
                                     <PieChart width={200} height={200}>
                                     <Pie
@@ -211,7 +236,7 @@ export default function ProjectSummary(){
                     <StepCard title='2. Business As Usual (BAU) Scenario' stage="BAU">
                         <span>Projecting - The Business-as-usual scenario aims to describe the transport related emissions if nothing changed in the years to come from the current status quo.</span>
                         {bauResults?.emissions && <Row className="align-items-center">
-                            <Col sm="8">
+                            <Col sm="8" style={{background: "white", padding: "20px"}}>
                                 <EmissionsBarChart emissionsData={bauResults?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
                             </Col>
                             <Col sm="4">
@@ -219,17 +244,38 @@ export default function ProjectSummary(){
                         </Row>
                         }
                     </StepCard>
-                    <StepCard title='3. Climate Scenario' stage="Climate" stageId={0}>
+                    <StepCard title='3. Climate Scenario (1)' stage="Climate" stageId={0}>
                         <span>Comparing - The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
-                        {climateResults?.emissions && <Row className="align-items-center">
-                            <Col sm="8">
-                                <EmissionsBarChart emissionsData={climateResults?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
+                        {climateResults?.[0]?.emissions && <Row className="align-items-center">
+                            <Col sm="8" style={{background: "white", padding: "20px"}}>
+                                <EmissionsBarChart emissionsData={climateResults?.[0]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
                             </Col>
                             <Col sm="4">
                             </Col>
                         </Row>
                         }
                     </StepCard>
+                    {project?.stages?.Climate.map((scenario, index) => {
+                        if (index === 0) {
+                            return <div key={0}></div>
+                        }
+                        return (
+                            <StepCard title={`3. Climate Scenario (${index + 1})`} stage="Climate" stageId={index} key={index}>
+                                <span>Comparing - The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
+                                {climateResults?.[index]?.emissions && <Row className="align-items-center">
+                                    <Col sm="8" style={{background: "white", padding: "20px"}}>
+                                        <EmissionsBarChart emissionsData={climateResults?.[index]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
+                                    </Col>
+                                    <Col sm="4">
+                                    </Col>
+                                </Row>
+                                }
+                            </StepCard>
+                        )
+                    })}
+                    {project?.stages?.Climate?.length > 0 &&
+                        <div style={{marginBottom: "30px"}}><Button variant="link" onClick={_=>navigate(`/project/${project.id}/Climate/${project.stages.Climate.length}/intro`)}>+ Add another climate scenario</Button></div>
+                    }
                 </Col>
             </Row>
         </Container>

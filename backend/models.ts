@@ -313,13 +313,6 @@ export function computeVktAfterASI(
     vehicleStats: types.VehicleStats, // 2.2) BAU occupancy table (pass per vtype) +  2.3) avg BAU trip length (km per vtye)
     inputOriginModeMatrix: types.OriginModeMatrix, // 2.3) origin mode of transportation (% per year per vtype per vtype)
 ) : types.TransportPerformance { // TODO: this should return vkts, not ukms (type error)
-    console.log("referenceYears", JSON.stringify(referenceYears))
-    console.log("inputAvoidedVkt", JSON.stringify(inputAvoidedVkt))
-    console.log("BAUVkt", JSON.stringify(BAUVkt))
-    console.log("inputAdditionalVkt", JSON.stringify(inputAdditionalVkt))
-    console.log("inputOccupancyRate", JSON.stringify(inputOccupancyRate))
-    console.log("vehicleStats", JSON.stringify(vehicleStats))
-    console.log("inputOriginModeMatrix", JSON.stringify(inputOriginModeMatrix))
     let baseVkt : types.TransportPerformance = {}
     const vehicleTypeArray = Object.keys(BAUVkt)
     for (let y = 0; y < referenceYears.length; y++) {
@@ -344,21 +337,19 @@ export function computeVktAfterASI(
             const pkmStartOfYear = vktStartOfYear * (parseFloat(inputOccupancyRate?.vtypes[vtype]?.load?.[y-2]) || vehicleStats[vtype].occupancy)
             const pkmAddedThisYear = pkm - pkmStartOfYear
 
-            console.log("pkm Added in", referenceYears[y] , "for", vtype, "is", pkmAddedThisYear)
+            // console.log("pkm Added in", referenceYears[y] , "for", vtype, "is", pkmAddedThisYear)
 
             // This value is the one that should be divided in trips and imputed from the other vtypes
             distributeReductionInReducedPkm(reducedPkm, inputOriginModeMatrix, vehicleStats, vtype, pkmAddedThisYear, y)
 
-            console.log("leading to the following reductions:", reducedPkm) // should match Q144 table
+            // console.log("leading to the following reductions:", reducedPkm) // should match Q144 table
         }
         // Once all reduction are computed, we can move that back to vkt, and remove them from this year base
         const sourceVehicleTypeArray = Object.keys(reducedPkm)
         for (let j = 0; j < sourceVehicleTypeArray.length; j++) {
             const sourceVtype = sourceVehicleTypeArray[j]
             const occupancy = parseFloat(inputOccupancyRate?.vtypes[sourceVtype]?.load?.[y-1]) || vehicleStats[sourceVtype].occupancy
-            console.log("occupancy", occupancy)
             baseVkt[sourceVtype][y] -= reducedPkm[sourceVtype] / occupancy // vkt is always pkm(tkm) / occupancy(load)
-            console.log("baseVkt[sourceVtype][y]", baseVkt[sourceVtype][y])
         }
     }
     return baseVkt
@@ -405,7 +396,7 @@ export function computeScenarioModalShare(
             }
         }
     }
-    console.log("passengersTransportPerformance", passengersTransportPerformance)
+    // console.log("passengersTransportPerformance", passengersTransportPerformance)
     return {
         "passengers": computeModalShare(passengersTransportPerformance),
         "freight": computeModalShare(freightTransportPerformance)

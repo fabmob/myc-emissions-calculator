@@ -277,3 +277,17 @@ export function deleteProject(id: number, owner: string, isAdmin: boolean) {
     }
     return res
 }
+
+export function duplicateClimateScenario(projectId: number, oldStageId: number, newStageId: number, done: Function) {
+    const getProjectStepsStmt = db.prepare("SELECT * FROM ProjectSteps WHERE projectId = ? and stage = 'Climate' and stageId = ?")
+    let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([projectId, oldStageId])
+    const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stage, stageId, stepNumber, value) values (?, ?, ?, ?, ?)")
+    const inserts = db.transaction((steps) => {
+        for (let i = 0; i < steps.length; i++) {
+            const projectStep = steps[i];
+            addProjectStepStmt.run([projectId, "Climate", newStageId, projectStep.stepNumber, projectStep.value])
+        }
+        done()
+    })
+    inserts(resProjectSteps)
+}
