@@ -114,7 +114,7 @@ export default function InventoryStep2(){
             let tmp = {...prevInputData}
             let vkt = "";
             if (fleetMileage) {
-                vkt = (parseFloat(fleetMileage) * parseFloat(tmp.vtypes[vtype].fleetStock)).toString() 
+                vkt = (parseFloat(fleetMileage) * parseFloat(tmp.vtypes[vtype].fleetStock) / 1000000).toString() 
             }
             tmp.vtypes[vtype].vkt = vkt
             tmp.vtypes[vtype].fleetMileage = fleetMileage
