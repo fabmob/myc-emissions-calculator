@@ -460,8 +460,10 @@ app.get('/api/project/:projectId/BAU/0/results', keycloak.protect(), (req: Reque
         }
     }
     const outputTransportPerformance = models.computeTransportPerformance(vehicleKilometresTravelledComputed, vehicleStats)
-    const outputPassengersModalShare = models.computeModalShare(Object.fromEntries(Object.entries(outputTransportPerformance).filter(([k,v]) => vehicleStats[k].type !== "freight")))
-    const outputFreightModalShare = models.computeModalShare(Object.fromEntries(Object.entries(outputTransportPerformance).filter(([k,v]) => vehicleStats[k].type === "freight")))
+    const passengersTransportPerformance = Object.fromEntries(Object.entries(outputTransportPerformance).filter(([k,v]) => vehicleStats[k].type !== "freight"))
+    const freightTransportPerformance = Object.fromEntries(Object.entries(outputTransportPerformance).filter(([k,v]) => vehicleStats[k].type === "freight"))
+    const outputPassengersModalShare = models.computeModalShare(passengersTransportPerformance)
+    const outputFreightModalShare = models.computeModalShare(freightTransportPerformance)
     
     
     const outputAverageEnergyConsumptionComputed = inputAverageEnergyConsumption// models.computeAverageEnergyConsumption(inputAverageEnergyConsumption, project.referenceYears)
@@ -499,6 +501,10 @@ app.get('/api/project/:projectId/BAU/0/results', keycloak.protect(), (req: Reque
         modalShare: {
             passengers: outputPassengersModalShare,
             freight: outputFreightModalShare
+        },
+        transportPerformance: {
+            passengers: passengersTransportPerformance,
+            freight: freightTransportPerformance
         }
     });
 });
@@ -592,6 +598,10 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/With/results', keycl
         modalShare: {
             passengers: models.computeModalShare(passengersTransportPerformance),
             freight: models.computeModalShare(freightTransportPerformance)
+        },
+        transportPerformance: {
+            passengers: passengersTransportPerformance,
+            freight: freightTransportPerformance
         }
     })
 })
@@ -710,7 +720,8 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/Without/results', ke
         null,
         vehicleStats
     )
-    const modalShare = models.computeScenarioModalShare(project.referenceYears, baseVkt, inputClimateWithoutUpstreamStep3, vehicleStats)
+    const scenarioTransportPerformances = models.computeScenarioTransportPerformances(project.referenceYears, baseVkt, inputClimateWithoutUpstreamStep3, vehicleStats)
+    const modalShare = models.computeScenarioModalShare(scenarioTransportPerformances)
     res.json({
         status: "ok",
         emissions: {
@@ -718,7 +729,8 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/Without/results', ke
             TTW: emissionsTTW
         },
         vkt: baseVkt,
-        modalShare: modalShare
+        modalShare: modalShare,
+        transportPerformance: scenarioTransportPerformances
     })
 })
 app.post('/api/project/:projectId/Climate/:climateScenarioId/duplicate', keycloak.protect(), (req: Request, res: Response) => {

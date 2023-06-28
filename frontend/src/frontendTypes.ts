@@ -398,5 +398,9 @@ export type EmissionsResults = {
     modalShare: {
         passengers: ModalShare,
         freight: ModalShare
+    },
+    transportPerformance: {
+        passengers: TransportPerformance,
+        freight: TransportPerformance
     }
 }

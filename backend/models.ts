@@ -372,12 +372,13 @@ export function computeScenarioWithoutUpstreamGHGEmissions(
     return computeScenarioWithUpstreamGHGEmissions(referenceYears, baseVkt, inputVktPerFuel, inputAverageEnergyConsumption, energyAndEmissionsDefaultValues, electricityProductionEmissions, vehicleStats)
 }
 
-export function computeScenarioModalShare(
+
+export function computeScenarioTransportPerformances(
     referenceYears: number[],
     baseVkt: types.TransportPerformance, // vkt after ASI
     inputOccupancyRate: types.InputClimateWithoutUpstreamStep3, // 2.2) occupancy rate (pass per year per vtype)
     vehicleStats: types.VehicleStats, // 2.2) BAU occupancy table (pass per vtype)
-) : {"passengers": types.ModalShare, "freight": types.ModalShare} {
+) : {"passengers": types.TransportPerformance, "freight": types.TransportPerformance} {
     // Convert vkt into pkm, and split into passengers and freight
     let passengersTransportPerformance : types.TransportPerformance = {}
     let freightTransportPerformance : types.TransportPerformance = {}
@@ -398,7 +399,15 @@ export function computeScenarioModalShare(
     }
     // console.log("passengersTransportPerformance", passengersTransportPerformance)
     return {
-        "passengers": computeModalShare(passengersTransportPerformance),
-        "freight": computeModalShare(freightTransportPerformance)
+        "passengers": passengersTransportPerformance,
+        "freight": freightTransportPerformance
+    }
+}
+export function computeScenarioModalShare(
+    scenarioTransportPerformances: {"passengers": types.TransportPerformance, "freight": types.TransportPerformance}
+) : {"passengers": types.ModalShare, "freight": types.ModalShare} {
+    return {
+        "passengers": computeModalShare(scenarioTransportPerformances.passengers),
+        "freight": computeModalShare(scenarioTransportPerformances.freight)
     }
 }

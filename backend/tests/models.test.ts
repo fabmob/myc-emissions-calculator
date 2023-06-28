@@ -788,7 +788,8 @@ test('compute scenario modal share', () => {
         vehicleStats,
         inputOriginModeMatrix,
     )
-    const modalShare = models.computeScenarioModalShare(referenceYears, baseVkt, inputOccupancyRate, vehicleStats)
+    const scenarioTransportPerformances = models.computeScenarioTransportPerformances(referenceYears, baseVkt, inputOccupancyRate, vehicleStats)
+    const modalShare = models.computeScenarioModalShare(scenarioTransportPerformances)
     console.log(modalShare)
     expect(modalShare.passengers['NMT'].map(e => parseFloat(e.toFixed(3)))).toEqual([0.004,0.006,0.006,0.005,0.005,0.005])
     expect(modalShare.passengers['Private car'].map(e => parseFloat(e.toFixed(3)))).toEqual([0.722,0.619,0.514,0.396,0.271,0.162])

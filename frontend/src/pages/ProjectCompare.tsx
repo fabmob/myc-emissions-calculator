@@ -1,28 +1,32 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, SetStateAction} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Button, Container, Row, Col, Card, Table, Badge } from 'react-bootstrap'
-import {ProjectStage, ProjectType, TotalEnergyAndEmissions, FuelType, EmissionsResults} from '../frontendTypes'
+import { Button, Container, Row, Col, Card, Table, Badge, Form } from 'react-bootstrap'
+import {ProjectType, TotalEnergyAndEmissions, EmissionsResults, InputStep2, InputInventoryStep1} from '../frontendTypes'
 import ProjectNav from '../components/ProjectNav'
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts'
 
 import './Project.css'
 import EmissionsTable from '../components/viz/EmissionsTable'
 import EmissionsCompareBarChart from '../components/viz/EmissionsCompareBarChart'
 import VktCompareBarChart from '../components/viz/VktCompareBarChart'
 import ModalShareCompareBarChart from '../components/viz/ModalShareCompareBarChart'
+import TransportPerformanceCompareBarChart from '../components/viz/TransportPerformanceCompareBarChart'
+import EmissionsPerUkmCompareBarChart from '../components/viz/EmissionsPerUkmCompareBarChart'
 
 export default function ProjectCompare(){
     const { keycloak, initialized } = useKeycloak()
     const navigate = useNavigate()
     const params = useParams()
     const [project, setProject ] = useState({} as ProjectType)
-    const [hideParams, setHideParams] = useState({} as {[state: string]: boolean})
     const [inventoryTotalEnergyAndEmissions, setInventoryTotalEnergyAndEmissions] = useState({TTW: {} as TotalEnergyAndEmissions, WTW:  {} as TotalEnergyAndEmissions})
     const [bauResults, setBAUResults] = useState({} as EmissionsResults)
     const [climateResults, setClimateResults] = useState({} as EmissionsResults)
+    const [displayedVtypes, setDisplayedVtypes] = useState({} as {[key: string]: boolean})
+    const [typeOfGHGIsWTW, setTypeOfGHGIsWTW] = useState(true)
+    const [showPercents, setShowPercents] = useState(false)
+    const [showLabels, setShowLabels] = useState(false)
+    const [highContrastColors, setHighContrastColors] = useState(false)
     const projectId = params.projectId
-    const defaultColors = ["#2CB1D5", "#A2217C", "#808080", "#67CAE4", "#CE8DBB", "#B3B3B3", "#C5E8F2", "#EBD1E1", "#E6E6E6"]
     
     useEffect(() => {
         if (initialized && keycloak.authenticated && projectId){
@@ -47,49 +51,6 @@ export default function ProjectCompare(){
             }
     }, [keycloak, initialized, projectId, navigate])
     
-    const hide = (state: string) => {
-        setHideParams(prevHideParams => {
-            return {
-                ...prevHideParams,
-                [state]: true
-            }
-        })
-    }
-    const show = (state: string) => {
-        setHideParams(prevHideParams => {
-            return {
-                ...prevHideParams,
-                [state]: false
-            }
-        })
-    }
-    const StepCard = (props: {title: string, stage: ProjectStage, children: React.ReactNode, stageId?: number}) => {
-        let introUrl = `/project/${project.id}/${props.stage}/intro`
-        if (props.stageId !== undefined) {
-            introUrl = `/project/${project.id}/${props.stage}/${props.stageId}/intro`
-        }
-        return (<Card className="mb-5">
-            <Card.Header>
-                <Row className='align-items-center'>
-                    <Col xs="8"><h2>{props.title}</h2></Col>
-                    <Col xs="2">
-                        {!hideParams[props.title] 
-                            ? <Button variant="link" onClick={_=>hide(props.title)}>See less</Button>
-                            : <Button variant="link" onClick={_=>show(props.title)}>See more</Button>
-                        }
-                    </Col>
-                    <Col xs="2">
-                        <Button onClick={e => navigate(introUrl)}>
-                        {project.stages?.[props.stage].length ? "Edit": "Create +"}
-                        </Button>
-                    </Col>
-                </Row>
-            </Card.Header>
-            {!hideParams[props.title] && <Card.Body>
-                {props.children}
-            </Card.Body>}
-        </Card>)
-    }
     const fetchInventoryResults = () => {
         const requestOptions = {
             method: 'GET',
@@ -139,18 +100,7 @@ export default function ProjectCompare(){
                 setClimateResults(data)
             })
     }
-    const inventoryEmissionsPieData = [].concat.apply([], Object.keys(inventoryTotalEnergyAndEmissions["WTW"]).map((vtype, index) => {
-        let res = []
-        const fuels = inventoryTotalEnergyAndEmissions["WTW"][vtype]
-        const ftypes = Object.keys(fuels)
-        for (let i = 0; i < ftypes.length; i++) {
-            const ftype = ftypes[i] as FuelType
-            const co2 = fuels[ftype]?.co2[0] || ''
-            if (co2)
-                res.push({name: vtype + ", " + ftype, value: co2})
-        }
-        return res
-    })as any[])
+    
     return (
         <Container>
              <Row className="justify-content-md-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
@@ -158,16 +108,97 @@ export default function ProjectCompare(){
                     <h1>{project.name}</h1>
                     <ProjectNav current="Compare" project={project} />
                     <h2>Graphs</h2>
-                    <h3>Emissions</h3>
-                    <EmissionsCompareBarChart project={project} bauEmissionsData={bauResults?.emissions?.WTW || {}} climateEmissionsData={climateResults?.emissions?.WTW || {}}></EmissionsCompareBarChart>
-                    <h3>Vkt</h3>
-                    <VktCompareBarChart project={project} bauVktData={bauResults?.vkt || {}} climateVktData={climateResults?.vkt || {}}></VktCompareBarChart>
-                    <h3>Passenger modal share</h3>
-                    <ModalShareCompareBarChart project={project} bauModalShareData={bauResults?.modalShare?.passengers || {}} climateModalShareData={climateResults?.modalShare?.passengers || {}}></ModalShareCompareBarChart>
-                    <h3>Freight modal share</h3>
-                    <ModalShareCompareBarChart project={project} bauModalShareData={bauResults?.modalShare?.freight || {}} climateModalShareData={climateResults?.modalShare?.freight || {}}></ModalShareCompareBarChart>
-                    
-                    <h2>Datasets</h2>
+                    <Options 
+                        project={project} 
+                        setDisplayedVtypes={setDisplayedVtypes} 
+                        typeOfGHGIsWTW={typeOfGHGIsWTW} 
+                        setTypeOfGHGIsWTW={setTypeOfGHGIsWTW}
+                        showPercents={showPercents} 
+                        setShowPercents={setShowPercents}
+                        showLabels={showLabels} 
+                        setShowLabels={setShowLabels}
+                        highContrastColors={highContrastColors}
+                        setHighContrastColors={setHighContrastColors}
+                    />
+                    <EmissionsCompareBarChart 
+                        project={project} 
+                        bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
+                        climateEmissionsData={(typeOfGHGIsWTW ? climateResults?.emissions?.WTW : climateResults?.emissions?.TTW) || {}}
+                        displayedVtypes={displayedVtypes}
+                        showPercents={showPercents}
+                        showLabels={showLabels}
+                        highContrastColors={highContrastColors}
+                    ></EmissionsCompareBarChart>
+                    <VktCompareBarChart 
+                        project={project} 
+                        bauVktData={bauResults?.vkt || {}} 
+                        climateVktData={climateResults?.vkt || {}}
+                        displayedVtypes={displayedVtypes}
+                        showPercents={showPercents}
+                        showLabels={showLabels}
+                        highContrastColors={highContrastColors}
+                    ></VktCompareBarChart>
+                    <ModalShareCompareBarChart
+                        project={project}
+                        title="Passenger modal share"
+                        bauModalShareData={bauResults?.modalShare?.passengers || {}}
+                        climateModalShareData={climateResults?.modalShare?.passengers || {}}
+                        showLabels={showLabels}
+                        highContrastColors={highContrastColors}
+                    ></ModalShareCompareBarChart>
+                    <ModalShareCompareBarChart
+                        project={project}
+                        title="Freight modal share"
+                        bauModalShareData={bauResults?.modalShare?.freight || {}}
+                        climateModalShareData={climateResults?.modalShare?.freight || {}}
+                        showLabels={showLabels}
+                        highContrastColors={highContrastColors}
+                    ></ModalShareCompareBarChart>
+                    <TransportPerformanceCompareBarChart 
+                        title="Passenger transport performance (pkm)"
+                        project={project} 
+                        bauTransportPerformanceData={bauResults?.transportPerformance?.passengers || {}} 
+                        climateTransportPerformanceData={climateResults?.transportPerformance?.passengers|| {}}
+                        displayedVtypes={displayedVtypes}
+                        showPercents={showPercents}
+                        showLabels={showLabels}
+                        highContrastColors={highContrastColors}
+                    ></TransportPerformanceCompareBarChart>
+                    <TransportPerformanceCompareBarChart 
+                        title="Freight transport performance (tkm)"
+                        project={project} 
+                        bauTransportPerformanceData={bauResults?.transportPerformance?.freight || {}} 
+                        climateTransportPerformanceData={climateResults?.transportPerformance?.freight|| {}}
+                        displayedVtypes={displayedVtypes}
+                        showPercents={showPercents}
+                        showLabels={showLabels}
+                        highContrastColors={highContrastColors}
+                    ></TransportPerformanceCompareBarChart>
+                    <EmissionsPerUkmCompareBarChart 
+                        title="Passenger emissions per transport performance (gCO2/pkm)"
+                        project={project} 
+                        bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
+                        climateEmissionsData={(typeOfGHGIsWTW ? climateResults?.emissions?.WTW : climateResults?.emissions?.TTW) || {}}
+                        bauTransportPerformanceData={bauResults?.transportPerformance?.passengers || {}} 
+                        climateTransportPerformanceData={climateResults?.transportPerformance?.passengers|| {}}
+                        displayedVtypes={displayedVtypes}
+                        showPercents={showPercents}
+                        showLabels={showLabels}
+                        highContrastColors={highContrastColors}
+                    ></EmissionsPerUkmCompareBarChart>
+                    <EmissionsPerUkmCompareBarChart 
+                        title="Freight emissions per transport performance (gCO2/tkm)"
+                        project={project} 
+                        bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
+                        climateEmissionsData={(typeOfGHGIsWTW ? climateResults?.emissions?.WTW : climateResults?.emissions?.TTW) || {}}
+                        bauTransportPerformanceData={bauResults?.transportPerformance?.freight || {}} 
+                        climateTransportPerformanceData={climateResults?.transportPerformance?.freight|| {}}
+                        displayedVtypes={displayedVtypes}
+                        showPercents={showPercents}
+                        showLabels={showLabels}
+                        highContrastColors={highContrastColors}
+                    ></EmissionsPerUkmCompareBarChart>
+                    <h2 style={{marginTop: "20px"}}>Datasets</h2>
                     <Table bordered>
                         <thead>
                             <tr>
@@ -213,3 +244,100 @@ export default function ProjectCompare(){
 
     )
 }
+type SetBoolean = (key:boolean | ((k:boolean) => boolean)) => void
+const Options = (
+    {project, setDisplayedVtypes, typeOfGHGIsWTW, setTypeOfGHGIsWTW, showPercents, setShowPercents, showLabels, setShowLabels, highContrastColors, setHighContrastColors}: 
+    {project: ProjectType, setDisplayedVtypes: React.Dispatch<SetStateAction<{[key:string]: boolean}>>, typeOfGHGIsWTW: boolean, setTypeOfGHGIsWTW: SetBoolean, showPercents: boolean, setShowPercents: SetBoolean, showLabels: boolean, setShowLabels: SetBoolean, highContrastColors: boolean, setHighContrastColors: SetBoolean}
+    ) => {
+    const [showBody, setShowBody] = useState(false)
+    const [pin, setPin] = useState(false)
+    const [selectedVtypes, setSelectedVtypes] = useState({} as {[key:string]: boolean})
+    useEffect(() => {
+        const inventoryStep1 : InputInventoryStep1 = project.stages?.Inventory?.[0]?.steps?.[1] || {}
+        const vtypes = Object.keys(inventoryStep1.vtypes || {})
+        const init : {[key:string]:boolean} = {}
+        for (let i = 0; i < vtypes.length; i++) {
+            const vtype = vtypes[i]
+            init[vtype] = true
+        }
+        setSelectedVtypes(init)
+    }, [project])
+    useEffect(() => {
+        if (selectedVtypes)
+            setDisplayedVtypes(selectedVtypes)
+    }, [selectedVtypes])
+    if (!project?.stages?.['Inventory']?.[0]?.steps?.[2]) {
+        return <></>
+    }
+    const vtypes = Object.keys(selectedVtypes)
+    const updateSelectedVtypes = (event: React.BaseSyntheticEvent) => {
+        let target = event.target as HTMLInputElement
+        let vtype = target.name
+        setSelectedVtypes((prevSelectedVtypes) => {
+            const newSelectedVtypes = {
+                ...prevSelectedVtypes,
+                [vtype]: !prevSelectedVtypes[vtype]
+            }
+            return newSelectedVtypes
+        })
+    }
+    return (
+        <>
+            <Card className={"d-print-none" + (pin ? " stickyOptions" : "")} style={{textAlign: "left", marginBottom: "20px"}}>
+                <Card.Header onClick={() => setShowBody(p=>!p)} style={{cursor: "pointer"}}>
+                    Visualisations option (click to display)
+                    <span style={{float: "right"}} onClick={(e) => {e.stopPropagation(); setPin(p => !p)}}>📌</span>
+                </Card.Header>
+                {showBody && <Card.Body>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Displayed categories of transport</Form.Label>
+                        <Row>
+                        {vtypes.map((vtype, index) => {
+                            return (
+                                <Col xs="4" key={index}>
+                                    <Form.Switch style={{margin: "5px"}} id={"custom-switch-" + vtype} key={index}>
+                                        <Form.Switch.Input  name={vtype} checked={selectedVtypes[vtype]} onChange={updateSelectedVtypes}/>
+                                        <Form.Switch.Label>{vtype}</Form.Switch.Label>
+                                    </Form.Switch>
+                                </Col>
+                            )
+                        })}
+                        </Row>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>GHG emission type</Form.Label>
+                        <Form.Check
+                            id="custom-switch-wtw"
+                            type="radio"
+                            checked={typeOfGHGIsWTW}
+                            onChange={() => setTypeOfGHGIsWTW(true)}
+                            label="Well To Wheel (WTW)"
+                        />
+                        <Form.Check
+                            id="custom-switch-ttw"
+                            type="radio"
+                            checked={!typeOfGHGIsWTW}
+                            onChange={() => setTypeOfGHGIsWTW(false)}
+                            label="Tank To Wheel (TTW)"
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Graph content</Form.Label>
+                        <Form.Switch style={{margin: "5px"}} id="custom-switch-percent">
+                            <Form.Switch.Input checked={showPercents} onChange={() => setShowPercents((p:boolean)=>!p)}/>
+                            <Form.Switch.Label>Display percents increase</Form.Switch.Label>
+                        </Form.Switch>
+                        <Form.Switch style={{margin: "5px"}} id="custom-switch-labels">
+                            <Form.Switch.Input checked={showLabels} onChange={() => setShowLabels((p:boolean)=>!p)}/>
+                            <Form.Switch.Label>Display labels</Form.Switch.Label>
+                        </Form.Switch>
+                        <Form.Switch style={{margin: "5px"}} id="custom-switch-labels">
+                            <Form.Switch.Input checked={highContrastColors} onChange={() => setHighContrastColors((p:boolean)=>!p)}/>
+                            <Form.Switch.Label>Use high contrast colors</Form.Switch.Label>
+                        </Form.Switch>
+                    </Form.Group>
+                </Card.Body>}
+            </Card>
+        </>
+    );
+  }
