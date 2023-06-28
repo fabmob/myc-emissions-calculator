@@ -140,7 +140,7 @@ export default function ClimateWithoutUpstreamStep4(){
                 let yearlyValues = inputData.vtypes[goalvtype][originvtype].value
                 for (let y = 0; y < yearlyValues.length; y++) {
                     const val = yearlyValues[y]
-                    console.log(`${project.referenceYears[y]}, ${goalvtype}, ${originvtype}, val: ${val}`)
+                    // console.log(`${project.referenceYears[y]}, ${goalvtype}, ${originvtype}, val: ${val}`)
                     if (computedASI && computedASI.pkmsEndOfYear[y+1][goalvtype] < 0) {
                         setError(`Error: at least one goal vehicle has a negative pkm at the end of the year (${project.referenceYears[y+1]}, ${goalvtype}). This can be related to an invalid trip distribution at this step, or invalid inputs at the previous steps (Trip length, avoided or added vkt, changes in occupancy rate)`)
                         return
@@ -214,7 +214,7 @@ export default function ClimateWithoutUpstreamStep4(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/intro', content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
                     <p>
@@ -268,7 +268,7 @@ export default function ClimateWithoutUpstreamStep4(){
                                         const originvehicle = goalvehicle[originvtype]
                                         const source = originvehicle.source
                                         const value = originvehicle.value?.[yearIndex] || ""
-                                        const invTripLen = (inputInventoryStep8).vtypes[originvtype].value
+                                        const invTripLen = (inputInventoryStep8).vtypes[originvtype]?.value || 0
                                         const pkmStartOfYear = Math.round((computedASI && computedASI.pkmsStartOfYear?.[yearIndex+1]?.[goalvtype]) || 0)
                                         const pkmEndOfYear = Math.round((computedASI && computedASI.pkmsEndOfYear?.[yearIndex+1]?.[goalvtype]) || 0)
                                         return (
