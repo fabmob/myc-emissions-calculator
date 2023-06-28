@@ -10,7 +10,7 @@ import { Image } from 'react-bootstrap'
 
 export default function WelcomePage(){
     return (
-        <>
+        <div style={{textAlign: "center", backgroundColor: "white"}}>
             <Jumbo />
             <Methodology />
             <Devs />
@@ -20,7 +20,7 @@ export default function WelcomePage(){
                     <Image src="/GitHub-Mark-32px.png" alt="github"></Image>
                 </a>
             </footer>
-        </>
+        </div>
     )
 }
 const Jumbo = () => {

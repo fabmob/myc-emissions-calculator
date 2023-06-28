@@ -42,7 +42,7 @@ export default function EmissionsCompareBarChart (props: {
             <BarChart margin={{left: 50, top: showPercents? 20: 0}} data={emissionChartData}>
                 <XAxis dataKey="name" />    
                 <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + 't'} domain={[0, maxValRoundedAbove]}/>
-                <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
+                <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)} wrapperStyle={{zIndex: 10}}/>
                 <Legend />
                 {vtypes.map((vtype:string, i:number) => {
                     return [

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Button, Container, Row, Col, Card, Table, Badge } from 'react-bootstrap'
+import { Button, Container, Row, Col, Card, Table, Badge, Alert } from 'react-bootstrap'
 import {ProjectStage, ProjectType, TotalEnergyAndEmissions, FuelType, EmissionsResults} from '../frontendTypes'
 import ProjectNav from '../components/ProjectNav'
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts'
@@ -19,6 +19,9 @@ export default function ProjectSummary(){
     const [inventoryTotalEnergyAndEmissions, setInventoryTotalEnergyAndEmissions] = useState({TTW: {} as TotalEnergyAndEmissions, WTW:  {} as TotalEnergyAndEmissions})
     const [bauResults, setBAUResults] = useState({} as EmissionsResults)
     const [climateResults, setClimateResults] = useState<EmissionsResults[]>([])
+    const [inventoryResultsError, setInventoryResultsError] = useState(false)
+    const [bauResultsError, setBauResultsError] = useState(false)
+    const [climateResultsError, setClimateResultsError] = useState<boolean[]>([])
     const projectId = params.projectId
     const defaultColors = ["#2CB1D5", "#A2217C", "#808080", "#67CAE4", "#CE8DBB", "#B3B3B3", "#C5E8F2", "#EBD1E1", "#E6E6E6"]
     
@@ -128,6 +131,10 @@ export default function ProjectSummary(){
                     TTW: data.totalEnergyAndEmissionsTTW
                 })
             })
+            .catch(error => {
+                console.log(error)
+                setInventoryResultsError(true)
+            })
     }
     const fetchBAUResults = () => {
         const requestOptions = {
@@ -140,7 +147,15 @@ export default function ProjectSummary(){
             })
             .then(data => {
                 console.log("get BAU results reply", data)
-                setBAUResults(data)
+                if (data.status != "ok") {
+                    setBauResultsError(true)
+                } else {
+                    setBAUResults(data)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                setBauResultsError(true)
             })
     }
     const fetchClimateResults = (_project: ProjectType, climateScenarioId : number) => {
@@ -159,6 +174,14 @@ export default function ProjectSummary(){
                     const newClimateResults = prevClimateResults.slice()
                     newClimateResults[climateScenarioId] = data
                     return newClimateResults
+                })
+            })
+            .catch(error => {
+                console.log(error)
+                setClimateResultsError((prev) => {
+                    const tmp = prev.slice()
+                    tmp[climateScenarioId] = true
+                    return tmp
                 })
             })
     }
@@ -182,7 +205,8 @@ export default function ProjectSummary(){
                     <ProjectNav current="Edition" project={project} />
                     <StepCard title='1. Inventory / Base Year ' stage="Inventory">
                         <span>Indexing - The GHG emission inventory for urban transport is the sum of all transport-related activities emissions that can be attributed to the city or country for a given year (base year).</span>
-                        {project.stages?.Inventory?.[0]?.step >= 7 && <Row className="align-items-center">
+                        {inventoryResultsError && <Alert variant='warning'>Failed to compute inventory results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory steps again and fill missing data.</Alert>}
+                        {project.stages?.Inventory?.[0]?.step >= 7 && !inventoryResultsError && <Row className="align-items-center">
                             <Col sm="8">
                                 <Table bordered>
                                     <thead>
@@ -235,6 +259,7 @@ export default function ProjectSummary(){
                     </StepCard>
                     <StepCard title='2. Business As Usual (BAU) Scenario' stage="BAU">
                         <span>Projecting - The Business-as-usual scenario aims to describe the transport related emissions if nothing changed in the years to come from the current status quo.</span>
+                        {bauResultsError && <Alert variant='warning'>Failed to compute BAU results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and BAU steps again and fill missing data.</Alert>}
                         {bauResults?.emissions && <Row className="align-items-center">
                             <Col sm="8" style={{background: "white", padding: "20px"}}>
                                 <EmissionsBarChart emissionsData={bauResults?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
@@ -246,6 +271,7 @@ export default function ProjectSummary(){
                     </StepCard>
                     <StepCard title='3. Climate Scenario (1)' stage="Climate" stageId={0}>
                         <span>Comparing - The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
+                        {climateResultsError[0] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
                         {climateResults?.[0]?.emissions && <Row className="align-items-center">
                             <Col sm="8" style={{background: "white", padding: "20px"}}>
                                 <EmissionsBarChart emissionsData={climateResults?.[0]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
@@ -262,6 +288,7 @@ export default function ProjectSummary(){
                         return (
                             <StepCard title={`3. Climate Scenario (${index + 1})`} stage="Climate" stageId={index} key={index}>
                                 <span>Comparing - The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
+                                {climateResultsError[index] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
                                 {climateResults?.[index]?.emissions && <Row className="align-items-center">
                                     <Col sm="8" style={{background: "white", padding: "20px"}}>
                                         <EmissionsBarChart emissionsData={climateResults?.[index]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>

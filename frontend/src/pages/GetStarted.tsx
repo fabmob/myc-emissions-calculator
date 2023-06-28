@@ -209,7 +209,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                         <th>Type</th>
                         {showOwner && <th>Author</th>}
                         <th>Status</th>
-                        <th>Progress</th>
+                        <th>Inventory progress</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -228,7 +228,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                             <td><ProjectProgress step={project.stages["Inventory"][0]?.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
                                 <Button variant="primary" className="btn-sm" style={{marginRight: "2px"}} onClick={() => openProject(project)}>Open</Button>
-                                <Button variant="success" className="btn-sm" style={{marginRight: "2px"}} disabled={project.stages["Inventory"][0]?.step < 9 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
+                                <Button variant="action" className="btn-sm" style={{marginRight: "2px", borderRadius: "10px"}} disabled={project.stages["Inventory"][0]?.step < 8 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
                                 <Button variant="danger" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}>Delete</Button>
                             </td>
                         </tr>
@@ -293,7 +293,7 @@ const ProjectProgress = ({step} : {step: number}) => {
     for (let i = 0; i < step; i++) {
         res += '🟩'
     }
-    for (let i = step; i < 9; i++) {
+    for (let i = step; i < 8; i++) {
         res += '🟧'
     }
     return <span style={{whiteSpace: "nowrap"}}>{res}</span>

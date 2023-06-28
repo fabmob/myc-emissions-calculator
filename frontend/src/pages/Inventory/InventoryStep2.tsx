@@ -247,8 +247,8 @@ export default function InventoryStep2(){
                                 ? <th className="item-sm"><ItemWithOverlay overlayContent="Source of vehicle stock and average mileage values, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
                                 : <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
                             }
-                            {computationApproach === "fleet" && <th className="item-sm">🛈 Vehicle stock</th>}
-                            {computationApproach === "fleet" && <th className="item-sm">🛈 Avg mileage</th>}
+                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Number of registered vehicles">🛈 Vehicle stock</ItemWithOverlay></th>}
+                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Average annual mileage per vehicle">🛈 Avg mileage (km)</ItemWithOverlay></th>}
                             <th className="item-sm">
                                 <ItemWithOverlay overlayContent={
                                     <div>Vehicle kilometers travelled. Values for each fuel are computed as
