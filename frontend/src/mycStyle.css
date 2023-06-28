@@ -10,6 +10,8 @@
 .btn-primary,.btn-primary:active,.btn-primary:focus {
     background-color: #a2217c;
     border-color: #a2217c;
+    --bs-btn-active-border-color: #a2217c;
+    --bs-btn-active-bg: #a2217c;
 }
 .btn-primary:focus {
     box-shadow: 0 0 0 0.25rem   #a2217b6e;
@@ -22,17 +24,28 @@
 .btn-secondary,.btn-secondary:active,.btn-secondary:focus {
     background-color: #CE8DBB;
     border-color: #CE8DBB;
+
+    --bs-btn-active-border-color: #CE8DBB;
+    --bs-btn-active-bg: #CE8DBB;
 }
 .btn-secondary:hover {
     background-color: #caa6c0;
     border-color: #caa6c0;
     color: #A2217C;
 }
+.btn-sm {
+    padding: 0 0.5rem;
+    font-size: 12px;
+    border-radius: 10px;
+}
 .btn-action {
     background-color: #2CB1D5;
     border-color: #2CB1D5;
+    --bs-btn-disabled-bg: #2CB1D5;
+    --bs-btn-disabled-color: white;
     color: white;
     font-weight: 700;
+    border-radius: 0.25rem;
 }
 .btn-action:hover {
     background-color: #AAE0EE;
@@ -47,10 +60,7 @@
 .btn-link:hover {
     color: #B3B3B3;
 }
-.btn-sm {
-    padding: 0 0.5rem;
-    font-size: 12px;
-}
+
 h1, h2, h3 {
     font-family: 'Roboto Mono';
     font-style: normal;
@@ -61,7 +71,7 @@ body {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
-    background-color: #F5F5F5;
+    background-color: #F5F5F5;    
 }
 b {
     font-family: 'Roboto';
@@ -82,7 +92,7 @@ b {
     font-weight: 700;
     font-size: 12px;
     line-height: 22px;
-    color: #B3B3B3;
+    color: #B3B3B3 !important;
     white-space: nowrap;
 }
 .bg-info {
@@ -113,6 +123,7 @@ table tbody tr:last-child {
 tbody {
     border-top: none !important;
     color: #B3B3B3;
+    --bs-table-color: #B3B3B3;
     font-weight: 700;
 }
 table tr td:first-child,
@@ -198,4 +209,7 @@ input.cellError {
 }
 .card-header h2{
     font-size: 24px;
+}
+.table {
+    --bs-table-bg: transparent;
 }
