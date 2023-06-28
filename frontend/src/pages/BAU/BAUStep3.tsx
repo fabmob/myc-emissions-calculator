@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
 import {Table, Button, Badge, Form, Tabs, Tab, Alert} from 'react-bootstrap'
-import {FuelType, InputBAUStep3, ProjectType} from '../../frontendTypes'
+import {FuelType, InputBAUStep3, InputInventoryStep3, ProjectType} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 
 import '../Project.css'
@@ -44,10 +44,11 @@ export default function BAUStep3(){
                         vtypes: {},
                         note: data.project.stages?.BAU?.[0]?.steps?.[stepNumber]?.note || undefined
                     }
+                    const inventoryStep3: InputInventoryStep3 = data.project.stages?.Inventory?.[0]?.steps[3]
                     const inventoryStep1 = data.project.stages?.Inventory?.[0]?.steps?.[1].vtypes || {}
                     const vtypes = Object.keys(inventoryStep1)
                     for (let i = 0; i < vtypes.length; i++) {
-                        const vtype = vtypes[i];
+                        const vtype = vtypes[i]
                         if (data.project.stages['BAU'][0]?.steps[stepNumber]?.vtypes[vtype]) {
                             init.vtypes[vtype] = data.project.stages['BAU'][0]?.steps[stepNumber]?.vtypes[vtype]
                         } else {
@@ -57,10 +58,11 @@ export default function BAUStep3(){
                         }
                         const ftypes = Object.keys(inventoryStep1[vtype].fuels || {})
                         for (let i = 0; i < ftypes.length; i++) {
-                            const ftype = ftypes[i] as FuelType;
+                            const ftype = ftypes[i] as FuelType
+                            const invCons = inventoryStep3?.vtypes?.[vtype]?.fuels?.[ftype]?.cons || "0"
                             if (!data.project.stages['BAU'][0]?.steps[stepNumber]?.vtypes?.[vtype]?.fuels[ftype]) {
                                 init.vtypes[vtype].fuels[ftype] = {
-                                    cons: data.project.referenceYears.slice(1).map(() => ""),
+                                    cons: data.project.referenceYears.slice(1).map(() => invCons),
                                     consSource: ""
                                 }
                             }
@@ -121,7 +123,7 @@ export default function BAUStep3(){
         for (let i = 0; i < vtypes.length; i++) {
             const vtype = vtypes[i]
             const vehicle = inputData.vtypes[vtype]
-            const ftypes = Object.keys(vehicle.fuels)
+            const ftypes = Object.keys(vehicle.fuels).filter(ftype => ftype != "None")
             for (let i = 0; i < ftypes.length; i++) {
                 const ftype = ftypes[i] as FuelType
                 const value = vehicle?.fuels[ftype]?.cons || []
@@ -165,6 +167,9 @@ export default function BAUStep3(){
                 <p>
                     If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.
                 </p>
+                <p>
+                    Values are pre-filled with Inventory data if available; this is done to simplify the filling process. Please update values accordingly.
+                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
@@ -185,7 +190,7 @@ export default function BAUStep3(){
                                 {Object.keys(inputData.vtypes).map((vtype, index) => {
                                     const vehicle = inputData.vtypes[vtype]
                                     if (!vehicle?.fuels) return <></>
-                                    const ftypes = Object.keys(vehicle.fuels)
+                                    const ftypes = Object.keys(vehicle.fuels).filter(ftype => ftype != "None")
                                     let fuelJsx = []
                                     for (let i = 0; i < ftypes.length; i++) {
                                         const ftype = ftypes[i] as FuelType

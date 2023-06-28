@@ -50,6 +50,7 @@ export default function ClimateWithoutUpstreamStep5(){
                         note: data.project.stages?.Climate?.[climateScenarioId]?.steps?.[stepNumber]?.note || undefined
                     }
                     const inventoryStep1 = data.project.stages?.Inventory?.[0]?.steps?.[1].vtypes || {}
+                    const bauStep2: InputBAUStep2 = data.project.stages?.BAU?.[0]?.steps?.[2]
                     const vtypes = Object.keys(inventoryStep1)
                     for (let i = 0; i < vtypes.length; i++) {
                         const vtype = vtypes[i];
@@ -64,8 +65,9 @@ export default function ClimateWithoutUpstreamStep5(){
                         for (let i = 0; i < ftypes.length; i++) {
                             const ftype = ftypes[i] as FuelType;
                             if (!data.project.stages?.Climate?.[climateScenarioId]?.steps?.[stepNumber]?.vtypes?.[vtype]?.fuels[ftype]) {
+                                const bAUPercent = bauStep2.vtypes?.[vtype].fuels?.[ftype]?.percent
                                 init.vtypes[vtype].fuels[ftype] = {
-                                    percent: data.project.referenceYears.slice(1).map(() => ftypes.length === 1 ? "100" : ""),
+                                    percent: bAUPercent?.slice() || data.project.referenceYears.slice(1).map(() => ftypes.length === 1 ? "100" : ""),
                                     percentSource: ""
                                 }
                             }
@@ -206,6 +208,9 @@ export default function ClimateWithoutUpstreamStep5(){
                      Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type [extra: The sum of fuel shares in each vehicle category must be 100 %.]
                     </p>
                 </DescAndNav>
+                <p>
+                    Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.
+                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"

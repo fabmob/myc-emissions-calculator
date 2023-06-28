@@ -60,7 +60,7 @@ export default function InventoryStep3(){
                             const ftype = ftypes[i] as FuelType;
                             if (!data.project.stages['Inventory'][0]?.steps[stepNumber]?.vtypes?.[vtype]?.fuels[ftype]) {
                                 init.vtypes[vtype].fuels[ftype] = {
-                                    cons: "",
+                                    cons: ftype === "None" ? "0" : "",
                                     consSource: ""
                                 }
                             }
@@ -121,7 +121,7 @@ export default function InventoryStep3(){
         for (let i = 0; i < vtypes.length; i++) {
             const vtype = vtypes[i]
             const vehicle = inputData.vtypes[vtype]
-            const ftypes = Object.keys(vehicle.fuels)
+            const ftypes = Object.keys(vehicle.fuels).filter(ftype => ftype != "None")
             
             for (let i = 0; i < ftypes.length; i++) {
                 const ftype = ftypes[i] as FuelType
@@ -178,7 +178,7 @@ export default function InventoryStep3(){
                         {Object.keys(inputData.vtypes).map((vtype, index) => {
                             const vehicle = inputData.vtypes[vtype]
                             if (!vehicle?.fuels) return <></>
-                            const ftypes = Object.keys(vehicle.fuels)
+                            const ftypes = Object.keys(vehicle.fuels).filter(ftype => ftype != "None")
                             let fuelJsx = []
                             for (let i = 0; i < ftypes.length; i++) {
                                 const ftype = ftypes[i] as FuelType

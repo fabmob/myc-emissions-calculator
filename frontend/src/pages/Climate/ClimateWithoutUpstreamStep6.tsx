@@ -62,7 +62,7 @@ export default function ClimateWithoutUpstreamStep6(){
                             const bAUCons = data.project.stages?.BAU[0].steps?.[3].vtypes?.[vtype].fuels?.[ftype]?.cons
                             if (!data.project.stages.Climate[0]?.steps[stepNumber]?.vtypes?.[vtype]?.fuels[ftype]) {
                                 init.vtypes[vtype].fuels[ftype] = {
-                                    cons: bAUCons.slice() || data.project.referenceYears.slice(1).map(() => ""),
+                                    cons: bAUCons.slice() || data.project.referenceYears.slice(1).map(() => ftype === "None" ? "0" : ""),
                                     consSource: ""
                                 }
                             }
@@ -123,7 +123,7 @@ export default function ClimateWithoutUpstreamStep6(){
         for (let i = 0; i < vtypes.length; i++) {
             const vtype = vtypes[i]
             const vehicle = inputData.vtypes[vtype]
-            const ftypes = Object.keys(vehicle.fuels)
+            const ftypes = Object.keys(vehicle.fuels).filter(ftype => ftype != "None")
             for (let i = 0; i < ftypes.length; i++) {
                 const ftype = ftypes[i] as FuelType
                 const value = vehicle?.fuels[ftype]?.cons || []
@@ -167,6 +167,9 @@ export default function ClimateWithoutUpstreamStep6(){
                 <p>
                     If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.
                 </p>
+                <p>
+                    Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.
+                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
@@ -187,7 +190,7 @@ export default function ClimateWithoutUpstreamStep6(){
                                 {Object.keys(inputData.vtypes).map((vtype, index) => {
                                     const vehicle = inputData.vtypes[vtype]
                                     if (!vehicle?.fuels) return <></>
-                                    const ftypes = Object.keys(vehicle.fuels)
+                                    const ftypes = Object.keys(vehicle.fuels).filter(ftype => ftype != "None")
                                     let fuelJsx = []
                                     for (let i = 0; i < ftypes.length; i++) {
                                         const ftype = ftypes[i] as FuelType
