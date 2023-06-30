@@ -330,8 +330,12 @@ app.get('/api/project/:projectId/Inventory/0/results', keycloak.protect(), (req:
     }
     const vktPerFuelComputed = models.computeVktPerFuel(inputVktPerFuel, vehicleKilometresTravelledComputed)
     const transportPerformance = models.computeTransportPerformance(vehicleKilometresTravelledComputed, vehicleStats)
-    const modalShare = models.computeModalShare(transportPerformance)
-
+    
+    const passengersTransportPerformance = Object.fromEntries(Object.entries(transportPerformance).filter(([k,v]) => vehicleStats[k].type !== "freight"))
+    const freightTransportPerformance = Object.fromEntries(Object.entries(transportPerformance).filter(([k,v]) => vehicleStats[k].type === "freight"))
+    const outputPassengersModalShare = models.computeModalShare(passengersTransportPerformance)
+    const outputFreightModalShare = models.computeModalShare(freightTransportPerformance)
+    
     let emissionFactorsWTW = inputInventoryStep7?.emissionFactors?.WTW || energyAndEmissionsDefaultValues.WTW
     const energyProductionEmissions: types.InputBAUStep4 = {
         electricity: {
@@ -352,7 +356,14 @@ app.get('/api/project/:projectId/Inventory/0/results', keycloak.protect(), (req:
         status: "ok",
         totalEnergyAndEmissionsWTW: totalEnergyAndEmissionsWTW,
         totalEnergyAndEmissionsTTW: totalEnergyAndEmissionsTTW,
-        modalShare: modalShare
+        modalShare: {
+            passengers: outputPassengersModalShare,
+            freight: outputFreightModalShare
+        },
+        transportPerformance: {
+            passengers: passengersTransportPerformance,
+            freight: freightTransportPerformance
+        }
     });
 });
 app.get('/api/project/:projectId/BAU/0/vehicleKilometresTravelledComputed', keycloak.protect(), (req: Request, res: Response) => {

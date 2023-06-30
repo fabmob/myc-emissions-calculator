@@ -22,7 +22,10 @@ export default function InventoryStep7(){
     const projectId = params.projectId
     const [ totalEnergyAndEmissions, setTotalEnergyAndEmissions] = useState({TTW: {} as TotalEnergyAndEmissions, WTW:  {} as TotalEnergyAndEmissions})
     const [ emissionFactorsWTWComputedForElectric, setEmissionFactorsWTWComputedForElectric] = useState({ElectricRail: {} as EmissionParams, ElectricRoad: {} as EmissionParams})
-    const [ modalShare, setModalShare] = useState({} as ModalShare)
+    const [ modalShare, setModalShare] = useState({
+        passengers: {} as ModalShare,
+        freight: {} as ModalShare
+    })
     const [ ttwOrWtw, setTtwOrWtw ] = useState("TTW" as "TTW" | "WTW")
     const defaultColors = ["#2CB1D5", "#A2217C", "#808080", "#67CAE4", "#CE8DBB", "#B3B3B3", "#C5E8F2", "#EBD1E1", "#E6E6E6"]
     const stepNumber = 7
@@ -203,19 +206,36 @@ export default function InventoryStep7(){
                     inputData={emissionFactorsInputData}
                     setInputData={setEmissionFactorsInputData}
                 ></EditEmissionFactors>
-                <h2>Modal Share</h2>
+                <h2>Passenger Modal Share</h2>
                 <ResponsiveContainer width="100%" height={300}>
                     <PieChart width={400} height={300}>
                     <Pie
                         dataKey="value"
                         isAnimationActive={false}
-                        data={Object.keys(modalShare).map((vtype, index) => ({name: vtype, value: Math.round(modalShare[vtype][0] * 100)}))}
+                        data={Object.keys(modalShare.passengers || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.passengers[vtype][0] * 100)}))}
                         cx="50%"
                         cy="50%"
                         outerRadius={80}
                         label={(entry) => entry.name + ": " + entry.value + "%"}
                     >
-                        {Object.keys(modalShare).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                        {Object.keys(modalShare.passengers || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                    </Pie>
+                    <Tooltip />
+                    </PieChart>
+                </ResponsiveContainer>
+                <h2>Freight Modal Share</h2>
+                <ResponsiveContainer width="100%" height={300}>
+                    <PieChart width={400} height={300}>
+                    <Pie
+                        dataKey="value"
+                        isAnimationActive={false}
+                        data={Object.keys(modalShare.freight || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.freight[vtype][0] * 100)}))}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label={(entry) => entry.name + ": " + entry.value + "%"}
+                    >
+                        {Object.keys(modalShare.freight || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
                     </Pie>
                     <Tooltip />
                     </PieChart>
