@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import GetStarted from './pages/GetStarted'
+import Projects from './pages/Projects'
 import CreateProject from './pages/CreateProject'
 import WelcomePage from './pages/WelcomePage'
 import InventoryIntro from './pages/Inventory/InventoryIntro'
@@ -49,7 +49,7 @@ function App() {
                 <Nav />
                 <Routes>
                     <Route path="/" element={<WelcomePage />} />
-                    <Route path="/getStarted" element={<GetStarted />} />
+                    <Route path="/Projects" element={<Projects />} />
                     <Route path="/createProject" element={<CreateProject />} />
                     {/* config also using createproject page, as a way of editing project info */}
                     <Route path="/project/:projectId/edit" element={<ProjectSummary />} />
