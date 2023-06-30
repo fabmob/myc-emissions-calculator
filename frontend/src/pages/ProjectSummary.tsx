@@ -41,8 +41,10 @@ export default function ProjectSummary(){
                 .then(data => {
                     console.log("get projetcs reply", data)
                     setProject(data.project)
-                    fetchInventoryResults()
-                    fetchBAUResults()
+                    if (data.project?.stages?.Inventory?.length > 0)
+                        fetchInventoryResults()
+                    if (data.project?.stages?.BAU?.length > 0)
+                        fetchBAUResults()
                     for (let i = 0; i < data.project.stages.Climate.length; i++) {
                         fetchClimateResults(data.project, i)
                     }
@@ -99,9 +101,9 @@ export default function ProjectSummary(){
                             ? <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>hide(props.title)}>See less</Button>
                             : <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>show(props.title)}>See more</Button>
                         }
-                        {props.stage === "Climate" && props.stageId != undefined && <Button variant="imglink" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><img src="/duplicate.svg"></img></Button>}
+                        {(props.stage === "Climate" && props.stageId != undefined && project.stages?.Climate.length && <Button variant="imglink" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><img src="/duplicate.svg"></img></Button>) || ""}
                     
-                        <Button onClick={e => navigate(introUrl)} style={{minWidth: "76px"}}>
+                        <Button onClick={e => navigate(introUrl)} style={{minWidth: "93px"}}>
                         {project.stages?.[props.stage].length ? "Edit": "Create +"}
                         </Button>
                     </Col>
