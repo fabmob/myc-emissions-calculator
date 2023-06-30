@@ -151,11 +151,13 @@ export default function ClimateWithoutUpstreamStep4(){
                         setError(`Error: at least one goal vehicle has a negative pkm at the end of the year (${project.referenceYears[y+1]}, ${goalvtype}). This can be related to an invalid trip distribution at this step, or invalid inputs at the previous steps (Trip length, avoided or added vkt, changes in occupancy rate)`)
                         return
                     }
-                    if (!computedASI || computedASI.pkmsAdded?.[y+1]?.[goalvtype] === 0) {
+                    if (!computedASI || computedASI.pkmsAdded?.[y+1]?.[goalvtype] === 0 || isVtypeFreight(goalvtype) !== isVtypeFreight(originvtype)) {
                         // No need to check for errors, no value is expected here.
                         continue
                     }
-                    if (inputData.vtypes[goalvtype][originvtype].source === "") srcMissing = true
+                    if (inputData.vtypes[goalvtype][originvtype].source === "") {
+                        srcMissing = true
+                    } 
                     if (val === "") {
                         setError(`Error: at least one part of trips to shift value is not set (${project.referenceYears[y]}, ${goalvtype}, ${originvtype})`)
                         return

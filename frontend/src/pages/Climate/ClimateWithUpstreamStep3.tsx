@@ -171,7 +171,7 @@ export default function ClimateWithUpstreamStep3(){
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
                     <p>
-                     Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type [extra: The sum of fuel shares in each vehicle category must be 100 %.]
+                     Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
                     </p>
                 </DescAndNav>
                 <p>
