@@ -254,10 +254,10 @@ export default function CreateProject() {
                                 <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCity[0]) ? "block": ''}}>Please specify a city</Form.Control.Feedback>
                             </Form.Group> }
 
-                            <Form.Group className="mb-3">
+                            {/* <Form.Group className="mb-3">
                                 <Form.Label>Geo. Data</Form.Label>
                                 <Form.Control type="input" placeholder="" value={geoData} onChange={e => setGeoData(e.target.value)}/>
-                            </Form.Group>
+                            </Form.Group> */}
 
                             <Form.Group className="mb-3">   
                                 <Form.Label>Partner name in city</Form.Label>
