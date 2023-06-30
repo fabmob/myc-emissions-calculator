@@ -9,8 +9,9 @@ import { Button, Col, Container, Row } from "react-bootstrap"
 
 export default function EmissionsCompareBarChart (props: {
     bauEmissionsData: {[key: string]: {co2: number[], energy: number[]}},
-    climateEmissionsData: {[key: string]: {co2: number[], energy: number[]}},
+    climateEmissionsData: {[key: string]: {co2: number[], energy: number[]}}[],
     displayedVtypes: {[key: string]: boolean},
+    displayedClimateScenarios: boolean[],
     showPercents: boolean,
     showLabels: boolean,
     highContrastColors: boolean,
@@ -20,36 +21,49 @@ export default function EmissionsCompareBarChart (props: {
     const defaultColors = ["#FF7C7C", "#FFEB7C", "#7BFFE3", "#7C81FF", "#DF7CFF", "#FF9F7C", "#CAFF7C", "#7CDDFF", "#9E7CFF", "#FF7CEC", "#FFB77C"," #8AFF89", "#7CB1FF", "#FF7CB2"]
     let emissionChartData : {[key: string]: number | string}[] = []
     const vtypes = Object.keys(props.bauEmissionsData).filter(vtype => props.displayedVtypes[vtype])
+    const numberOfClimateScenarios = props.displayedClimateScenarios.reduce((p,v)=>p+(v?1:0),0)
     let highestYearTotal = 0
     let csvExport: (string)[][] = [
-        ["scenario", "vehicle"].concat((props.project?.referenceYears || []).map(e => e.toString()))
+        ["scenario", "scenarioId", "vehicle"].concat((props.project?.referenceYears || []).map(e => e.toString()))
     ]
     for (let j = 0; j < vtypes.length; j++) {
-        csvExport.push(["BAU", vtypes[j]].concat((props.project?.referenceYears || []).map(e => "0")))
-        csvExport.push(["Climate", vtypes[j]].concat((props.project?.referenceYears || []).map(e => "0")))
+        csvExport.push(["BAU", "1", vtypes[j]].concat((props.project?.referenceYears || []).map(e => "0")))
+        for (let c = 0; c < props.climateEmissionsData.length; c++) {
+            if (!props.displayedClimateScenarios[c]) continue
+            csvExport.push(["Climate", (c+1).toString(), vtypes[j]].concat((props.project?.referenceYears || []).map(e => "0")))
+        }
     }
     for (let y = 0; y < props.project?.referenceYears?.length || 0; y++) {
         const year = props.project.referenceYears[y];
         let totalForYear = 0
-        let totalsForYear = {bau: 0, climate: 0}
+        let totalsForYear = {bau: 0, climate: props.climateEmissionsData.map(_=>0)}
         emissionChartData.push({
             name: year
         })
         for (let j = 0; j < vtypes.length; j++) {
             const vtype = vtypes[j];
             const bauVal = props.bauEmissionsData[vtype]?.co2[y] || 0
-            const climateVal = props.climateEmissionsData[vtype]?.co2[y] || 0
+            csvExport[j*(numberOfClimateScenarios + 1)+1][y+3] = bauVal.toString()
             emissionChartData[emissionChartData.length -1]["BAU - " + vtype] = bauVal
-            emissionChartData[emissionChartData.length -1]["Climate - " + vtype] =climateVal
+            let maxClimateVal = 0
+            for (let c = 0; c < props.climateEmissionsData.length; c++) {
+                if (!props.displayedClimateScenarios[c]) continue
+                const climateData = props.climateEmissionsData[c]
+                const climateVal = climateData[vtype]?.co2[y] || 0
+                emissionChartData[emissionChartData.length -1]["Climate (" + (c+1) + ") - " + vtype] = climateVal
+                totalsForYear.climate[c] += climateVal
+                maxClimateVal = Math.max(maxClimateVal, climateVal)
+                csvExport[j*(numberOfClimateScenarios + 1)+2][y+3] = climateVal.toString()
+            }
             
-            totalForYear += Math.max(bauVal,climateVal)
+            totalForYear += Math.max(bauVal, maxClimateVal)
             totalsForYear.bau += bauVal
-            totalsForYear.climate += climateVal
 
-            csvExport[j*2+1][y+2] = bauVal.toString()
-            csvExport[j*2+2][y+2] = climateVal.toString()
         }
-        emissionChartData[emissionChartData.length -1].percent = computePercentIncrease(totalsForYear.climate, totalsForYear.bau)
+        for (let c = 0; c < props.climateEmissionsData.length; c++) {
+            if (!props.displayedClimateScenarios[c]) continue
+            emissionChartData[emissionChartData.length -1]["percent-"+c] = computePercentIncrease(totalsForYear.climate[c], totalsForYear.bau)
+        }
     
         highestYearTotal = Math.max(highestYearTotal, totalForYear)
     }
@@ -94,16 +108,23 @@ export default function EmissionsCompareBarChart (props: {
                         <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)} wrapperStyle={{zIndex: 10}}/>
                         <Legend />
                         {vtypes.map((vtype:string, i:number) => {
-                            return [
+                            let jsx = [
                                 <Bar key={"bau" + i} dataKey={"BAU - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(44, 177, 213, ${1-i/vtypes.length})`} stackId="bau" unit=' tons GHG'>
                                     <LabelList className={(props.showLabels ? "" : "d-none ") + "d-print-block"} dataKey={"BAU - " + vtype} content={CustomLabel} />
                                     {/* {i===0 && props.showPercents && <LabelList dataKey="percent" content={PercentLabel} />} */}
-                                </Bar>,
-                                <Bar key={"climate" + i} dataKey={"Climate - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(162, 33, 124, ${1-i/vtypes.length})`} stackId="climate" unit=' tons GHG'>
-                                    <LabelList className={(props.showLabels ? "" : "d-none ") + "d-print-block"} dataKey={"Climate - " + vtype} content={CustomLabel} />
-                                    {i===0 && props.showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
                                 </Bar>
                             ]
+                            for (let c = 0; c < props.climateEmissionsData.length; c++) {
+                                if (!props.displayedClimateScenarios[c]) continue
+                                jsx.push(
+                                    <Bar key={"climate" + i + c} dataKey={"Climate (" + (c+1) + ") - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(162, 33, 124, ${1-i/vtypes.length})`} stackId={"climate" + c} unit=' tons GHG'>
+                                        <LabelList className={(props.showLabels ? "" : "d-none ") + "d-print-block"} dataKey={"Climate (" + (c+1) + ") - " + vtype} content={CustomLabel} />
+                                        {i===0 && props.showPercents && <LabelList dataKey={"percent-" + c} content={PercentLabel} />}
+                                    </Bar>
+                                )
+                                
+                            }
+                            return jsx
                         })}
                     </BarChart>
                 </ResponsiveContainer>

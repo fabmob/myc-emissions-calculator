@@ -20,8 +20,9 @@ export default function ProjectCompare(){
     const [project, setProject ] = useState({} as ProjectType)
     const [inventoryTotalEnergyAndEmissions, setInventoryTotalEnergyAndEmissions] = useState({TTW: {} as TotalEnergyAndEmissions, WTW:  {} as TotalEnergyAndEmissions})
     const [bauResults, setBAUResults] = useState({} as EmissionsResults)
-    const [climateResults, setClimateResults] = useState({} as EmissionsResults)
+    const [climateResults, setClimateResults] = useState<EmissionsResults[]>([])
     const [displayedVtypes, setDisplayedVtypes] = useState({} as {[key: string]: boolean})
+    const [displayedClimateScenarios, setDisplayedClimateScenarios] = useState<boolean[]>([])
     const [typeOfGHGIsWTW, setTypeOfGHGIsWTW] = useState(true)
     const [showPercents, setShowPercents] = useState(false)
     const [showLabels, setShowLabels] = useState(false)
@@ -46,7 +47,10 @@ export default function ProjectCompare(){
                     setProject(data.project)
                     fetchInventoryResults()
                     fetchBAUResults()
-                    fetchClimateResults(data.project, 0)
+                    for (let i = 0; i < data.project.stages.Climate.length; i++) {
+                        fetchClimateResults(data.project, i)
+                    }
+                    setDisplayedClimateScenarios(data.project.stages.Climate.map((e:any)=>true))
                 });
             }
     }, [keycloak, initialized, projectId, navigate])
@@ -97,7 +101,11 @@ export default function ProjectCompare(){
             })
             .then(data => {
                 console.log("get Climate results reply", data)
-                setClimateResults(data)
+                setClimateResults(prev => {
+                    const tmp = prev.slice()
+                    tmp[climateScenarioId] = data
+                    return tmp
+                })
             })
     }
     
@@ -119,12 +127,15 @@ export default function ProjectCompare(){
                         setShowLabels={setShowLabels}
                         highContrastColors={highContrastColors}
                         setHighContrastColors={setHighContrastColors}
+                        displayedClimateScenarios={displayedClimateScenarios}
+                        setDisplayedClimateScenarios={setDisplayedClimateScenarios}
                     />
                     <EmissionsCompareBarChart 
                         project={project} 
                         bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
-                        climateEmissionsData={(typeOfGHGIsWTW ? climateResults?.emissions?.WTW : climateResults?.emissions?.TTW) || {}}
+                        climateEmissionsData={climateResults.map((e => typeOfGHGIsWTW ? e.emissions.WTW : e.emissions.TTW)) || []}
                         displayedVtypes={displayedVtypes}
+                        displayedClimateScenarios={displayedClimateScenarios}
                         showPercents={showPercents}
                         showLabels={showLabels}
                         highContrastColors={highContrastColors}
@@ -132,8 +143,9 @@ export default function ProjectCompare(){
                     <VktCompareBarChart 
                         project={project} 
                         bauVktData={bauResults?.vkt || {}} 
-                        climateVktData={climateResults?.vkt || {}}
+                        climateVktData={climateResults.map(e => e?.vkt) || []}
                         displayedVtypes={displayedVtypes}
+                        displayedClimateScenarios={displayedClimateScenarios}
                         showPercents={showPercents}
                         showLabels={showLabels}
                         highContrastColors={highContrastColors}
@@ -142,7 +154,8 @@ export default function ProjectCompare(){
                         project={project}
                         title="Passenger modal share"
                         bauModalShareData={bauResults?.modalShare?.passengers || {}}
-                        climateModalShareData={climateResults?.modalShare?.passengers || {}}
+                        climateModalShareData={climateResults.map(e=>e?.modalShare?.passengers) || []}
+                        displayedClimateScenarios={displayedClimateScenarios}
                         showLabels={showLabels}
                         highContrastColors={highContrastColors}
                     ></ModalShareCompareBarChart>
@@ -150,7 +163,8 @@ export default function ProjectCompare(){
                         project={project}
                         title="Freight modal share"
                         bauModalShareData={bauResults?.modalShare?.freight || {}}
-                        climateModalShareData={climateResults?.modalShare?.freight || {}}
+                        climateModalShareData={climateResults.map(e => e?.modalShare?.freight) || []}
+                        displayedClimateScenarios={displayedClimateScenarios}
                         showLabels={showLabels}
                         highContrastColors={highContrastColors}
                     ></ModalShareCompareBarChart>
@@ -158,8 +172,9 @@ export default function ProjectCompare(){
                         title="Passenger transport performance (pkm)"
                         project={project} 
                         bauTransportPerformanceData={bauResults?.transportPerformance?.passengers || {}} 
-                        climateTransportPerformanceData={climateResults?.transportPerformance?.passengers|| {}}
+                        climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.passengers) || []}
                         displayedVtypes={displayedVtypes}
+                        displayedClimateScenarios={displayedClimateScenarios}
                         showPercents={showPercents}
                         showLabels={showLabels}
                         highContrastColors={highContrastColors}
@@ -168,8 +183,9 @@ export default function ProjectCompare(){
                         title="Freight transport performance (tkm)"
                         project={project} 
                         bauTransportPerformanceData={bauResults?.transportPerformance?.freight || {}} 
-                        climateTransportPerformanceData={climateResults?.transportPerformance?.freight|| {}}
+                        climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.freight) || []}
                         displayedVtypes={displayedVtypes}
+                        displayedClimateScenarios={displayedClimateScenarios}
                         showPercents={showPercents}
                         showLabels={showLabels}
                         highContrastColors={highContrastColors}
@@ -178,10 +194,11 @@ export default function ProjectCompare(){
                         title="Passenger emissions per transport performance (gCO2/pkm)"
                         project={project} 
                         bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
-                        climateEmissionsData={(typeOfGHGIsWTW ? climateResults?.emissions?.WTW : climateResults?.emissions?.TTW) || {}}
+                        climateEmissionsData={climateResults.map((e => typeOfGHGIsWTW ? e.emissions.WTW : e.emissions.TTW)) || []}
                         bauTransportPerformanceData={bauResults?.transportPerformance?.passengers || {}} 
-                        climateTransportPerformanceData={climateResults?.transportPerformance?.passengers|| {}}
+                        climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.passengers) || []}
                         displayedVtypes={displayedVtypes}
+                        displayedClimateScenarios={displayedClimateScenarios}
                         showPercents={showPercents}
                         showLabels={showLabels}
                         highContrastColors={highContrastColors}
@@ -190,10 +207,11 @@ export default function ProjectCompare(){
                         title="Freight emissions per transport performance (gCO2/tkm)"
                         project={project} 
                         bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
-                        climateEmissionsData={(typeOfGHGIsWTW ? climateResults?.emissions?.WTW : climateResults?.emissions?.TTW) || {}}
+                        climateEmissionsData={climateResults.map((e => typeOfGHGIsWTW ? e.emissions.WTW : e.emissions.TTW)) || []}
                         bauTransportPerformanceData={bauResults?.transportPerformance?.freight || {}} 
-                        climateTransportPerformanceData={climateResults?.transportPerformance?.freight|| {}}
+                        climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.freight) || []}
                         displayedVtypes={displayedVtypes}
+                        displayedClimateScenarios={displayedClimateScenarios}
                         showPercents={showPercents}
                         showLabels={showLabels}
                         highContrastColors={highContrastColors}
@@ -246,8 +264,8 @@ export default function ProjectCompare(){
 }
 type SetBoolean = (key:boolean | ((k:boolean) => boolean)) => void
 const Options = (
-    {project, setDisplayedVtypes, typeOfGHGIsWTW, setTypeOfGHGIsWTW, showPercents, setShowPercents, showLabels, setShowLabels, highContrastColors, setHighContrastColors}: 
-    {project: ProjectType, setDisplayedVtypes: React.Dispatch<SetStateAction<{[key:string]: boolean}>>, typeOfGHGIsWTW: boolean, setTypeOfGHGIsWTW: SetBoolean, showPercents: boolean, setShowPercents: SetBoolean, showLabels: boolean, setShowLabels: SetBoolean, highContrastColors: boolean, setHighContrastColors: SetBoolean}
+    {project, setDisplayedVtypes, typeOfGHGIsWTW, setTypeOfGHGIsWTW, showPercents, setShowPercents, showLabels, setShowLabels, highContrastColors, setHighContrastColors, displayedClimateScenarios, setDisplayedClimateScenarios}: 
+    {project: ProjectType, setDisplayedVtypes: React.Dispatch<SetStateAction<{[key:string]: boolean}>>, typeOfGHGIsWTW: boolean, setTypeOfGHGIsWTW: SetBoolean, showPercents: boolean, setShowPercents: SetBoolean, showLabels: boolean, setShowLabels: SetBoolean, highContrastColors: boolean, setHighContrastColors: SetBoolean, displayedClimateScenarios: boolean[], setDisplayedClimateScenarios: React.Dispatch<SetStateAction<boolean[]>>}
     ) => {
     const [showBody, setShowBody] = useState(false)
     const [pin, setPin] = useState(false)
@@ -281,6 +299,15 @@ const Options = (
             return newSelectedVtypes
         })
     }
+    const updateSelectedScenario = (event: React.BaseSyntheticEvent) => {
+        let target = event.target as HTMLInputElement
+        let scenarioId = parseInt(target.name)
+        setDisplayedClimateScenarios((prev) => {
+            let tmp = prev.slice()
+            tmp[scenarioId] = !tmp[scenarioId]
+            return tmp
+        })
+    }
     return (
         <>
             <Card className={"d-print-none" + (pin ? " stickyOptions" : "")} style={{textAlign: "left", marginBottom: "20px"}}>
@@ -298,6 +325,21 @@ const Options = (
                                     <Form.Switch style={{margin: "5px"}} id={"custom-switch-" + vtype} key={index}>
                                         <Form.Switch.Input  name={vtype} checked={selectedVtypes[vtype]} onChange={updateSelectedVtypes}/>
                                         <Form.Switch.Label>{vtype}</Form.Switch.Label>
+                                    </Form.Switch>
+                                </Col>
+                            )
+                        })}
+                        </Row>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Displayed Climate Scenarios</Form.Label>
+                        <Row>
+                        {displayedClimateScenarios.map((displayed, index) => {
+                            return (
+                                <Col xs="4" key={index}>
+                                    <Form.Switch style={{margin: "5px"}} key={index}>
+                                        <Form.Switch.Input  name={index.toString()} checked={displayed} onChange={updateSelectedScenario}/>
+                                        <Form.Switch.Label>{index+1}</Form.Switch.Label>
                                     </Form.Switch>
                                 </Col>
                             )
@@ -325,7 +367,7 @@ const Options = (
                         <Form.Label>Graph content</Form.Label>
                         <Form.Switch style={{margin: "5px"}} id="custom-switch-percent">
                             <Form.Switch.Input checked={showPercents} onChange={() => setShowPercents((p:boolean)=>!p)}/>
-                            <Form.Switch.Label>Display percents increase</Form.Switch.Label>
+                            <Form.Switch.Label>Display percents changes compared to BAU</Form.Switch.Label>
                         </Form.Switch>
                         <Form.Switch style={{margin: "5px"}} id="custom-switch-labels">
                             <Form.Switch.Input checked={showLabels} onChange={() => setShowLabels((p:boolean)=>!p)}/>
