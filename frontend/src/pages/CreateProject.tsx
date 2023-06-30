@@ -158,7 +158,7 @@ export default function CreateProject() {
                 })
                 .then(data => {
                     if (data.status !== "err") {
-                        navigate('/project/' + projectId + '/step/1')
+                        navigate('/project/' + projectId + '/edit')
                     }
                 });
         }
