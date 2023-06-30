@@ -269,8 +269,8 @@ export default function InventoryStep5(){
                             for (let i = 0; i < availableFtypes.length; i++) {
                                 const ftype = availableFtypes[i] as FuelType
                                 const computedValue = networkFuels[ftype]?.value || ''
-                                const value = inputData.emissions[networkName].fuels[ftype]?.value || ''
-                                const source = inputData.emissions[networkName].fuels[ftype]?.source
+                                const value = inputData.emissions?.[networkName]?.fuels[ftype]?.value || ''
+                                const source = inputData.emissions?.[networkName]?.fuels[ftype]?.source
                                 fuelJsx.push(<tr key={net + ftype}>
                                     {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{networkName}</Badge></td>}
                                     <td><Badge bg="disabled">{ftype}</Badge></td>
