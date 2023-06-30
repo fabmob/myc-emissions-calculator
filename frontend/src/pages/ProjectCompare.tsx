@@ -12,6 +12,8 @@ import VktCompareBarChart from '../components/viz/VktCompareBarChart'
 import ModalShareCompareBarChart from '../components/viz/ModalShareCompareBarChart'
 import TransportPerformanceCompareBarChart from '../components/viz/TransportPerformanceCompareBarChart'
 import EmissionsPerUkmCompareBarChart from '../components/viz/EmissionsPerUkmCompareBarChart'
+import { inputsAsCsv } from '../utils/inputsAsCsv'
+import { CSVLink } from 'react-csv'
 
 export default function ProjectCompare(){
     const { keycloak, initialized } = useKeycloak()
@@ -108,7 +110,33 @@ export default function ProjectCompare(){
                 })
             })
     }
-    
+    const csvs = {
+        Inventory: inputsAsCsv(project, "Inventory"),
+        BAU: inputsAsCsv(project, "BAU"),
+        Climate: inputsAsCsv(project, "Climate"),
+    }
+    let sourcesSets = {
+        Inventory: new Set(),
+        BAU: new Set(),
+        Climate: new Set(),
+    }
+    for (let i = 1; i < csvs.Inventory.length; i++) {
+        const source = csvs.Inventory[i][8]
+        sourcesSets.Inventory.add(source)
+    }
+    for (let i = 1; i < csvs.BAU.length; i++) {
+        const source = csvs.BAU[i][7]
+        sourcesSets.BAU.add(source)
+    }
+    for (let i = 1; i < csvs.Climate.length; i++) {
+        const source = csvs.Climate[i][8]
+        sourcesSets.Climate.add(source)
+    }
+    let sourcesUsed = {
+        Inventory: Array.from(sourcesSets.Inventory).map(source => project.sources.find(e => e.value === source)?.sourceId).sort(),
+        BAU: Array.from(sourcesSets.BAU).map(source => project.sources.find(e => e.value === source)?.sourceId).sort(),
+        Climate: Array.from(sourcesSets.Climate).map(source => project.sources.find(e => e.value === source)?.sourceId).sort(),
+    }
     return (
         <Container>
              <Row className="justify-content-md-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
@@ -221,21 +249,31 @@ export default function ProjectCompare(){
                         <thead>
                             <tr>
                                 <th className="item-sm">Dataset</th>
-                                <th className="item-sm">Sources IDs</th>
+                                <th className="item-sm">Action</th>
+                                <th className='item-sm'>Sources</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><Badge bg="disabled">Inventory</Badge></td>
-                                <td>TODO</td>
+                                <td>{project.name && <CSVLink data={csvs.Inventory} filename={project.name.replace(" ", "_") + "_Inventory_Inputs.csv"} className="btn btn-primary" style={{width: "35px", padding: "4px 4px"}}>
+                                    <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload input data as csv" title="Download input data as csv"></img>
+                                </CSVLink>}</td>
+                                <td>{sourcesUsed.Inventory.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
                             <tr>
                                 <td><Badge bg="disabled">BAU Scenario</Badge></td>
-                                <td>TODO</td>
+                                <td>{project.name && <CSVLink data={csvs.BAU} filename={project.name.replace(" ", "_") + "_BAU_Inputs.csv"} className="btn btn-primary" style={{width: "35px", padding: "4px 4px"}}>
+                                    <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload input data as csv" title="Download input data as csv"></img>
+                                </CSVLink>}</td>
+                                <td>{sourcesUsed.BAU.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
                             <tr>
-                                <td><Badge bg="disabled">Climate Scenario</Badge></td>
-                                <td>TODO</td>
+                                <td><Badge bg="disabled">Climate Scenarios</Badge></td>
+                                <td>{project.name && <CSVLink data={csvs.Climate} filename={project.name.replace(" ", "_") + "_Climate_Inputs.csv"} className="btn btn-primary" style={{width: "35px", padding: "4px 4px"}}>
+                                    <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload input data as csv" title="Download input data as csv"></img>
+                                </CSVLink>}</td>
+                                <td>{sourcesUsed.Climate.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
                         </tbody>
                     </Table>
