@@ -291,14 +291,15 @@ export function distributeReductionInReducedPkm(
         if (!sumOfCoeffs[y]) {
             sumOfCoeffs[y] = 0
         }
-        sumOfCoeffs[y] += vehicleStats[originVtype].triplength * matrixYearVal
+        sumOfCoeffs[y] += (vehicleStats[originVtype]?.triplength || 1) * matrixYearVal
     }
     
     for (let j = 0; j < originVehicleTypeArray.length; j++) {
         const originVtype = originVehicleTypeArray[j]
+        if (originVtype === "Induced Traffic") continue
         const matrixYearVal = parseFloat(inputOriginModeMatrix[vtype][originVtype].value[y-1]) / 100 // y-1 because ref year is not included
         if (!reducedPkm[originVtype]) reducedPkm[originVtype] = 0
-        const coeff = matrixYearVal * vehicleStats[originVtype].triplength
+        const coeff = matrixYearVal * (vehicleStats[originVtype]?.triplength || 1)
         const reducedPkmForOrigin = (pkmAddedThisYear) * coeff / sumOfCoeffs[y]
         reducedPkm[originVtype] += reducedPkmForOrigin || 0
     }

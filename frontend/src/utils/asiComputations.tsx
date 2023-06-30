@@ -34,14 +34,14 @@ export function distributeReductionInReducedPkm(
         const originVtype = originVehicleTypeArray[j];
         const matrixYearVal = parseFloat(inputOriginModeMatrix[vtype][originVtype].value[y-1]) / 100 // y-1 because ref year is not included
 
-        sumOfCoeffs += vehicleStats[originVtype].triplength * matrixYearVal
+        sumOfCoeffs += (vehicleStats[originVtype]?.triplength || 1) * matrixYearVal
     }
     
     for (let j = 0; j < originVehicleTypeArray.length; j++) {
         const originVtype = originVehicleTypeArray[j]
         const matrixYearVal = parseFloat(inputOriginModeMatrix[vtype][originVtype].value[y-1]) / 100 // y-1 because ref year is not included
         if (!reducedPkm[originVtype]) reducedPkm[originVtype] = 0
-        const coeff = matrixYearVal * vehicleStats[originVtype].triplength
+        const coeff = matrixYearVal * (vehicleStats[originVtype]?.triplength || 1)
         const reducedPkmForOrigin = (pkmAddedThisYear) * coeff / sumOfCoeffs
         reducedPkm[originVtype] += reducedPkmForOrigin || 0
         reductionDistributionForCurrentVtype[originVtype] = reducedPkmForOrigin || 0
@@ -105,7 +105,7 @@ export function computeVktAfterASI(
             continue
         }
         // Once all reduction are computed, we can move that back to vkt, and remove them from this year base
-        const sourceVehicleTypeArray = Object.keys(reducedPkm)
+        const sourceVehicleTypeArray = Object.keys(reducedPkm).filter(vtype => vtype != "Induced Traffic")
         for (let j = 0; j < sourceVehicleTypeArray.length; j++) {
             const sourceVtype = sourceVehicleTypeArray[j]
             const occupancy = parseFloat(inputOccupancyRate?.vtypes[sourceVtype].load?.[y-1]) || vehicleStats[sourceVtype].occupancy

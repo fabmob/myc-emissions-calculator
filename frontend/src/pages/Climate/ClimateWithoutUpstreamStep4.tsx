@@ -68,6 +68,12 @@ export default function ClimateWithoutUpstreamStep4(){
                                 }
                             }
                         }
+                        if(!init.vtypes[goalvtype]["Induced Traffic"]?.value) {
+                            init.vtypes[goalvtype]["Induced Traffic"] = {
+                                source: "",
+                                value: data.project.referenceYears.slice(1).map(() => "0")
+                            }
+                        }
                     }
                     setInputData(init)
 
@@ -186,7 +192,7 @@ export default function ClimateWithoutUpstreamStep4(){
     }
     const inputInventoryStep1 : InputInventoryStep1 = project.stages?.Inventory[0].steps?.[1] || {}
     const isVtypeFreight = (vtype: string) => {
-        return inputInventoryStep1.vtypes[vtype].type === "freight"
+        return vehicleStats[vtype].type === "freight"
     }
     const inputClimateWithoutUpstreamStep1 : InputClimateWithoutUpstreamStep1 = project.stages?.Climate[climateScenarioId].steps?.[1]
     const inputClimateWithoutUpstreamStep2 : InputClimateWithoutUpstreamStep2 = project.stages?.Climate[climateScenarioId].steps?.[2]
@@ -194,7 +200,14 @@ export default function ClimateWithoutUpstreamStep4(){
     const inputInventoryStep8: InputInventoryStep8 = project.stages?.Inventory[0].steps?.[8]
     const inputInventoryStep6: InputInventoryStep6 = project.stages?.Inventory[0].steps?.[6]
     
-    let vehicleStats : VehicleStats = {}
+    let vehicleStats : VehicleStats = {
+        "Induced Traffic": {
+            network: "road", // does not matter
+            occupancy: 0, // does not matter
+            triplength: 1, // has to be 1
+            type: "private transport" // anything but freight
+        }
+    }
     const vtypes = Object.keys(inputInventoryStep1?.vtypes || {})
     for (let i = 0; i < vtypes.length; i++) {
         const vtype = vtypes[i];
@@ -264,22 +277,25 @@ export default function ClimateWithoutUpstreamStep4(){
                             <tbody>
                                 {Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).map((goalvtype) => {
                                     const goalvehicle = inputData.vtypes[goalvtype]
-                                    return Object.keys(inputData.vtypes).filter(vtype => vtype !== goalvtype && !isVtypeFreight(vtype)).map((originvtype, index) => {
+                                    return Object.keys(goalvehicle).filter(vtype => vtype !== goalvtype && !isVtypeFreight(vtype)).map((originvtype, index) => {
                                         const originvehicle = goalvehicle[originvtype]
                                         const source = originvehicle.source
                                         const value = originvehicle.value?.[yearIndex] || ""
-                                        const invTripLen = (inputInventoryStep8).vtypes[originvtype]?.value || 0
+                                        const invTripLen = vehicleStats[originvtype].triplength
                                         const pkmStartOfYear = Math.round((computedASI && computedASI.pkmsStartOfYear?.[yearIndex+1]?.[goalvtype]) || 0)
                                         const pkmEndOfYear = Math.round((computedASI && computedASI.pkmsEndOfYear?.[yearIndex+1]?.[goalvtype]) || 0)
                                         return (
                                             <tr key={goalvtype + originvtype}>
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length -1}><Badge bg="disabled">{goalvtype}</Badge></td>}
-                                                {/* {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex].toFixed(0)}</td>}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex+1].toFixed(0)}</td>} */}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length -1} className={pkmStartOfYear < 0 ? "cellError": ""}>{pkmStartOfYear}</td>}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length -1} className={pkmEndOfYear < 0 ? "cellError": ""}>{pkmEndOfYear}</td>}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype]?.toFixed(0)}</td>}
-                                                <td><Badge bg="disabled">{originvtype}</Badge></td>
+                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}><Badge bg="disabled">{goalvtype}</Badge></td>}
+                                                {/* {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex].toFixed(0)}</td>}
+                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex+1].toFixed(0)}</td>} */}
+                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length} className={pkmStartOfYear < 0 ? "cellError": ""}>{pkmStartOfYear}</td>}
+                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length} className={pkmEndOfYear < 0 ? "cellError": ""}>{pkmEndOfYear}</td>}
+                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}>{computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype]?.toFixed(0)}</td>}
+                                                <td>{originvtype === "Induced Traffic" 
+                                                    ? <ItemWithOverlay overlayContent="Part of additional trips that were induced. These trips are new, not shifted from another transport type."><Badge bg="disabled">🛈 Induced Traffic</Badge></ItemWithOverlay>
+                                                    : <Badge bg="disabled">{originvtype}</Badge>
+                                                }</td>
                                                 <td>{invTripLen}</td>
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
                                                     ? <td>{source
