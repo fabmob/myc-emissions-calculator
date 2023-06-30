@@ -119,7 +119,8 @@ export default function CreateProject() {
             projectCity: (projectCity[0]?.label ? projectCity[0]?.label : projectCity[0]) || '',
             partnerLocation: partnerLocation,
             projectArea: projectArea,
-            projectReferenceYears: projectReferenceYears.map(year => parseInt(year))
+            projectReferenceYears: projectReferenceYears.map(year => parseInt(year)),
+            isSump: isSump
         }
         if (!projectId) {
             const requestOptions = {
