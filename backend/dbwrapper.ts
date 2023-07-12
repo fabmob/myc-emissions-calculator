@@ -165,7 +165,7 @@ function concatProjects(res: ProjectsDbEntry[]) : ProjectsDbEntry[] {
 }
 export function getProjectsByOwner(owner: string) {
     const getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, stage, stageId, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner = ? group by id, stage, stageId")
-    let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
+    let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner) as ProjectsDbEntry[]
     const concatRes: ProjectsDbEntry[] = concatProjects(res)
     return concatRes.map(projectEntry => parseProject(projectEntry))
 }
@@ -176,7 +176,7 @@ export function getPublicProjectsNotOwned(owner: string, isAdmin: boolean) {
     } else {
         getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, stage, stageId, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? AND status = 'validated' group by id, stage, stageId")
     }
-    let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner)
+    let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner) as ProjectsDbEntry[]
     const concatRes: ProjectsDbEntry[] = concatProjects(res)
     return concatRes.map(projectEntry => parseProject(projectEntry))
 }
@@ -185,18 +185,18 @@ export function getProject(owner: string, id: number, isAdmin: boolean) {
     let resProject: ProjectsDbEntry
     if (isAdmin) {
         getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ?")
-        resProject = getProjectStmt.get([id])
+        resProject = getProjectStmt.get([id]) as ProjectsDbEntry
     } else {
         getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ? AND (owner = ? OR status = 'validated')")
-        resProject = getProjectStmt.get([id, owner])
+        resProject = getProjectStmt.get([id, owner]) as ProjectsDbEntry
     }
     if (!resProject) {
         return null
     }
     const getProjectStepsStmt = db.prepare("SELECT * FROM ProjectSteps WHERE projectId = ?")
-    let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([id])
+    let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([id]) as ProjectStepsDbEntry[]
     const getProjectSourcesStmt = db.prepare("SELECT * FROM ProjectSources WHERE projectId = ?")
-    let resProjectSources: ProjectSourcesDbEntry[] = getProjectSourcesStmt.all([id])
+    let resProjectSources: ProjectSourcesDbEntry[] = getProjectSourcesStmt.all([id]) as ProjectSourcesDbEntry[]
     return parseProject(resProject, resProjectSteps, resProjectSources)
 }
 
@@ -280,7 +280,7 @@ export function deleteProject(id: number, owner: string, isAdmin: boolean) {
 
 export function duplicateClimateScenario(projectId: number, oldStageId: number, newStageId: number, done: Function) {
     const getProjectStepsStmt = db.prepare("SELECT * FROM ProjectSteps WHERE projectId = ? and stage = 'Climate' and stageId = ?")
-    let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([projectId, oldStageId])
+    let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([projectId, oldStageId]) as ProjectStepsDbEntry[]
     const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stage, stageId, stepNumber, value) values (?, ?, ?, ?, ?)")
     const inserts = db.transaction((steps) => {
         for (let i = 0; i < steps.length; i++) {
