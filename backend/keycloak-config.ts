@@ -6,7 +6,7 @@ let keycloak = <Keycloak.Keycloak><unknown>undefined
 const keycloakConfig = {
   "realm": "myc-convert",
   "bearer-only": true,
-  "auth-server-url": "http://0.0.0.0:8080/",
+  "auth-server-url": "https://idpmyc.fabmob.io:8443/",
   "ssl-required": "external",
   "resource": "node-microservice",
   "confidential-port": 0

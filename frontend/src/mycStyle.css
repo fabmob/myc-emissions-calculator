@@ -213,3 +213,245 @@ input.cellError {
 .table {
     --bs-table-bg: transparent;
 }
+
+/*adriens edits*/
+
+/*—————————————————————*/
+/*variables*/
+:root {
+
+    --spacing-s: 1.8rem;
+    --spacing-m: 2.4rem;
+    --spacing-l: 3.6rem;
+    
+    /*bs overrides*/
+    /*--bs-body-font-family: "";
+    --bs-body-font-size: null;
+    --bs-body-font-weight: null;
+    --bs-body-line-height: null;
+    --bs-body-color: null;*/
+
+    /*gris*/
+    --c-h0-s0-l0: #000000;
+    --c-h0-s0-l1: #292929;
+    --c-h0-s0-l2: #808080;
+    --c-h0-s0-l3: #B3B3B3;
+    --c-h0-s0-l4: #E6E6E6;
+    --c-h0-s0-l5: #F5F5F5;
+    --c-h0-s0-l6: #FFFFFF;
+
+    /*cyan*/
+    --c-h1-s0-l2: #2CB1D5;
+    --c-h1-s0-l3: #67CAE4;
+    --c-h1-s0-l4: #C5E8F2;
+    --c-h1-s0-l5: #EDF9FD;
+
+    /*magenta*/
+    --c-h2-s0_l2: #A2217C;
+    --c-h2-s0_l3: #CE8DBB;
+    --c-h2-s0_l4: #EBD1E1;
+
+    /*orange*/
+    --c-h3-s0-l0-t0: #FF6747;
+    --c-h3-s0-l0-t1: hsla(10,100%,64%,60%);
+    --c-h3-s0-l0-t2: hsla(10,100%,64%,10%);
+
+    /*red*/
+    --c-h3-s0-l0-t0: #FF5C77;
+    --c-h3-s0-l0-t1: hsla(350,100%,68%,60%);
+    --c-h3-s0-l0-t2: hsla(350,100%,68%,10%);
+
+    /*edition*/
+    --c-edition-t0: #9747FF;
+    --c-edition-t1: hsla(266,100%,64%,60%);
+    --c-edition-t2: hsla(266,100%,64%,10%);
+}
+
+/*—————————————————————*/
+/*set 1rem to 10px*/
+/*this can be used as a global zoom level*/
+html {
+    font-size: 10px;
+}
+
+/*—————————————————————*/
+/*repad container (page)*/
+div.App > div.container {
+    background : var(--c-edition-t2);
+    padding: 6rem 10rem 14rem 10rem !important;
+    /*set height to auto instead of 100vh*/
+    /*DIDNT MANAGE*/
+    height: auto;
+}
+/*resize and repad the child of container (content)*/
+div.App > div.container > div {
+    /*background : var(--color-edition);*/
+    height: auto !important;
+    margin: 0 !important;
+}
+/*.container>div, 
+.container-fluid>div, 
+.container-lg>div, 
+.container-md>div, 
+.container-sm>div, 
+.container-xl>div, 
+.container-xxl>div {
+    width: 60rem;
+}*/
+/*fix spacing of items inside columns*/
+/*all but the last one*/
+div.col > *:not(:last-child) {
+    margin-bottom: var(--spacing-l) !important;
+}
+@media (min-width: 1200px) {
+    .col-xl-8 {
+        flex: 0 0 auto;
+        width: 60rem;
+    }
+}
+@media (min-width: 992px) {
+    .col-lg-8 {
+        flex: 0 0 auto;
+        width: 60rem;
+    }
+}
+
+
+
+
+/*—————————————————————*/
+/*fix colors*/
+html, 
+body,
+h1,h2,h3,
+p,span,text {
+    color: var(--c-h0-s0-l1);
+}
+
+
+
+
+
+
+/*—————————————————————*/
+/*fix fonts*/
+
+/*headings*/
+h1,h2,h3 {
+    font-family: "Gravur Condensed";
+    font-weight: 1000;
+    line-height: 140%;
+}
+h1 {font-size: 4.8rem;} h2 {font-size: 3.6rem;} h3 {font-size: 2.4rem;}
+h4, h5, h6 {
+    /*these are not supposed to exist*/
+    font-family: "Times New Roman";
+    color: red;
+}
+
+/*text*/
+/*all text*/
+    .p-reg,
+    .p-mono,
+    body {
+        line-height: 140%;    
+    }
+/*option reg*/
+    .p-reg,
+    body {
+        font-family: Roboto;
+        font-weight: 500;
+    }
+/*option mono*/
+    .p-mono,
+    .col>form label.form-label,
+    .col>form label.form-label span {
+        font-family: Roboto Mono;
+        font-weight: 600;
+    }
+
+/*sizes*/
+/*p1 (text large)*/
+.p1 {
+    font-size: 2.4rem;
+}
+/*p2 (text medium)*/
+.p2,
+body {
+    font-size: 1.8rem;
+}
+/*p3 (text small)*/
+.p3,
+.col>form label.form-label,
+.col>form label.form-label span {
+    font-size: 1.2rem;
+    line-height: 180%;
+}
+
+
+
+/*—————————————————————*/
+/*working out the config tab*/
+
+/*respace items*/
+.col>form>*:not(:last-child) {
+    margin-bottom: var(--spacing-m) !important;
+}
+
+.form-control {
+    /*width: 100%;*/
+    padding: 0.6rem 0.6rem;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    background-color: var(--bs-body-bg);
+    /*background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    appearance: none;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;*/
+}
+
+.col>form label.form-label,
+.col>form label.form-label span {
+    color: var(--c-h0-s0-l3);
+
+}
+
+/*tables fix*/
+/*row*/
+table.table {
+    border-collapse: collapse; 
+    border-spacing: 0; /* cellspacing */
+}
+/*reset padding*/
+table.table tr,
+table.table tr th, td { 
+    margin: 0 !important;
+    padding: 0 !important;
+}
+table.table tr td {
+    line-height: 0;
+}
+table.table tr td > * {
+    line-height: 100%;
+}
+/*set padding*/
+/*cell*/
+/*table.table tr td > *:not(input) {
+    margin: 0.6rem !important;
+}*/
+table.table tr td {
+    padding: 0.6rem !important;
+}
+/*not great*/
+table.table tr th {
+    height: 3.7rem !important;
+}
+
+
+
+table.table tr td > input {
+    border-radius: 0;
+}
