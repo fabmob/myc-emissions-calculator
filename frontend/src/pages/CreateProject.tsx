@@ -277,7 +277,7 @@ export default function CreateProject() {
                             <Form.Group className="mb-3">
                                 <Form.Label>
                                     <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
-                                        <span>🛈 Ref. year</span>
+                                        <span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Ref. year</span>
                                     </OverlayTrigger>
                                 </Form.Label>
                                 <InputGroup>
@@ -289,9 +289,9 @@ export default function CreateProject() {
                                 <Form.Label>Proj. Year(s)</Form.Label>
                                 <InputGroup>
                                     {projectReferenceYears.map((year,i) => (
-                                        (i>0) && <Badge key={i} bg="secondary">{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}>X</span></Badge>
+                                        (i>0) && <Badge key={i} bg="secondary">{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
                                     ))}
-                                    <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}>+</Badge>
+                                    <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Badge>
                                 </InputGroup>
                             </Form.Group>
                             

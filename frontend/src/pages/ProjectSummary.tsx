@@ -101,7 +101,7 @@ export default function ProjectSummary(){
                             ? <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>hide(props.title)}>See less</Button>
                             : <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>show(props.title)}>See more</Button>
                         }
-                        {(props.stage === "Climate" && props.stageId != undefined && project.stages?.Climate.length && <Button variant="imglink" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><img src="/duplicate.svg"></img></Button>) || ""}
+                        {(props.stage === "Climate" && props.stageId != undefined && project.stages?.Climate.length && <Button variant="imglink" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#copy"}/></svg></Button>) || ""}
                     
                         <Button onClick={e => navigate(introUrl)} style={{minWidth: "93px"}}>
                         {project.stages?.[props.stage].length ? "Edit": "Create +"}
