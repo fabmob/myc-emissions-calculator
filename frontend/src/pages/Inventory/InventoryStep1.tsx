@@ -245,9 +245,9 @@ export default function InventoryStep1(){
                 <h1>Vehicles and fuels in use</h1>
                 {error && <Alert variant='danger'>{error}</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/intro', content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/intro', content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
-                    seeMoreCallBack={()=>setShowInfo(true)}
+                    
                 >
                     <div className="desc">
                         <p>Please define all combinations of vehicle and fuel types to be used in the following steps to calculate GHG emissions. You also need to specify :</p>
@@ -278,22 +278,22 @@ export default function InventoryStep1(){
                                 typeBadge = <Badge bg="disabled">{vehicle.type}</Badge>
                             }
                             return (<tr key={index}>
-                                <td><Badge bg="info" onClick={e=>removeVehicle(vtype)}>{vtype} X</Badge></td>
+                                <td><Badge bg="info" onClick={e=>removeVehicle(vtype)}>{vtype}<svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></Badge></td>
                                 <td>{networkBadge}</td>
                                 <td>{typeBadge}</td>
                                 <td>
                                     <Stack direction="horizontal" gap={2}>
                                         {Object.keys(vehicle.fuels).map((ftype, index) => (
-                                            <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}>{ftype} X</Badge>
+                                            <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}>{ftype}<svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></Badge>
                                         ))}
-                                        <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}>+</Button>
+                                        <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>
                                     </Stack>
                                 </td>
                             </tr>)
                         })}
                         <tr>
                             <td>
-                                <Button size="sm" variant="action" onClick={e => setShowAddVehicleModal(true)}>+</Button>
+                                <Button size="sm" variant="action" onClick={e => setShowAddVehicleModal(true)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>
                             </td>
                             <td></td>
                             <td></td>

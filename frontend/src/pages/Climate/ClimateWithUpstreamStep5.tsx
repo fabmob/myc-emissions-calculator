@@ -106,7 +106,7 @@ export default function ClimateWithUpstreamStep5(){
             <ProjectStepContainerWrapper project={project} stage="Climate" currentStep={stepNumber} climateScenarioId={climateScenarioId} isWithoutUpstream={false}>
                 <h1>Results</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
                     <p>
@@ -123,7 +123,7 @@ export default function ClimateWithUpstreamStep5(){
                     setInputData={setEmissionFactorsInputData}
                 ></EditEmissionFactors>
                 
-                <h2>Emissions</h2>
+                <h3>Emissions</h3>
                 <EmissionsTable emissionsData={emissions} project={project}></EmissionsTable>
                 <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
                 

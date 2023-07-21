@@ -128,15 +128,17 @@ export default function InventoryStep7(){
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber}>
                 <h1>Results</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
-                        This page displays a short summary of emissions for the reference year. More tables and visualisations are available in the Compare section of the project.
-                    </p>
+                    <div className="desc">
+                        <p>
+                            This page displays a short summary of emissions for the reference year. More tables and visualisations are available in the Compare section of the project.
+                        </p>
+                    </div>
                 </DescAndNav>
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
-                <h2>GHG emissions</h2>
+                <h3>GHG emissions</h3>
                 <Table bordered>
                     <thead>
                         <tr>
@@ -206,7 +208,7 @@ export default function InventoryStep7(){
                     inputData={emissionFactorsInputData}
                     setInputData={setEmissionFactorsInputData}
                 ></EditEmissionFactors>
-                <h2>Passenger Modal Share</h2>
+                <h3>Passenger Modal Share</h3>
                 <ResponsiveContainer width="100%" height={300}>
                     <PieChart width={400} height={300}>
                     <Pie
@@ -223,7 +225,7 @@ export default function InventoryStep7(){
                     <Tooltip />
                     </PieChart>
                 </ResponsiveContainer>
-                <h2>Freight Modal Share</h2>
+                <h3>Freight Modal Share</h3>
                 <ResponsiveContainer width="100%" height={300}>
                     <PieChart width={400} height={300}>
                     <Pie

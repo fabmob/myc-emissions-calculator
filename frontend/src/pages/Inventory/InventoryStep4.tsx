@@ -104,20 +104,22 @@ export default function InventoryStep4(){
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
                 <h1>CO2 content of alternative energy production</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
-                        In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).
-                    </p>
+                    <div className="desc">
+                        <p>
+                            In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).
+                        </p>
+                        <p>
+                            If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.
+                        </p>
+                        <p>
+                            Please enter the CO2 content of electricity and hydrogen production, or skip to next step.
+                        </p>
+                    </div>
                 </DescAndNav>
-                <p>
-                    If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.
-                </p>
-                <p>
-                    Please enter the CO2 content of electricity and hydrogen production, or skip to next step.
-                </p>
-                <h2>Electricity</h2>
+                <h3>Electricity</h3>
                 <Table bordered>
                     <thead>
                         <tr>
@@ -135,7 +137,7 @@ export default function InventoryStep4(){
                             <td>
                                 {source
                                 ? <ValidSource source={source} onClick={(e:any) => configureSource("electricity", network)}/>
-                                : <Button variant="action" onClick={e => configureSource("electricity", network)}>+</Button>}
+                                : <Button variant="action" onClick={e => configureSource("electricity", network)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                             </td>
                             <td>
                                 <Form.Control value={inputData.electricity?.[network].value} onChange={e => updateInput("electricity", network, e.target.value)}></Form.Control>
@@ -143,7 +145,7 @@ export default function InventoryStep4(){
                         </tr>)})}
                     </tbody>
                 </Table>
-                <h2>Hydrogen</h2>
+                <h3>Hydrogen</h3>
                 <Table bordered>
                     <thead>
                         <tr>
@@ -161,7 +163,7 @@ export default function InventoryStep4(){
                             <td>
                                 {source
                                 ? <ValidSource source={source} onClick={(e:any) => configureSource("hydrogen", network)}/>
-                                : <Button variant="action" onClick={e => configureSource("hydrogen", network)}>+</Button>}
+                                : <Button variant="action" onClick={e => configureSource("hydrogen", network)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                             </td>
                             <td>
                                 <Form.Control value={inputData.hydrogen?.[network].value} onChange={e => updateInput("hydrogen", network, e.target.value)}></Form.Control>

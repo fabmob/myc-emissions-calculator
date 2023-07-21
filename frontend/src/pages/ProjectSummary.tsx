@@ -208,8 +208,25 @@ export default function ProjectSummary(){
                     <StepCard title='1. Inventory / Base Year ' stage="Inventory">
                         <span>Indexing - The GHG emission inventory for urban transport is the sum of all transport-related activities emissions that can be attributed to the city or country for a given year (base year).</span>
                         {inventoryResultsError && <Alert variant='warning'>Failed to compute inventory results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory steps again and fill missing data.</Alert>}
-                        {project.stages?.Inventory?.[0]?.step >= 7 && !inventoryResultsError && <Row className="align-items-center">
-                            <Col sm="8">
+                        {project.stages?.Inventory?.[0]?.step >= 7 && !inventoryResultsError && <Row className="results-preview align-items-center">
+                            <Col className="chart" sm="4" style={{background: "white", padding: "20px"}}>
+                                <ResponsiveContainer width="100%" height={200}>
+                                    <PieChart width={200} height={200}>
+                                    <Pie
+                                        dataKey="value"
+                                        data={inventoryEmissionsPieData}
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={70}
+                                        innerRadius={40}
+                                    >
+                                        {inventoryEmissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                                    </Pie>
+                                    <Tooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </Col>
+                            <Col className="table" sm="8">
                                 <Table bordered>
                                     <thead>
                                         <tr>
@@ -239,31 +256,14 @@ export default function ProjectSummary(){
                                     </tbody>
                                 </Table>
                             </Col>
-                            <Col sm="4" style={{background: "white", padding: "20px"}}>
-                                <ResponsiveContainer width="100%" height={200}>
-                                    <PieChart width={200} height={200}>
-                                    <Pie
-                                        dataKey="value"
-                                        data={inventoryEmissionsPieData}
-                                        cx="50%"
-                                        cy="50%"
-                                        outerRadius={70}
-                                        innerRadius={40}
-                                    >
-                                        {inventoryEmissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
-                                    </Pie>
-                                    <Tooltip />
-                                    </PieChart>
-                                </ResponsiveContainer>
-                            </Col>
                         </Row>
                         }
                     </StepCard>
                     <StepCard title='2. Business As Usual (BAU) Scenario' stage="BAU">
                         <span>Projecting - The Business-as-usual scenario aims to describe the transport related emissions if nothing changed in the years to come from the current status quo.</span>
                         {bauResultsError && <Alert variant='warning'>Failed to compute BAU results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and BAU steps again and fill missing data.</Alert>}
-                        {bauResults?.emissions && <Row className="align-items-center">
-                            <Col sm="8" style={{background: "white", padding: "20px"}}>
+                        {bauResults?.emissions && <Row className="results-preview align-items-center">
+                            <Col className="chart" sm="8" style={{background: "white", padding: "20px"}}>
                                 <EmissionsBarChart emissionsData={bauResults?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
                             </Col>
                             <Col sm="4">
@@ -274,8 +274,8 @@ export default function ProjectSummary(){
                     <StepCard title='3. Climate Scenario (1)' stage="Climate" stageId={0}>
                         <span>Comparing - The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
                         {climateResultsError[0] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
-                        {climateResults?.[0]?.emissions && <Row className="align-items-center">
-                            <Col sm="8" style={{background: "white", padding: "20px"}}>
+                        {climateResults?.[0]?.emissions && <Row className="results-preview align-items-center">
+                            <Col className="chart" sm="8" style={{background: "white", padding: "20px"}}>
                                 <EmissionsBarChart emissionsData={climateResults?.[0]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
                             </Col>
                             <Col sm="4">
@@ -291,8 +291,8 @@ export default function ProjectSummary(){
                             <StepCard title={`3. Climate Scenario (${index + 1})`} stage="Climate" stageId={index} key={index}>
                                 <span>Comparing - The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
                                 {climateResultsError[index] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
-                                {climateResults?.[index]?.emissions && <Row className="align-items-center">
-                                    <Col sm="8" style={{background: "white", padding: "20px"}}>
+                                {climateResults?.[index]?.emissions && <Row className="results-preview align-items-center">
+                                    <Col className="chart" sm="8" style={{background: "white", padding: "20px"}}>
                                         <EmissionsBarChart emissionsData={climateResults?.[index]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
                                     </Col>
                                     <Col sm="4">
@@ -303,7 +303,7 @@ export default function ProjectSummary(){
                         )
                     })}
                     {project?.stages?.Climate?.length > 0 &&
-                        <div style={{marginBottom: "30px"}}><Button variant="link" onClick={_=>navigate(`/project/${project.id}/Climate/${project.stages.Climate.length}/intro`)}>+ Add another climate scenario</Button></div>
+                        <div style={{marginBottom: "30px"}}><Button variant="link" onClick={_=>navigate(`/project/${project.id}/Climate/${project.stages.Climate.length}/intro`)}><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg> Add another climate scenario</Button></div>
                     }
                 </Col>
             </Row>

@@ -29,7 +29,7 @@ export default function DescAndNav (props: {children: React.ReactNode, prevNav?:
                         {props.nextNav && <Button variant={props.nextNav.variant} onClick={e => handleClick(props.nextNav)} style={{whiteSpace: "nowrap"}}>{props.nextNav.content}</Button>}
                     </Col>
                 </Row>
-                <Row>
+                <Row className="info">
                     <Col>
                         {props.seeMoreCallBack && <Button variant="link" onClick={e => props.seeMoreCallBack && props.seeMoreCallBack()}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> See more</Button>}
                     </Col>

@@ -107,7 +107,7 @@ export default function ClimateWithUpstreamStep7(){
             <ProjectStepContainerWrapper project={project} stage="Climate" currentStep={stepNumber} climateScenarioId={climateScenarioId} isWithoutUpstream={true}>
                 <h1>Results</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
                     <p>
@@ -115,7 +115,7 @@ export default function ClimateWithUpstreamStep7(){
                     </p>
                 </DescAndNav>
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
-                <h2>Emissions</h2>
+                <h3>Emissions</h3>
                 <EditEmissionFactors 
                     project={project} 
                     stepNumber={stepNumber} 

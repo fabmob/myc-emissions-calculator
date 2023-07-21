@@ -223,20 +223,22 @@ export default function InventoryStep2(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <p>
-                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
-                    </p>
+                    <div className="desc">
+                        <p>
+                            Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
+                        </p>
+                        <p>
+                            Please enter the vehicle kilometers travelled (Mio km) for the reference year. The total vkt should comply with the actual transport activity within the city or country territory.
+                        </p>
+                        <p>
+                            Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
+                        </p>
+                    </div>
                 </DescAndNav>
-                <p>
-                    Please enter the vehicle kilometers travelled (Mio km) for the reference year. The total vkt should comply with the actual transport activity within the city or country territory.
-                </p>
-                <p>
-                    Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
-                </p>
                 <ApproachSelector></ApproachSelector>
                 <Table bordered>
                     <thead>
@@ -289,7 +291,7 @@ export default function InventoryStep2(){
                                     <td>
                                         {percentSource 
                                         ? <ValidSource source={percentSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype, ftype)}>+</Button>}
+                                        : <Button variant="action" onClick={e => configureSource(vtype, ftype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                                     </td>
                                     <td>
                                         <PercentInput value={value} onChange={(e:any) => updateInputPercent(vtype, ftype, e.target.value)} invalid={totalPercent > 100}></PercentInput>
@@ -303,7 +305,7 @@ export default function InventoryStep2(){
                                     <td>
                                         {vktSource
                                         ? <ValidSource source={vktSource} onClick={(e:any) => configureSource(vtype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype)}>+</Button>}
+                                        : <Button variant="action" onClick={e => configureSource(vtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                                     </td>
                                     {computationApproach === "fleet" && <td><Form.Control value={fleetStock} onChange={e => updateInputFleetStock(vtype, e.target.value)}></Form.Control></td>}
                                     {computationApproach === "fleet" && <td><Form.Control value={fleetMileage} onChange={e => updateInputFleetMileage(vtype, e.target.value)}></Form.Control></td>}

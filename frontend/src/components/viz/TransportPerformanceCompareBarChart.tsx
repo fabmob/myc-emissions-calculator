@@ -83,7 +83,7 @@ export default function TransportPerformanceCompareBarChart (props: {
       }, [getPng])
     const unit = props.title.includes("pkm") ? "pkm" : "tkm"
     return (
-        <div style={{marginTop: "20px"}}>
+        <div className="chart" style={{marginTop: "20px"}}>
             <Row>
                 <Col xs={10}><h3>{props.title}</h3></Col>
                 <Col xs={1}>

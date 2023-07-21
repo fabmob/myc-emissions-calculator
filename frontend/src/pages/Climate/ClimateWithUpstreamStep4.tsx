@@ -154,7 +154,7 @@ export default function ClimateWithUpstreamStep4(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
                      <p>
@@ -204,7 +204,7 @@ export default function ClimateWithUpstreamStep4(){
                                             <td>
                                                 {consSource 
                                                 ? <ValidSource source={consSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                                : <Button variant="action" onClick={e => configureSource(vtype, ftype)}>+</Button>}
+                                                : <Button variant="action" onClick={e => configureSource(vtype, ftype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                                             </td>
                                             <td>
                                                 <Form.Control value={cons} onChange={e => updateInputCons(vtype, ftype, yearIndex, e.target.value)}></Form.Control>

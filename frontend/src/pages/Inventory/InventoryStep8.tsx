@@ -115,18 +115,20 @@ export default function InventoryStep8(){
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
                 <h1>Vehicle trip length</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
-                    <p>
-                    The average trip length isn’t involved in GHG emissions for the base year. 
-                    It is used to weight the modal shift effect of public transport in the Climate Scenario and it will then be considered constant
-                    during the whole MobiliseYourCity emissions calculation process. Go to modal shift in the Climate Scenario to learn more about it.
-                    </p>
+                    <div className="desc">
+                        <p>
+                        The average trip length isn’t involved in GHG emissions for the base year. 
+                        It is used to weight the modal shift effect of public transport in the Climate Scenario and it will then be considered constant
+                        during the whole MobiliseYourCity emissions calculation process. Go to modal shift in the Climate Scenario to learn more about it.
+                        </p>
+                        <p>
+                            It is asked to fill it here because the data should be collected during the diagnostic process of collecting data.
+                        </p>
+                    </div>
                 </DescAndNav>
-                <p>
-                    It is asked to fill it here because the data should be collected during the diagnostic process of collecting data.
-                </p>
                 <Table bordered>
                     <thead>
                         <tr>
@@ -143,7 +145,7 @@ export default function InventoryStep8(){
                                     <td>
                                         {vehicle.source 
                                         ? <ValidSource source={vehicle.source} onClick={(e:any) => configureSource(vtype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype)}>+</Button>}
+                                        : <Button variant="action" onClick={e => configureSource(vtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={vehicle.value} onChange={e => updateInput(vtype, e.target.value)}></Form.Control>

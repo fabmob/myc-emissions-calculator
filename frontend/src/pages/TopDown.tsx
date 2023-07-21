@@ -202,7 +202,7 @@ export default function TopDown(){
                                 </Table>
                             )
                         })}
-                        <h2>Energy consumption for both transport types</h2>
+                        <h3>Energy consumption for both transport types</h3>
                         <div style={{marginBottom: "20px"}}>
                             <ResponsiveContainer width="90%" height={300}>
                                 <BarChart data={ftypes.map(_ftype => {

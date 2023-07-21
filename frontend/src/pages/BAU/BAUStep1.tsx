@@ -134,7 +134,7 @@ export default function BAUStep1(){
                 <h1>Transport activity</h1>
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/BAU/intro', content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/BAU/intro', content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
@@ -173,7 +173,7 @@ export default function BAUStep1(){
                                             <td>{inventoryVehicle.vkt}</td>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
-                                            : <Button variant="action" onClick={e => configureSource(vtype)}>+</Button>}</td>
+                                            : <Button variant="action" onClick={e => configureSource(vtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}</td>
                                             <td><PercentInput value={vktRate} onChange={(e:any) => updateInputPercent(vtype, yearIndex, e.target.value)}></PercentInput></td>
                                         </tr>
                                     )

@@ -229,7 +229,7 @@ export default function ClimateWithoutUpstreamStep4(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
                     <p>
@@ -251,7 +251,7 @@ export default function ClimateWithoutUpstreamStep4(){
                     fill
                 >
                     {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
-                        <h2>Passengers</h2>
+                        <h3>Passengers</h3>
                         <Table bordered>
                             <thead>
                                 <tr>
@@ -302,7 +302,7 @@ export default function ClimateWithoutUpstreamStep4(){
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
                                                     ? <td>{source
                                                         ? <ValidSource source={source} onClick={(e:any) => configureSource(goalvtype, originvtype)}/>
-                                                        : <Button variant="action" onClick={e => configureSource(goalvtype, originvtype)}>+</Button>}</td>
+                                                        : <Button variant="action" onClick={e => configureSource(goalvtype, originvtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}</td>
                                                     : <TdDiagonalBar></TdDiagonalBar>
                                                 }
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
@@ -321,7 +321,7 @@ export default function ClimateWithoutUpstreamStep4(){
                                 
                             </tbody>
                         </Table>
-                        <h2>Freight</h2>
+                        <h3>Freight</h3>
                         <Table bordered>
                             <thead>
                                 <tr>
@@ -363,7 +363,7 @@ export default function ClimateWithoutUpstreamStep4(){
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
                                                     ? <td>{source
                                                         ? <ValidSource source={source} onClick={(e:any) => configureSource(goalvtype, originvtype)}/>
-                                                        : <Button variant="action" onClick={e => configureSource(goalvtype, originvtype)}>+</Button>}</td>
+                                                        : <Button variant="action" onClick={e => configureSource(goalvtype, originvtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}</td>
                                                     : <TdDiagonalBar></TdDiagonalBar>
                                                 }
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 

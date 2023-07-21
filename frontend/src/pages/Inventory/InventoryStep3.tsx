@@ -152,19 +152,21 @@ export default function InventoryStep3(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
-                        Once transport activity i.e. mileage by mode and fuel is known, it needs to be multiplied with adequate fuel consumption factors.
-                    </p>
+                    <div className="desc">
+                        <p>
+                            Once transport activity i.e. mileage by mode and fuel is known, it needs to be multiplied with adequate fuel consumption factors.
+                        </p>
+                        <p>
+                            Please enter the expected average fuel/energy consumption changes for each vehicle category and per fuel type (average fuel/energy consumption per vehicle per 100 km).
+                        </p>
+                        <p>
+                            If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.
+                        </p>
+                    </div>
                 </DescAndNav>
-                <p>
-                    Please enter the expected average fuel/energy consumption changes for each vehicle category and per fuel type (average fuel/energy consumption per vehicle per 100 km).
-                </p>
-                <p>
-                    If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.
-                </p>
                 <Table bordered>
                     <thead>
                         <tr>
@@ -190,7 +192,7 @@ export default function InventoryStep3(){
                                     <td>
                                         {consSource 
                                         ? <ValidSource source={consSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype, ftype)}>+</Button>}
+                                        : <Button variant="action" onClick={e => configureSource(vtype, ftype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={cons} onChange={e => updateInputCons(vtype, ftype, e.target.value)}></Form.Control>

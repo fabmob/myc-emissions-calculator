@@ -140,17 +140,17 @@ const ProjectsList = ({ownedProjects, publicProjects, adminProjects, handleEditP
         isAdmin: boolean
     }) => (
     <div style={{textAlign: "left"}}>
-        <h2>Your projects</h2>
+        <h3>Your projects</h3>
         <DetailedProjects projects={ownedProjects} handleEditProject={handleEditProject} showOwner={false}/>
         {isAdmin ?
             <>
-                <h2>(Admin) Public projects</h2>
+                <h3>(Admin) Public projects</h3>
                 <DetailedProjects projects={publicProjects} handleEditProject={handleEditProject} showOwner={true}/>
-                <h2>(Admin) Private projects</h2>
+                <h3>(Admin) Private projects</h3>
                 <DetailedProjects projects={adminProjects} handleEditProject={handleEditProject} showOwner={true}/>
             </>
             : <>
-                <h2>Public projects</h2>
+                <h3>Public projects</h3>
                 <PublicProjects publicProjects={publicProjects} handleEditProject={handleEditProject}/>
             </>
         }

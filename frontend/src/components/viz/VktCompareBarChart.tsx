@@ -81,7 +81,7 @@ export default function VktCompareBarChart (props: {
         }
       }, [getPng, props.project])
     return (
-        <div style={{marginTop: "20px"}}>
+        <div className="chart" style={{marginTop: "20px"}}>
             <Row>
                 <Col xs={10}><h3>Vehicle kilometer travelled</h3></Col>
                 <Col xs={1}>

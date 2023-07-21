@@ -118,7 +118,7 @@ export default function BAUStep4(){
             <ProjectStepContainerWrapper project={project} stage="BAU" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
                 <h1>CO2 content of alternative energy production</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
                      <p>
@@ -137,7 +137,7 @@ export default function BAUStep4(){
                     fill
                 >
                     {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
-                        <h2>Electricity</h2>
+                        <h3>Electricity</h3>
                         <Table bordered>
                             <thead>
                                 <tr>
@@ -158,7 +158,7 @@ export default function BAUStep4(){
                                     <td>
                                         {source
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('electricity', network)}/>
-                                        : <Button variant="action" onClick={e => configureSource('electricity', network)}>+</Button>}
+                                        : <Button variant="action" onClick={e => configureSource('electricity', network)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                                     </td>
                                     <td>
                                         {inventoryValue}
@@ -169,7 +169,7 @@ export default function BAUStep4(){
                                 </tr>)})}
                             </tbody>
                         </Table>
-                        <h2>Hydrogen</h2>
+                        <h3>Hydrogen</h3>
                         <Table bordered>
                             <thead>
                                 <tr>
@@ -190,7 +190,7 @@ export default function BAUStep4(){
                                     <td>
                                         {source
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('hydrogen', network)}/>
-                                        : <Button variant="action" onClick={e => configureSource('hydrogen', network)}>+</Button>}
+                                        : <Button variant="action" onClick={e => configureSource('hydrogen', network)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                                     </td>
                                     <td>
                                         {inventoryValue}

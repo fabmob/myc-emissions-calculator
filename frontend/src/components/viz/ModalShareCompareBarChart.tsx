@@ -64,7 +64,7 @@ export default function ModalShareCompareBarChart(props: {
         }
       }, [getPng, props.project])
     return (
-        <div style={{marginTop: "20px"}}>
+        <div className="chart" style={{marginTop: "20px"}}>
             <Row>
                 <Col xs={10}><h3>{props.title}</h3></Col>
                 <Col xs={1}>

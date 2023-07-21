@@ -105,7 +105,7 @@ export default function BAUStep5(){
             <ProjectStepContainerWrapper project={project} stage="BAU" currentStep={stepNumber}>
                 <h1>Results</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
                     <p>
@@ -122,7 +122,7 @@ export default function BAUStep5(){
                     setInputData={setEmissionFactorsInputData}
                 ></EditEmissionFactors>
                 
-                <h2>Emissions per year</h2>
+                <h3>Emissions per year</h3>
                 <EmissionsTable emissionsData={emissions} project={project}></EmissionsTable>
                 <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
             </ProjectStepContainerWrapper>

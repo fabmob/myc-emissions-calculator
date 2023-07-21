@@ -132,20 +132,22 @@ export default function InventoryStep5(){
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
                 <h1>Top down validation</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
-                        The top down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> energy sales</Button> on a given territory to evaluate your bottom-up results.
-                    </p>
+                    <div className="desc">
+                        <p>
+                            The top down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> energy sales</Button> on a given territory to evaluate your bottom-up results.
+                        </p>                
+                        <p>
+                            It is particularly adapted for NUMPs, since it is easier to get the energy balance data at a national scale - but you can also use it if you have the local data.
+                        </p>
+                        <p>
+                            Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> possible reasons</Button> for uncertainty, for both calculation approach.
+                        </p>
+                    </div>
                 </DescAndNav>
-                <p>
-                    It is particularly adapted for NUMPs, since it is easier to get the energy balance data at a national scale - but you can also use it if you have the local data.
-                </p>
-                <p>
-                    Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> possible reasons</Button> for uncertainty, for both calculation approach.
-                </p>
-                <h2>Energy balance</h2>
+                <h3>Energy balance</h3>
                 <Table bordered>
                     <thead>
                         <tr>
@@ -202,7 +204,7 @@ export default function InventoryStep5(){
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("energy", networkName, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource("energy", networkName, ftype)}>+</Button>}
+                                        : <Button variant="action" onClick={e => configureSource("energy", networkName, ftype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput("energy", networkName, ftype, e.target.value)}></Form.Control>
@@ -220,7 +222,7 @@ export default function InventoryStep5(){
                         
                     </tbody>
                 </Table>
-                <h2>Emissions</h2>
+                <h3>Emissions</h3>
                 <Table bordered>
                     <thead>
                         <tr>
@@ -277,7 +279,7 @@ export default function InventoryStep5(){
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("emissions", networkName, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource("emissions", networkName, ftype)}>+</Button>}
+                                        : <Button variant="action" onClick={e => configureSource("emissions", networkName, ftype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput("emissions", networkName, ftype, e.target.value)}></Form.Control>
