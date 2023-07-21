@@ -92,7 +92,7 @@ b {
     font-weight: 700;
     font-size: 12px;
     line-height: 22px;
-    color: #B3B3B3 !important;
+    color: #B3B3B3;
     white-space: nowrap;
 }
 .bg-info {
@@ -266,12 +266,20 @@ input.cellError {
             --t-fs-h2: 3.6rem; /*medium*/
             --t-fs-h3: 2.4rem; /*small*/
             /*for body copy*/
+            --t-ff-p-mono: "Roboto Mono";
+            --t-fw-p-mono: 500;
+            --t-fw-p-mono-bold: 800;
+            --t-ff-p-regular: "Roboto";
+            --t-fw-p-regular: 500;
+            --t-fw-p-regular-bold: 700;
             --t-fs-p1: 2.4rem; /*big*/
             --t-lh-p1: var(--t-lh-main);
             --t-fs-p2: 1.8rem; /*medium*/
             --t-lh-p2: var(--t-lh-main);
             --t-fs-p3: 1.2rem; /*small*/
             --t-lh-p3: 180%;
+        /*tables*/
+            --table-border-color: var(--c-h1-s0-l4);
     }
 
 
@@ -296,7 +304,7 @@ html {
 
 /*repad page ("container")*/
 div.App > div.container {
-    background : var(--c-edition-t2);
+    /* background : var(--c-edition-t2); */
     padding: 6rem 10rem 14rem 10rem !important;
     /*set height to auto instead of 100vh*/
     /*DIDNT MANAGE*/
@@ -334,10 +342,18 @@ div.col > *:not(:last-child) {
 
 /*text colors*/
 html, 
-body,
+body {
+    color: var(--c-h0-s0-l1);
+}
 h1,h2,h3,
 p,span,text {
+    color: inherit;
+}
+h1,h2,h3 {
     color: var(--c-h0-s0-l1);
+}
+body {
+    background-color: unset;
 }
 
 
@@ -345,6 +361,14 @@ p,span,text {
 
 /*—————————————————————*/
 /*fix for the fonts*/
+p,span,text {
+    font-size: inherit;
+}
+/*paragraph spacing*/
+p, text {
+    margin-bottom: 0.8em;
+}
+
 /*1. headings*/
     h1,h2,h3 {
         font-family: var(--t-ff-h);
@@ -370,16 +394,28 @@ p,span,text {
     /*body copy style: regular*/
         .p-reg,
         body {
-            font-family: Roboto;
-            font-weight: 500;
+            font-family: var(--t-ff-p-regular);
+            font-weight: var(--t-fw-p-regular);
+        }
+    /*body copy style: regular bold*/
+        .p-reg-bold {
+            font-family: var(--t-ff-p-regular);
+            font-weight: var(--t-fw-p-regular-bold);
         }
     /*body copy style: mono*/
         .p-mono,
+        .card-body > span {
+            font-family: var(--t-ff-p-mono);
+            font-weight: var(--t-fw-p-mono);
+        }
+    /*body copy style: mono bold*/
+        .p-mono-bold,
         .col>form label.form-label,
         .col>form label.form-label span,
-        .badge {
-            font-family: Roboto Mono;
-            font-weight: 600;
+        .badge,
+        .btn-sm {
+            font-family: var(--t-ff-p-mono);
+            font-weight: var(--t-fw-p-mono-bold);
         }
 /*2.2. body copy sizes*/
     /*body copy large*/
@@ -396,6 +432,20 @@ p,span,text {
         .badge {
             font-size: var(--t-fs-p3);
             line-height: var(--t-lh-p3);}
+
+
+
+
+
+/*—————————————————————*/
+/* fix for the buttons */
+.btn {
+    --bs-btn-font-size: unset;
+    font-size: var(--t-fs-p3);
+}
+.btn-link {
+    padding: 0;
+}
 
 
 
@@ -439,6 +489,7 @@ table.table tr th, td {
 }
 table.table tr td {
     line-height: 0;
+    font-size: var(--t-fs-p2);
 }
 table.table tr td > * {
     line-height: 100%;
@@ -448,15 +499,24 @@ table.table tr td > * {
 /*table.table tr td > *:not(input) {
     margin: 0.6rem !important;
 }*/
-table.table tr td {
+table.table tr td,
+table.table tr th {
     padding: 0.6rem !important;
+    font-family: var(--t-ff-p-mono);
+    font-weight: var(--t-fw-p-mono-bold);
 }
 /*not great*/
 table.table tr th {
     height: 3.7rem !important;
+    vertical-align: middle;
+    color: var(--c-h0-s0-l3);
+    font-size: var(--t-fs-p3);
 }
 table.table tr td > input {
     border-radius: 0;
+}
+td, tr, th {
+    border-color: var(--table-border-color);
 }
 
 
@@ -464,7 +524,6 @@ table.table tr td > input {
 
 /*—————————————————————*/
 /*fix for the header*/
-
 nav.navbar a {
     font-size: var(--t-fs-p2);
     color: var(--c-h0-s0-l3);
@@ -477,7 +536,7 @@ nav.navbar a {
 
 
 /*—————————————————————*/
-/*icons*/
+/*fix for the icons*/
 .icon {
     fill: none; 
     stroke: currentColor; 
@@ -485,13 +544,13 @@ nav.navbar a {
 }
 .icon-size-s {
     stroke-width: calc(1.375rem*0.14);
-    height: 2rem;
-    width: 2rem;
+    height: 1.7rem;
+    width: 1.7rem;
 }
 .icon-size-m {
     stroke-width: calc(2.25rem*0.1);
-    height: 2.2rem;
-    width: 2.2rem;
+    height: 2rem;
+    width: 2rem;
 }
 .icon-size-l {
     stroke-width: calc(3rem*0.1);
@@ -503,17 +562,130 @@ nav.navbar a {
 
 
 /*—————————————————————*/
-/*badges*/
-.badge {
+/*fix for the badges and small buttons*/
+.badge, .btn-sm {
     padding: 0 0.6rem;
+    /* padding: 0rem; */
+    min-width: 2.2rem;
     height: 2.2rem;
     display: inline-flex;
     align-items: center;
     line-height: 100%;
     margin-right: 0.8rem;
     border-radius: 0.6rem !important;
+    font-size: var(--t-fs-p3);
 }
-/*badge icon*/
-/*.badge span {
-    line-height: 0;
-}*/
+.badge > svg.icon {
+    margin: 0 -0.4rem;
+}
+/*default colors*/
+.bg-secondary {
+    color: var(--c-h0-s0-l1);
+    background-color: var(--c-h0-s0-l4) !important; 
+    /*forced to use "!important" as it is used in the overritten rule*/
+}
+.bg-disabled {
+    color: var(--c-h0-s0-l6);
+    background-color: var(--c-h0-s0-l3) !important; 
+    /*forced to use "!important" as it is used in the overritten rule*/
+}
+
+
+
+/*—————————————————————*/
+/*fix for the cards*/
+.card {
+    background-color: var(--c-h0-s0-l4);
+    border-radius: 2.4rem;
+    border: none;
+    padding: 3rem 3.6rem 3.6rem 3.6rem;
+}
+.card > *:not(:last-child),
+.card-body > *:not(:last-child) {
+    margin-bottom: 1.4rem;
+}
+.card-header .row {
+    display: flex;
+    justify-content: space-between;
+}
+.card-header .row > * {
+    width: auto;
+}
+.card-header,
+.card-body {
+    padding: 0;
+}
+.card-body > span {
+    color: var(--c-h0-s0-l2);
+    padding: 0.6rem; /*cell padding - this is supposed to be in a table cell*/
+    border-top: 1px solid var(--table-border-color);
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0;
+}
+.card-body {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+
+
+
+/*—————————————————————*/
+/*fix for the stepper*/
+.stepLeft {
+    padding: 3rem;
+    font-size: var(--t-fs-p3);
+}
+.projectStepContainer > * {
+    display: flex;
+    gap: 4.2rem;
+}
+.projectStepContainer .stepLeft ol li {
+    flex-flow: row nowrap;
+    padding: 0.6rem 1rem 0.6rem 0rem;
+}
+.projectStepContainer .stepLeft ol li > * {
+    padding: 0;
+    white-space: nowrap;
+}
+/* .projectStepContainer .stepLeft ol li button:after {
+    margin-left: 1rem;
+} */
+/* .projectStepContainer .stepLeft ol li button {
+    display: flex;
+    justify-content: space-between;
+} */
+.progressMenu > *:not(:last-child) {
+    margin-bottom: 3rem;
+}
+.projectStepContainer .stepLeft .progressMenu .progressBar {
+    /* background: pink; */
+}
+/*need a fix for the line height*/
+.projectStepContainer .stepLeft .progressMenu .lastSaved > span {
+    max-width: 100%;
+    white-space: break-spaces;
+}
+.projectStepContainer .stepLeft .progressMenu .header {
+    display: flex;
+    justify-content: space-between;
+}
+.projectStepContainer .stepLeft .progressMenu .header > * {
+    width: auto;
+    flex: 0 0;
+}
+
+.descAndNav .nav {
+    align-items: center;
+}
+.descAndNav .prevNav,
+.descAndNav .nextNav {
+    
+}
+.descAndNav .prevNav button,
+.descAndNav .nextNav button {
+    display: flex;
+    flex-flow: row nowrap;
+    white-space: nowrap;
+}

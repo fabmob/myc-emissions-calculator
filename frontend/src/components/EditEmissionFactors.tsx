@@ -110,17 +110,17 @@ export default function EditEmissionFactors (props: {
                         The table already integrates international ones that you can use as default values if you don’t have specific values.
                     </p>
                     <p>
-                        We would recommend to check out the <Button variant="link" onClick={e => setShowMethodologyModal(true)} style={{padding: "0"}}>🛈 methodology used</Button> to obtain those factors first.
+                        We would recommend to check out the <Button variant="link" onClick={e => setShowMethodologyModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> methodology used</Button> to obtain those factors first.
                     </p>
                     <Table bordered>
                         <thead>
                             <tr>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Fuels types, current and expected">🛈 Fuels</ItemWithOverlay></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Source of factors, default values use EN 16258. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Fuels types, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Source of factors, default values use EN 16258. Click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
                                 <th className="item-sm">Lower heating value (TJ/1000t or MJ/kWh)</th>
                                 <th className="item-sm">Fuel density (kg/kg or kg/l)</th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Tank to wheel emission factor for given fuel">🛈 CO2e TTW (kg/Tj)</ItemWithOverlay></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Well to wheel emission factor for given fuel">🛈 CO2e WTW (kg/Tj)</ItemWithOverlay></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Tank to wheel emission factor for given fuel"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> CO2e TTW (kg/Tj)</ItemWithOverlay></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Well to wheel emission factor for given fuel"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> CO2e WTW (kg/Tj)</ItemWithOverlay></th>
                             </tr>
                         </thead>
                         <tbody>

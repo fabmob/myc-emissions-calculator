@@ -136,25 +136,25 @@ export default function InventoryStep5(){
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
                     <p>
-                        The top down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}>🛈 energy sales</Button> on a given territory to evaluate your bottom-up results.
+                        The top down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> energy sales</Button> on a given territory to evaluate your bottom-up results.
                     </p>
                 </DescAndNav>
                 <p>
                     It is particularly adapted for NUMPs, since it is easier to get the energy balance data at a national scale - but you can also use it if you have the local data.
                 </p>
                 <p>
-                    Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}>🛈 possible reasons</Button> for uncertainty, for both calculation approach.
+                    Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> possible reasons</Button> for uncertainty, for both calculation approach.
                 </p>
                 <h2>Energy balance</h2>
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail">🛈 Network</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type">🛈 Fuels</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of energy value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Network</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of energy value, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
                             <th className="item-sm">
                                 <ItemWithOverlay overlayContent="Energy balance data (1000 Tons of oil equivalent) are based on the total fuel sales within the country. According to the IPCC guidelines 2006, the final energy consumption for the GHG inventory should be calculated as follow: production + import - export - international bunkers - stock change">
-                                    🛈 Energy balance (1000 TOE)
+                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Energy balance (1000 TOE)
                                 </ItemWithOverlay>
                             </th>
                             <th className="item-sm">
@@ -167,7 +167,7 @@ export default function InventoryStep5(){
                                         Lower heating value and fuel density use default values that can be edited at a later step.
                                     </div>
                                 }>
-                                    🛈 Calculated (1000 TOE)
+                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Calculated (1000 TOE)
                                 </ItemWithOverlay>
                             </th>
                             <th className="item-sm">
@@ -180,7 +180,7 @@ export default function InventoryStep5(){
                                         Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
                                     </div>
                                 }>
-                                    🛈 Gap (%)
+                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Gap (%)
                                 </ItemWithOverlay>
                             </th>
                         </tr>
@@ -224,12 +224,12 @@ export default function InventoryStep5(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail">🛈 Network</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type">🛈 Fuels</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Network</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
                             <th className="item-sm">
                                 <ItemWithOverlay overlayContent="Emissions data (1000 tons of greenhouse gases). It should be proportional to energy balance, if available">
-                                    🛈 Emissions (1000t GHG)
+                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Emissions (1000t GHG)
                                 </ItemWithOverlay>
                             </th>
                             <th className="item-sm">
@@ -242,7 +242,7 @@ export default function InventoryStep5(){
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited at a later step.
                                     </div>
                                 }>
-                                    🛈 Calculated (1000t GHG)
+                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Calculated (1000t GHG)
                                 </ItemWithOverlay>
                             </th>
                             <th className="item-sm">
@@ -255,7 +255,7 @@ export default function InventoryStep5(){
                                         Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
                                     </div>
                                 }>
-                                    🛈 Gap (%)
+                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Gap (%)
                                 </ItemWithOverlay>
                             </th>
                         </tr>

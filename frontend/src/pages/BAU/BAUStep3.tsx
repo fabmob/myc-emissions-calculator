@@ -179,11 +179,11 @@ export default function BAUStep3(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of consumption values used during inventory">🛈 Inv. Cons</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of consumption value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected fuel consumption. Set to zero for fuels not expected to appear in this scenario">🛈 Cons (l-kg-kwh/100km)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of consumption values used during inventory"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Inv. Cons</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of consumption value, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected fuel consumption. Set to zero for fuels not expected to appear in this scenario"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Cons (l-kg-kwh/100km)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

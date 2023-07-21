@@ -195,7 +195,7 @@ export default function CreateProject() {
                         <h1 style={{marginBottom: "40px"}}>{project.id ? projectName : "New Project"}</h1>
                         {project.id && <ProjectNav current="Config" project={project} />}
                         <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
-                            <h2>Study</h2>
+                            <h3>Study</h3>
                             <Form.Group className="mb-3">
                                 <Form.Label className="reqStar">Study name</Form.Label>
                                 <Form.Control type="input" required placeholder={(isSump ? "SUMP City" : "NUMP Country") + " - " + projectReferenceYears[0]} value={projectName} onChange={e => setProjectName(e.target.value)} isInvalid={createWarning}/>
@@ -226,7 +226,7 @@ export default function CreateProject() {
                                 <Form.Label>Modified</Form.Label>
                                 <Form.Control type="input" value={new Date(project.modifiedDate).toLocaleString()} readOnly/>
                             </Form.Group>}
-                            <h2>Area of study</h2>
+                            <h3>Area of study</h3>
                             <Form.Group className="mb-3">
                                 <Form.Label className="reqStar">Select country</Form.Label>
                                 <Typeahead
@@ -273,7 +273,7 @@ export default function CreateProject() {
                                 </InputGroup>
                             </Form.Group>
 
-                            <h2>Years of study</h2>
+                            <h3>Years of study</h3>
                             <Form.Group className="mb-3">
                                 <Form.Label>
                                     <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>

@@ -12,7 +12,7 @@ export default function EmissionsTable (props: {
         <Table bordered>
             <thead>
                 <tr>
-                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
+                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
                     {props.project.referenceYears && props.project.referenceYears.map((y, yearIndex) => (
                         <th key={yearIndex}  className="item-sm" style={{whiteSpace: "initial"}}>
                             <ItemWithOverlay overlayContent={
@@ -25,7 +25,7 @@ export default function EmissionsTable (props: {
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited using the Edit GHG emission factors link above.
                                     </div>
                                 }>
-                                    🛈 GHG {y} (1000t GHG)
+                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> GHG {y} (1000t GHG)
                                 </ItemWithOverlay>
                             </th>
                         

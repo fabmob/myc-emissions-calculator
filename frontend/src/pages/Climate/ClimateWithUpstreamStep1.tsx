@@ -167,10 +167,10 @@ export default function ClimateWithUpstreamStep1(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario">🛈 BAU VKT (Mkm/y)</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of climate VKT, it can be the source used to fill the transport tool. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="VKT values extracted from upstream calculation for the current climate scenario">🛈 Climate VKT (Mkm/y)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> BAU VKT (Mkm/y)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of climate VKT, it can be the source used to fill the transport tool. Click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="VKT values extracted from upstream calculation for the current climate scenario"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Climate VKT (Mkm/y)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

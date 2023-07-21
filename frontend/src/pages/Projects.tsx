@@ -83,14 +83,16 @@ export default function Projects(){
                 <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)", paddingTop: "20px"}}>
                     <Col xs lg="8">
                         <h1 style={{marginBottom: "40px"}}>Projects</h1>
-                        <p>
-                            A project is related to a specific MYC urban mobility plan. 
-                            It can be at a local level for Sustainable Urban Mobility plans (SUMP) or 
-                            at a national level for National Urban Mobility Plans (NUMP). 
-                            <Button variant="link" onClick={handleShow} style={{padding: "0"}}>🛈 Read more on projects</Button>
-                        </p>
-                        <p>You can start by creating a new project, or checking public projects if available.</p>
-                        
+                        <div className="desc">
+                            <p>
+                                A project is related to a specific MYC urban mobility plan. 
+                                It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
+                                <Button variant="link" onClick={handleShow} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Read more on projects</Button>
+                            </p>
+                            <p>
+                                You can start by creating a new project, or checking public projects if available.
+                            </p>
+                        </div>
                         {initialized ?
                         <Stack gap={2} className="col-md-5 mx-auto">
                             <Button variant="primary" onClick={_ => setGotoCreate(true)}>Create a new project</Button>

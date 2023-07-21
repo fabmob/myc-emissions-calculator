@@ -130,9 +130,9 @@ export default function InventoryStep6(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of load value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Occupancy for passenger vehicles (average number of passengers per vehicle) or load for freight vehicles (average load per vehicle in tons)">🛈 Load (pass. or tons per vehicle)</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of load value, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Occupancy for passenger vehicles (average number of passengers per vehicle) or load for freight vehicles (average load per vehicle in tons)"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Load (pass. or tons per vehicle)</ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>

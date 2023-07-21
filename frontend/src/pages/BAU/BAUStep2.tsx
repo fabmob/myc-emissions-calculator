@@ -189,8 +189,8 @@ export default function BAUStep2(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
                                     <th className="item-sm">
                                         <ItemWithOverlay overlayContent={
                                             <div>Vehicle kilometers travelled. Values for each fuel are computed as
@@ -198,11 +198,11 @@ export default function BAUStep2(){
                                                     (<Badge bg="disabled">Inventory VKT per vehicle and fuel (Mkm/y)</Badge> x ( 1 + <Badge bg="disabled">Yearly vkt growth (%)</Badge> / 100) ^ <Badge bg="disabled">Number of years</Badge>) x <Badge bg="disabled">VKT (%)</Badge> / 100
                                                 </div>
                                             </div>
-                                        }>🛈 Computed VKT (Mkm/y)</ItemWithOverlay>
+                                        }><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Computed VKT (Mkm/y)</ItemWithOverlay>
                                     </th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of share values used during Inventory">🛈 Inv. VKT (%)</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT share, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%">🛈 VKT (%)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of share values used during Inventory"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Inv. VKT (%)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT share, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> VKT (%)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

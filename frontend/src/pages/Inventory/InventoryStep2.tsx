@@ -202,7 +202,7 @@ export default function InventoryStep2(){
     const ApproachSelector = () => {
         return (
             <div style={{display: "flex", marginBottom: "10px"}}>
-                <Button variant="link" onClick={e => setShowComputationApproach(true)} style={{padding: "0", border: "0", marginRight: "5px"}}>🛈 Vehicle mileage</Button> is computed using the
+                <Button variant="link" onClick={e => setShowComputationApproach(true)} style={{padding: "0", border: "0", marginRight: "5px"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle mileage</Button> is computed using the
                 <Dropdown onSelect={(key:any) => computationApproach === "vkt" ? setComputationApproach("fleet") : setComputationApproach("vkt")}>
                     <Dropdown.Toggle as={Badge} bg="info" style={{margin: "0 10px 0 10px"}}>
                         {computationApproach === "vkt" ? "Vkt approach" : "Fleet approach"}
@@ -241,24 +241,24 @@ export default function InventoryStep2(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
                             {computationApproach === "fleet" 
-                                ? <th className="item-sm"><ItemWithOverlay overlayContent="Source of vehicle stock and average mileage values, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                : <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                ? <th className="item-sm"><ItemWithOverlay overlayContent="Source of vehicle stock and average mileage values, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                                : <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT value, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
                             }
-                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Number of registered vehicles">🛈 Vehicle stock</ItemWithOverlay></th>}
-                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Average annual mileage per vehicle">🛈 Avg mileage (km)</ItemWithOverlay></th>}
+                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Number of registered vehicles"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle stock</ItemWithOverlay></th>}
+                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Average annual mileage per vehicle"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Avg mileage (km)</ItemWithOverlay></th>}
                             <th className="item-sm">
                                 <ItemWithOverlay overlayContent={
                                     <div>Vehicle kilometers travelled. Values for each fuel are computed as
                                     <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}><Badge bg="disabled">Input VKT per vehicle (Mkm/y)</Badge> x <Badge bg="disabled">VKT (%)</Badge> / 100</div>
                                     Set VKT to zero for vehicles that are not yet used in reference year.
                                     </div>
-                                }>🛈 VKT (Mkm/y)</ItemWithOverlay>
+                                }><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> VKT (Mkm/y)</ItemWithOverlay>
                             </th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of share of vkt for a given fuel, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%">🛈 VKT (%)</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of share of vkt for a given fuel, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> VKT (%)</ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>

@@ -249,22 +249,23 @@ export default function InventoryStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <p>Please define all combinations of vehicle and fuel types to be used in the following steps to calculate GHG emissions. You also need to specify :</p>
+                    <div className="desc">
+                        <p>Please define all combinations of vehicle and fuel types to be used in the following steps to calculate GHG emissions. You also need to specify :</p>
+                        <ul>
+                            <li>if they are using the road or rail network</li>
+                            <li>if they are used for public transport, private transport or freight (if one transport mode is used for multiple, create two categories with unique names)</li>
+                            <li>the fuel types that are used</li>
+                        </ul>
+                        <p>You can also add a custom vehicle category below, if you don’t find it in the list. For each category, you will later need to fill the following information: Total vkt, Vehicle occupancy, Fuel consumptions, Vkt breakdown per fuel.</p>
+                    </div>
                 </DescAndNav>
-                <ul>
-                    <li>if they are using the road or rail network</li>
-                    <li>if they are used for public transport, private transport or freight (if one transport mode is used for multiple, create two categories with unique names)</li>
-                    <li>the fuel types that are used</li>
-                </ul>
-
-                <p>You can also add a custom vehicle category below, if you don’t find it in the list. For each category, you will later need to fill the following information: Total vkt, Vehicle occupancy, Fuel consumptions, Vkt breakdown per fuel.</p>
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Used network, can be road or rail. Create a custom vehicle category to edit this field.">🛈 Network</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Type of transport, can be public transport, private transport or freight. Create a custom vehicle category to edit this field.">🛈 Type</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Used network, can be road or rail. Create a custom vehicle category to edit this field."><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Network</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Type of transport, can be public transport, private transport or freight. Create a custom vehicle category to edit this field."><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Type</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>

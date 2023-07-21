@@ -141,10 +141,10 @@ export default function BAUStep4(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail">🛈 Network</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of emission used during inventory">🛈 Inv. Emissions</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected emissions of production of 1kWh of electricity, leave empty or set to zero if unavailable">🛈 Emissions (gCO2/kWh)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Network</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of emission used during inventory"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Inv. Emissions</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected emissions of production of 1kWh of electricity, leave empty or set to zero if unavailable"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Emissions (gCO2/kWh)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -173,10 +173,10 @@ export default function BAUStep4(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail">🛈 Network</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of emission used during inventory">🛈 Inv. Emissions</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected emissions of production of 1kg of hydrogen, leave empty or set to zero if unavailable">🛈 Emissions (gCO2/kg)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Network</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of emission used during inventory"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Inv. Emissions</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected emissions of production of 1kg of hydrogen, leave empty or set to zero if unavailable"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Emissions (gCO2/kg)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

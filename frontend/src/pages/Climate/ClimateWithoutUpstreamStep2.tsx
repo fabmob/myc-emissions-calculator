@@ -168,10 +168,10 @@ export default function ClimateWithoutUpstreamStep2(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario">🛈 BAU VKT (Mkm)</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of added VKT value. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Percent of vehicle kilometer travelled added per time period">🛈 Added VKT (Mkm)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> BAU VKT (Mkm)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of added VKT value. Click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Percent of vehicle kilometer travelled added per time period"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Added VKT (Mkm)</ItemWithOverlay></th>
                                     <th className="item-sm">
                                         <ItemWithOverlay overlayContent={
                                             <div>Computed Climate VKT using avoided VKT results as input
@@ -180,7 +180,7 @@ export default function ClimateWithoutUpstreamStep2(){
                                                 </div>
                                                 First VKT values come from reference year data (inventory).
                                             </div>
-                                        }>🛈 Climate VKT (Mkm)</ItemWithOverlay>
+                                        }><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Climate VKT (Mkm)</ItemWithOverlay>
                                     </th>
                                 </tr>
                             </thead>

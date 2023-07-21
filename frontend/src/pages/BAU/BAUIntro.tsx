@@ -66,7 +66,7 @@ export default function BAUIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="mileage and transport performance for each transport mode per year">
-                                            🛈 Projected transport activity 
+                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Projected transport activity 
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>
@@ -99,7 +99,7 @@ export default function BAUIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
-                                            🛈 Projected occupation rate per transport category
+                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Projected occupation rate per transport category
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>
@@ -109,7 +109,7 @@ export default function BAUIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
-                                            🛈 Projected CO2 content of electricity and hydrogen production
+                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Projected CO2 content of electricity and hydrogen production
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>

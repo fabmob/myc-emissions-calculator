@@ -95,7 +95,7 @@ export default function ProjectSummary(){
         return (<Card className="mb-5">
             <Card.Header>
                 <Row className='align-items-center'>
-                    <Col xs={props.stage === "Climate" ? "8" : "9"}><h2>{props.title}</h2></Col>
+                    <Col xs={props.stage === "Climate" ? "8" : "9"}><h3>{props.title}</h3></Col>
                     <Col xs={props.stage === "Climate" ? "4" : "3"} style={{display: "flex", justifyContent: "space-between"}}>
                         {!hideParams[props.title] 
                             ? <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>hide(props.title)}>See less</Button>
@@ -213,9 +213,9 @@ export default function ProjectSummary(){
                                 <Table bordered>
                                     <thead>
                                         <tr>
-                                            <th className="item-sm">🛈 Vehicle</th>
-                                            <th className="item-sm">🛈 Fuel</th>
-                                            <th className="item-sm">🛈 GHG emissions (1000t GHG) ({"WTW"})</th>
+                                            <th className="item-sm"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</th>
+                                            <th className="item-sm"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuel</th>
+                                            <th className="item-sm"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> GHG emissions (1000t GHG) ({"WTW"})</th>
                                         </tr>
                                     </thead>
                                     <tbody>

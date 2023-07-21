@@ -154,10 +154,10 @@ export default function BAUStep1(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Vehicle kilometers travelled for reference year. Set during inventory.">🛈 Inventory VKT (Mkm/y)</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of yearly VKT growth, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected yearly VKT growth between years, yearly population growth can be used as a proxy">🛈 Yearly VKT growth (%)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Vehicle kilometers travelled for reference year. Set during inventory."><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Inventory VKT (Mkm/y)</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of yearly VKT growth, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected yearly VKT growth between years, yearly population growth can be used as a proxy"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Yearly VKT growth (%)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>

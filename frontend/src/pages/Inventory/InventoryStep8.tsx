@@ -130,8 +130,8 @@ export default function InventoryStep8(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Passenger transport modes, current and expected">🛈 Passenger transport</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of average trip length, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Passenger transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Passenger transport</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of average trip length, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
                             <th className="item-sm">Average trip length (km)</th>
                         </tr>
                     </thead>

@@ -35,7 +35,7 @@ const Jumbo = () => {
                 <Row>
                     <Col xs lg="12">
                         <p>
-                            This online tool allows <b> greenhouse gas emission (GHG) calculations in the transport sector at the local level </b>.
+                        This online tool allows <b> greenhouse gas emission (GHG) calculations in the transport sector at the local level </b>.
                         </p>
                         <p>
                         It enables calculating GHG inventories of cities as well as BAU (business as usual) scenarios. <b>Governments can therefore calculate the environmental effects of local urban mobility activity and foresee the evolution if no actions is taken.</b>

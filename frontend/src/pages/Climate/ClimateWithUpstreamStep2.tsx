@@ -153,8 +153,8 @@ export default function ClimateWithUpstreamStep2(){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of climate transport performances, it can be the source used to fill the transport tool. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of climate transport performances, it can be the source used to fill the transport tool. Click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
                                     <th className="item-sm"><ItemWithOverlay overlayContent="Transport performance values extracted from upstream calculation for the current climate scenario">Transport performance (Mpkm or Mtkm)</ItemWithOverlay></th>
                                 </tr>
                             </thead>
