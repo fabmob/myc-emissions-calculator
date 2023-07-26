@@ -10,7 +10,7 @@ import { Image } from 'react-bootstrap'
 
 export default function WelcomePage(){
     return (
-        <div style={{textAlign: "center", backgroundColor: "white"}}>
+        <div className="container">
             <Jumbo />
             <Methodology />
             <Devs />
@@ -27,19 +27,22 @@ const Jumbo = () => {
     const { keycloak } = useKeycloak()
     const navigate = useNavigate()
     return (
-        <header className="shadowbelow">
+        <section className="">
             <div id="container">
                 <div>
-                    <h1>Calculate and monitor transport related GHG emissions with MobiliseYourCity</h1>
+                    {/* <h1>Calculate and&nbsp;monitor transport&nbsp;GHG&nbsp;emissions</h1> */}
+                    <h1>MYC GHG emissions calculator</h1>
                 </div>
                 <Row>
-                    <Col xs lg="12">
-                        <p>
-                        This online tool allows <b> greenhouse gas emission (GHG) calculations in the transport sector at the local level </b>.
-                        </p>
-                        <p>
-                        It enables calculating GHG inventories of cities as well as BAU (business as usual) scenarios. <b>Governments can therefore calculate the environmental effects of local urban mobility activity and foresee the evolution if no actions is taken.</b>
-                        </p>
+                    <Col xs lg="6">
+                        <div className="text">
+                            <p>
+                                This online tool allows <b> greenhouse gas emission (GHG) calculations in the transport sector at the local level </b>.
+                            </p>
+                            <p>
+                                It enables calculating GHG inventories of cities as well as BAU (business as usual) scenarios. <b>Governments can therefore calculate the environmental effects of local urban mobility activity and foresee the evolution if no actions is taken.</b>
+                            </p>
+                        </div>
                         {keycloak.authenticated ?
                         <Button variant="success" size="lg" onClick={() => navigate('/projects')}>Get Started</Button>
                         : <Button variant="primary" size="lg" onClick={() => keycloak.login()}>Login</Button>
@@ -50,14 +53,14 @@ const Jumbo = () => {
                     <Image style={{maxHeight: '50vh'}} className="mt-2" src="/myc_map_transparent.png" alt="map of partners"></Image>
                 </Row>
             </div>
-        </header>
+        </section>
     )
 }
 const Methodology = () => (
-    <section className="p-3 shadowbelow">
+    <section className="p-3">
         <Row className='align-items-center'>
             <Col lg={{span: '5', offset: '1'}} className="p-5">
-                <h1>Methodology</h1>
+                <h2>Methodology</h2>
                 <p>It relies on a <b>bottom-up model</b> : calculations are based on distance travelled (whereas the top-down model bases the calculations on fuel/energy consumption). </p>
                 <p>The scope of the emission that should be taken into account is <b>based on a territorial principle</b> : basically all traffic within the city must taken into account. (For more details, go to chapter 3.2 of <a href="https://www.mobiliseyourcity.net/sites/default/files/2022-04/MRV%20GHG%20Guidelines_ENG_2020_final.pdf">MYC-GHG Guidelines</a>). </p>
             </Col>
@@ -68,10 +71,10 @@ const Methodology = () => (
     </section>
 )
 const Devs = () => (
-    <section className="p-3 shadowbelow">
+    <section className="p-3">
         <Row className='align-items-center'>
             <Col lg={{span: '5', order: 'last'}} className="p-5">
-                <h1>Creators</h1>
+                <h2>Creators</h2>
                 <p>The tool was developed by <a href="https://lafabriquedesmobilites.fr/" target="_blank" rel="noreferrer">Fabrique des Mobilités </a> based on the <a href="https://www.mobiliseyourcity.net/mobiliseyourcity-emissions-calculator" target="_blank" rel="noreferrer">excel</a> model created by the <a href="http://www.ifeu.de">Institute for Energy and Environmental Research</a> in cooperation with the German and French development agencies GIZ and AFD. It is not allowed to use the tool for commercial purposes.</p>
                 <p>The developers are not responsible for the accuracy of the results. Any modification of the tool is the responsibility of the user.</p>
             </Col>
@@ -87,47 +90,117 @@ const Partners = () => (
         <Row className='align-items-center'>
             <Col className="p-5">
                 <div>
-                    <h1>This project is taking part of the MobiliseYourCity partnership</h1>
+                    <h2>This project is part of the MobiliseYourCity partnership</h2>
                 </div>
                 <div>Supported by</div>
                 <div className='partnerLine'>
-                    <img src='/partners/EuropeanCommission_logo.jpg' alt="European Commission"></img>
-                    <img src='/partners/AFD_logo.png' alt="AFD"></img>
-                    <img src='/partners/BMUV-Logo_en_2022.jpg' alt="BMUV"></img>
-                    <img src='/partners/BMZ-Logo_en.png' alt="BMZ"></img>
-                    <img src='/partners/FFEM_logo.jpg' alt="FFEM"></img>
-                    <img src='/partners/Min_transition_ecologique_logo.jpg' alt="Ministère de la transition écologique"></img>
+                    {/* <div className="wrap">
+                        <img className="fake" src="https://via.placeholder.com/300x200" />
+                        <div className="img_wrap">
+                            <img className="normal" src="https://via.placeholder.com/300x200/cccccc" />
+                        </div>
+                    </div> */}
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-EU.png' className="logo-EU" alt="European Commission"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-AFD.png' className="logo-AFD" alt="AFD"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-FMENCNSCP.png' className="logo-FMENCNSCP" alt="BMUV"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-FMECD.png' className="logo-FMECD" alt="BMZ"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-FFEM.png' className="logo-FFEM" alt="FFEM"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-MTE.png' className="logo-MTE" alt="Ministère de la transition écologique"></img>
+                    </div>
                 </div>
                 <div>Implemented by</div>
                 <div className='partnerLine'>
-                    <img src='/partners/AFD_logo.png' alt="AFD"></img>
-                    <img src='/partners/GIZ_logo.jpg' alt="GIZ"></img>
-                    <img src='/partners/Ademe2020_GB_RVB.jpg' alt="Ademe"></img>
-                    <img src='/partners/Cerema_horizontal_ENG_RVB.jpg' alt="Cerema"></img>
-                    <img src='/partners/Codatu_logo.png' alt="Codatu"></img>
-                    <img src='/partners/European-bank-for-reconstruction-and-development-ebrd-vector-logo-horizontal.png' alt="European Bank"></img>
-                    <img src='/partners/KfW_logo.png' alt="KFW"></img>
-                    <img src='/partners/WUPPERTAL_logo.png' alt="Wuppertal"></img>
+                    <div className="img-wrapper">
+                    <img src='/logos/logo-AFD.png' className="logo-AFD" alt="AFD"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-GIZ.png' className="logo-GIZ" alt="GIZ"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-ADEME.png' className="logo-ADEME" alt="Ademe"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-Cerema.png' className="logo-Cerema" alt="Cerema"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-Codatu.png' className="logo-Codatu" alt="Codatu"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-EB.png' className="logo-EB" alt="European Bank"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-KFW.png' className="logo-KFW" alt="KFW"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-WI.png' className="logo-WI" alt="Wuppertal"></img>
+                    </div>  
                 </div>
                 <div>Knowledge and Network Partners</div>
                 <div className='partnerLine'>
-                    <img src='/partners/ECF_logo.jpg' alt="ECF"></img>
-                    <img src='/partners/GPIT_logo.png' alt="GPIT"></img>
-                    <img src='/partners/ITDP_logo.png' alt="ITDP"></img>
-                    <img src='/partners/Platforma_logo.png' alt="Platforma"></img>
-                    <img src='/partners/Ssatp_logo.jpg' alt="Ssatp"></img>
-                    <img src='/partners/Trufi_association_logo.png' alt="Trufi association"></img>
-                    <img src='/partners/UCLG_logo.jpg' alt="UCLG"></img>
-                    <img src='/partners/UNHABITAT_logo.jpg' alt="UNHABITAT"></img>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-ECF.png' className="logo-ECF" alt="ECF"></img>
+                    </div>
+                    
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-GPIT.png' className="logo-GPIT" alt="GPIT"></img>
+                    </div>
+                    
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-ITDP.png' className="logo-ITDP" alt="ITDP"></img>
+                    </div>
+                    
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-Platforma.png' className="logo-Platforma" alt="Platforma"></img>
+                    </div>
+                    
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-SSATP.png' className="logo-SSATP" alt="SSATP"></img>
+                    </div>
+                    
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-TRUFI.png' className="logo-TRUFI" alt="Trufi association"></img>
+                    </div>
+                    
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-UCLG.png' className="logo-UCLG" alt="UCLG"></img>
+                    </div>
+                    
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-UNH.png' className="logo-UNH" alt="UNHABITAT"></img>
+                    </div>
+                    
                 </div>
                 <div>In collaboration with</div>
                 <div className='partnerLine'>
-                    <img src='/partners/TUMI_logo.jpg' alt="TUMI"></img>
-                    <img src='/partners/Euroclima+_logo.jpg' alt="Euroclima+"></img>
-                    <img src='/partners/ADB_logo.png' alt="ADB"></img>
-                    <img src='/partners/Marrakech_Partnership.png' alt="Marrakech Partnership"></img>
-                    <img src='/partners/SuM4All_logo.png' alt="SuM4All"></img>
-                    <img src='/partners/DT4A_logo.png' alt="DT4A"></img>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-TUMI.png' className="logo-TUMI" alt="TUMI"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-Euroclima.png' className="logo-Euroclima" alt="Euroclima+"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-ADB.png' className="logo-ADB" alt="ADB"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-MP.png' className="logo-MP" alt="Marrakech Partnership"></img>
+                    </div>
+                    <div className="img-wrapper">
+                       <img src='/logos/logo-SMFA.png' className="logo-SMFA" alt="SuM4All"></img>
+                    </div>
+                    <div className="img-wrapper">
+                        <img src='/logos/logo-DTFA.png' className="logo-DTFA" alt="DT4A"></img>
+                    </div>
                 </div>
             </Col>
         </Row>

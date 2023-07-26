@@ -1,5 +1,9 @@
 .App {
   color: rgb(102, 102, 102);
+
+    /* tring to repad the pages */
+    /* padding: 6rem 10rem 14rem 10rem; */
+    /* no : this is applied to .container */
 }
 
 .btn-primary, .btn-secondary {
@@ -564,6 +568,10 @@ table.table td button {
 
 /*—————————————————————*/
 /*fix for the header*/
+nav.navbar {
+    height: 6.4rem;
+    padding: unset;
+}
 nav.navbar a {
     font-size: var(--t-fs-p2);
     color: var(--c-h0-s0-l3);

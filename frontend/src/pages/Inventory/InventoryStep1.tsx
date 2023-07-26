@@ -249,7 +249,7 @@ export default function InventoryStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                     
                 >
-                    <div className="desc">
+                    <div className="text desc">
                         <p>Please define all combinations of vehicle and fuel types to be used in the following steps to calculate GHG emissions. You also need to specify :</p>
                         <ul>
                             <li>if they are using the road or rail network</li>

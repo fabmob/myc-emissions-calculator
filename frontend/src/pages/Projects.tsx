@@ -83,7 +83,7 @@ export default function Projects(){
                 <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)", paddingTop: "20px"}}>
                     <Col xs lg="8">
                         <h1 style={{marginBottom: "40px"}}>Projects</h1>
-                        <div className="desc">
+                        <div className="text desc">
                             <p>
                                 A project is related to a specific MYC urban mobility plan. 
                                 It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 

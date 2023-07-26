@@ -1,24 +1,98 @@
+:root {
+    --logo-scale-factor: 2;
+}
+
 .partnerLine {
-    margin-bottom: 20px;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 3rem 9rem;
+    align-items: center;
+    width: 75%;
+    margin: 6.4rem auto 9.2rem auto;
+    justify-content: center;
+}
+.partnerLine .img-wrapper {
+    height: 7rem;
+    display: flex;
+    align-items: center;
 }
 .partnerLine img {
-    max-width: 150px;
-    margin: 5px;
-    max-height: 80px;
+    width: calc(64px*var(--logo-scale-factor));
+    height: fit-content;
+    /* transform: scale(0.5); */
+    /* margin: -10%; */
 }
+
+.partnerLine img.logo-ADB { width: calc(36px*var(--logo-scale-factor)) }
+.partnerLine img.logo-ADEME { width: calc(42px*var(--logo-scale-factor)) }
+.partnerLine img.logo-AFD { width: calc(60px*var(--logo-scale-factor)) }
+.partnerLine img.logo-Cerema { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-Codatu { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-DTFA { width: calc(76px*var(--logo-scale-factor)) }
+.partnerLine img.logo-EB { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-ECF { width: calc(46px*var(--logo-scale-factor)) }
+.partnerLine img.logo-EU { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-Euroclima { width: calc(36px*var(--logo-scale-factor)) }
+.partnerLine img.logo-FFEM { width: calc(38px*var(--logo-scale-factor)) }
+.partnerLine img.logo-FMECD { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-FMENCNSCP { width: calc(101px*var(--logo-scale-factor)) }
+.partnerLine img.logo-GIZ { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-GPIT { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-ITDP { width: calc(43px*var(--logo-scale-factor)) }
+.partnerLine img.logo-KFW { width: calc(29px*var(--logo-scale-factor)) }
+.partnerLine img.logo-MP { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-MTE { width: calc(59px*var(--logo-scale-factor)) }
+.partnerLine img.logo-Platforma { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-SMFA { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-SSATP { width: calc(44px*var(--logo-scale-factor)) }
+.partnerLine img.logo-TRUFI { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-TUMI { width: calc(51px*var(--logo-scale-factor)) }
+.partnerLine img.logo-UCLG { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-UNH { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-WI { width: calc(64px*var(--logo-scale-factor)) }
+
+
+
+
+
+/* .partnerLine {
+    display: inline-block;
+}
+.partnerLine .wrap {
+    overflow: hidden;
+    position: relative;
+    float: left;
+} 
+.partnerLine .wrap img.fake {
+    float: left;
+    visibility: hidden;
+    width: auto;
+} 
+.partnerLine .img_wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+} 
+.partnerLine .img_wrap img.normal {
+    width: 50%;
+} */
+
+
+
 header {
     height: calc(100vh - 76px);
     box-shadow: 0 12px 12px -10px rgba(48, 41, 41, 0.1);
-    background: linear-gradient(90deg, #9e2886 -100%, #1bb9d9);
+    background: linear-gradient(90deg, .9e2886 -100%, #1bb9d9);
     display: flex;
     align-items: center;
     overflow: hidden;
 }
-header #container {
+/* header #container {
     color: white;
     width: 80%;
     height: 70%;
-
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     margin: 0 auto;
     padding-left: 1rem;
@@ -34,7 +108,7 @@ header #container h1 {
 }
 header #container p {
     font-size: 100%;
-}
+} */
 header button {
     width: 300px;
 }

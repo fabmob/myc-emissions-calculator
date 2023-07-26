@@ -227,7 +227,7 @@ export default function InventoryStep2(){
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <div className="desc">
+                    <div className="text desc">
                         <p>
                             Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
                         </p>
