@@ -1,68 +1,5 @@
 .App {
   color: rgb(102, 102, 102);
-
-    /* tring to repad the pages */
-    /* padding: 6rem 10rem 14rem 10rem; */
-    /* no : this is applied to .container */
-}
-
-.btn-primary, .btn-secondary {
-    padding: 8px 14px;
-    font-weight: 700;
-    border-radius: 10px;
-}
-.btn-primary,.btn-primary:active,.btn-primary:focus {
-    background-color: #a2217c;
-    border-color: #a2217c;
-    --bs-btn-active-border-color: #a2217c;
-    --bs-btn-active-bg: #a2217c;
-}
-.btn-primary:focus {
-    box-shadow: 0 0 0 0.25rem   #a2217b6e;
-}
-.btn-primary:hover {
-    background-color: #caa6c0;
-    border-color: #caa6c0;
-    color: #A2217C;
-}
-.btn-secondary,.btn-secondary:active,.btn-secondary:focus {
-    background-color: #CE8DBB;
-    border-color: #CE8DBB;
-
-    --bs-btn-active-border-color: #CE8DBB;
-    --bs-btn-active-bg: #CE8DBB;
-}
-.btn-secondary:hover {
-    background-color: #caa6c0;
-    border-color: #caa6c0;
-    color: #A2217C;
-}
-.btn-sm {
-    padding: 0 0.5rem;
-    font-size: 12px;
-    border-radius: 10px;
-}
-.btn-action {
-    background-color: #2CB1D5;
-    border-color: #2CB1D5;
-    --bs-btn-disabled-bg: #2CB1D5;
-    --bs-btn-disabled-color: white;
-    color: white;
-    font-weight: 700;
-    border-radius: 0.25rem;
-}
-.btn-action:hover {
-    background-color: #AAE0EE;
-    border-color: #AAE0EE;
-    color: #2CB1D5;
-}
-.btn-link {
-    color: #808080;
-    text-decoration: none;
-    font-weight: 500;
-}
-.btn-link:hover {
-    color: #B3B3B3;
 }
 
 h1, h2, h3 {
@@ -204,19 +141,30 @@ input.cellError {
     border: none;
     padding: 30px 36px;
 }
-.card-header {
+/* .card-header {
     border: none;
     background-color: inherit;
-}
-.card-header:first-child {
+} */
+/* .card-header:first-child {
     border-radius: 24px;
-}
-.card-header h2{
+} */
+/* .card-header h2{
     font-size: 24px;
-}
+} */
 .table {
     --bs-table-bg: transparent;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -230,6 +178,8 @@ input.cellError {
             --spacing-s: 1.8rem;
             --spacing-m: 2.4rem;
             --spacing-l: 3.6rem;
+            --spacing-xl: 5.6rem;
+            --spacing-xxl: 7.2rem;
         /*colors*/
             /*grey (luminance variations)*/
             --c-h0-s0-l0: #000000;
@@ -248,18 +198,24 @@ input.cellError {
             --c-h2-s0_l2: #A2217C;
             --c-h2-s0_l3: #CE8DBB;
             --c-h2-s0_l4: #EBD1E1;
-            /*orange (luminance variations)*/
+            /*orange (transparency variations)*/
             --c-h3-s0-l0-t0: #FF6747;
             --c-h3-s0-l0-t1: hsla(10,100%,64%,60%);
             --c-h3-s0-l0-t2: hsla(10,100%,64%,10%);
             /*red (transparency variations)*/
-            --c-h3-s0-l0-t0: #FF5C77;
-            --c-h3-s0-l0-t1: hsla(350,100%,68%,60%);
-            --c-h3-s0-l0-t2: hsla(350,100%,68%,10%);
+            --c-h4-s0-l0-t0: #FF5C77;
+            --c-h4-s0-l0-t1: hsla(350,100%,68%,60%);
+            --c-h4-s0-l0-t2: hsla(350,100%,68%,10%);
+            /*green (transparency variations)*/
+            --c-h5-s0-l0-t0: #44AF69;
+            --c-h5-s0-l0-t1: hsla(141,44%,48%,60%);
+            --c-h5-s0-l0-t2: hsla(141,44%,48%,10%);
             /*edition (transparency variations)*/
             --c-edition-t0: #9747FF;
             --c-edition-t1: hsla(266,100%,64%,60%);
             --c-edition-t2: hsla(266,100%,64%,10%);
+
+            
         /*fonts*/
             /*for headings and body copy*/
             --t-lh-main: 140%;
@@ -307,25 +263,47 @@ html {
 /*—————————————————————*/
 /*fix for the padding and spacing of general /recurring elements*/
 
-/*repad page ("container")*/
+/* this is what the markup structure should be like in ALL cases : */
+/* ~/body
+        /.App
+            /.container [= a bootstrap container containing the whole page, targeted as a direct child of .App]
+                /section [= a vertical section of the page]
+                    /.container [= a bootstrap container containing the content of the section]
+                        /.row [= a bootsrap row]
+                            /.col [= a bootstrap column]
+                                /* [= any piece of content] */
+
+/*repad page container*/
 div.App > div.container {
-    /* background : var(--c-edition-t2); */
+    /* height: auto; */
     padding: 6rem 10rem 14rem 10rem !important;
-    /*set height to auto instead of 100vh*/
-    /*DIDNT MANAGE*/
-    height: auto;
 }
-/*resize and repad page content (child of "container")*/
-div.App > div.container > div {
-    /*background : var(--color-edition);*/
+div.App > div.container > section > .row:not(:last-child) {
     height: auto !important;
-    margin: 0 !important;
+    /* margin: 0 !important; */
+    margin-bottom: var(--spacing-xxl);
 }
-/*fix spacing of items inside "column" elements*/
-/*all but the last one*/
-div.col > *:not(:last-child) {
-    margin-bottom: var(--spacing-l) !important;
+div.App > div.container > section:not(:last-child) {
+    margin-bottom: var(--spacing-xxl);
 }
+/*fix the spacing of items inside of columns*/
+.row {
+    --bs-gutter-x: 4.2rem;
+}
+.row>.col,
+.row>[class^=col-] {
+    background: var(--c-edition-t2);
+    overflow: hidden;
+}
+.row > .col > *:not(button),
+.row > [class^=col-] > *:not(button) {
+    background: var(--c-edition-t2);
+}
+.row > .col > *:not(:last-child),
+.row > [class^=col-] > *:not(:last-child) {
+    margin-bottom: var(--spacing-m) !important;
+}
+/*set medium column width to 600px*/
 @media (min-width: 1200px) {
     .col-xl-8 {
         flex: 0 0 auto;
@@ -370,8 +348,11 @@ p,span,text {
     font-size: inherit;
 }
 /*paragraph spacing*/
-p, text {
+p:not(:last-of-type), text:not(:last-of-type) {
     margin-bottom: 0.8em;
+}
+p:last-of-type, text:last-of-type {
+    margin-bottom: 0;
 }
 /*temp fix : this is meant to apply to page content title, not to h1*/
 h1 {
@@ -420,8 +401,7 @@ h1 {
         .p-mono-bold,
         .col>form label.form-label,
         .col>form label.form-label span,
-        .badge,
-        .btn-sm {
+        .badge {
             font-family: var(--t-ff-p-mono);
             font-weight: var(--t-fw-p-mono-bold);
         }
@@ -447,13 +427,111 @@ h1 {
 
 /*—————————————————————*/
 /* fix for the buttons */
-.btn {
-    --bs-btn-font-size: unset;
+.btn, 
+[class^=btn-] {
+    /* --bs-btn-font-size: unset; */
+    font-family: var(--t-ff-p-regular);
+    font-weight: var(--t-fw-p-regular-bold);
     font-size: var(--t-fs-p3);
+    padding: 0.8rem 1.4rem;
+    border: none;
+    border-radius: 1rem;
+}
+.btn-sm {
+    font-family: var(--t-ff-p-mono);
+    font-weight: var(--t-fw-p-mono-bold);
+}
+.btn-lg {
+    font-size: var(--t-fs-p2);
+    padding: 1rem 1.6rem;
     border: none;
 }
 .btn-link {
+    font-family: var(--t-ff-p-regular);
+    font-weight: var(--t-fw-p-regular);
     padding: 0;
+    border-radius: 0;
+    text-decoration: none;
+}
+/*button colors*/
+.btn-primary,
+.btn-primary:active,
+.btn-primary:focus {
+    background-color: var(--c-h2-s0_l2);
+    /* border-color: var(--c-h2-s0_l2); */
+    /* --bs-btn-active-border-color: var(--c-h2-s0_l2); */
+    --bs-btn-active-bg: var(--c-h2-s0_l2);
+}
+.btn-primary:focus {
+    box-shadow: none;
+}
+.btn-primary:hover {
+    color: var(--c-h2-s0_l2);
+    background-color: var(--c-h2-s0_l3);
+    /* border-color: var(--c-h2-s0_l3); */
+}
+.btn-secondary,
+.btn-secondary:active,
+.btn-secondary:focus {
+    background-color: var(--c-h2-s0_l3);
+    border-color: var(--c-h2-s0_l3);
+    /* --bs-btn-active-border-color: var(--c-h2-s0_l3); */
+    --bs-btn-active-bg: var(--c-h2-s0_l3);
+}
+.btn-secondary:hover {
+    color: var(--c-h2-s0_l2);
+    background-color: var(--c-h2-s0_l3);
+    /* border-color: var(--c-h2-s0_l3); */
+}
+.btn-action {
+    background-color: var(--c-h1-s0-l2);
+    /* border-color: var(--c-h1-s0-l2); */
+    color: var(--c-h0-s0-l6);
+    --bs-btn-disabled-bg: var(--c-h0-s0-l4);
+    --bs-btn-disabled-color: var(--c-h0-s0-l3);
+}
+.btn-action:hover {
+    background-color: var(--c-h1-s0-l3);
+    /* border-color: var(--c-h1-s0-l3); */
+    color: var(--c-h1-s0-l2);
+}
+/*button link*/
+.btn-link,
+.btn-link:hover {
+    color: var(--c-h0-s0-l2);
+}
+/*not really meant to be here. create a colors fix section ?*/
+.bg-success {
+    /* background: var(--c-h5-s0-l0-t0); */
+    background-color: var(--c-h5-s0-l0-t0) !important;
+}
+.btn-success {
+    --bs-btn-color: var(--c-h0-s0-l6);
+    --bs-btn-bg: var(--c-h5-s0-l0-t0);
+    /* --bs-btn-border-color: var(--c-h5-s0-l0-t0); */
+    --bs-btn-hover-color: var(--c-h0-s0-l6);
+    --bs-btn-hover-bg: var(--c-h5-s0-l0-t1);
+    /* --bs-btn-hover-border-color: var(--c-h5-s0-l0-t1); */
+    --bs-btn-focus-shadow-rgb: 60,153,110;
+    --bs-btn-active-color: var(--c-h0-s0-l6);
+    --bs-btn-active-bg: var(--c-h5-s0-l0-t1);
+    /* --bs-btn-active-border-color: var(--c-h5-s0-l0-t1); */
+    --bs-btn-active-shadow: none;
+    /* --bs-btn-disabled-color: #fff; */
+    /* --bs-btn-disabled-bg: #198754; */
+    /* --bs-btn-disabled-border-color: #198754; */
+}
+.btn-danger {
+    background-color: var(--c-h4-s0-l0-t0) !important;
+}
+.btn.disabled,
+.btn:disabled, 
+fieldset:disabled .btn {
+    color: var(--c-h0-s0-l3);
+    background-color: var(--c-h0-s0-l4);
+    border-color: var(--c-h0-s0-l4);
+    opacity: 1;
+    pointer-events: none;
 }
 
 
@@ -489,8 +567,9 @@ h1 {
 table.table {
     border-collapse: collapse; 
     border-spacing: 0; /* cellspacing */
-    width: 100%;
-    table-layout: fixed;
+    /* this is to swap to an auto col width layout : */
+    /* width: 100%;
+    table-layout: fixed; */
     overflow: hidden;
 }
 /*reset padding*/
@@ -580,6 +659,15 @@ nav.navbar a {
 .navbar-nav .nav-link.show {
     color: var(--c-h0-s0-l2);
 }
+nav.navbar a#github-link {
+    width: 2.8rem;
+    height: auto;
+}
+nav.navbar a#github-link > img{
+    width: 100%;
+    opacity: 0.25;   
+}
+
 
 
 
@@ -810,3 +898,56 @@ h1, h2, h3, h4, h5, h6 {
     border-top: var(--bs-border-width) solid var(--table-border-color);
     border-radius: 0;
 }
+
+
+
+/*fix for the logos of partners*/
+:root {
+    --logo-scale-factor: 1.5;
+}
+.partnerLine {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 3rem 7rem;
+    align-items: center;
+    width: 100%;
+    margin: 6.4rem auto 9.2rem auto;
+}
+.partnerLine .img-wrapper {
+    height: 7rem;
+    display: flex;
+    align-items: center;
+}
+.partnerLine img {
+    width: calc(64px*var(--logo-scale-factor));
+    height: fit-content;
+    /* transform: scale(0.5); */
+    /* margin: -10%; */
+}
+.partnerLine img.logo-ADB { width: calc(36px*var(--logo-scale-factor)) }
+.partnerLine img.logo-ADEME { width: calc(42px*var(--logo-scale-factor)) }
+.partnerLine img.logo-AFD { width: calc(60px*var(--logo-scale-factor)) }
+.partnerLine img.logo-Cerema { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-Codatu { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-DTFA { width: calc(76px*var(--logo-scale-factor)) }
+.partnerLine img.logo-EB { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-ECF { width: calc(46px*var(--logo-scale-factor)) }
+.partnerLine img.logo-EU { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-Euroclima { width: calc(36px*var(--logo-scale-factor)) }
+.partnerLine img.logo-FFEM { width: calc(38px*var(--logo-scale-factor)) }
+.partnerLine img.logo-FMECD { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-FMENCNSCP { width: calc(101px*var(--logo-scale-factor)) }
+.partnerLine img.logo-GIZ { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-GPIT { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-ITDP { width: calc(43px*var(--logo-scale-factor)) }
+.partnerLine img.logo-KFW { width: calc(29px*var(--logo-scale-factor)) }
+.partnerLine img.logo-MP { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-MTE { width: calc(59px*var(--logo-scale-factor)) }
+.partnerLine img.logo-Platforma { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-SMFA { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-SSATP { width: calc(44px*var(--logo-scale-factor)) }
+.partnerLine img.logo-TRUFI { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-TUMI { width: calc(51px*var(--logo-scale-factor)) }
+.partnerLine img.logo-UCLG { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-UNH { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-WI { width: calc(64px*var(--logo-scale-factor)) }

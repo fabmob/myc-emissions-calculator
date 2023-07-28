@@ -15,11 +15,11 @@ export default function WelcomePage(){
             <Methodology />
             <Devs />
             <Partners />
-            <footer className="p-3">
+            {/* <footer className="p-3">
                 <a href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank" rel="noreferrer">
                     <Image src="/GitHub-Mark-32px.png" alt="github"></Image>
                 </a>
-            </footer>
+            </footer> */}
         </div>
     )
 }
@@ -27,72 +27,74 @@ const Jumbo = () => {
     const { keycloak } = useKeycloak()
     const navigate = useNavigate()
     return (
-        <section className="">
-            <div id="container">
-                <div>
-                    {/* <h1>Calculate and&nbsp;monitor transport&nbsp;GHG&nbsp;emissions</h1> */}
-                    <h1>MYC GHG emissions calculator</h1>
-                </div>
-                <Row>
-                    <Col xs lg="6">
-                        <div className="text">
-                            <p>
-                                This online tool allows <b> greenhouse gas emission (GHG) calculations in the transport sector at the local level </b>.
-                            </p>
-                            <p>
-                                It enables calculating GHG inventories of cities as well as BAU (business as usual) scenarios. <b>Governments can therefore calculate the environmental effects of local urban mobility activity and foresee the evolution if no actions is taken.</b>
-                            </p>
-                        </div>
-                        {keycloak.authenticated ?
-                        <Button variant="success" size="lg" onClick={() => navigate('/projects')}>Get Started</Button>
-                        : <Button variant="primary" size="lg" onClick={() => keycloak.login()}>Login</Button>
-                        }
-                    </Col>
-                </Row>
-                <Row>
-                    <Image style={{maxHeight: '50vh'}} className="mt-2" src="/myc_map_transparent.png" alt="map of partners"></Image>
-                </Row>
-            </div>
+        <section className="hero">
+            {/* <div id="container"> */}
+            <Row>
+                <Col lg="12"><h1>MYC GHG emissions calculator</h1></Col>
+                <Col lg="6">
+                    <div className="text">
+                        <p>
+                            This online tool allows <b> greenhouse gas emission (GHG) calculations in the transport sector at the local level </b>.
+                        </p>
+                        <p>
+                            It enables calculating GHG inventories of cities as well as BAU (business as usual) scenarios. <b>Governments can therefore calculate the environmental effects of local urban mobility activity and foresee the evolution if no actions is taken.</b>
+                        </p>
+                    </div>
+                    {keycloak.authenticated ?
+                    <Button variant="action" size="lg" onClick={() => navigate('/projects')}>Get started</Button>
+                    : <Button variant="primary" size="lg" onClick={() => keycloak.login()}>Login</Button>
+                    }
+                </Col>
+                <Col lg="6">
+                    <Image style={{maxHeight: '50vh'}} id="map-of-partners" src="/pictures/myc_map_transparent.png" alt="Map of partners"></Image>
+                </Col>
+            </Row>
+            {/* </div> */}
         </section>
     )
 }
 const Methodology = () => (
-    <section className="p-3">
+    <section className="">
         <Row className='align-items-center'>
-            <Col lg={{span: '5', offset: '1'}} className="p-5">
+            <Col lg="6">
                 <h2>Methodology</h2>
-                <p>It relies on a <b>bottom-up model</b> : calculations are based on distance travelled (whereas the top-down model bases the calculations on fuel/energy consumption). </p>
-                <p>The scope of the emission that should be taken into account is <b>based on a territorial principle</b> : basically all traffic within the city must taken into account. (For more details, go to chapter 3.2 of <a href="https://www.mobiliseyourcity.net/sites/default/files/2022-04/MRV%20GHG%20Guidelines_ENG_2020_final.pdf">MYC-GHG Guidelines</a>). </p>
+                <div className="text">
+                    <p>It relies on a <b>bottom-up model</b> : calculations are based on distance travelled (whereas the top-down model bases the calculations on fuel/energy consumption). </p>
+                    <p>The scope of the emission that should be taken into account is <b>based on a territorial principle</b> : basically all traffic within the city must taken into account. (For more details, go to chapter 3.2 of <a href="https://www.mobiliseyourcity.net/sites/default/files/2022-04/MRV%20GHG%20Guidelines_ENG_2020_final.pdf">MYC-GHG Guidelines</a>). </p>
+                </div>
             </Col>
-            <Col lg="5" className="p-5">
-                <img style={{height: "200px"}} src="/methodology.svg" alt="methodology"></img>
+            <Col lg="6">
+                <img style={{height: "200px"}} src="/pictures/methodology.svg" alt="methodology"></img>
             </Col>
         </Row>
     </section>
 )
 const Devs = () => (
-    <section className="p-3">
+    <section className="">
         <Row className='align-items-center'>
-            <Col lg={{span: '5', order: 'last'}} className="p-5">
+            <Col lg="6">
                 <h2>Creators</h2>
-                <p>The tool was developed by <a href="https://lafabriquedesmobilites.fr/" target="_blank" rel="noreferrer">Fabrique des Mobilités </a> based on the <a href="https://www.mobiliseyourcity.net/mobiliseyourcity-emissions-calculator" target="_blank" rel="noreferrer">excel</a> model created by the <a href="http://www.ifeu.de">Institute for Energy and Environmental Research</a> in cooperation with the German and French development agencies GIZ and AFD. It is not allowed to use the tool for commercial purposes.</p>
-                <p>The developers are not responsible for the accuracy of the results. Any modification of the tool is the responsibility of the user.</p>
+                <div className="text">
+                    <p>The tool was developed by <a href="https://lafabriquedesmobilites.fr/" target="_blank" rel="noreferrer">Fabrique des Mobilités </a> based on the <a href="https://www.mobiliseyourcity.net/mobiliseyourcity-emissions-calculator" target="_blank" rel="noreferrer">excel</a> model created by the <a href="http://www.ifeu.de">Institute for Energy and Environmental Research</a> in cooperation with the German and French development agencies GIZ and AFD. It is not allowed to use the tool for commercial purposes.</p>
+                    <p>The developers are not responsible for the accuracy of the results. Any modification of the tool is the responsibility of the user.</p>
+                </div>
             </Col>
-            <Col lg={{span: '5', order: 'first', offset: '1'}} className="p-5">
-                <img style={{height: "100px"}} src="/fabmob.png" alt="fabmob"></img>
-                <img style={{height: "100px"}} className="m-3" src="/ifeu.gif" alt="ifeu"></img>
+            <Col lg="6">
+                <img style={{height: "100px"}} src="/logos/logo-fabmob.png" alt="fabmob"></img>
+                <img style={{height: "100px"}} className="m-3" src="/logos/logo-ifeu.gif" alt="ifeu"></img>
             </Col>
         </Row>
     </section>
 )
 const Partners = () => (
-    <section className="p-3">
+    <section className="">
         <Row className='align-items-center'>
-            <Col className="p-5">
-                <div>
+            <Col className="">
+                {/* <!-- this needs to become a carousel. it takes way too much screen space. --> */}
+                {/* <!-- <div>
                     <h2>This project is part of the MobiliseYourCity partnership</h2>
-                </div>
-                <div>Supported by</div>
+                </div> --> */}
+                {/* <!-- <div>Supported by</div> --> */}
                 <div className='partnerLine'>
                     {/* <div className="wrap">
                         <img className="fake" src="https://via.placeholder.com/300x200" />
@@ -119,7 +121,7 @@ const Partners = () => (
                         <img src='/logos/logo-MTE.png' className="logo-MTE" alt="Ministère de la transition écologique"></img>
                     </div>
                 </div>
-                <div>Implemented by</div>
+                {/* <!-- <div>Implemented by</div>
                 <div className='partnerLine'>
                     <div className="img-wrapper">
                     <img src='/logos/logo-AFD.png' className="logo-AFD" alt="AFD"></img>
@@ -201,7 +203,7 @@ const Partners = () => (
                     <div className="img-wrapper">
                         <img src='/logos/logo-DTFA.png' className="logo-DTFA" alt="DT4A"></img>
                     </div>
-                </div>
+                </div> --> */}
             </Col>
         </Row>
     </section>

@@ -34,6 +34,9 @@ const MyNav = () => {
                             </NavDropdown>
                         </Nav>
                     )}
+                    <a id="github-link" href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank" rel="noreferrer">
+                        <img src="/logos/logo-github.svg" alt="Github"></img>
+                    </a>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

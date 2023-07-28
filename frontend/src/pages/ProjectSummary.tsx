@@ -201,9 +201,13 @@ export default function ProjectSummary(){
     })as any[])
     return (
         <Container>
-             <Row className="justify-content-md-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
+             <Row className="justify-content-md-center">
                 <Col xs lg="8">
                     <h1>{project.name}</h1>
+                </Col>
+            </Row>
+             <Row className="justify-content-md-center">
+                <Col xs lg="8">
                     <ProjectNav current="Edition" project={project} />
                     <StepCard title='1. Inventory / Base Year ' stage="Inventory">
                         <span>Indexing - The GHG emission inventory for urban transport is the sum of all transport-related activities emissions that can be attributed to the city or country for a given year (base year).</span>

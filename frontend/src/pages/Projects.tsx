@@ -80,30 +80,35 @@ export default function Projects(){
     return (
         <>
             <Container>
-                <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)", paddingTop: "20px"}}>
-                    <Col xs lg="8">
-                        <h1 style={{marginBottom: "40px"}}>Projects</h1>
-                        <div className="text desc">
-                            <p>
-                                A project is related to a specific MYC urban mobility plan. 
-                                It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
-                                <Button variant="link" onClick={handleShow} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Read more on projects</Button>
-                            </p>
-                            <p>
-                                You can start by creating a new project, or checking public projects if available.
-                            </p>
-                        </div>
-                        {initialized ?
-                        <Stack gap={2} className="col-md-5 mx-auto">
-                            <Button variant="primary" onClick={_ => setGotoCreate(true)}>Create a new project</Button>
-                        </Stack>
-                        : <div>Loading...</div>
-                        }
-                    </Col>
+                <section>
+                    <Row>
+                        <Col lg="12">
+                            <h1>Projects</h1>
+                        </Col>
+                        <Col xs lg="6">
+                            <div className="text desc">
+                                <p>
+                                    A project is related to a specific MYC urban mobility plan. 
+                                    It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
+                                    <Button variant="link" onClick={handleShow} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Read more</Button>
+                                </p>
+                                <p>
+                                    You can start by creating a new project, or checking public projects if available.
+                                </p>
+                            </div>
+                            {initialized ?
+                            // <Stack gap={2} className="col-md-5">
+                            //     <Button size="lg" variant="primary" onClick={_ => setGotoCreate(true)}>New project</Button>
+                            // </Stack>
+                            <Button size="lg" variant="primary" onClick={_ => setGotoCreate(true)}>New project</Button>
+                            : <div>Loading...</div>
+                            }
+                        </Col>
+                    </Row>
                     <Row>
                         {initialized && <ProjectsList ownedProjects={projects} publicProjects={publicProjects} adminProjects={adminProjects} handleEditProject={handleEditProject} isAdmin={isAdmin}/>}
                     </Row>
-                </Row>
+                </section>
             </Container>
             <Modal size="lg" centered show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -139,22 +144,41 @@ const ProjectsList = ({ownedProjects, publicProjects, adminProjects, handleEditP
         handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void,
         isAdmin: boolean
     }) => (
-    <div style={{textAlign: "left"}}>
-        <h3>Your projects</h3>
-        <DetailedProjects projects={ownedProjects} handleEditProject={handleEditProject} showOwner={false}/>
-        {isAdmin ?
-            <>
-                <h3>(Admin) Public projects</h3>
-                <DetailedProjects projects={publicProjects} handleEditProject={handleEditProject} showOwner={true}/>
-                <h3>(Admin) Private projects</h3>
-                <DetailedProjects projects={adminProjects} handleEditProject={handleEditProject} showOwner={true}/>
+    
+        <Col>
+            <Row>
+                <Col>
+                    <DetailedProjects projects={ownedProjects} handleEditProject={handleEditProject} showOwner={false}/>
+                </Col>
+            </Row>
+
+            {isAdmin ?
+            <>  
+            <Row>
+                <Col>
+                    <h3>(Admin) Public projects</h3>
+                    <DetailedProjects projects={publicProjects} handleEditProject={handleEditProject} showOwner={true}/>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h3>(Admin) Private projects</h3>
+                    <DetailedProjects projects={adminProjects} handleEditProject={handleEditProject} showOwner={true}/>
+                </Col>
+            </Row>
             </>
-            : <>
-                <h3>Public projects</h3>
-                <PublicProjects publicProjects={publicProjects} handleEditProject={handleEditProject}/>
+                : <>
+            <Row>
+                <Col>
+                    <h3>Public projects</h3>
+                    <PublicProjects publicProjects={publicProjects} handleEditProject={handleEditProject}/>
+                </Col>
+            </Row>
             </>
-        }
-    </div>
+            }
+
+        </Col>
+    
 )
 const DetailedProjects = ({projects, handleEditProject, showOwner}: 
     {projects: ProjectType[], handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void, showOwner: boolean}) => {
@@ -188,7 +212,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
         return navigate(url)
     }
     return (
-        <div>
+        <>
             <Table>
                 <thead>
                     <tr>
@@ -212,12 +236,12 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                                 </OverlayTrigger>
                             </td>
                             {showOwner && <td>{project.owner}</td>}
-                            <td>{project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="success">Validated</Badge>}</td>
+                            <td>{project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="info">Validated</Badge>}</td>
                             <td><ProjectProgress step={project.stages["Inventory"][0]?.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
-                                <Button variant="primary" className="btn-sm" style={{marginRight: "2px"}} onClick={() => openProject(project)}>Open</Button>
-                                <Button variant="action" className="btn-sm" style={{marginRight: "2px", borderRadius: "10px"}} disabled={project.stages["Inventory"][0]?.step < 8 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
-                                <Button variant="danger" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}>Delete</Button>
+                                <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}>Open</Button>
+                                <Button variant="secondary" className="btn-sm" disabled={project.stages["Inventory"][0]?.step < 8 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
+                                <Button variant="secondary" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}>Delete</Button>
                             </td>
                         </tr>
                     )}
@@ -233,7 +257,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                 handleCloseDeleteConfirmModal={handleCloseDeleteConfirmModal}
                 projectBeingEdited={projectBeingEdited}
             />
-        </div>
+        </>
     )
 }
 const ValidateConfirmModal = ({showValidateConfirmModal, handleCloseValidateConfirmModal, projectBeingEdited}: 
@@ -279,10 +303,12 @@ const DeleteConfirmModal = ({showDeleteConfirmModal, handleCloseDeleteConfirmMod
 const ProjectProgress = ({step} : {step: number}) => {
     let res = ""
     for (let i = 0; i < step; i++) {
-        res += '🟩'
+        // res += '🟩'
+        res += '—'
     }
     for (let i = step; i < 8; i++) {
-        res += '🟧'
+        // res += '🟧'
+        res += ' '
     }
     return <span style={{whiteSpace: "nowrap"}}>{res}</span>
 }
