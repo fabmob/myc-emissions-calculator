@@ -746,10 +746,16 @@ nav.navbar a#github-link > img{
 .card-header .row {
     display: flex;
     justify-content: space-between;
+    flex-flow: row nowrap;
 }
 .card-header .row > * {
     width: auto;
     gap: 0.8rem;
+}
+.card-header .nav {
+    /* background: pink; */
+    /* display: flex;
+    justify-content: center; */
 }
 .card-header,
 .card-body {
@@ -777,8 +783,8 @@ h1, h2, h3, h4, h5, h6 {
 .card-body .results-preview > * {
     width: 100%;
 }
-.card-body .results-preview .chart,
-.chart {
+.card-body .results-preview .chart-content,
+.chart-content {
     background: var(--c-h0-s0-l5) !important;
     padding: 4.8rem !important;
     font-size: var(--t-fs-p3);
@@ -951,3 +957,14 @@ h1, h2, h3, h4, h5, h6 {
 .partnerLine img.logo-UCLG { width: calc(64px*var(--logo-scale-factor)) }
 .partnerLine img.logo-UNH { width: calc(64px*var(--logo-scale-factor)) }
 .partnerLine img.logo-WI { width: calc(64px*var(--logo-scale-factor)) }
+
+
+
+/*—————————————————————*/
+/*fix for illustrations*/
+div.illustration {
+    background: pink;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

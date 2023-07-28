@@ -189,115 +189,129 @@ export default function CreateProject() {
 
     return (
         <>
-            <Container style={{paddingTop: "30px"}}>
-                <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)"}}>
+            <Container>
+                <Row className="justify-content-md-center">
+                    <Col xs lg="8">
+                        <h1>{project.id ? projectName : "New Project"}</h1>
+                    </Col>
+                </Row>
+                <Row className="justify-content-md-center align-items-center">
                     <Col xs xl="8" lg="12">
-                        <h1 style={{marginBottom: "40px"}}>{project.id ? projectName : "New Project"}</h1>
                         {project.id && <ProjectNav current="Config" project={project} />}
                         <Form noValidate validated={validated} style={{textAlign: "left"}} onSubmit={createProject}>
-                            <h3>Study</h3>
-                            <Form.Group className="mb-3">
-                                <Form.Label className="reqStar">Study name</Form.Label>
-                                <Form.Control type="input" required placeholder={(isSump ? "SUMP City" : "NUMP Country") + " - " + projectReferenceYears[0]} value={projectName} onChange={e => setProjectName(e.target.value)} isInvalid={createWarning}/>
-                                <Form.Control.Feedback type="invalid">{createWarning ? "This project name already exists" : "Please specify a project name"}</Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label className="reqStar">Plan type</Form.Label>
-                                <Form.Check
-                                    id="custom-switch-sump"
-                                    type="radio"
-                                    checked={isSump}
-                                    onChange={() => setIsSump(true)}
-                                    label="Sustainable Urban Mobility Plan (SUMP)"
-                                />
-                                <Form.Check
-                                    id="custom-switch-nump"
-                                    type="radio"
-                                    checked={!isSump}
-                                    onChange={() => setIsSump(false)}
-                                    label="National Urban Mobility Plan (NUMP)"
-                                />
-                            </Form.Group>
-                            {project.createdDate && <Form.Group className="mb-3">
-                                <Form.Label>Created</Form.Label>
-                                <Form.Control type="input" value={new Date(project.createdDate).toLocaleString()} readOnly/>
-                            </Form.Group>}
-                            {project.modifiedDate && <Form.Group className="mb-3">
-                                <Form.Label>Modified</Form.Label>
-                                <Form.Control type="input" value={new Date(project.modifiedDate).toLocaleString()} readOnly/>
-                            </Form.Group>}
-                            <h3>Area of study</h3>
-                            <Form.Group className="mb-3">
-                                <Form.Label className="reqStar">Select country</Form.Label>
-                                <Typeahead
-                                    inputProps={{ required: true }}
-                                    id="countryselector"
-                                    selected={projectCountry}
-                                    onInputChange={e => { setProjectCountry([e])}}
-                                    onChange={o => { o.length && setProjectCountry(o)}}
-                                    options={countryOptions.map(e => e.label)}
-                                />
-                                <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCountry[0]) ? "block": ''}}>Please specify a country</Form.Control.Feedback>
-                            </Form.Group>
-
-                            {isSump && <Form.Group className="mb-3">
-                                <Form.Label className="reqStar">Area</Form.Label>
-                                <Typeahead
-                                    allowNew
-                                    inputProps={{ required: true }}
-                                    id="cityselector"
-                                    newSelectionPrefix="Use this city: "
-                                    selected={projectCity}
-                                    onInputChange={e => setProjectCity([e])}
-                                    onChange={o => { o.length && setProjectCity(o)}}
-                                    options={cityOptions[projectCountry[0]] || []}
-                                />
-                                <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCity[0]) ? "block": ''}}>Please specify a city</Form.Control.Feedback>
-                            </Form.Group> }
-
-                            {/* <Form.Group className="mb-3">
-                                <Form.Label>Geo. Data</Form.Label>
-                                <Form.Control type="input" placeholder="" value={geoData} onChange={e => setGeoData(e.target.value)}/>
-                            </Form.Group> */}
-
-                            <Form.Group className="mb-3">   
-                                <Form.Label>Partner name in city</Form.Label>
-                                <Form.Control type="input" placeholder="" value={partnerLocation} onChange={e => setPartnerLocation(e.target.value)}/>
-                            </Form.Group>
-
-                            <Form.Group className="mb-3">
-                                <Form.Label>Territory area (km²)</Form.Label>
-                                <InputGroup>
-                                    <Form.Control type="input" placeholder="" value={projectArea} onChange={e => setProjectArea(e.target.value)}/>
-                                    <InputGroup.Text>km²</InputGroup.Text>
-                                </InputGroup>
-                            </Form.Group>
-
-                            <h3>Years of study</h3>
-                            <Form.Group className="mb-3">
-                                <Form.Label>
-                                    <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
-                                        <span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Ref. year</span>
-                                    </OverlayTrigger>
-                                </Form.Label>
-                                <InputGroup>
-                                    <Form.Control type="number" required min="1900" max="2500" value={projectReferenceYears[0]} onChange={e => setProjectReferenceYear(0, e.target.value)} />
-                                    <Form.Control.Feedback type="invalid">Please enter a year between 1900 and 2500, avoid white spaces</Form.Control.Feedback>
-                                </InputGroup>
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Proj. Year(s)</Form.Label>
-                                <InputGroup>
-                                    {projectReferenceYears.map((year,i) => (
-                                        (i>0) && <Badge key={i} bg="secondary">{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
-                                    ))}
-                                    <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Badge>
-                                </InputGroup>
-                            </Form.Group>
-                            
-                            <Button variant="primary" type="submit">
-                                {project.id ? "Edit" : "Create"}
-                            </Button>
+                            <Row>
+                                <Col>
+                                    <h3>Study</h3>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="reqStar">Study name</Form.Label>
+                                        <Form.Control type="input" required placeholder={(isSump ? "SUMP City" : "NUMP Country") + " - " + projectReferenceYears[0]} value={projectName} onChange={e => setProjectName(e.target.value)} isInvalid={createWarning}/>
+                                        <Form.Control.Feedback type="invalid">{createWarning ? "This project name already exists" : "Please specify a project name"}</Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="reqStar">Plan type</Form.Label>
+                                        <Form.Check
+                                            id="custom-switch-sump"
+                                            type="radio"
+                                            checked={isSump}
+                                            onChange={() => setIsSump(true)}
+                                            label="Sustainable Urban Mobility Plan (SUMP)"
+                                        />
+                                        <Form.Check
+                                            id="custom-switch-nump"
+                                            type="radio"
+                                            checked={!isSump}
+                                            onChange={() => setIsSump(false)}
+                                            label="National Urban Mobility Plan (NUMP)"
+                                        />
+                                    </Form.Group>
+                                    {project.createdDate && <Form.Group className="mb-3">
+                                        <Form.Label>Created</Form.Label>
+                                        <Form.Control type="input" value={new Date(project.createdDate).toLocaleString()} readOnly/>
+                                    </Form.Group>}
+                                    {project.modifiedDate && <Form.Group className="mb-3">
+                                        <Form.Label>Modified</Form.Label>
+                                        <Form.Control type="input" value={new Date(project.modifiedDate).toLocaleString()} readOnly/>
+                                    </Form.Group>}
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <h3>Area of study</h3>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="reqStar">Select country</Form.Label>
+                                        <Typeahead
+                                            inputProps={{ required: true }}
+                                            id="countryselector"
+                                            selected={projectCountry}
+                                            onInputChange={e => { setProjectCountry([e])}}
+                                            onChange={o => { o.length && setProjectCountry(o)}}
+                                            options={countryOptions.map(e => e.label)}
+                                        />
+                                        <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCountry[0]) ? "block": ''}}>Please specify a country</Form.Control.Feedback>
+                                    </Form.Group>
+                                    {isSump && <Form.Group className="mb-3">
+                                        <Form.Label className="reqStar">Area</Form.Label>
+                                        <Typeahead
+                                            allowNew
+                                            inputProps={{ required: true }}
+                                            id="cityselector"
+                                            newSelectionPrefix="Use this city: "
+                                            selected={projectCity}
+                                            onInputChange={e => setProjectCity([e])}
+                                            onChange={o => { o.length && setProjectCity(o)}}
+                                            options={cityOptions[projectCountry[0]] || []}
+                                        />
+                                        <Form.Control.Feedback type="invalid" style={{display: (validated && !projectCity[0]) ? "block": ''}}>Please specify a city</Form.Control.Feedback>
+                                    </Form.Group> }
+                                    {/* <Form.Group className="mb-3">
+                                        <Form.Label>Geo. Data</Form.Label>
+                                        <Form.Control type="input" placeholder="" value={geoData} onChange={e => setGeoData(e.target.value)}/>
+                                    </Form.Group> */}
+                                    <Form.Group className="mb-3">   
+                                        <Form.Label>Partner name in city</Form.Label>
+                                        <Form.Control type="input" placeholder="" value={partnerLocation} onChange={e => setPartnerLocation(e.target.value)}/>
+                                    </Form.Group>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Territory area (km²)</Form.Label>
+                                        <InputGroup>
+                                            <Form.Control type="input" placeholder="" value={projectArea} onChange={e => setProjectArea(e.target.value)}/>
+                                            <InputGroup.Text>km²</InputGroup.Text>
+                                        </InputGroup>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <h3>Years of study</h3>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>
+                                            <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
+                                                <span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Ref. year</span>
+                                            </OverlayTrigger>
+                                        </Form.Label>
+                                        <InputGroup>
+                                            <Form.Control type="number" required min="1900" max="2500" value={projectReferenceYears[0]} onChange={e => setProjectReferenceYear(0, e.target.value)} />
+                                            <Form.Control.Feedback type="invalid">Please enter a year between 1900 and 2500, avoid white spaces</Form.Control.Feedback>
+                                        </InputGroup>
+                                    </Form.Group>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Proj. Year(s)</Form.Label>
+                                        <InputGroup>
+                                            {projectReferenceYears.map((year,i) => (
+                                                (i>0) && <Badge key={i} bg="secondary">{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
+                                            ))}
+                                            <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Badge>
+                                        </InputGroup>
+                                    </Form.Group>                              
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>                            
+                                    <Button size="lg" variant="primary" type="submit">
+                                        {project.id ? "Edit" : "Create"}
+                                    </Button>
+                                </Col>
+                            </Row>
                         </Form>
 
                     </Col>

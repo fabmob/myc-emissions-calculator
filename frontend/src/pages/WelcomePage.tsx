@@ -33,12 +33,8 @@ const Jumbo = () => {
                 <Col lg="12"><h1>MYC GHG emissions calculator</h1></Col>
                 <Col lg="6">
                     <div className="text">
-                        <p>
-                            This online tool allows <b> greenhouse gas emission (GHG) calculations in the transport sector at the local level </b>.
-                        </p>
-                        <p>
-                            It enables calculating GHG inventories of cities as well as BAU (business as usual) scenarios. <b>Governments can therefore calculate the environmental effects of local urban mobility activity and foresee the evolution if no actions is taken.</b>
-                        </p>
+                        <p>This online tool allows <b> greenhouse gas emission (GHG) calculations in the transport sector at the local level </b>.</p>
+                        <p>It enables calculating GHG inventories of cities as well as BAU (business as usual) scenarios. <b>Governments can therefore calculate the environmental effects of local urban mobility activity and foresee the evolution if no actions is taken.</b></p>
                     </div>
                     {keycloak.authenticated ?
                     <Button variant="action" size="lg" onClick={() => navigate('/projects')}>Get started</Button>
@@ -46,7 +42,10 @@ const Jumbo = () => {
                     }
                 </Col>
                 <Col lg="6">
-                    <Image style={{maxHeight: '50vh'}} id="map-of-partners" src="/pictures/myc_map_transparent.png" alt="Map of partners"></Image>
+                    <div className="illustration">
+                        <Image style={{maxHeight: '50vh'}} id="map-of-partners" src="/pictures/myc_map_transparent.png" alt="Map of partners"></Image>
+                    </div>
+                    {/* this should be replaced with an illustration showing the map of a city or/and an emission graph */}
                 </Col>
             </Row>
             {/* </div> */}
@@ -64,7 +63,9 @@ const Methodology = () => (
                 </div>
             </Col>
             <Col lg="6">
-                <img style={{height: "200px"}} src="/pictures/methodology.svg" alt="methodology"></img>
+                <div className="illustration">
+                    <img style={{height: "200px"}} src="/pictures/methodology.svg" alt="methodology"></img>
+                </div>
             </Col>
         </Row>
     </section>
@@ -80,8 +81,10 @@ const Devs = () => (
                 </div>
             </Col>
             <Col lg="6">
-                <img style={{height: "100px"}} src="/logos/logo-fabmob.png" alt="fabmob"></img>
-                <img style={{height: "100px"}} className="m-3" src="/logos/logo-ifeu.gif" alt="ifeu"></img>
+                <div className="illustration">
+                    <img style={{height: "100px"}} src="/logos/logo-fabmob.png" alt="fabmob"></img>
+                    <img style={{height: "100px"}} className="m-3" src="/logos/logo-ifeu.gif" alt="ifeu"></img>
+                </div>
             </Col>
         </Row>
     </section>

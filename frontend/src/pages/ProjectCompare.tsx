@@ -139,9 +139,13 @@ export default function ProjectCompare(){
     }
     return (
         <Container>
-             <Row className="justify-content-md-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
+            <Row className="justify-content-md-center">
                 <Col xs lg="8">
                     <h1>{project.name}</h1>
+                </Col>
+            </Row>
+             <Row className="justify-content-md-center">
+                <Col xs lg="8">
                     <ProjectNav current="Compare" project={project} />
                     <h2>Graphs</h2>
                     <Options 
@@ -244,7 +248,7 @@ export default function ProjectCompare(){
                         showLabels={showLabels}
                         highContrastColors={highContrastColors}
                     ></EmissionsPerUkmCompareBarChart>
-                    <h2 style={{marginTop: "20px"}}>Datasets</h2>
+                    <h2>Datasets</h2>
                     <Table bordered>
                         <thead>
                             <tr>
