@@ -232,11 +232,11 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                             <td>{project.name}</td>
                             <td>
                                 <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>}>
-                                    {project.isSump ? <Badge bg="primary">SUMP</Badge> : <Badge bg="info">NUMP</Badge>}              
+                                    {project.isSump ? <Badge bg="primary"><span className="item"><span>SUMP</span></span></Badge> : <Badge bg="info"><span className="item"><span>NUMP</span></span></Badge>}              
                                 </OverlayTrigger>
                             </td>
                             {showOwner && <td>{project.owner}</td>}
-                            <td>{project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="info">Validated</Badge>}</td>
+                            <td>{project.status === 'draft' ? <Badge bg="secondary"><span className="item"><span>Draft</span></span></Badge> : <Badge bg="info"><span className="item"><span>Validated</span></span></Badge>}</td>
                             <td><ProjectProgress step={project.stages["Inventory"][0]?.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
                                 <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}><span className="item"><span>Open</span></span></Button>
@@ -335,7 +335,7 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
                         <td>{project.name}</td>
                         <td>
                             <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>}>
-                                {project.isSump ? <Badge bg="primary">SUMP</Badge> : <Badge bg="info">NUMP</Badge>}
+                                {project.isSump ? <Badge bg="primary"><span className="item"><span>SUMP</span></span></Badge> : <Badge bg="info"><span className="item"><span>NUMP</span></span></Badge>}
                             </OverlayTrigger>
                         </td>
                         <td>{project.owner}</td>

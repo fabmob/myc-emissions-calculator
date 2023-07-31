@@ -128,7 +128,7 @@ export default function EditEmissionFactors (props: {
                                 const ftype = ftypeString as FuelType
                                 const fuel = props.inputData.emissionFactors.WTW[ftype]
                                 return <tr key={index}>
-                                        <td style={{verticalAlign: "top"}}><Badge bg="disabled">{ftype}</Badge></td>
+                                        <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
                                         <td>
                                             {fuel.source 
                                             ? <ValidSource source={fuel.source} onClick={(e:any) => configureSource(ftype)}/>

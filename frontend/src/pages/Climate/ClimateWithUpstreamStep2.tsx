@@ -165,7 +165,7 @@ export default function ClimateWithUpstreamStep2(){
                                     const ukm = vehicle.ukm[yearIndex]
                                     return (
                                         <tr key={vtype}>
-                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>
+                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
                                             : <Button variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>

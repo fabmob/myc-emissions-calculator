@@ -171,7 +171,7 @@ export default function ClimateWithoutUpstreamStep2(){
                                     const invLoad = (project.stages.Inventory[0].steps[6] as InputInventoryStep6).vtypes[vtype].value
                                     return (
                                         <tr key={vtype}>
-                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>
+                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>{invLoad}</td>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>

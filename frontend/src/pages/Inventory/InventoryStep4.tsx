@@ -133,7 +133,7 @@ export default function InventoryStep4(){
                             const network = networkString as "road" | "rail"
                             const source = inputData.electricity?.[network].source
                             return (<tr key={network}>
-                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network}</Badge></td>
+                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}><span className="item"><span>{network}</span></span></Badge></td>
                             <td>
                                 {source
                                 ? <ValidSource source={source} onClick={(e:any) => configureSource("electricity", network)}/>
@@ -159,7 +159,7 @@ export default function InventoryStep4(){
                             const network = networkString as "road" | "rail"
                             const source = inputData.hydrogen?.[network].source
                             return (<tr key={network}>
-                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network}</Badge></td>
+                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}><span className="item"><span>{network}</span></span></Badge></td>
                             <td>
                                 {source
                                 ? <ValidSource source={source} onClick={(e:any) => configureSource("hydrogen", network)}/>

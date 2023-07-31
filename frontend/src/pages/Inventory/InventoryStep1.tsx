@@ -271,20 +271,20 @@ export default function InventoryStep1(){
                     <tbody>
                         {Object.keys(inputData.vtypes).map((vtype, index) => {
                             const vehicle = inputData.vtypes[vtype]
-                            let networkBadge = <Badge bg="info" onClick={e => networkTrigger(vtype)}>{vehicle.network} v</Badge>
-                            let typeBadge = <Badge bg="info" onClick={e => typeTrigger(vtype)}>{vehicle.type} v</Badge>
+                            let networkBadge = <Badge bg="info" onClick={e => networkTrigger(vtype)}><span className="item"><span>{vehicle.network} v</span></span></Badge>
+                            let typeBadge = <Badge bg="info" onClick={e => typeTrigger(vtype)}><span className="item"><span>{vehicle.type} v</span></span></Badge>
                             if (defaultVehiclesParams[vtype]) {
-                                networkBadge = <Badge bg="disabled">{vehicle.network}</Badge>
-                                typeBadge = <Badge bg="disabled">{vehicle.type}</Badge>
+                                networkBadge = <Badge bg="disabled"><span className="item"><span>{vehicle.network}</span></span></Badge>
+                                typeBadge = <Badge bg="disabled"><span className="item"><span>{vehicle.type}</span></span></Badge>
                             }
                             return (<tr key={index}>
-                                <td><Badge bg="info" onClick={e=>removeVehicle(vtype)}>{vtype}<svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></Badge></td>
+                                <td><Badge bg="info" onClick={e=>removeVehicle(vtype)}><span className="item"><span>{vtype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge></td>
                                 <td>{networkBadge}</td>
                                 <td>{typeBadge}</td>
                                 <td>
                                     <Stack direction="horizontal" gap={2}>
                                         {Object.keys(vehicle.fuels).map((ftype, index) => (
-                                            <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}>{ftype}<svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></Badge>
+                                            <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}><span className="item"><span>{ftype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
                                         ))}
                                         <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
                                     </Stack>

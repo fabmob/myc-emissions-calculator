@@ -176,7 +176,7 @@ export default function ClimateWithoutUpstreamStep2(){
                                         <ItemWithOverlay overlayContent={
                                             <div>Computed Climate VKT using avoided VKT results as input
                                                 <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                                    <Badge bg="disabled">VKT at the end of previous year (Mkm)</Badge> + <Badge bg="disabled">Added VKT between years (Mkm)</Badge>
+                                                    <Badge bg="disabled"><span className="item"><span>VKT at the end of previous year (Mkm)</span></span></Badge> + <Badge bg="disabled"><span className="item"><span>Added VKT between years (Mkm)</span></span></Badge>
                                                 </div>
                                                 First VKT values come from reference year data (inventory).
                                             </div>
@@ -191,7 +191,7 @@ export default function ClimateWithoutUpstreamStep2(){
                                     const addedVkt = vehicle.addedVkt?.[yearIndex] || ""
                                     return (
                                         <tr key={vtype}>
-                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>
+                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>{bAUVkt?.[vtype]?.[yearIndex + 1]}</td>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>

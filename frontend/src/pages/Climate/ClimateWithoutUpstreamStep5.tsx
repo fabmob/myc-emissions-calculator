@@ -226,7 +226,7 @@ export default function ClimateWithoutUpstreamStep5(){
                                         <ItemWithOverlay overlayContent={
                                             <div>Vehicle kilometers travelled. Values for each fuel are computed as
                                                 <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                                    <Badge bg="disabled">Computed VKT after shift (Mkm/y)</Badge> x <Badge bg="disabled">VKT (%)</Badge> / 100
+                                                    <Badge bg="disabled"><span className="item"><span>Computed VKT after shift (Mkm/y)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>VKT (%)</span></span></Badge> / 100
                                                 </div>
                                             </div>
                                         }><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Computed VKT (Mkm/y)</span></span></ItemWithOverlay>
@@ -254,7 +254,7 @@ export default function ClimateWithoutUpstreamStep5(){
                                         const percentSource = vehicle?.fuels[ftype]?.percentSource
                                         const bAUPercent = project.stages.BAU[0].steps?.[2].vtypes?.[vtype].fuels?.[ftype]?.percent[yearIndex] || "?"
                                         fuelJsx.push(<tr key={vtype + ftype}>
-                                            <td><Badge bg="disabled">{ftype}</Badge></td>
+                                            <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
                                             <td>{parseFloat((parseFloat(value) / 100 * (computedASI?.baseVkt?.[vtype]?.[yearIndex+1] || 0)).toFixed(10)) || ""}</td>
                                             <td>{bAUPercent}</td>
                                             <td>
@@ -269,7 +269,7 @@ export default function ClimateWithoutUpstreamStep5(){
                                     }
                                     return [
                                         <tr key={vtype}>
-                                            <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>
+                                            <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>All</td>
                                             <td>{computedASI?.baseVkt?.[vtype]?.[yearIndex+1]}</td>
                                             <td>100</td>

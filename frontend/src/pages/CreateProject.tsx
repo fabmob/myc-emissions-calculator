@@ -298,9 +298,9 @@ export default function CreateProject() {
                                         <Form.Label>Proj. Year(s)</Form.Label>
                                         <InputGroup>
                                             {projectReferenceYears.map((year,i) => (
-                                                (i>0) && <Badge key={i} bg="secondary">{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
+                                                (i>0) && <Badge key={i} bg="secondary"><span className="item"><span>{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></span></span></Badge>
                                             ))}
-                                            <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Badge>
+                                            <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span></span></span></Badge>
                                         </InputGroup>
                                     </Form.Group>                              
                                 </Col>

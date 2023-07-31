@@ -198,8 +198,8 @@ export default function ClimateWithoutUpstreamStep6(){
                                         const consSource = vehicle.fuels[ftype]?.consSource
                                         const bAUCons = project.stages.BAU[0].steps?.[3].vtypes?.[vtype].fuels?.[ftype]?.cons[yearIndex] || "?"
                                         fuelJsx.push(<tr key={vtype + ftype}>
-                                            {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>}
-                                            <td><Badge bg="disabled">{ftype}</Badge></td>
+                                            {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
+                                            <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
                                             <td>{bAUCons}</td>
                                             <td>
                                                 {consSource 

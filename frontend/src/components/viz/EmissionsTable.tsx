@@ -19,7 +19,7 @@ export default function EmissionsTable (props: {
                                     <div>
                                         Emissions (1000 tons of greenhouse gases) computed by the tool, using previous steps inputs. Values for each transport mode and fuel are computed as
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                        <Badge bg="disabled">Fuel lower heating value (TJ/1000t)</Badge> / 10^6 x <Badge bg="disabled">Fuel density (kg/kg or kg/l)</Badge> x <Badge bg="disabled">Input VKT per fuel (Mkm)</Badge> x 10^6 x <Badge bg="disabled">Fuel consumption factor (l-kg-kwh/100km)</Badge> / 100 x <Badge bg="disabled">Fuel emission factor (kg/TJ)</Badge> / 10^6
+                                        <Badge bg="disabled"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> x 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 x <Badge bg="disabled"><span className="item"><span>Fuel emission factor (kg/TJ)</span></span></Badge> / 10^6
                                         </div>
                                         These values per fuel are then summed per transport mode.<br/>
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited using the Edit GHG emission factors link above.
@@ -36,7 +36,7 @@ export default function EmissionsTable (props: {
                 {Object.keys(props.emissionsData).map((vtype, index) => {
                     const vehicle = props.emissionsData[vtype]
                     return (<tr key={index}>
-                        <td><Badge bg="disabled">{vtype}</Badge></td>
+                        <td><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                         {props.project.referenceYears && props.project.referenceYears.map((y, yearIndex) => (
                             <td key={yearIndex}>{vehicle.co2[yearIndex].toFixed(2)}</td>
                         ))}

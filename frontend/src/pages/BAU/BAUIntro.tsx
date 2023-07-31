@@ -66,7 +66,7 @@ export default function BAUIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="mileage and transport performance for each transport mode per year">
-                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Projected transport activity 
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected transport activity</span></span>
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>
@@ -74,13 +74,13 @@ export default function BAUIntro(){
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">Projected share of the transport activity by vehicle category and fuel type</Badge>
+                                    <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                 </td>
                                 <td className="item-sm">%vkt and %tkm</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
+                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                 </td>
                                 <td className="item-sm">l-kW-kg/100km</td>
                             </tr>
@@ -99,7 +99,7 @@ export default function BAUIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
-                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Projected occupation rate per transport category
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected occupation rate per transport category</span></span>
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>
@@ -109,7 +109,7 @@ export default function BAUIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
-                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Projected CO2 content of electricity and hydrogen production
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected CO2 content of electricity and hydrogen production</span></span>
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>

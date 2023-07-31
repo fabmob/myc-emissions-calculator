@@ -111,25 +111,25 @@ export default function ClimateIntro(){
                             ? <tbody>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected transport activity - mileage for each transport mode per year</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected transport activity - mileage for each transport mode per year</span></span></Badge>
                                     </td>
                                     <td className="item-sm">vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected transport performance for each transport mode per year</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected transport performance for each transport mode per year</span></span></Badge>
                                     </td>
                                     <td className="item-sm">pkm: passenger-km or tkm: tons-km</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected share of the transport activity by vehicle category and fuel type</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                     </td>
                                     <td className="item-sm">%vkt and %tkm</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                     </td>
                                     <td className="item-sm">l-kW-kg/100km</td>
                                 </tr>
@@ -137,37 +137,37 @@ export default function ClimateIntro(){
                             : <tbody>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected avoided transport activity</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected avoided transport activity</span></span></Badge>
                                     </td>
                                     <td className="item-sm">vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected added transport activity</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected added transport activity</span></span></Badge>
                                     </td>
                                     <td className="item-sm">vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected vehicle load</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected vehicle load</span></span></Badge>
                                     </td>
                                     <td className="item-sm">passengers or tons</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected vehicle shift - orgin of shifted trips</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected vehicle shift - orgin of shifted trips</span></span></Badge>
                                     </td>
                                     <td className="item-sm">% of trips</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected share of the transport activity by vehicle category and fuel type</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                     </td>
                                     <td className="item-sm">%vkt and %tkm</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
+                                        <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                     </td>
                                     <td className="item-sm">l-kW-kg/100km</td>
                                 </tr>

@@ -154,7 +154,7 @@ export default function BAUStep4(){
                                     const value = inputData.electricity[network].value[yearIndex]
                                     const inventoryValue = project.stages.Inventory[0].steps[4].electricity[network].value
                                     return (<tr key={network}>
-                                    <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network} (electric)</Badge></td>
+                                    <td><Badge bg="disabled" style={{textTransform: "capitalize"}}><span className="item"><span>{network} (electric)</span></span></Badge></td>
                                     <td>
                                         {source
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('electricity', network)}/>
@@ -186,7 +186,7 @@ export default function BAUStep4(){
                                     const value = inputData.hydrogen[network].value[yearIndex]
                                     const inventoryValue = project.stages.Inventory[0].steps[4].hydrogen[network].value
                                     return (<tr key={network}>
-                                    <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network} (electric)</Badge></td>
+                                    <td><Badge bg="disabled" style={{textTransform: "capitalize"}}><span className="item"><span>{network} (electric)</span></span></Badge></td>
                                     <td>
                                         {source
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('hydrogen', network)}/>

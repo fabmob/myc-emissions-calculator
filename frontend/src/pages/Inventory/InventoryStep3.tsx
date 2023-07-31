@@ -187,8 +187,8 @@ export default function InventoryStep3(){
                                 const cons = vehicle.fuels[ftype]?.cons || ''
                                 const consSource = vehicle.fuels[ftype]?.consSource
                                 fuelJsx.push(<tr key={vtype + ftype}>
-                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>}
-                                    <td><Badge bg="disabled">{ftype}</Badge></td>
+                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
+                                    <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     <td>
                                         {consSource 
                                         ? <ValidSource source={consSource} onClick={(e:any) => configureSource(vtype, ftype)}/>

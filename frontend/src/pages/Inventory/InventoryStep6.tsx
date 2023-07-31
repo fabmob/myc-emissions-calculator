@@ -142,7 +142,7 @@ export default function InventoryStep6(){
                             const vehicle = inputData.vtypes[vtype]
                             
                             return (<tr key={index}>
-                                <td><Badge bg="disabled">{vtype}</Badge></td>
+                                <td><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                                 <td>
                                     {vehicle.source 
                                     ? <ValidSource source={vehicle.source} onClick={(e:any) => configureSource(vtype)}/>

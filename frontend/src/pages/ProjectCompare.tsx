@@ -259,21 +259,21 @@ export default function ProjectCompare(){
                         </thead>
                         <tbody>
                             <tr>
-                                <td><Badge bg="disabled">Inventory</Badge></td>
+                                <td><Badge bg="disabled"><span className="item"><span>Inventory</span></span></Badge></td>
                                 <td>{project.name && <CSVLink data={csvs.Inventory} filename={project.name.replace(" ", "_") + "_Inventory_Inputs.csv"} className="btn btn-primary" style={{width: "35px", padding: "4px 4px"}}>
                                     <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload input data as csv" title="Download input data as csv"></img>
                                 </CSVLink>}</td>
                                 <td>{sourcesUsed.Inventory.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
                             <tr>
-                                <td><Badge bg="disabled">BAU Scenario</Badge></td>
+                                <td><Badge bg="disabled"><span className="item"><span>BAU Scenario</span></span></Badge></td>
                                 <td>{project.name && <CSVLink data={csvs.BAU} filename={project.name.replace(" ", "_") + "_BAU_Inputs.csv"} className="btn btn-primary" style={{width: "35px", padding: "4px 4px"}}>
                                     <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload input data as csv" title="Download input data as csv"></img>
                                 </CSVLink>}</td>
                                 <td>{sourcesUsed.BAU.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
                             <tr>
-                                <td><Badge bg="disabled">Climate Scenarios</Badge></td>
+                                <td><Badge bg="disabled"><span className="item"><span>Climate Scenarios</span></span></Badge></td>
                                 <td>{project.name && <CSVLink data={csvs.Climate} filename={project.name.replace(" ", "_") + "_Climate_Inputs.csv"} className="btn btn-primary" style={{width: "35px", padding: "4px 4px"}}>
                                     <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload input data as csv" title="Download input data as csv"></img>
                                 </CSVLink>}</td>
@@ -292,7 +292,7 @@ export default function ProjectCompare(){
                         <tbody>
                             {project?.sources?.map(({value, sourceId}, index) => {
                                 return (<tr key={index}>
-                                    <td><Badge bg="disabled">{value}</Badge></td>
+                                    <td><Badge bg="disabled"><span className="item"><span>{value}</span></span></Badge></td>
                                     <td>[{sourceId}]</td>
                                 </tr>)
                             })}

@@ -180,7 +180,7 @@ export default function ClimateWithUpstreamStep1(){
                                     const vkt = vehicle.vkt?.[yearIndex] || ""
                                     return (
                                         <tr key={vtype}>
-                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>
+                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>{bAUVkt?.[vtype]?.[yearIndex + 1]}</td>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>

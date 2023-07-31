@@ -60,7 +60,7 @@ export default function InventoryIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="mileage and transport performance for each transport mode">
-                                        <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Transport activity
+                                        <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Transport activity</span></span>
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>
@@ -68,13 +68,13 @@ export default function InventoryIntro(){
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">Share of the transport activity by vehicle category and fuel type</Badge>
+                                    <Badge bg="disabled"><span className="item"><span>Share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                 </td>
                                 <td className="item-sm">%vkt and %tkm</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">Vehicle fuel consumption according to vehicle category and fuel type</Badge>
+                                    <Badge bg="disabled"><span className="item"><span>Vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                 </td>
                                 <td className="item-sm">l-kW-kg/100km</td>
                             </tr>
@@ -82,7 +82,7 @@ export default function InventoryIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="Default values are available in the tool but you can customize them if you have local factors">
-                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Emissions factors per fuel
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions factors per fuel</span></span>
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>
@@ -103,7 +103,7 @@ export default function InventoryIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
-                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Occupation rate per transport category
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Occupation rate per transport category</span></span>
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>
@@ -113,7 +113,7 @@ export default function InventoryIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
-                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> CO2 content of electricity and hydrogen production
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2 content of electricity and hydrogen production</span></span>
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>
@@ -123,7 +123,7 @@ export default function InventoryIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="Used to compare your results with the “top-down” approach">
-                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Energy sales in the territory
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Energy sales in the territory</span></span>
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>
@@ -133,7 +133,7 @@ export default function InventoryIntro(){
                                 <td>
                                     <Badge bg="disabled">
                                         <ItemWithOverlay overlayContent="It is not useful for the inventory calculation but we encourage you to collect this data during the SUMP/NUMP diagnostic process, as it will be useful for the Climate Scenario">
-                                            <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Trip length per transport category
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Trip length per transport category</span></span>
                                         </ItemWithOverlay>
                                     </Badge>
                                 </td>

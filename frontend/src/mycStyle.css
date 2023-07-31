@@ -436,6 +436,11 @@ h1 {
     padding: 0.8rem 1.4rem;
     border: none;
     border-radius: 1rem;
+    /* the following is useful since we spanned all "item" elements */
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
 }
 .btn-sm {
     font-family: var(--t-ff-p-mono);
@@ -976,5 +981,15 @@ div.illustration {
 /*temp*/
 
 .item {
-    background: yellow !important;
+    background: var(--c-edition-t2);
+    /* background: orange; */
+    font-size: inherit;
+    color: inherit;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 0.4em;
+    justify-content: center;
+    width: fit-content;
+    /* margin: 0 auto; */
 }

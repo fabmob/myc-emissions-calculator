@@ -164,7 +164,7 @@ export default function InventoryStep5(){
                                     <div>
                                         Energy balance (1000 Tons of oil equivalent) computed by the tool, using previous steps inputs. Values for each fuel are computed as
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                            <Badge bg="disabled">Fuel lower heating value (TJ/1000t)</Badge> / 10^6 x <Badge bg="disabled">Fuel density (kg/kg or kg/l)</Badge> x <Badge bg="disabled">Input VKT per fuel (Mkm)</Badge> x 10^6 x <Badge bg="disabled">Fuel consumption factor (l-kg-kwh/100km)</Badge> / 100 / <Badge bg="disabled">TOE factor (0.041868 TJ)</Badge> / 1000
+                                            <Badge bg="disabled"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> x 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 / <Badge bg="disabled"><span className="item"><span>TOE factor (0.041868 TJ)</span></span></Badge> / 1000
                                         </div>
                                         Lower heating value and fuel density use default values that can be edited at a later step.
                                     </div>
@@ -177,7 +177,7 @@ export default function InventoryStep5(){
                                     <div>
                                         Difference between energy balance coming from energy sales and calculation. 
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                            <Badge bg="disabled">Calculated</Badge> x 100 / <Badge bg="disabled">Energy balance</Badge> - 100
+                                            <Badge bg="disabled"><span className="item"><span>Calculated</span></span></Badge> x 100 / <Badge bg="disabled"><span className="item"><span>Energy balance</span></span></Badge> - 100
                                         </div>
                                         Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
                                     </div>
@@ -199,8 +199,8 @@ export default function InventoryStep5(){
                                 const value = inputData.energy?.[networkName]?.fuels?.[ftype]?.value || ''
                                 const source = inputData.energy?.[networkName]?.fuels?.[ftype]?.source || ''
                                 fuelJsx.push(<tr key={net + ftype}>
-                                    {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{networkName}</Badge></td>}
-                                    <td><Badge bg="disabled">{ftype}</Badge></td>
+                                    {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{networkName}</span></span></Badge></td>}
+                                    <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("energy", networkName, ftype)}/>
@@ -239,7 +239,7 @@ export default function InventoryStep5(){
                                     <div>
                                         Emissions (1000 tons of greenhouse gases) computed by the tool, using previous steps inputs. Values for each fuel are computed as
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                        <Badge bg="disabled">Fuel lower heating value (TJ/1000t)</Badge> / 10^6 x <Badge bg="disabled">Fuel density (kg/kg or kg/l)</Badge> x <Badge bg="disabled">Input VKT per fuel (Mkm)</Badge> x 10^6 x <Badge bg="disabled">Fuel consumption factor (l-kg-kwh/100km)</Badge> / 100 x <Badge bg="disabled">Fuel emission factor (kg/TJ)</Badge> / 10^6
+                                        <Badge bg="disabled"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> x 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 x <Badge bg="disabled"><span className="item"><span>Fuel emission factor (kg/TJ)</span></span></Badge> / 10^6
                                         </div>
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited at a later step.
                                     </div>
@@ -252,7 +252,7 @@ export default function InventoryStep5(){
                                     <div>
                                         Difference between emissions comming from energy sales and calculation. 
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                            <Badge bg="disabled">Calculated</Badge> x 100 / <Badge bg="disabled">Emissions</Badge> - 100
+                                            <Badge bg="disabled"><span className="item"><span>Calculated</span></span></Badge> x 100 / <Badge bg="disabled"><span className="item"><span>Emissions</span></span></Badge> - 100
                                         </div>
                                         Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
                                     </div>
@@ -274,8 +274,8 @@ export default function InventoryStep5(){
                                 const value = inputData.emissions?.[networkName]?.fuels[ftype]?.value || ''
                                 const source = inputData.emissions?.[networkName]?.fuels[ftype]?.source
                                 fuelJsx.push(<tr key={net + ftype}>
-                                    {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{networkName}</Badge></td>}
-                                    <td><Badge bg="disabled">{ftype}</Badge></td>
+                                    {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{networkName}</span></span></Badge></td>}
+                                    <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("emissions", networkName, ftype)}/>

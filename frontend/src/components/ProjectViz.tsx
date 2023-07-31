@@ -242,12 +242,12 @@ export default function ProjectViz(props: {project: ProjectType}){
     return (
         <div>
             <h1>Project overview</h1>
-            <h2 className="d-print-none" style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name} {project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="success">Validated</Badge>}</h2>
+            <h2 className="d-print-none" style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name} {project.status === 'draft' ? <Badge bg="secondary"><span className="item"><span>Draft</span></span></Badge> : <Badge bg="success"><span className="item"><span>Validated</span></span></Badge>}</h2>
             <div className="d-none d-print-block">
                 Project: {project.name}, author: {project.owner}, country: {project.country} {project.isSump && <span>, city: {project.city}</span>}, status: {project.status}
             </div>
             {project.status === 'draft' && <Alert variant="secondary">
-                This project is still in a <Badge bg="secondary">Draft</Badge> state, once you are satistified with its content, <a href="#" onClick={validateProject}>click here to validate it</a>
+                This project is still in a <Badge bg="secondary"><span className="item"><span>Draft</span></span></Badge> state, once you are satistified with its content, <a href="#" onClick={validateProject}>click here to validate it</a>
             </Alert>}
             <Options 
                 project={project} 

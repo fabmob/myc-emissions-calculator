@@ -269,7 +269,7 @@ export default function ClimateWithoutUpstreamStep4(){
                                         <div>
                                             Computed pkm shifted from origin vehicle to goal vehicle
                                             <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                                <Badge bg="disabled">Added Pkm to distribute (Mpkm)</Badge> x <Badge bg="disabled">Part of trips to shift (%)</Badge> x <Badge bg="disabled">Inventory trip len</Badge> / SUM(<Badge bg="disabled">Inventory Trips lengths (km)</Badge> x <Badge bg="disabled">Parts of trips to shift (%)</Badge>)
+                                                <Badge bg="disabled"><span className="item"><span>Added Pkm to distribute (Mpkm)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Part of trips to shift (%)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Inventory trip len</span></span></Badge> / SUM(<Badge bg="disabled"><span className="item"><span>Inventory Trips lengths (km)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Parts of trips to shift (%)</span></span></Badge>)
                                             </div>
                                             Sums are done over goal vehicle
                                         </div>
@@ -288,15 +288,15 @@ export default function ClimateWithoutUpstreamStep4(){
                                         const pkmEndOfYear = Math.round((computedASI && computedASI.pkmsEndOfYear?.[yearIndex+1]?.[goalvtype]) || 0)
                                         return (
                                             <tr key={goalvtype + originvtype}>
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}><Badge bg="disabled">{goalvtype}</Badge></td>}
+                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}><Badge bg="disabled"><span className="item"><span>{goalvtype}</span></span></Badge></td>}
                                                 {/* {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex].toFixed(0)}</td>}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex+1].toFixed(0)}</td>} */}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length} className={pkmStartOfYear < 0 ? "cellError": ""}>{pkmStartOfYear}</td>}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length} className={pkmEndOfYear < 0 ? "cellError": ""}>{pkmEndOfYear}</td>}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}>{computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype]?.toFixed(0)}</td>}
                                                 <td>{originvtype === "Induced Traffic" 
-                                                    ? <ItemWithOverlay overlayContent="Part of additional trips that were induced. These trips are new, not shifted from another transport type."><Badge bg="disabled"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Induced Traffic</Badge></ItemWithOverlay>
-                                                    : <Badge bg="disabled">{originvtype}</Badge>
+                                                    ? <ItemWithOverlay overlayContent="Part of additional trips that were induced. These trips are new, not shifted from another transport type."><Badge bg="disabled"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Induced traffic</span></span></Badge></ItemWithOverlay>
+                                                    : <Badge bg="disabled"><span className="item"><span>{originvtype}</span></span></Badge>
                                                 }</td>
                                                 <td>{invTripLen}</td>
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
@@ -338,7 +338,7 @@ export default function ClimateWithoutUpstreamStep4(){
                                         <div>
                                             Computed tkm shifted from origin vehicle to goal vehicle
                                             <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                                <Badge bg="disabled">Added Tkm to distribute (Mtkm)</Badge> x <Badge bg="disabled">Part of tkm to shift (%)</Badge> / <Badge bg="disabled">SUM of parts of tkm to shift for goal vehicle (%)</Badge>
+                                                <Badge bg="disabled"><span className="item"><span>Added Tkm to distribute (Mtkm)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Part of tkm to shift (%)</span></span></Badge> / <Badge bg="disabled"><span className="item"><span>SUM of parts of tkm to shift for goal vehicle (%)</span></span></Badge>
                                             </div>
                                         </div>
                                     }><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>tkm shifted to goal</span></span></ItemWithOverlay></th>
@@ -353,13 +353,13 @@ export default function ClimateWithoutUpstreamStep4(){
                                         const value = originvehicle.value?.[yearIndex] || ""
                                         return (
                                             <tr key={goalvtype + originvtype}>
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}><Badge bg="disabled">{goalvtype}</Badge></td>}
+                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}><Badge bg="disabled"><span className="item"><span>{goalvtype}</span></span></Badge></td>}
                                                 {/* {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex].toFixed(0)}</td>}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex+1].toFixed(0)}</td>} */}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.pkmsStartOfYear?.[yearIndex+1]?.[goalvtype].toFixed(0)}</td>}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.pkmsEndOfYear?.[yearIndex+1]?.[goalvtype].toFixed(0)}</td>}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype]?.toFixed(0)}</td>}
-                                                <td><Badge bg="disabled">{originvtype}</Badge></td>
+                                                <td><Badge bg="disabled"><span className="item"><span>{originvtype}</span></span></Badge></td>
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
                                                     ? <td>{source
                                                         ? <ValidSource source={source} onClick={(e:any) => configureSource(goalvtype, originvtype)}/>
