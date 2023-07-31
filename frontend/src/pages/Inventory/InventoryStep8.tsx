@@ -132,9 +132,9 @@ export default function InventoryStep8(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Passenger transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Passenger transport</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of average trip length, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
-                            <th className="item-sm">Average trip length (km)</th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Passenger transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Passenger transport</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of average trip length, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><span className="item"><span>Average trip length (km)</span></span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -145,7 +145,7 @@ export default function InventoryStep8(){
                                     <td>
                                         {vehicle.source 
                                         ? <ValidSource source={vehicle.source} onClick={(e:any) => configureSource(vtype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
+                                        : <Button variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={vehicle.value} onChange={e => updateInput(vtype, e.target.value)}></Form.Control>

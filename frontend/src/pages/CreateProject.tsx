@@ -308,7 +308,7 @@ export default function CreateProject() {
                             <Row>
                                 <Col>                            
                                     <Button size="lg" variant="primary" type="submit">
-                                        {project.id ? "Edit" : "Create"}
+                                        {project.id ? <span className="item"><span>Edit</span></span> : <span className="item"><span>Create</span></span>}
                                     </Button>
                                 </Col>
                             </Row>

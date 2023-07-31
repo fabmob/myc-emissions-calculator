@@ -37,8 +37,8 @@ const Jumbo = () => {
                         <p>It enables calculating GHG inventories of cities as well as BAU (business as usual) scenarios. <b>Governments can therefore calculate the environmental effects of local urban mobility activity and foresee the evolution if no actions is taken.</b></p>
                     </div>
                     {keycloak.authenticated ?
-                    <Button variant="action" size="lg" onClick={() => navigate('/projects')}>Get started</Button>
-                    : <Button variant="primary" size="lg" onClick={() => keycloak.login()}>Login</Button>
+                    <Button variant="action" size="lg" onClick={() => navigate('/projects')}><span className="item"><span>Get started</span></span></Button>
+                    : <Button variant="primary" size="lg" onClick={() => keycloak.login()}><span className="item"><span>Login</span></span></Button>
                     }
                 </Col>
                 <Col lg="6">

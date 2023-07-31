@@ -83,7 +83,7 @@ const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep
                     <h3>{props.stage}</h3>
                 </Col>
                 <Col>
-                    <Button variant="link" onClick={e => navigate("/project/" + props.project.id + "/edit")}>Exit</Button>
+                    <Button variant="link" onClick={e => navigate("/project/" + props.project.id + "/edit")}><span className="item"><span>Exit</span></span></Button>
                 </Col>
             </Row>
             <hr/>
@@ -106,7 +106,7 @@ const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep
                             variant="link"
                             disabled={props.project.stages?.[props.stage][0]?.step < index + 1}
                             onClick={() => link((index + 1).toString())}>
-                            {step}
+                            <span className="item"><span>{step}</span></span>
                         </Button>
                     </li>
                 ))}

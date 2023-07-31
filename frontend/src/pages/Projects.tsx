@@ -90,7 +90,7 @@ export default function Projects(){
                                 <p>
                                     A project is related to a specific MYC urban mobility plan. 
                                     It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
-                                    <Button variant="link" onClick={handleShow} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Read more</Button>
+                                    <Button variant="link" onClick={handleShow} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Read more</span></span></Button>
                                 </p>
                                 <p>
                                     You can start by creating a new project, or checking public projects if available.
@@ -100,7 +100,7 @@ export default function Projects(){
                             // <Stack gap={2} className="col-md-5">
                             //     <Button size="lg" variant="primary" onClick={_ => setGotoCreate(true)}>New project</Button>
                             // </Stack>
-                            <Button size="lg" variant="primary" onClick={_ => setGotoCreate(true)}>New project</Button>
+                            <Button size="lg" variant="primary" onClick={_ => setGotoCreate(true)}><span className="item"><span>New project</span></span></Button>
                             : <div>Loading...</div>
                             }
                         </Col>
@@ -128,7 +128,7 @@ export default function Projects(){
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                    Close
+                        <span className="item"><span>Close</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -239,9 +239,9 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                             <td>{project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="info">Validated</Badge>}</td>
                             <td><ProjectProgress step={project.stages["Inventory"][0]?.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
-                                <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}>Open</Button>
-                                <Button variant="secondary" className="btn-sm" disabled={project.stages["Inventory"][0]?.step < 8 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
-                                <Button variant="secondary" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}>Delete</Button>
+                                <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}><span className="item"><span>Open</span></span></Button>
+                                <Button variant="secondary" className="btn-sm" disabled={project.stages["Inventory"][0]?.step < 8 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}><span className="item"><span>Validate</span></span></Button>
+                                <Button variant="secondary" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}><span className="item"><span>Delete</span></span></Button>
                             </td>
                         </tr>
                     )}
@@ -272,10 +272,10 @@ const ValidateConfirmModal = ({showValidateConfirmModal, handleCloseValidateConf
         </Modal.Body>
         <Modal.Footer>
             <Button variant="success" onClick={() => handleCloseValidateConfirmModal(true)}>
-                Confirm validate
+                <span className="item"><span>Confirm validate</span></span>
             </Button>
             <Button variant="secondary" onClick={() => handleCloseValidateConfirmModal(false)}>
-                Close
+                <span className="item"><span>Close</span></span>
             </Button>
         </Modal.Footer>
     </Modal>
@@ -292,10 +292,10 @@ const DeleteConfirmModal = ({showDeleteConfirmModal, handleCloseDeleteConfirmMod
         </Modal.Body>
         <Modal.Footer>
             <Button variant="danger" onClick={() => handleCloseDeleteConfirmModal(true)}>
-                Confirm delete
+                <span className="item"><span>Confirm delete</span></span>
             </Button>
             <Button variant="secondary" onClick={() => handleCloseDeleteConfirmModal(false)}>
-                Close
+                <span className="item"><span>Close</span></span>
             </Button>
         </Modal.Footer>
     </Modal>
@@ -340,7 +340,9 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
                         </td>
                         <td>{project.owner}</td>
                         <td>
-                            <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}>Open</Button>
+                            <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}>
+                                <span className="item"><span>Open</span></span>
+                            </Button>
                         </td>
                     </tr>
                 )}

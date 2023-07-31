@@ -98,13 +98,13 @@ export default function ProjectSummary(){
                     <Col className="title" xs={props.stage === "Climate" ? "8" : "9"}><h3>{props.title}</h3></Col>
                     <Col className="nav" xs={props.stage === "Climate" ? "4" : "3"}>
                         {!hideParams[props.title] 
-                            ? <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>hide(props.title)}>See less</Button>
-                            : <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>show(props.title)}>See more</Button>
+                            ? <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>hide(props.title)}><span className="item"><span>See less</span></span></Button>
+                            : <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>show(props.title)}><span className="item"><span>See more</span></span></Button>
                         }
-                        {(props.stage === "Climate" && props.stageId != undefined && project.stages?.Climate.length && <Button variant="link" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#copy"}/></svg></Button>) || ""}
+                        {(props.stage === "Climate" && props.stageId != undefined && project.stages?.Climate.length && <Button variant="link" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#copy"}/></svg></span></Button>) || ""}
                     
                         <Button onClick={e => navigate(introUrl)} style={{minWidth: "93px"}}>
-                        {project.stages?.[props.stage].length ? "Edit": "Create +"}
+                        {project.stages?.[props.stage].length ? <span className="item"><span>Edit</span></span> : <span className="item"><span>Create</span><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span>}
                         </Button>
                     </Col>
                 </Row>
@@ -234,9 +234,10 @@ export default function ProjectSummary(){
                                 <Table bordered>
                                     <thead>
                                         <tr>
-                                            <th className="item-sm"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</th>
-                                            <th className="item-sm"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuel</th>
-                                            <th className="item-sm"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> GHG emissions (1000t GHG) ({"WTW"})</th>
+                                        <th className="item-sm"><span className="item"><span>Unit</span></span></th>
+                                            <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></th>
+                                            <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuel</span></span></th>
+                                            <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG emissions (1000t GHG) ({"WTW"})</span></span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -307,7 +308,7 @@ export default function ProjectSummary(){
                         )
                     })}
                     {project?.stages?.Climate?.length > 0 &&
-                        <div style={{marginBottom: "30px"}}><Button variant="link" onClick={_=>navigate(`/project/${project.id}/Climate/${project.stages.Climate.length}/intro`)}><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg> Add another climate scenario</Button></div>
+                        <div style={{marginBottom: "30px"}}><Button variant="link" onClick={_=>navigate(`/project/${project.id}/Climate/${project.stages.Climate.length}/intro`)}><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span>Add another climate scenario</span></span></Button></div>
                     }
                 </Col>
             </Row>

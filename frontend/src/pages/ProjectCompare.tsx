@@ -252,9 +252,9 @@ export default function ProjectCompare(){
                     <Table bordered>
                         <thead>
                             <tr>
-                                <th className="item-sm">Dataset</th>
-                                <th className="item-sm">Action</th>
-                                <th className='item-sm'>Sources</th>
+                                <th className="item-sm"><span className="item"><span>Dataset</span></span></th>
+                                <th className="item-sm"><span className="item"><span>Action</span></span></th>
+                                <th className="item-sm"><span className="item"><span>Sources</span></span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -285,8 +285,8 @@ export default function ProjectCompare(){
                     <Table bordered>
                         <thead>
                             <tr>
-                                <th className="item-sm">Source</th>
-                                <th className="item-sm">ID</th>
+                                <th className="item-sm"><span className="item"><span>Source</span></span></th>
+                                <th className="item-sm"><span className="item"><span>ID</span></span></th>
                             </tr>
                         </thead>
                         <tbody>

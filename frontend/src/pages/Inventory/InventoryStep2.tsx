@@ -202,7 +202,7 @@ export default function InventoryStep2(){
     const ApproachSelector = () => {
         return (
             <div style={{display: "flex", marginBottom: "10px"}}>
-                <Button variant="link" onClick={e => setShowComputationApproach(true)} style={{padding: "0", border: "0", marginRight: "5px"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle mileage</Button> is computed using the
+                <Button variant="link" onClick={e => setShowComputationApproach(true)} style={{padding: "0", border: "0", marginRight: "5px"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle mileage</span></span></Button> is computed using the
                 <Dropdown onSelect={(key:any) => computationApproach === "vkt" ? setComputationApproach("fleet") : setComputationApproach("vkt")}>
                     <Dropdown.Toggle as={Badge} bg="info" style={{margin: "0 10px 0 10px"}}>
                         {computationApproach === "vkt" ? "Vkt approach" : "Fleet approach"}
@@ -243,24 +243,24 @@ export default function InventoryStep2(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
                             {computationApproach === "fleet" 
-                                ? <th className="item-sm"><ItemWithOverlay overlayContent="Source of vehicle stock and average mileage values, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
-                                : <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT value, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                                ? <th className="item-sm"><ItemWithOverlay overlayContent="Source of vehicle stock and average mileage values, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
+                                : <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT value, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
                             }
-                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Number of registered vehicles"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle stock</ItemWithOverlay></th>}
-                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Average annual mileage per vehicle"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Avg mileage (km)</ItemWithOverlay></th>}
+                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Number of registered vehicles"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle stock</span></span></ItemWithOverlay></th>}
+                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Average annual mileage per vehicle"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Avg mileage (km)</span></span></ItemWithOverlay></th>}
                             <th className="item-sm">
                                 <ItemWithOverlay overlayContent={
                                     <div>Vehicle kilometers travelled. Values for each fuel are computed as
                                     <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}><Badge bg="disabled">Input VKT per vehicle (Mkm/y)</Badge> x <Badge bg="disabled">VKT (%)</Badge> / 100</div>
                                     Set VKT to zero for vehicles that are not yet used in reference year.
                                     </div>
-                                }><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> VKT (Mkm/y)</ItemWithOverlay>
+                                }><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (Mkm/y)</span></span></ItemWithOverlay>
                             </th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of share of vkt for a given fuel, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> VKT (%)</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of share of vkt for a given fuel, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (%)</span></span></ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -291,7 +291,7 @@ export default function InventoryStep2(){
                                     <td>
                                         {percentSource 
                                         ? <ValidSource source={percentSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype, ftype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
+                                        : <Button variant="action" onClick={e => configureSource(vtype, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <PercentInput value={value} onChange={(e:any) => updateInputPercent(vtype, ftype, e.target.value)} invalid={totalPercent > 100}></PercentInput>
@@ -305,7 +305,7 @@ export default function InventoryStep2(){
                                     <td>
                                         {vktSource
                                         ? <ValidSource source={vktSource} onClick={(e:any) => configureSource(vtype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
+                                        : <Button variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     {computationApproach === "fleet" && <td><Form.Control value={fleetStock} onChange={e => updateInputFleetStock(vtype, e.target.value)}></Form.Control></td>}
                                     {computationApproach === "fleet" && <td><Form.Control value={fleetMileage} onChange={e => updateInputFleetMileage(vtype, e.target.value)}></Form.Control></td>}
@@ -338,7 +338,7 @@ export default function InventoryStep2(){
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseInfo}>
-                    Close
+                    <span className="item"><span>Close</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -352,7 +352,7 @@ export default function InventoryStep2(){
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseComputationApproach}>
-                    Close
+                    <span className="item"><span>Close</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>

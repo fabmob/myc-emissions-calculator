@@ -12,7 +12,7 @@ export default function EmissionsTable (props: {
         <Table bordered>
             <thead>
                 <tr>
-                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
+                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
                     {props.project.referenceYears && props.project.referenceYears.map((y, yearIndex) => (
                         <th key={yearIndex}  className="item-sm" style={{whiteSpace: "initial"}}>
                             <ItemWithOverlay overlayContent={

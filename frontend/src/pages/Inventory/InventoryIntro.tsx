@@ -41,7 +41,7 @@ export default function InventoryIntro(){
                 <Col xs lg="8">
                     <h1>Inventory / Base Year</h1>
                     <DescAndNav 
-                        prevNav={{link: '/project/' + project.id + '/edit', content: "cancel", variant: "link"}}
+                        prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
                         nextNav={{link: '/project/' + project.id + '/Inventory/step/1', content: "Start →", variant: "primary"}}
                     >
                         <p>The emission inventory for the transport sector is calculated using the bottom-up approach - based on transport activity. It relies on the ASIF framework, considering Activity, Structure, Intensity and Fuel.</p>
@@ -51,8 +51,8 @@ export default function InventoryIntro(){
                     <Table>
                         <thead>
                             <tr>
-                                <th className="item-sm">Data</th>
-                                <th className="item-sm">Unit</th>
+                                <th className="item-sm"><span className="item"><span>Data</span></span></th>
+                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,8 +94,8 @@ export default function InventoryIntro(){
                     <Table>
                         <thead>
                             <tr>
-                                <th className="item-sm">Data</th>
-                                <th className="item-sm">Unit</th>
+                                <th className="item-sm"><span className="item"><span>Data</span></span></th>
+                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
                             </tr>
                         </thead>
                         <tbody>

@@ -23,15 +23,15 @@ export default function DescAndNav (props: {children: React.ReactNode, prevNav?:
             <Col xs="4">
                 <Row className="nav">
                     <Col className="prevNav" xs="6">
-                        {props.prevNav && <Button variant={props.prevNav.variant} onClick={e => handleClick(props.prevNav)}>{props.prevNav.content}</Button>}
+                        {props.prevNav && <Button variant={props.prevNav.variant} onClick={e => handleClick(props.prevNav)}><span className="item"><span>{props.prevNav.content}</span></span></Button>}
                     </Col>
                     <Col className="nextNav" xs="6">
-                        {props.nextNav && <Button variant={props.nextNav.variant} onClick={e => handleClick(props.nextNav)} style={{whiteSpace: "nowrap"}}>{props.nextNav.content}</Button>}
+                        {props.nextNav && <Button variant={props.nextNav.variant} onClick={e => handleClick(props.nextNav)} style={{whiteSpace: "nowrap"}}><span className="item"><span>{props.nextNav.content}</span></span></Button>}
                     </Col>
                 </Row>
                 <Row className="info">
                     <Col>
-                        {props.seeMoreCallBack && <Button variant="link" onClick={e => props.seeMoreCallBack && props.seeMoreCallBack()}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> See more</Button>}
+                        {props.seeMoreCallBack && <Button variant="link" onClick={e => props.seeMoreCallBack && props.seeMoreCallBack()}><span className="item"><span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg>See more</span></span></Button>}
                     </Col>
                 </Row>
             </Col>

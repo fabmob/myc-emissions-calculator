@@ -166,11 +166,11 @@ export default function ClimateWithoutUpstreamStep1(){
                     {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
                         <Table bordered>
                             <thead>
-                                <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> BAU VKT (Mkm)</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of avoided VKT value. Click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Percent of vehicle kilometer travelled avoided per time period"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Avoided VKT (%)</ItemWithOverlay></th>
+                                <tr>                                
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>BAU VKT (Mkm)</span></span></ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of avoided VKT value. Click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
+                                    <th className="item-sm"><ItemWithOverlay overlayContent="Percent of vehicle kilometer travelled avoided per time period"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Avoided VKT (%)</span></span></ItemWithOverlay></th>
                                     <th className="item-sm">
                                         <ItemWithOverlay overlayContent={
                                             <div>Computed Climate VKT as
@@ -179,7 +179,7 @@ export default function ClimateWithoutUpstreamStep1(){
                                                 </div>
                                                 First VKT values come from reference year data (inventory).
                                             </div>
-                                        }><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Climate VKT (Mkm)</ItemWithOverlay>
+                                        }><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Climate VKT (Mkm)</span></span></ItemWithOverlay>
                                     </th>
                                 </tr>
                             </thead>
@@ -194,7 +194,7 @@ export default function ClimateWithoutUpstreamStep1(){
                                             <td>{bAUVkt?.[vtype]?.[yearIndex+1]}</td>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
-                                            : <Button variant="action" onClick={e => configureSource(vtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}</td>
+                                            : <Button variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
                                             <td>
                                                 <Form.Control value={avoidedVkt} onChange={(e:any) => updateInput(vtype, yearIndex, e.target.value)}></Form.Control>
                                             </td>
@@ -227,7 +227,7 @@ export default function ClimateWithoutUpstreamStep1(){
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseInfo}>
-                    Close
+                        <span className="item"><span>Close</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>

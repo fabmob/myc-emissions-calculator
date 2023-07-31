@@ -56,7 +56,7 @@ const ChoiceModal = (props: {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" type="submit">
-                        Save
+                        <span className="item"><span>Save</span></span>
                     </Button>
                 </Modal.Footer>
             </Form>

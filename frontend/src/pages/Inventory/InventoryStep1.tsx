@@ -262,10 +262,10 @@ export default function InventoryStep1(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Used network, can be road or rail. Create a custom vehicle category to edit this field."><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Network</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Type of transport, can be public transport, private transport or freight. Create a custom vehicle category to edit this field."><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Type</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Used network, can be road or rail. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Type of transport, can be public transport, private transport or freight. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Type</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -286,14 +286,14 @@ export default function InventoryStep1(){
                                         {Object.keys(vehicle.fuels).map((ftype, index) => (
                                             <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}>{ftype}<svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></Badge>
                                         ))}
-                                        <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>
+                                        <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
                                     </Stack>
                                 </td>
                             </tr>)
                         })}
                         <tr>
                             <td>
-                                <Button size="sm" variant="action" onClick={e => setShowAddVehicleModal(true)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>
+                                <Button size="sm" variant="action" onClick={e => setShowAddVehicleModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
                             </td>
                             <td></td>
                             <td></td>
@@ -338,7 +338,7 @@ export default function InventoryStep1(){
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseInfo}>
-                    Close
+                        <span className="item"><span>Close</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>

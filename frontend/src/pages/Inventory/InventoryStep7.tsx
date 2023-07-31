@@ -142,9 +142,9 @@ export default function InventoryStep7(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Vehicle</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Emission factors per fuel. This values can be edited using the Edit GHG emission factors link below the pie chart."><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Emission Factor (kg/TJ) ({ttwOrWtw})</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Emission factors per fuel. This values can be edited using the Edit GHG emission factors link below the pie chart."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emission Factor (kg/TJ) ({ttwOrWtw})</span></span></ItemWithOverlay></th>
                             <th className="item-sm">
                                 <ItemWithOverlay overlayContent={
                                     <div>
@@ -155,7 +155,7 @@ export default function InventoryStep7(){
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited using the Edit GHG emission factors link below the pie chart.
                                     </div>
                                 }>
-                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> GHG emissions (1000t GHG) ({ttwOrWtw})
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG emissions (1000t GHG) ({ttwOrWtw})</span></span>
                                 </ItemWithOverlay>
                             </th>
                         </tr>

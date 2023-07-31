@@ -97,7 +97,7 @@ export default function EditEmissionFactors (props: {
     }
     return (
         <div>
-            <Button variant="link" onClick={e => setShowEmissionFactorsModal(true)} style={{padding: "0"}}>✍️ Edit GHG emission factors</Button>
+            <Button variant="link" onClick={e => setShowEmissionFactorsModal(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#edit"}/></svg><span>Edit GHG emission factors</span></span></Button>
             <Modal size="xl" centered show={showEmissionFactorsModal} onHide={() => setShowEmissionFactorsModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Emission factors</Modal.Title>
@@ -110,17 +110,17 @@ export default function EditEmissionFactors (props: {
                         The table already integrates international ones that you can use as default values if you don’t have specific values.
                     </p>
                     <p>
-                        We would recommend to check out the <Button variant="link" onClick={e => setShowMethodologyModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> methodology used</Button> to obtain those factors first.
+                        We would recommend to check out the <Button variant="link" onClick={e => setShowMethodologyModal(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>methodology used</span></span></Button> to obtain those factors first.
                     </p>
                     <Table bordered>
                         <thead>
                             <tr>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Fuels types, current and expected"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Source of factors, default values use EN 16258. Click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
-                                <th className="item-sm">Lower heating value (TJ/1000t or MJ/kWh)</th>
-                                <th className="item-sm">Fuel density (kg/kg or kg/l)</th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Tank to wheel emission factor for given fuel"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> CO2e TTW (kg/Tj)</ItemWithOverlay></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Well to wheel emission factor for given fuel"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> CO2e WTW (kg/Tj)</ItemWithOverlay></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Fuels types, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Source of factors, default values use EN 16258. Click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
+                                <th className="item-sm"><span className="item"><span>Lower heating value (TJ/1000t or MJ/kWh)</span></span></th>
+                                <th className="item-sm"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Tank to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e TTW (kg/Tj)</span></span></ItemWithOverlay></th>
+                                <th className="item-sm"><ItemWithOverlay overlayContent="Well to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e WTW (kg/Tj)</span></span></ItemWithOverlay></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -132,7 +132,7 @@ export default function EditEmissionFactors (props: {
                                         <td>
                                             {fuel.source 
                                             ? <ValidSource source={fuel.source} onClick={(e:any) => configureSource(ftype)}/>
-                                            : <Button variant="action" onClick={e => configureSource(ftype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
+                                            : <Button variant="action" onClick={e => configureSource(ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                         </td>
                                         <td><Form.Control value={fuel.lowerHeatingValue} onChange={e => updateInput(ftype, "lowerHeatingValue", e.target.value)}></Form.Control></td>
                                         <td><Form.Control value={fuel.density} onChange={e => updateInput(ftype, "density", e.target.value)}></Form.Control></td>
@@ -143,19 +143,19 @@ export default function EditEmissionFactors (props: {
                         </tbody>
                     </Table>
                     {props.inputData.note === undefined 
-                        ? <Button variant="link" onClick={e=>setNote("")}><ItemWithOverlay overlayContent="Write a note to keep track of hypothesis and assumptions used to fill this step. For exemple, what arithmetic operations were used to convert data from sources to this tool's expected format.">+ Add a note</ItemWithOverlay></Button>
+                        ? <Button variant="link" onClick={e=>setNote("")}><ItemWithOverlay overlayContent="Write a note to keep track of hypothesis and assumptions used to fill this step. For exemple, what arithmetic operations were used to convert data from sources to this tool's expected format."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span>Add a note</span></span></ItemWithOverlay></Button>
                         : <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                            <Form.Label><Button variant="link" onClick={e=>setNote(undefined)}>User note X</Button></Form.Label>
+                            <Form.Label><Button variant="link" onClick={e=>setNote(undefined)}><span className="item"><span>User note</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Button></Form.Label>
                             <Form.Control as="textarea" rows={3} value={props.inputData.note} onChange={e => setNote(e.target.value)} />
                         </Form.Group>
                     }
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowEmissionFactorsModal(false)}>
-                        Close
+                        <span className="item"><span>Close</span></span>
                     </Button>
                     <Button variant="primary" onClick={() => saveEmissionFactors()}>
-                        Save
+                        <span className="item"><span>Save</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -176,7 +176,7 @@ export default function EditEmissionFactors (props: {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowMethodologyModal(false)}>
-                    Close
+                        <span className="item"><span>Close</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>

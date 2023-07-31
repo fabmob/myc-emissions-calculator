@@ -223,10 +223,10 @@ export default function TopDown(){
                             </ResponsiveContainer>
                             </div>
                         <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
-                            Previous
+                            <span className="item"><span>Previous</span></span>
                         </Button>
                         <Button variant="primary" type="submit">
-                            Next
+                            <span className="item"><span>Next</span></span>
                         </Button>
                     </Form>
                     

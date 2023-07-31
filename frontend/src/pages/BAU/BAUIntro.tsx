@@ -41,7 +41,7 @@ export default function BAUIntro(){
                 <Col xs lg="8">
                     <h1>Business as usual (BAU) scenario</h1>
                     <DescAndNav 
-                        prevNav={{link: '/project/' + project.id + '/edit', content: "cancel", variant: "link"}}
+                        prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
                         nextNav={{link: '/project/' + project.id + '/BAU/step/1', content: "Start ->", variant: "primary"}}
                     >
                         <p>After defining the initial situation in your city/country, it is necessary to project transport emissions into the future on a business-as-usual basis.</p>
@@ -57,8 +57,8 @@ export default function BAUIntro(){
                     <Table>
                         <thead>
                             <tr>
-                                <th className="item-sm">Data</th>
-                                <th className="item-sm">Unit</th>
+                                <th className="item-sm"><span className="item"><span>Data</span></span></th>
+                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,8 +90,8 @@ export default function BAUIntro(){
                     <Table>
                         <thead>
                             <tr>
-                                <th className="item-sm">Data</th>
-                                <th className="item-sm">Unit</th>
+                                <th className="item-sm"><span className="item"><span>Data</span></span></th>
+                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
                             </tr>
                         </thead>
                         <tbody>

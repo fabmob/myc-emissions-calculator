@@ -137,13 +137,13 @@ export default function InventoryStep5(){
                 >
                     <div className="text desc">
                         <p>
-                            The top down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> energy sales</Button> on a given territory to evaluate your bottom-up results.
+                            The top down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>energy sales</span></span></Button> on a given territory to evaluate your bottom-up results.
                         </p>                
                         <p>
                             It is particularly adapted for NUMPs, since it is easier to get the energy balance data at a national scale - but you can also use it if you have the local data.
                         </p>
                         <p>
-                            Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> possible reasons</Button> for uncertainty, for both calculation approach.
+                            Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>possible reasons</span></span></Button> for uncertainty, for both calculation approach.
                         </p>
                     </div>
                 </DescAndNav>
@@ -151,12 +151,12 @@ export default function InventoryStep5(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Network</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of energy value, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of energy value, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
                             <th className="item-sm">
                                 <ItemWithOverlay overlayContent="Energy balance data (1000 Tons of oil equivalent) are based on the total fuel sales within the country. According to the IPCC guidelines 2006, the final energy consumption for the GHG inventory should be calculated as follow: production + import - export - international bunkers - stock change">
-                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Energy balance (1000 TOE)
+                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Energy balance (1000 TOE)</span></span>
                                 </ItemWithOverlay>
                             </th>
                             <th className="item-sm">
@@ -169,7 +169,7 @@ export default function InventoryStep5(){
                                         Lower heating value and fuel density use default values that can be edited at a later step.
                                     </div>
                                 }>
-                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Calculated (1000 TOE)
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Calculated (1000 TOE)</span></span>
                                 </ItemWithOverlay>
                             </th>
                             <th className="item-sm">
@@ -182,7 +182,7 @@ export default function InventoryStep5(){
                                         Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
                                     </div>
                                 }>
-                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Gap (%)
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Gap (%)</span></span>
                                 </ItemWithOverlay>
                             </th>
                         </tr>
@@ -204,7 +204,7 @@ export default function InventoryStep5(){
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("energy", networkName, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource("energy", networkName, ftype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
+                                        : <Button variant="action" onClick={e => configureSource("energy", networkName, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput("energy", networkName, ftype, e.target.value)}></Form.Control>
@@ -226,12 +226,12 @@ export default function InventoryStep5(){
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Network</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Fuels</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Src</ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
                             <th className="item-sm">
                                 <ItemWithOverlay overlayContent="Emissions data (1000 tons of greenhouse gases). It should be proportional to energy balance, if available">
-                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Emissions (1000t GHG)
+                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions (1000t GHG)</span></span>
                                 </ItemWithOverlay>
                             </th>
                             <th className="item-sm">
@@ -244,7 +244,7 @@ export default function InventoryStep5(){
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited at a later step.
                                     </div>
                                 }>
-                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Calculated (1000t GHG)
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Calculated (1000t GHG)</span></span>
                                 </ItemWithOverlay>
                             </th>
                             <th className="item-sm">
@@ -257,7 +257,7 @@ export default function InventoryStep5(){
                                         Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
                                     </div>
                                 }>
-                                    <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Gap (%)
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Gap (%)</span></span>
                                 </ItemWithOverlay>
                             </th>
                         </tr>
@@ -279,7 +279,7 @@ export default function InventoryStep5(){
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("emissions", networkName, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource("emissions", networkName, ftype)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></Button>}
+                                        : <Button variant="action" onClick={e => configureSource("emissions", networkName, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput("emissions", networkName, ftype, e.target.value)}></Form.Control>
@@ -313,7 +313,7 @@ export default function InventoryStep5(){
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowEnergySalesModal(false)}>
-                    Close
+                        <span className="item"><span>Close</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -339,7 +339,7 @@ export default function InventoryStep5(){
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowPossibleReasonsModal(false)}>
-                    Close
+                        <span className="item"><span>Close</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>
