@@ -83,21 +83,18 @@ export default function VktCompareBarChart (props: {
     return (
         <div className="chart">
             <div className="chart-header">
-                <Row>
-                    <Col xs={10}><h3>Vehicle kilometer travelled</h3></Col>
-                    <Col xs={1}>
-                        {props.project.name && <CSVLink data={csvExport} filename={props.project.name.replace(" ", "_") + "_vkt.csv"} className="btn btn-primary" style={{width: "100%", padding: "4px 4px"}}>
-                            <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload as csv" title="Download as csv"></img>
-                        </CSVLink>}
-                    </Col>
-                    <Col xs={1}>
-                        <Button onClick={handleDownload} style={{width: "100%", padding: "4px 4px"}}>
-                            {isLoading 
-                            ? <img style={{width: "27px"}} src="/icon_spinner.svg" alt="Image is loading" title="Image is loading"></img>
-                            : <img style={{width: "27px"}} src="/icon_dl_image.svg" alt="Download graph as png" title="Download graph as png"></img>}
-                        </Button>
-                    </Col>
-                </Row>
+                <h3>Vehicle kilometer travelled</h3>
+                <div className="commands">
+                    {props.project.name && 
+                    <CSVLink data={csvExport} filename={props.project.name.replace(" ", "_") + "_emissions.csv"} className="btn btn-link">
+                        <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>
+                    </CSVLink>}                      
+                    <Button variant="link" onClick={handleDownload} style={{width: "100%", padding: "4px 4px"}}>
+                        {isLoading 
+                        ? <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg></span>
+                        : <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>}
+                    </Button>
+                </div>
             </div>
             <div className="chart-content">
                 <div>

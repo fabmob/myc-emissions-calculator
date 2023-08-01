@@ -19,24 +19,44 @@ const MyNav = () => {
             <Container>
                 <Navbar.Brand href="/">
                     {/* <img style={{height: "50px", marginRight: "20px"}}src="/mobiliseyourcity.png" alt="Mobilise Your City" /> */}
-                    MYC GHG emissions calculator
+                    <span className="item"><span>MYC GHG emissions calculator</span></span>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
-                        <NavLink className="nav-link" to="/">Home</NavLink>
-                        {!!keycloak.authenticated && (<NavLink className="nav-link" to="/projects">Projects</NavLink>)}
+                        <NavLink className="nav-link" to="/"><span className="item"><span>Home</span></span></NavLink>
+                        {!!keycloak.authenticated && (<NavLink className="nav-link" to="/projects"><span className="item"><span>Projects</span></span></NavLink>)}
                     </Nav>
                     {!!keycloak.authenticated && (
                         <Nav>
-                            <NavDropdown title={keycloak?.tokenParsed?.preferred_username + (isAdmin ? " (admin)" : '')} id="navbarScrollingDropdown">
-                            <NavDropdown.Item onClick={() => keycloak.logout()}>logout</NavDropdown.Item>
-                            </NavDropdown>
+                            {/* <span className="item">
+                                <span> */}
+                                    <NavDropdown 
+                                        title={
+                                            <span className="item">
+                                                <span>
+                                                    {keycloak?.tokenParsed?.preferred_username 
+                                                    + (isAdmin ? " (admin)" : "")}
+                                                </span>
+                                            </span>
+                                        } 
+                                        id="navbarScrollingDropdown">
+
+                                        <NavDropdown.Item onClick={() => keycloak.logout()}>Logout</NavDropdown.Item>
+                                    
+                                    </NavDropdown>    
+                                {/* </span>
+                            </span> */}
                         </Nav>
                     )}
-                    <a id="github-link" href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank" rel="noreferrer">
-                        <img src="/logos/logo-github.svg" alt="Github"></img>
-                    </a>
+                    <span className="item">
+                        <span>
+                            <a id="github-link" href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank" rel="noreferrer">
+                                {/* <img src="/logos/logo-github.svg" alt="Github"></img> */}
+                                <svg viewBox="0 0 98 96"><use href={"/logos/logo-github.svg#0"}/></svg>  
+                            </a>
+                        </span>
+                    </span>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

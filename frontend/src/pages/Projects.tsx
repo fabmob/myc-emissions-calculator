@@ -115,22 +115,22 @@ export default function Projects(){
                     <Modal.Title>Projects</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>
-                        Projects are divided in three stages:
-                    </p>
-                    <ul>
-                        <li>An inventory, where transport activity is described for a reference year, and current yearly GHG emissions are computed</li>
-                        <li>A business as usual (BAU) scenario, where the transport related emissions are described if nothing changed in the years to come</li>
-                        <li>One or more climate scenarios, where the predicted transport related emissions are described when a strategy, policy, programme or project were to be introduced</li>
-                    </ul>
-                    <p>More information on these stages and which data they require will be detailed during the completion process.</p>
-                    <p>Once your project is complete, you can validate it. This will let admins know that it can be consulted and maybe published as inspiration for other community members.</p>
+                    <div className="text">
+                        <p>Projects are divided in three stages:</p>
+                        <ul>
+                            <li>An inventory, where transport activity is described for a reference year, and current yearly GHG emissions are computed</li>
+                            <li>A business as usual (BAU) scenario, where the transport related emissions are described if nothing changed in the years to come</li>
+                            <li>One or more climate scenarios, where the predicted transport related emissions are described when a strategy, policy, programme or project were to be introduced</li>
+                        </ul>
+                        <p>More information on these stages and which data they require will be detailed during the completion process.</p>
+                        <p>Once your project is complete, you can validate it. This will let admins know that it can be consulted and maybe published as inspiration for other community members.</p>
+                    </div>
                 </Modal.Body>
-                <Modal.Footer>
+                {/* <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         <span className="item"><span>Close</span></span>
                     </Button>
-                </Modal.Footer>
+                </Modal.Footer> */}
             </Modal>
         </>
     )

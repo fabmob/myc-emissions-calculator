@@ -292,12 +292,12 @@ div.App > div.container > section:not(:last-child) {
 }
 .row>.col,
 .row>[class^=col-] {
-    background: var(--c-edition-t2);
+    /* background: var(--c-edition-t2); */
     overflow: hidden;
 }
 .row > .col > *:not(button),
 .row > [class^=col-] > *:not(button) {
-    background: var(--c-edition-t2);
+    /* background: var(--c-edition-t2); */
 }
 .row > .col > *:not(:last-child),
 .row > [class^=col-] > *:not(:last-child) {
@@ -593,6 +593,7 @@ table.table tr td {
     overflow: hidden;
     /* text-overflow: ellipsis; */
     white-space: nowrap;
+    max-width: calc(3.7rem * 7); /*temporary*/
 }
 table.table tr td > * {
     line-height: 100%;
@@ -665,13 +666,18 @@ nav.navbar a {
     color: var(--c-h0-s0-l2);
 }
 nav.navbar a#github-link {
-    width: 2.8rem;
+    display: inline-block;
+    width: 2.4rem;
     height: auto;
 }
-nav.navbar a#github-link > img{
+nav.navbar a#github-link > svg {
     width: 100%;
-    opacity: 0.25;   
+    fill: currentColor;
 }
+.dropdown-toggle::after {
+    display: none;
+}
+
 
 
 
@@ -799,7 +805,15 @@ h1, h2, h3, h4, h5, h6 {
     stroke: var(--c-h0-s0-l5);
     stroke-width: 0rem;
 }
-
+.chart-header,
+.chart-header .commands {
+    /* background:pink; */
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: .8rem;
+}
 
 
 /*—————————————————————*/
@@ -968,7 +982,7 @@ h1, h2, h3, h4, h5, h6 {
 /*—————————————————————*/
 /*fix for illustrations*/
 div.illustration {
-    background: pink;
+    /* background: pink; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -978,11 +992,9 @@ div.illustration {
 
 
 /*—————————————————————*/
-/*temp*/
-
+/*fix for the "item" elements*/
 .item {
     background: var(--c-edition-t2);
-    /* background: orange; */
     font-size: inherit;
     color: inherit;
     display: flex;
@@ -993,3 +1005,121 @@ div.illustration {
     width: fit-content;
     /* margin: 0 auto; */
 }
+
+
+
+
+
+/*—————————————————————*/
+/*fix for the modals and tooltips*/
+:root {
+    --modal-xs-content-width: 30rem;
+    --modal-s-content-width: 30rem;
+    --modal-m-content-width: 40rem;
+    --modal-l-content-width: 60rem;
+    --modal-xs-base-padding: 1.4rem;
+    --modal-xs-padding: 
+        var(--modal-xs-base-padding) 
+        var(--modal-xs-base-padding) 
+        2rem 
+        var(--modal-xs-base-padding);
+    --modal-s-base-padding: 2.4rem;
+    --modal-s-padding: 
+        var(--modal-s-base-padding) 
+        var(--modal-s-base-padding) 
+        3.6rem 
+        var(--modal-s-base-padding);
+    --modal-m-base-padding: 4.8rem;
+    --modal-m-padding: 
+        var(--modal-m-base-padding) 
+        var(--modal-m-base-padding) 
+        7.2rem 
+        var(--modal-m-base-padding);
+    --modal-l-base-padding: 4.8rem;
+    --modal-l-padding: 
+        var(--modal-l-base-padding) 
+        var(--modal-l-base-padding) 
+        7.2rem 
+        var(--modal-l-base-padding);
+    --modal-xs-width: calc( var(--modal-xs-content-width) + 2 * var(--modal-xs-base-padding) );
+    --modal-s-width: calc( var(--modal-s-content-width) + 2 * var(--modal-s-base-padding) );
+    --modal-m-width: calc( var(--modal-m-content-width) + 2 * var(--modal-m-base-padding) );
+    --modal-l-width: calc( var(--modal-l-content-width) + 2 * var(--modal-l-base-padding) );
+    --modal-box-shadow: 
+        0 17.900rem 28.800rem 0 rgba(0,0,0,0.1650),
+        0 07.478rem 12.030rem 0 rgba(0,0,0,0.1186),
+        0 03.998rem 06.433rem 0 rgba(0,0,0,0.0984),
+        0 02.242rem 03.606rem 0 rgba(0,0,0,0.0825),
+        0 01.190rem 01.915rem 0 rgba(0,0,0,0.0667),
+        0 00.495rem 00.797rem 0 rgba(0,0,0,0.0464);
+}
+
+
+/*remove border radiuses*/
+div.modal .modal-content,
+.tooltip .tooltip-inner {
+    border-radius: 0;
+    box-shadow: var(--modal-box-shadow);
+}
+/*reset padding and margins*/
+div.modal .modal-content > * {
+    padding: 0;
+    margin: 0;
+}
+/*space out inner elements*/
+div.modal .modal-content > *:not(:last-child) {
+    margin-bottom: 1.4rem;
+}
+div.modal .modal-content .modal-header {
+    border-bottom: none;
+}
+div.modal .modal-content .modal-footer {
+    border-top: none;
+}
+div.modal .modal-content .modal-footer > * {
+    margin: 0;
+}
+/*headers*/
+div.modal .modal-content .modal-header .modal-title {
+    /*it has an h4 tag ! inherited from the react component*/
+    font-size: var(--t-fs-h3);
+    font-weight: var(--t-fw-h);
+    font-family: var(--t-ff-h);
+}
+/*necessary because outside of body*/
+/*so it gets the fs of html which is 1rem*/
+div.modal, 
+.tooltip {
+    font-size: var(--t-fs-p2);
+}
+.modal-sm,
+.tooltip .tooltip-inner {
+    width: var(--modal-s-width);
+}
+.modal-sm .modal-content,
+.tooltip .tooltip-inner {
+    padding: var(--modal-s-padding);
+}
+.modal-md,
+.modal-lg {
+    width: var(--modal-m-width);
+}
+.modal-md .modal-content,
+.modal-lg .modal-content {
+    padding: var(--modal-m-padding);
+}
+.modal-xl {
+    width: var(--modal-l-width);
+}
+.modal-xl .modal-content {
+    padding: var(--modal-l-padding);
+}
+.tooltip .tooltip-arrow {
+    --bs-tooltip-arrow-width: 3.5355339059327376rem;
+    --bs-tooltip-arrow-height: 1.7677669529663688rem;
+
+    width: var(--bs-tooltip-arrow-width);
+    height: var(--bs-tooltip-arrow-height);
+}
+/* shadow */
+

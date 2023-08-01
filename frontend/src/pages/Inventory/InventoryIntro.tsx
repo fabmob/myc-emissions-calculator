@@ -46,7 +46,7 @@ export default function InventoryIntro(){
                     >
                         <p>The emission inventory for the transport sector is calculated using the bottom-up approach - based on transport activity. It relies on the ASIF framework, considering Activity, Structure, Intensity and Fuel.</p>
                     </DescAndNav>
-                    <img src='/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
+                    <img src='/pictures/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
                     <h3>The calculation of transport related emissions requires information on</h3>
                     <Table>
                         <thead>
