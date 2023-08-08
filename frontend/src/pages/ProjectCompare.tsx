@@ -14,6 +14,7 @@ import TransportPerformanceCompareBarChart from '../components/viz/TransportPerf
 import EmissionsPerUkmCompareBarChart from '../components/viz/EmissionsPerUkmCompareBarChart'
 import { inputsAsCsv } from '../utils/inputsAsCsv'
 import { CSVLink } from 'react-csv'
+import Footer from "../components/Footer"
 
 export default function ProjectCompare(){
     const { keycloak, initialized } = useKeycloak()
@@ -138,6 +139,8 @@ export default function ProjectCompare(){
         Climate: Array.from(sourcesSets.Climate).map(source => project.sources.find(e => e.value === source)?.sourceId).sort(),
     }
     return (
+        <>
+        <section>
         <Container>
             <Row className="justify-content-md-center">
                 <Col xs lg="8">
@@ -260,22 +263,22 @@ export default function ProjectCompare(){
                         <tbody>
                             <tr>
                                 <td><Badge bg="disabled"><span className="item"><span>Inventory</span></span></Badge></td>
-                                <td>{project.name && <CSVLink data={csvs.Inventory} filename={project.name.replace(" ", "_") + "_Inventory_Inputs.csv"} className="btn btn-primary" style={{width: "35px", padding: "4px 4px"}}>
-                                    <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload input data as csv" title="Download input data as csv"></img>
+                                <td>{project.name && <CSVLink data={csvs.Inventory} filename={project.name.replace(" ", "_") + "_Inventory_Inputs.csv"} className="btn btn-primary">
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>
                                 </CSVLink>}</td>
                                 <td>{sourcesUsed.Inventory.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
                             <tr>
                                 <td><Badge bg="disabled"><span className="item"><span>BAU Scenario</span></span></Badge></td>
-                                <td>{project.name && <CSVLink data={csvs.BAU} filename={project.name.replace(" ", "_") + "_BAU_Inputs.csv"} className="btn btn-primary" style={{width: "35px", padding: "4px 4px"}}>
-                                    <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload input data as csv" title="Download input data as csv"></img>
+                                <td>{project.name && <CSVLink data={csvs.BAU} filename={project.name.replace(" ", "_") + "_BAU_Inputs.csv"} className="btn btn-primary">
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>
                                 </CSVLink>}</td>
                                 <td>{sourcesUsed.BAU.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
                             <tr>
                                 <td><Badge bg="disabled"><span className="item"><span>Climate Scenarios</span></span></Badge></td>
-                                <td>{project.name && <CSVLink data={csvs.Climate} filename={project.name.replace(" ", "_") + "_Climate_Inputs.csv"} className="btn btn-primary" style={{width: "35px", padding: "4px 4px"}}>
-                                    <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload input data as csv" title="Download input data as csv"></img>
+                                <td>{project.name && <CSVLink data={csvs.Climate} filename={project.name.replace(" ", "_") + "_Climate_Inputs.csv"} className="btn btn-primary">
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>
                                 </CSVLink>}</td>
                                 <td>{sourcesUsed.Climate.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
@@ -301,7 +304,17 @@ export default function ProjectCompare(){
                 </Col>
             </Row>
         </Container>
-
+        </section>
+        <section>
+                <div className="container">
+                    <Row className="justify-content-md-center">
+                        <Col lg="8">
+                            <Footer />
+                        </Col>
+                    </Row>
+                </div>
+            </section>
+        </>
     )
 }
 type SetBoolean = (key:boolean | ((k:boolean) => boolean)) => void

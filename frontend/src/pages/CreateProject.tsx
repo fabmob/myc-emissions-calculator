@@ -8,6 +8,7 @@ import 'react-bootstrap-typeahead/css/Typeahead.css'
 import { ProjectType } from '../frontendTypes'
 import ChoiceModal from '../components/ChoiceModal'
 import ProjectNav from '../components/ProjectNav'
+import Footer from "../components/Footer"
 
 export default function CreateProject() {
     const navigate = useNavigate();
@@ -189,6 +190,7 @@ export default function CreateProject() {
 
     return (
         <>
+            <section>
             <Container>
                 <Row className="justify-content-md-center">
                     <Col xs lg="8">
@@ -317,6 +319,16 @@ export default function CreateProject() {
                     </Col>
                 </Row>
             </Container>
+            </section>
+            <section>
+                <div className="container">
+                    <Row className="justify-content-md-center">
+                        <Col lg="8">
+                            <Footer />
+                        </Col>
+                    </Row>
+                </div>
+            </section>
             <ChoiceModal 
                 showModal={showProjectReferenceYearsModal} 
                 setShowModal={setShowProjectReferenceYearsModal} 

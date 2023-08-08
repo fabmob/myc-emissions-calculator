@@ -274,10 +274,21 @@ html {
                                 /* [= any piece of content] */
 
 /*repad page container*/
-div.App > div.container {
-    /* height: auto; */
+/* div.App > div.container {
     padding: 6rem 10rem 14rem 10rem !important;
+} */
+div.App > div.container {
+    margin: 0;
+    padding: 0;
 }
+div.App section {
+    width: 100%;
+    padding: 6rem 10rem 14rem 10rem;
+}
+/*footer stuff*/
+/* footer {
+    padding: 6rem 0 0 0;
+} */
 div.App > div.container > section > .row:not(:last-child) {
     height: auto !important;
     /* margin: 0 !important; */
@@ -355,14 +366,15 @@ p:last-of-type, text:last-of-type {
     margin-bottom: 0;
 }
 /*temp fix : this is meant to apply to page content title, not to h1*/
-h1 {
+/* h1 {
     margin-top: 1.6rem;
-}
+} */
 /*1. headings*/
     h1, h2, h3 {
         font-family: var(--t-ff-h);
         font-weight: var(--t-fw-h);
         line-height: var(--t-lh-main);
+        margin: 0.33em 0 0.67em 0;
     }
     h1 {font-size: var(--t-fs-h1);} 
     h2 {font-size: var(--t-fs-h2);} 
@@ -657,6 +669,9 @@ nav.navbar {
     height: 6.4rem;
     padding: unset;
 }
+nav.navbar .bg-light {
+    background: var(--c-h0-s0-l5);
+}
 nav.navbar a {
     font-size: var(--t-fs-p2);
     color: var(--c-h0-s0-l3);
@@ -754,6 +769,10 @@ nav.navbar a#github-link > svg {
 .card-body > *:not(:last-child) {
     margin-bottom: 1.4rem;
 }
+.card-header {
+    background-color: unset;
+    border-bottom: 0;
+}
 .card-header .row {
     display: flex;
     justify-content: space-between;
@@ -777,10 +796,10 @@ nav.navbar a#github-link > svg {
     padding: var(--table-cell-padding); /*cell padding - this is supposed to be in a table cell*/
     border-top: 1px solid var(--table-border-color);
 }
-.h1, .h2, .h3, .h4, .h5, .h6, 
+/* .h1, .h2, .h3, .h4, .h5, .h6, 
 h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0;
-}
+} */
 .card-body {
     display: flex;
     flex-flow: column nowrap;
@@ -801,10 +820,16 @@ h1, h2, h3, h4, h5, h6 {
     font-size: var(--t-fs-p3);
     font-family: var(--t-ff-p-mono);
 }
-.card-body .results-preview .chart svg path {
+.card-body .results-preview .chart-content svg path,
+.chart-content svg path{
     stroke: var(--c-h0-s0-l5);
     stroke-width: 0rem;
+    stroke-linejoin: round;
 }
+/* .card-body .results-preview .chart svg path {
+    stroke: var(--c-h0-s0-l5);
+    stroke-width: 1rem;
+} */
 .chart-header,
 .chart-header .commands {
     /* background:pink; */
@@ -855,6 +880,7 @@ h1, h2, h3, h4, h5, h6 {
 .projectStepContainer .stepLeft .progressMenu .header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .projectStepContainer .stepLeft .progressMenu .header > * {
     width: auto;
@@ -863,7 +889,7 @@ h1, h2, h3, h4, h5, h6 {
 .projectStepContainer .stepRight {
     padding: 0;
     /*temp - before i put the logos in*/
-    padding-bottom: calc(3 * var(--spacing-l));
+    /* padding-bottom: calc(3 * var(--spacing-l)); */
 }
 .descAndNav .col-4 {
     display: flex;
@@ -928,7 +954,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /*fix for the logos of partners*/
 :root {
-    --logo-scale-factor: 1.5;
+    --logo-common-scale-base: 1rem;
+    --logo-common-scale-factor: 1.5;
 }
 .partnerLine {
     display: flex;
@@ -936,7 +963,9 @@ h1, h2, h3, h4, h5, h6 {
     gap: 3rem 7rem;
     align-items: center;
     width: 100%;
-    margin: 6.4rem auto 9.2rem auto;
+    /* margin: 6.4rem auto 9.2rem auto; */
+    margin:  0 auto 9.2rem auto;
+    /* justify-content: space-between; */
 }
 .partnerLine .img-wrapper {
     height: 7rem;
@@ -944,38 +973,35 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
 }
 .partnerLine img {
-    width: calc(64px*var(--logo-scale-factor));
     height: fit-content;
-    /* transform: scale(0.5); */
-    /* margin: -10%; */
 }
-.partnerLine img.logo-ADB { width: calc(36px*var(--logo-scale-factor)) }
-.partnerLine img.logo-ADEME { width: calc(42px*var(--logo-scale-factor)) }
-.partnerLine img.logo-AFD { width: calc(60px*var(--logo-scale-factor)) }
-.partnerLine img.logo-Cerema { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-Codatu { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-DTFA { width: calc(76px*var(--logo-scale-factor)) }
-.partnerLine img.logo-EB { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-ECF { width: calc(46px*var(--logo-scale-factor)) }
-.partnerLine img.logo-EU { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-Euroclima { width: calc(36px*var(--logo-scale-factor)) }
-.partnerLine img.logo-FFEM { width: calc(38px*var(--logo-scale-factor)) }
-.partnerLine img.logo-FMECD { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-FMENCNSCP { width: calc(101px*var(--logo-scale-factor)) }
-.partnerLine img.logo-GIZ { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-GPIT { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-ITDP { width: calc(43px*var(--logo-scale-factor)) }
-.partnerLine img.logo-KFW { width: calc(29px*var(--logo-scale-factor)) }
-.partnerLine img.logo-MP { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-MTE { width: calc(59px*var(--logo-scale-factor)) }
-.partnerLine img.logo-Platforma { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-SMFA { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-SSATP { width: calc(44px*var(--logo-scale-factor)) }
-.partnerLine img.logo-TRUFI { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-TUMI { width: calc(51px*var(--logo-scale-factor)) }
-.partnerLine img.logo-UCLG { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-UNH { width: calc(64px*var(--logo-scale-factor)) }
-.partnerLine img.logo-WI { width: calc(64px*var(--logo-scale-factor)) }
+.partnerLine img.logo-ADB       { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-ADEME     { width: calc( var(--logo-common-scale-base) * 4.2 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-AFD       { width: calc( var(--logo-common-scale-base) * 6.0 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-Cerema    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-Codatu    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-DTFA      { width: calc( var(--logo-common-scale-base) * 7.6 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-EB        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-ECF       { width: calc( var(--logo-common-scale-base) * 4.6 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-EU        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-Euroclima { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-FFEM      { width: calc( var(--logo-common-scale-base) * 3.8 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-FMECD     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-FMENCNSCP { width: calc( var(--logo-common-scale-base) * 10.1 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-GIZ       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-GPIT      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-ITDP      { width: calc( var(--logo-common-scale-base) * 4.3 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-KFW       { width: calc( var(--logo-common-scale-base) * 2.9 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-MP        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-MTE       { width: calc( var(--logo-common-scale-base) * 5.9 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-Platforma { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-SMFA      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-SSATP     { width: calc( var(--logo-common-scale-base) * 4.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-TRUFI     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-TUMI      { width: calc( var(--logo-common-scale-base) * 5.1 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-UCLG      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-UNH       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+.partnerLine img.logo-WI        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
 
 
 
@@ -994,7 +1020,7 @@ div.illustration {
 /*—————————————————————*/
 /*fix for the "item" elements*/
 .item {
-    background: var(--c-edition-t2);
+    /* background: var(--c-edition-t2); */
     font-size: inherit;
     color: inherit;
     display: flex;
@@ -1004,6 +1030,9 @@ div.illustration {
     justify-content: center;
     width: fit-content;
     /* margin: 0 auto; */
+}
+.item span {
+
 }
 
 
@@ -1045,13 +1074,21 @@ div.illustration {
     --modal-s-width: calc( var(--modal-s-content-width) + 2 * var(--modal-s-base-padding) );
     --modal-m-width: calc( var(--modal-m-content-width) + 2 * var(--modal-m-base-padding) );
     --modal-l-width: calc( var(--modal-l-content-width) + 2 * var(--modal-l-base-padding) );
+    --modal-box-shadow-size-factor: 0.3;
     --modal-box-shadow: 
-        0 17.900rem 28.800rem 0 rgba(0,0,0,0.1650),
-        0 07.478rem 12.030rem 0 rgba(0,0,0,0.1186),
-        0 03.998rem 06.433rem 0 rgba(0,0,0,0.0984),
-        0 02.242rem 03.606rem 0 rgba(0,0,0,0.0825),
-        0 01.190rem 01.915rem 0 rgba(0,0,0,0.0667),
-        0 00.495rem 00.797rem 0 rgba(0,0,0,0.0464);
+        0 calc(var(--modal-box-shadow-size-factor) * 17.900rem) calc(var(--modal-box-shadow-size-factor) * 28.800rem) rgba(0,0,0,0.1650),
+        0 calc(var(--modal-box-shadow-size-factor) * 07.478rem) calc(var(--modal-box-shadow-size-factor) * 12.030rem) rgba(0,0,0,0.1186),
+        0 calc(var(--modal-box-shadow-size-factor) * 03.998rem) calc(var(--modal-box-shadow-size-factor) * 06.433rem) rgba(0,0,0,0.0984),
+        0 calc(var(--modal-box-shadow-size-factor) * 02.242rem) calc(var(--modal-box-shadow-size-factor) * 03.606rem) rgba(0,0,0,0.0825),
+        0 calc(var(--modal-box-shadow-size-factor) * 01.190rem) calc(var(--modal-box-shadow-size-factor) * 01.915rem) rgba(0,0,0,0.0667),
+        0 calc(var(--modal-box-shadow-size-factor) * 00.495rem) calc(var(--modal-box-shadow-size-factor) * 00.797rem) rgba(0,0,0,0.0464);
+    --modal-drop-shadow:
+        0 calc(var(--modal-box-shadow-size-factor) * 17.900rem) calc(var(--modal-box-shadow-size-factor) * 28.800rem) rgba(0,0,0,0.1650),
+        0 calc(var(--modal-box-shadow-size-factor) * 07.478rem) calc(var(--modal-box-shadow-size-factor) * 12.030rem) rgba(0,0,0,0.1186),
+        0 calc(var(--modal-box-shadow-size-factor) * 03.998rem) calc(var(--modal-box-shadow-size-factor) * 06.433rem) rgba(0,0,0,0.0984),
+        0 calc(var(--modal-box-shadow-size-factor) * 02.242rem) calc(var(--modal-box-shadow-size-factor) * 03.606rem) rgba(0,0,0,0.0825),
+        0 calc(var(--modal-box-shadow-size-factor) * 01.190rem) calc(var(--modal-box-shadow-size-factor) * 01.915rem) rgba(0,0,0,0.0667),
+        0 calc(var(--modal-box-shadow-size-factor) * 00.495rem) calc(var(--modal-box-shadow-size-factor) * 00.797rem) rgba(0,0,0,0.0464);
 }
 
 
@@ -1122,4 +1159,50 @@ div.modal,
     height: var(--bs-tooltip-arrow-height);
 }
 /* shadow */
+
+
+
+/* welcome page */
+/*fix for the hero*/
+.illustration {
+    background: var(--c-h0-s0-l5);
+    padding: var(--spacing-l);
+    width: 100%;
+    height: 100%;
+    min-height: 38rem;
+}
+section.hero {
+    background: var(--c-h1-s0-l4);
+}
+section.hero .illustration {
+    /* background: pink; */
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+section.hero .illustration .layers-wrapper {
+    /* background: lightblue; */
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+}
+section.hero .illustration .layers-wrapper img {
+    filter: drop-shadow(0 1.4rem 1.4rem var(--c-h0-s0-l3));
+    width: 100%;
+    height: auto;
+}
+section.hero .illustration .layers-wrapper img:nth-child(1) {
+    /* background: blue; */
+}
+section.hero .illustration .layers-wrapper img:nth-child(1),
+section.hero .illustration .layers-wrapper img:nth-child(2),
+section.hero .illustration .layers-wrapper img:nth-child(3) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: auto;
+    width: 100%;
+}
 

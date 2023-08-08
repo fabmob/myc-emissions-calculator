@@ -78,14 +78,10 @@ const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep
     const stepsToUse = props.isWithoutUpstream ? withoutUpstreamClimateSteps : steps[props.stage]
     return (
         <div className="progressMenu d-print-none">
-            <Row className="header align-items-center">
-                <Col>
-                    <h3>{props.stage}</h3>
-                </Col>
-                <Col>
-                    <Button variant="link" onClick={e => navigate("/project/" + props.project.id + "/edit")}><span className="item"><span>Exit</span></span></Button>
-                </Col>
-            </Row>
+            <div className="header">
+                <span className="item"><span><h3>{props.stage}</h3></span></span>
+                <Button variant="link" onClick={e => navigate("/project/" + props.project.id + "/edit")}><span className="item"><span>Exit</span></span></Button>
+            </div>
             <hr/>
             <Row>
                 <Col className="progressBar">

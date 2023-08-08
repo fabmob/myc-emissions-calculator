@@ -3,6 +3,7 @@ import { useKeycloak } from "@react-keycloak/web"
 import { Navigate, useNavigate } from 'react-router-dom'
 import {ProjectType} from '../frontendTypes'
 import { Container, Button, Row, Col, Stack, Modal, OverlayTrigger, Tooltip, Table, Badge } from 'react-bootstrap'
+import Footer from "../components/Footer"
 
 export default function Projects(){
     const { keycloak, initialized } = useKeycloak();
@@ -79,37 +80,44 @@ export default function Projects(){
     );
     return (
         <>
-            <Container>
-                <section>
-                    <Row>
+            <section><Container>
+                <Row>
+                    <Col lg="12">
+                        <h1>Projects</h1>
+                    </Col>
+                    <Col xs lg="6">
+                        <div className="text desc">
+                            <p>
+                                A project is related to a specific MYC urban mobility plan. 
+                                It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
+                                <Button variant="link" onClick={handleShow} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Read more</span></span></Button>
+                            </p>
+                            <p>
+                                You can start by creating a new project, or checking public projects if available.
+                            </p>
+                        </div>
+                        {initialized ?
+                        // <Stack gap={2} className="col-md-5">
+                        //     <Button size="lg" variant="primary" onClick={_ => setGotoCreate(true)}>New project</Button>
+                        // </Stack>
+                        <Button size="lg" variant="primary" onClick={_ => setGotoCreate(true)}><span className="item"><span>New project</span></span></Button>
+                        : <div>Loading...</div>
+                        }
+                    </Col>
+                </Row>
+                <Row>
+                    {initialized && <ProjectsList ownedProjects={projects} publicProjects={publicProjects} adminProjects={adminProjects} handleEditProject={handleEditProject} isAdmin={isAdmin}/>}
+                </Row>
+            </Container></section>
+            <section>
+                <div className="container">
+                    <Row className="justify-content-md-center">
                         <Col lg="12">
-                            <h1>Projects</h1>
-                        </Col>
-                        <Col xs lg="6">
-                            <div className="text desc">
-                                <p>
-                                    A project is related to a specific MYC urban mobility plan. 
-                                    It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
-                                    <Button variant="link" onClick={handleShow} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Read more</span></span></Button>
-                                </p>
-                                <p>
-                                    You can start by creating a new project, or checking public projects if available.
-                                </p>
-                            </div>
-                            {initialized ?
-                            // <Stack gap={2} className="col-md-5">
-                            //     <Button size="lg" variant="primary" onClick={_ => setGotoCreate(true)}>New project</Button>
-                            // </Stack>
-                            <Button size="lg" variant="primary" onClick={_ => setGotoCreate(true)}><span className="item"><span>New project</span></span></Button>
-                            : <div>Loading...</div>
-                            }
+                            <Footer />
                         </Col>
                     </Row>
-                    <Row>
-                        {initialized && <ProjectsList ownedProjects={projects} publicProjects={publicProjects} adminProjects={adminProjects} handleEditProject={handleEditProject} isAdmin={isAdmin}/>}
-                    </Row>
-                </section>
-            </Container>
+                </div>
+            </section>
             <Modal size="lg" centered show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Projects</Modal.Title>

@@ -40,6 +40,7 @@ import { ReactKeycloakProvider } from "@react-keycloak/web"
 import keycloak from "./Keycloak"
 import ProjectSummary from './pages/ProjectSummary'
 import ProjectCompare from './pages/ProjectCompare'
+// import Footer from "./components/Footer"
 
 function App() {
   return (
@@ -87,6 +88,7 @@ function App() {
                     <Route path="/project/:projectId/Climate/:climateScenarioId/Without/step/6" element={<ClimateWithoutUpstreamStep6 />} />
                     <Route path="/project/:projectId/Climate/:climateScenarioId/Without/step/7" element={<ClimateWithoutUpstreamStep7 />} />
                 </Routes>
+                {/* <Footer /> */}
             </BrowserRouter>
         </ReactKeycloakProvider>
     </div>

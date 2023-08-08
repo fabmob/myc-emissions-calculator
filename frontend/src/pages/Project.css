@@ -46,13 +46,13 @@
     border-color: initial;
 }
 
-h1 {
+/* h1 {
     margin-bottom: 40px !important;
-}
+} */
 
-.projectStepContainer {
+/* .projectStepContainer {
     padding: 30px;
-}
+} */
 
 .projectStepContainer .input-group-text {
     background-color: transparent !important;

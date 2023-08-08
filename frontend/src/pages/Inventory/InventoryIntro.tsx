@@ -7,6 +7,7 @@ import { ProjectType} from '../../frontendTypes'
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import Footer from "../../components/Footer"
 
 
 export default function InventoryIntro(){
@@ -36,6 +37,8 @@ export default function InventoryIntro(){
     }, [keycloak, initialized, projectId, navigate])
     
     return (
+        <>
+        <section>
         <Container>
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
@@ -144,6 +147,14 @@ export default function InventoryIntro(){
                 </Col>
             </Row>
         </Container>
-
+        </section>
+        <section>
+            <Row className="justify-content-md-center">
+                <Col lg="8">
+                    <Footer />
+                </Col>
+            </Row>
+        </section>
+        </>
     )
 }
