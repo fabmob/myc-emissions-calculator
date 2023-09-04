@@ -272,7 +272,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                             <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value)} />
                             <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                             <Legend />
-                            <Bar dataKey="population" fill="#92E5FF">
+                            <Bar barSize={22} dataKey="population" fill="#92E5FF">
                                 <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey="population" content={CustomLabel} />
                                 {showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
                             </Bar>
@@ -294,7 +294,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                             <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + "Mrd$"} />
                             <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                             <Legend />
-                            <Bar dataKey="gdp" fill="#50F19E" unit=' Mrd $'>
+                            <Bar barSize={22} dataKey="gdp" fill="#50F19E" unit=' Mrd $'>
                                 <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey="gdp" content={CustomLabel} />
                                 {showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
                             </Bar>
@@ -317,7 +317,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                             <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                             <Legend />
                                 {activeVtypesVkt.map((e, i) => (
-                                    <Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' Mkm'>
+                                    <Bar barSize={22} key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' Mkm'>
                                         <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey={e} content={CustomLabel} />
                                         {i===0 && showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
                                     </Bar>
@@ -349,7 +349,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                             <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                             <Legend />
                                 {activeVTypesPassengersModalShare.map((e, i) => (
-                                    <Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit='%'>
+                                    <Bar barSize={22} key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit='%'>
                                         <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey={e} content={CustomLabel} />
                                     </Bar>
                                 ))}
@@ -373,7 +373,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                             <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                             <Legend />
                                 {activeVTypesFreightModalShare.map((e, i) => (
-                                    <Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit='%'>
+                                    <Bar barSize={22} key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit='%'>
                                         <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey={e} content={CustomLabel} />
                                     </Bar>
                                 ))}
@@ -397,7 +397,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                             <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)}/>
                             <Legend />
                             {dataEnergyWTW[0].map((e:string, i:number) => (
-                                <Bar key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' tons GHG'>
+                                <Bar barSize={22} key={i} dataKey={e} fill={colorsPerVtype[e]} stackId="a" unit=' tons GHG'>
                                     <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey={e} content={CustomLabel} />
                                     {i===0 && showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
                                 </Bar>

@@ -110,9 +110,9 @@ export default function ClimateWithUpstreamStep7(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
-                    <p>
-                        This page displays a short summary of emissions for this climate scenario. More tables and visualisations are available in the Compare section of the project.
-                    </p>
+                    <div className="text desc">
+                        <p>This page displays a short summary of emissions for this climate scenario. More tables and visualisations are available in the Compare section of the project.</p>    
+                    </div>
                 </DescAndNav>
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
                 <h3>Emissions</h3>
@@ -126,7 +126,23 @@ export default function ClimateWithUpstreamStep7(){
                 ></EditEmissionFactors>
 
                 <EmissionsTable emissionsData={emissions} project={project}></EmissionsTable>
-                <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
+
+                <>
+                    <div className="chart">
+                        {/* <div className="chart-header">
+                            <h3>Passenger Modal Share</h3>
+                            <div className="commands">
+                                <!--we should have the download buttons like in the compare tab.-->
+                            </div>
+                        </div> */}
+                        <div className="chart-content">
+                            <div>
+                                <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
+                            </div>
+                        </div>
+                    </div>
+                </>
+                
             </ProjectStepContainerWrapper>
         </>
     )

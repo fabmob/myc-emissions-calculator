@@ -232,19 +232,13 @@ export default function ClimateWithoutUpstreamStep4(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
-                        If one of the two previous parameters (vehicle kilometer or load) is impacted it is mandatory to specify the transport mode that is the source of these new trips in the table.
-                    </p>
+                    <div className="text desc">
+                        <p>If one of the two previous parameters (vehicle kilometer or load) is impacted it is mandatory to specify the transport mode that is the source of these new trips in the table.</p>
+                        <p>Example: The goal transport modes categories are buses and train. Concerning the extensions of the train planned for 2020 the new users are expected to be for 50% of them previous bus users, 25% car users and 25% motorcycle users. And the users of a new bus line opening in 2025 are expected to be for 50% of them previous car users, 30% NMT users and 20% of trips will be induced.</p>
+                        <p>Remark: Only enter the effect for the first year it occurs. The tool automatically takes it into account for subsequent years.</p>
+                        <p>You might remember having to fill out the average trip length of each transport mode in the Base Year step. It will now be considered as a “proxy” in the calculation - meaning you use this data to estimate an other data that can’t get. The average trip length of transport modes helps the calculator understanding the weight of each transport modes in modal share</p>
+                    </div>
                 </DescAndNav>
-                <p>
-                    Example: The goal transport modes categories are buses and train. Concerning the extensions of the train planned for 2020 the new users are expected to be for 50% of them previous bus users, 25% car users and 25% motorcycle users. And the users of a new bus line opening in 2025 are expected to be for 50% of them previous car users, 30% NMT users and 20% of trips will be induced.
-                </p>
-                <p>
-                    Remark: Only enter the effect for the first year it occurs. The tool automatically takes it into account for subsequent years.
-                </p>
-                <p>
-                    You might remember having to fill out the average trip length of each transport mode in the Base Year step. It will now be considered as a “proxy” in the calculation - meaning you use this data to estimate an other data that can’t get. The average trip length of transport modes helps the calculator understanding the weight of each transport modes in modal share
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"

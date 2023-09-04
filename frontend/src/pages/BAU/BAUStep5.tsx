@@ -108,9 +108,9 @@ export default function BAUStep5(){
                     prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
-                    <p>
-                        This page displays a short summary of emissions for the BAU scenario. More tables and visualisations are available in the Compare section of the project.
-                    </p>
+                    <div className="text desc">
+                        <p>This page displays a short summary of emissions for the BAU scenario. More tables and visualisations are available in the Compare section of the project.</p>
+                    </div>
                 </DescAndNav>
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
                 <EditEmissionFactors 
@@ -124,7 +124,22 @@ export default function BAUStep5(){
                 
                 <h3>Emissions per year</h3>
                 <EmissionsTable emissionsData={emissions} project={project}></EmissionsTable>
-                <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
+                <>
+                    <div className="chart">
+                        {/* <div className="chart-header">
+                            <h3>Passenger Modal Share</h3>
+                            <div className="commands">
+                                <!--we should have the download buttons like in the compare tab.-->
+                            </div>
+                        </div> */}
+                        <div className="chart-content">
+                            <div>
+                                <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
+                            </div>
+                        </div>
+                    </div>
+                </>
+                
             </ProjectStepContainerWrapper>
         </>
     )

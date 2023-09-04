@@ -7,7 +7,7 @@ import {InputInventoryStep1, InputInventoryStep7, FuelType, ProjectType, TotalEn
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, Legend } from 'recharts'
 import EditEmissionFactors from '../../components/EditEmissionFactors'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import TTWorWTWSelector from '../../components/TTWorWTWSelector'
@@ -132,9 +132,7 @@ export default function InventoryStep7(){
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
                     <div className="text desc">
-                        <p>
-                            This page displays a short summary of emissions for the reference year. More tables and visualisations are available in the Compare section of the project.
-                        </p>
+                        <p>This page displays a short summary of emissions for the reference year. More tables and visualisations are available in the Compare section of the project.</p>
                     </div>
                 </DescAndNav>
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
@@ -185,21 +183,33 @@ export default function InventoryStep7(){
                         })}
                     </tbody>
                 </Table>
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart width={400} height={300}>
-                    <Pie
-                        dataKey="value"
-                        data={emissionsPieData}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        label={(entry) => entry.name + ": " + Math.round(entry.value) + " 1000t GHG"}
-                    >
-                        {emissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
-                    </Pie>
-                    <Tooltip />
-                    </PieChart>
-                </ResponsiveContainer>
+                <>
+                    <div className="chart">
+                        {/* <div className="chart-header">
+                            <!--we should have the download buttons like in the compare tab.-->
+                        </div> */}
+                        <div className="chart-content">
+                            <div>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <PieChart width={400} height={300}>
+                                        <Pie
+                                            dataKey="value"
+                                            data={emissionsPieData}
+                                            cx="50%"
+                                            cy="50%"
+                                            outerRadius={80}
+                                            // label={(entry) => entry.name + ": " + Math.round(entry.value) + " 1000t GHG"}
+                                        >
+                                            {emissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                                        </Pie>
+                                        <Tooltip />
+                                        <Legend />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+                    </div>
+                </>
                 <EditEmissionFactors 
                     project={project} 
                     stepNumber={stepNumber} 
@@ -208,40 +218,67 @@ export default function InventoryStep7(){
                     inputData={emissionFactorsInputData}
                     setInputData={setEmissionFactorsInputData}
                 ></EditEmissionFactors>
-                <h3>Passenger Modal Share</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart width={400} height={300}>
-                    <Pie
-                        dataKey="value"
-                        isAnimationActive={false}
-                        data={Object.keys(modalShare.passengers || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.passengers[vtype][0] * 100)}))}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        label={(entry) => entry.name + ": " + entry.value + "%"}
-                    >
-                        {Object.keys(modalShare.passengers || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
-                    </Pie>
-                    <Tooltip />
-                    </PieChart>
-                </ResponsiveContainer>
-                <h3>Freight Modal Share</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart width={400} height={300}>
-                    <Pie
-                        dataKey="value"
-                        isAnimationActive={false}
-                        data={Object.keys(modalShare.freight || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.freight[vtype][0] * 100)}))}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        label={(entry) => entry.name + ": " + entry.value + "%"}
-                    >
-                        {Object.keys(modalShare.freight || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
-                    </Pie>
-                    <Tooltip />
-                    </PieChart>
-                </ResponsiveContainer>
+
+                <div className="chart">
+                    <div className="chart-header">
+                        <h3>Passenger Modal Share</h3>
+                        <div className="commands">
+                            {/* <!--we should have the download buttons like in the compare tab.--> */}
+                        </div>
+                    </div>
+                    <div className="chart-content">
+                        <div>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart width={400} height={300}>
+                                    <Pie
+                                        dataKey="value"
+                                        isAnimationActive={false}
+                                        data={Object.keys(modalShare.passengers || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.passengers[vtype][0] * 100)}))}
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={80}
+                                        // label={(entry) => entry.name + ": " + entry.value + "%"}
+                                    >
+                                        {Object.keys(modalShare.passengers || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="chart">
+                    <div className="chart-header">
+                        <h3>Freight Modal Share</h3>
+                        <div className="commands">
+                            {/* <!--we should have the download buttons like in the compare tab.--> */}
+                        </div>
+                    </div>
+                    <div className="chart-content">
+                        <div>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart width={400} height={300}>
+                                    <Pie
+                                        dataKey="value"
+                                        isAnimationActive={false}
+                                        data={Object.keys(modalShare.freight || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.freight[vtype][0] * 100)}))}
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={80}
+                                        // label={(entry) => entry.name + ": " + entry.value + "%"}
+                                    >
+                                        {Object.keys(modalShare.freight || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </div>
+
             </ProjectStepContainerWrapper>
             
             

@@ -217,8 +217,8 @@ export default function TopDown(){
                                     <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr', { notation: 'compact' }).format(value)} />
                                     <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr', { notation: 'compact' }).format(value)}/>
                                     <Legend />
-                                    <Bar dataKey="Calculated value" fill="#50F19E" unit=' TOE'></Bar>
-                                    <Bar dataKey="Energy balance" fill="#7CDDFF" unit=' TOE'></Bar>
+                                    <Bar barSize={22} dataKey="Calculated value" fill="#50F19E" unit=' TOE'></Bar>
+                                    <Bar barSize={22} dataKey="Energy balance" fill="#7CDDFF" unit=' TOE'></Bar>
                                 </BarChart>
                             </ResponsiveContainer>
                             </div>

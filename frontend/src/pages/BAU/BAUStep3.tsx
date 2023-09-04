@@ -157,19 +157,14 @@ export default function BAUStep3(){
                     prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                     <p>
-                        Once transport activity i.e. mileage by mode and fuel is known, it needs to be multiplied with adequate fuel consumption factors.
-                    </p>
+                    <div className="text desc">
+                        <p>Once transport activity i.e. mileage by mode and fuel is known, it needs to be multiplied with adequate fuel consumption factors.</p>
+                        <p>Please enter the expected average fuel/energy consumption changes - for each vehicle category and per fuel type- for the following years (average fuel/energy consumption per vehicle per 100 km).</p>
+                        <p>If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.</p>
+                        <p>Values are pre-filled with Inventory data if available; this is done to simplify the filling process. Please update values accordingly.</p>
+                    </div>
+                     
                 </DescAndNav>
-                <p>
-                    Please enter the expected average fuel/energy consumption changes - for each vehicle category and per fuel type- for the following years (average fuel/energy consumption per vehicle per 100 km).
-                </p>
-                <p>
-                    If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.
-                </p>
-                <p>
-                    Values are pre-filled with Inventory data if available; this is done to simplify the filling process. Please update values accordingly.
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"

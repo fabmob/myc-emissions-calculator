@@ -154,9 +154,9 @@ export default function ClimateWithoutUpstreamStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <p>
-                        Please enter the percentage of vehicle kilometers travelled (vkt) that will be avoided with the planned mitigation measures.
-                    </p>
+                    <div className="text desc">
+                    <p>Please enter the percentage of vehicle kilometers travelled (vkt) that will be avoided with the planned mitigation measures.</p>
+                    </div>                
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}

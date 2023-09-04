@@ -204,13 +204,11 @@ export default function ClimateWithoutUpstreamStep5(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
-                     Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
-                    </p>
+                    <div className="text desc">
+                        <p>Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.</p>
+                        <p>Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.</p>
+                    </div>
                 </DescAndNav>
-                <p>
-                    Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"

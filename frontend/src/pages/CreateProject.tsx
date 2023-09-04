@@ -321,7 +321,7 @@ export default function CreateProject() {
                 </Row>
             </Container>
             </section>
-            <section>
+            <section className="footer">
                 <div className="container">
                     <Row className="justify-content-md-center">
                         <Col lg="8">

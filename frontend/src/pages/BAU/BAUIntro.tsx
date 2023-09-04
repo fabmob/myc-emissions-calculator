@@ -7,6 +7,7 @@ import { ProjectType} from '../../frontendTypes'
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import Footer from "../../components/Footer"
 
 
 export default function BAUIntro(){
@@ -36,24 +37,24 @@ export default function BAUIntro(){
     }, [keycloak, initialized, projectId, navigate])
 
     return (
+        <>
+        <section>
         <Container>
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
-                    <h1>Business as usual (BAU) scenario</h1>
+                    <h1>BAU Scenario</h1>
                     <DescAndNav 
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
-                        nextNav={{link: '/project/' + project.id + '/BAU/step/1', content: "Start ->", variant: "primary"}}
+                        nextNav={{link: '/project/' + project.id + '/BAU/step/1', content: "Start →", variant: "primary"}}
                     >
-                        <p>After defining the initial situation in your city/country, it is necessary to project transport emissions into the future on a business-as-usual basis.</p>
+                        <div className="text desc">
+                            <p>After defining the initial situation in your city/country, it is necessary to project transport emissions into the future on a business-as-usual basis.</p>
+                            <p>The intention is to show the difference compared to the situation when a strategy, policy, programme or project were to be introduced. The BAU scenario serves as a reference scenario (baseline emissions), which illustrates the results of current trends often in contrast to alternative scenarios that take into account specific interventions</p>
+                            <p>You will need to project evolutions of transport activity on your territory.</p>
+                        </div>
                     </DescAndNav>
-                    <p>
-                        The intention is to show the difference compared to the situation when a strategy, policy, programme or project were to be introduced. The BAU scenario serves as a reference scenario (baseline emissions), which illustrates the results of current trends often in contrast to alternative scenarios that take into account specific interventions
-                    </p>
-                    <p>
-                        You will need to project evolutions of transport activity on your territory.
-                    </p>
                     <img src='/pictures/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
-                    <h3>The calculation of transport related emissions requires information on</h3>
+                    <h3>Required for this calculation</h3>
                     <Table>
                         <thead>
                             <tr>
@@ -86,7 +87,7 @@ export default function BAUIntro(){
                             </tr>
                         </tbody>
                     </Table>
-                    <h3>The tool will also offer you to add [optional but recommended]</h3>
+                    <h3>Required for later calculations</h3>
                     <Table>
                         <thead>
                             <tr>
@@ -120,6 +121,14 @@ export default function BAUIntro(){
                 </Col>
             </Row>
         </Container>
-
+        </section>
+        <section className="footer">
+            <Row className="justify-content-md-center">
+                <Col lg="8">
+                    <Footer />
+                </Col>
+            </Row>
+        </section>
+        </>
     )
 }

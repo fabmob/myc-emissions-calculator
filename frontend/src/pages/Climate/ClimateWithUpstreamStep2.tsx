@@ -140,9 +140,9 @@ export default function ClimateWithUpstreamStep2(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
-                        Please enter the transport performances (Mio. passenger-kilometers or Mio. tons-kilometers). The same data can be entered for the following years taking into account the changes planned in the climate scenario.
-                    </p>
+                    <div className="text desc">
+                        <p>Please enter the transport performances (Mio. passenger-kilometers or Mio. tons-kilometers). The same data can be entered for the following years taking into account the changes planned in the climate scenario.</p>
+                    </div>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}

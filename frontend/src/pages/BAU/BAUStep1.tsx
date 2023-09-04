@@ -138,13 +138,11 @@ export default function BAUStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <p>
-                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, expected yearly growth for the business as usual scenario can be added.
-                    </p>
+                    <div className="text desc">
+                        <p>Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, expected yearly growth for the business as usual scenario can be added.</p>
+                        <p>The total vkt should comply with the actual transport activity within the city or country territory</p>
+                    </div>
                 </DescAndNav>
-                <p>
-                    The total vkt should comply with the actual transport activity within the city or country territory
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"

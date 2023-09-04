@@ -108,7 +108,7 @@ export default function TransportPerformanceCompareBarChart (props: {
                             <Legend />
                             {vtypes.map((vtype:string, i:number) => {
                                 let jsx = [
-                                    <Bar key={"bau" + i} dataKey={"BAU - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(44, 177, 213, ${1-i/vtypes.length})`} stackId="bau" unit={' ' + unit}>
+                                    <Bar barSize={22} key={"bau" + i} dataKey={"BAU - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(44, 177, 213, ${1-i/vtypes.length})`} stackId="bau" unit={' ' + unit}>
                                         <LabelList className={(props.showLabels ? "" : "d-none ") + "d-print-block"} dataKey={"BAU - " + vtype} content={CustomLabel} />
                                         {/* {i===0 && props.showPercents && <LabelList dataKey="percent" content={PercentLabel} />} */}
                                     </Bar>
@@ -116,7 +116,7 @@ export default function TransportPerformanceCompareBarChart (props: {
                                 for (let c = 0; c < props.climateTransportPerformanceData.length; c++) {
                                     if (!props.displayedClimateScenarios[c]) continue
                                     jsx.push(
-                                        <Bar key={"climate" + i + c} dataKey={"Climate (" + (c+1) + ") - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(162, 33, 124, ${1-i/vtypes.length})`} stackId={"climate" + c} unit={' ' + unit}>
+                                        <Bar barSize={22} key={"climate" + i + c} dataKey={"Climate (" + (c+1) + ") - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(162, 33, 124, ${1-i/vtypes.length})`} stackId={"climate" + c} unit={' ' + unit}>
                                             <LabelList className={(props.showLabels ? "" : "d-none ") + "d-print-block"} dataKey={"Climate (" + (c+1) + ") - " + vtype} content={CustomLabel} />
                                             {i===0 && props.showPercents && <LabelList dataKey={"percent-" + c} content={PercentLabel} />}
                                         </Bar>

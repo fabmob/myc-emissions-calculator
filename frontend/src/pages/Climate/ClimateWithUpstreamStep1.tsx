@@ -154,9 +154,9 @@ export default function ClimateWithUpstreamStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <p>
-                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Please enter VKT computed with your transport planning tool for the current climate scenario.
-                    </p>
+                    <div className="text desc">
+                        <p>Mileage is the cornerstorne of the calculation of transport GHG emissions. Please enter VKT computed with your transport planning tool for the current climate scenario.</p>
+                    </div>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}

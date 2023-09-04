@@ -863,6 +863,15 @@ input.cellError {
     /* on most pages, the footer is a section element (the last of the page).
        on calculation steps, it is a div element (within the right hand side column). */
 
+        section.footer, 
+        div.footer {
+            /* background: pink; */
+        }
+
+        div.projectStepContainer .stepRight .footer {
+            margin-top: 12.8rem;
+        }
+
     /* logos of partners ————————————————————— */
         :root {
             --logo-common-scale-base: 1rem;

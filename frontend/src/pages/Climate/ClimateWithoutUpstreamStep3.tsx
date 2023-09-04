@@ -141,13 +141,11 @@ export default function ClimateWithoutUpstreamStep2(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
-                        Please adjust the vehicle load rate if it is expected to be impacted by the planned measures for the corresponding year.
-                    </p>
+                    <div className="text desc">
+                        <p>Please adjust the vehicle load rate if it is expected to be impacted by the planned measures for the corresponding year.</p>
+                        <p>Examples: Decreasing the train ticket price would increase the number of passengers per train or increase in the load of freight trains due to a new software optimising the routing of trains</p>
+                    </div>   
                 </DescAndNav>
-                <p>
-                    Examples: Decreasing the train ticket price would increase the number of passengers per train or increase in the load of freight trains due to a new software optimising the routing of trains
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"

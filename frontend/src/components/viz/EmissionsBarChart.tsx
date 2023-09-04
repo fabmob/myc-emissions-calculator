@@ -43,7 +43,7 @@ export default function EmissionsBarChart (props: {
                 <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)} wrapperStyle={{zIndex: 10}}/>
                 <Legend />
                 {vtypes.map((vtype:string, i:number) => (
-                    <Bar key={i} dataKey={vtype} fill={colorsPerVtype[vtype]} stackId="a" unit=' tons GHG'>
+                    <Bar barSize={22} key={i} dataKey={vtype} fill={colorsPerVtype[vtype]} stackId="a" unit=' tons GHG'>
                         <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey={vtype} content={CustomLabel} />
                         {i===0 && showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
                     </Bar>

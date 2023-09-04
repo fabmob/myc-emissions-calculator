@@ -152,13 +152,11 @@ export default function ClimateWithoutUpstreamStep2(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
                 >
-                    <p>
-                        Give the potential additional vehicle kilometers for the vehicle categories below if more vehicle kilometers are expected as a result of the planned measures for the corresponding year.
-                    </p>
+                    <div className="text desc">
+                        <p>Give the potential additional vehicle kilometers for the vehicle categories below if more vehicle kilometers are expected as a result of the planned measures for the corresponding year.</p>
+                        <p>Examples of measure: Extension of the bus network (e.g. increase in frequency), expansion of railway networks or extension of service (increase in the frequency of freight trains for example) increase the number of vehicle kilometers.</p>
+                    </div>
                 </DescAndNav>
-                <p>
-                    Examples of measure: Extension of the bus network (e.g. increase in frequency), expansion of railway networks or extension of service (increase in the frequency of freight trains for example) increase the number of vehicle kilometers.
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"

@@ -47,10 +47,14 @@ export default function InventoryIntro(){
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
                         nextNav={{link: '/project/' + project.id + '/Inventory/step/1', content: "Start →", variant: "primary"}}
                     >
-                        <p>The emission inventory for the transport sector is calculated using the bottom-up approach - based on transport activity. It relies on the ASIF framework, considering Activity, Structure, Intensity and Fuel.</p>
+                        <div className="text desc">
+                            <p>The emission inventory for the transport sector is calculated using the bottom-up approach - based on transport activity. It relies on the ASIF framework, considering Activity, Structure, Intensity and Fuel.</p>
+                        </div>
                     </DescAndNav>
-                    <img src='/pictures/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
-                    <h3>The calculation of transport related emissions requires information on</h3>
+                    <div className="illustration">
+                        <img src='/pictures/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
+                    </div>
+                    <h3>Required for this calculation</h3>
                     <Table>
                         <thead>
                             <tr>
@@ -93,7 +97,7 @@ export default function InventoryIntro(){
                             </tr>
                         </tbody>
                     </Table>
-                    <h3>The tool will also offer you to add [optional but recommended]</h3>
+                    <h3>Required for later calculations</h3>
                     <Table>
                         <thead>
                             <tr>

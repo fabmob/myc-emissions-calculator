@@ -7,6 +7,7 @@ import { ProjectType} from '../../frontendTypes'
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ChoiceModal from '../../components/ChoiceModal'
+import Footer from "../../components/Footer"
 
 
 export default function ClimateIntro(){
@@ -79,127 +80,140 @@ export default function ClimateIntro(){
         )
     }
     return (
-        <div>
-            <Container>
-                <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
-                    <Col xs lg="8">
-                        <h1>Climate scenario</h1>
-                        <DescAndNav 
-                            prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
-                            nextNav={{trigger: nextTrigger, content: "Start ->", variant: "primary"}}
-                        >
+        <>
+        <section>
+        <Container>
+            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
+                <Col xs lg="8">
+                    <h1>Climate Scenario</h1>
+                    <DescAndNav 
+                        prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
+                        nextNav={{trigger: nextTrigger, content: "Start ->", variant: "primary"}}
+                    >
+                        <div className="text desc">
                             <p>This step enables calculating a climate scenario, based on mitigations actions. Calculating the impact of NUMP/SUMP measures in the MYC Calculator requires bundling measures based on the ASI : Avoid-Shift-Improve.</p>
-                        </DescAndNav>
-                        <p>
-                            In order to derive transport demand data for the calculations two different data input approaches are possible : <Button variant="link" onClick={e => setShowInfo(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>with upstream calculations or without</span></span></Button>. This will depend on if you count with a transport model. In order to avoid wrong results please choose and apply just one approach.
-                        </p>
-                        <img src='/pictures/asi-approach-diagram.png' alt="Avoid-Shift-Improve Approach (Transport NAMA Handbook, GIZ, 2015 based on Dalkmann and Brannigan 2007)" style={{width: '100%'}}></img>
-                        <h3>Calculation method</h3>
-                        <div style={{display: "flex", marginBottom: "20px", padding: "5px"}}>
-                            <div className="item">Method</div>
-                            <MethodSelector></MethodSelector>
+                            <p>In order to derive transport demand data for the calculations two different data input approaches are possible : <Button variant="link" onClick={e => setShowInfo(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>with upstream calculations or without</span></span></Button>. This will depend on if you count with a transport model. In order to avoid wrong results please choose and apply just one approach.</p>
                         </div>
-                        <h3>{method}, the calculation of transport related emissions requires information on</h3>
-                        <Table>
-                            <thead>
-                                <tr>
-                                    <th className="item-sm"><span className="item"><span>Data</span></span></th>
-                                    <th className="item-sm"><span className="item"><span>Unit</span></span></th>
-                                </tr>
-                            </thead>
-                            {method === "With upstream calculation" 
-                            ? <tbody>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected transport activity - mileage for each transport mode per year</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">vkt: vehicle-kilometre</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected transport performance for each transport mode per year</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">pkm: passenger-km or tkm: tons-km</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">%vkt and %tkm</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">l-kW-kg/100km</td>
-                                </tr>
-                            </tbody>
-                            : <tbody>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected avoided transport activity</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">vkt: vehicle-kilometre</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected added transport activity</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">vkt: vehicle-kilometre</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected vehicle load</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">passengers or tons</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected vehicle shift - orgin of shifted trips</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">% of trips</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">%vkt and %tkm</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
-                                    </td>
-                                    <td className="item-sm">l-kW-kg/100km</td>
-                                </tr>
-                            </tbody>
-                            }
-                        </Table>
-                    </Col>
-                </Row>
-            </Container>
-            <Modal size="lg" centered show={showInfo} onHide={handleCloseInfo}>
-                <Modal.Header closeButton>
-                    <Modal.Title>With or without upstream calculation</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>The first approach “WITH UPSTREAM CALCULATIONS - INPUT FROM EXTERNAL TRANSPORT PLANNING TOOL” the user can directly enter transport performance (pkm/tkm) and the vehicle kilometers travelled (vkt) provided by an external transport planning tool.</p>
-                    <p>If no data from a transport planning tool are available, the second approach “WITHOUT UPSTREAM CALCULATIONS - CALCULATIONS WITHIN THIS TOOL” can be applied. For calculating potential GHG savings from mitigation measures within this approach the “ASI” (Avoid/Shift/Improve) approach is applied. Users have to estimate the effect of transport related actions on the transport demand for each mitigation action type (Avoid, Shift or Improve). E.g. Parking area management may lead to 5% avoided passenger car vehicle kilometers travelled (vkt).</p>
-                    <ul>
-                        <li>Avoid: Avoided vehicle kilometers travelled (vkt)</li>
-                        <li>Shift: Shift of transport from the current to another transport modes</li>
-                    </ul>
-                    <p>Once the transport demand is defined through the two approaches mentioned above the user has to enter data for the two last steps concerning energy type and energy consumption:</p>
-                    <ul>
-                        <li>3) Improve: Penetration of alternative energies</li>
-                        <li>4) Improve: Adjustment of fuel/energy consumption</li>
-                    </ul>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseInfo}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
+                    </DescAndNav>
+                    <div className="illustration">
+                        <img src='/pictures/asi-approach-diagram.png' alt="Avoid-Shift-Improve Approach (Transport NAMA Handbook, GIZ, 2015 based on Dalkmann and Brannigan 2007)" style={{width: '100%'}}></img>
+                    </div>
+                    <h3>Calculation method</h3>
+                    <div style={{display: "flex", marginBottom: "20px", padding: "5px"}}>
+                        <div className="item">Method</div>
+                        <MethodSelector></MethodSelector>
+                    </div>
+                    {/* <h3>{method}, the calculation of transport related emissions requires information on</h3> */}
+                    <h3>Required for this calculation</h3>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th className="item-sm"><span className="item"><span>Data</span></span></th>
+                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
+                            </tr>
+                        </thead>
+                        {method === "With upstream calculation" 
+                        ? <tbody>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected transport activity - mileage for each transport mode per year</span></span></Badge>
+                                </td>
+                                <td className="item-sm">vkt: vehicle-kilometre</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected transport performance for each transport mode per year</span></span></Badge>
+                                </td>
+                                <td className="item-sm">pkm: passenger-km or tkm: tons-km</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
+                                </td>
+                                <td className="item-sm">%vkt and %tkm</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
+                                </td>
+                                <td className="item-sm">l-kW-kg/100km</td>
+                            </tr>
+                        </tbody>
+                        : <tbody>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected avoided transport activity</span></span></Badge>
+                                </td>
+                                <td className="item-sm">vkt: vehicle-kilometre</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected added transport activity</span></span></Badge>
+                                </td>
+                                <td className="item-sm">vkt: vehicle-kilometre</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle load</span></span></Badge>
+                                </td>
+                                <td className="item-sm">passengers or tons</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle shift - orgin of shifted trips</span></span></Badge>
+                                </td>
+                                <td className="item-sm">% of trips</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
+                                </td>
+                                <td className="item-sm">%vkt and %tkm</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
+                                </td>
+                                <td className="item-sm">l-kW-kg/100km</td>
+                            </tr>
+                        </tbody>
+                        }
+                    </Table>
+                </Col>
+            </Row>
+        </Container>
+        <Modal size="lg" centered show={showInfo} onHide={handleCloseInfo}>
+            <Modal.Header closeButton>
+                <Modal.Title>With or without upstream calculation</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <p>The first approach “WITH UPSTREAM CALCULATIONS - INPUT FROM EXTERNAL TRANSPORT PLANNING TOOL” the user can directly enter transport performance (pkm/tkm) and the vehicle kilometers travelled (vkt) provided by an external transport planning tool.</p>
+                <p>If no data from a transport planning tool are available, the second approach “WITHOUT UPSTREAM CALCULATIONS - CALCULATIONS WITHIN THIS TOOL” can be applied. For calculating potential GHG savings from mitigation measures within this approach the “ASI” (Avoid/Shift/Improve) approach is applied. Users have to estimate the effect of transport related actions on the transport demand for each mitigation action type (Avoid, Shift or Improve). E.g. Parking area management may lead to 5% avoided passenger car vehicle kilometers travelled (vkt).</p>
+                <ul>
+                    <li>Avoid: Avoided vehicle kilometers travelled (vkt)</li>
+                    <li>Shift: Shift of transport from the current to another transport modes</li>
+                </ul>
+                <p>Once the transport demand is defined through the two approaches mentioned above the user has to enter data for the two last steps concerning energy type and energy consumption:</p>
+                <ul>
+                    <li>3) Improve: Penetration of alternative energies</li>
+                    <li>4) Improve: Adjustment of fuel/energy consumption</li>
+                </ul>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseInfo}>
+                    Close
+                </Button>
+            </Modal.Footer>
+        </Modal>
+        </section>
+        <section className="footer">
+            <Row className="justify-content-md-center">
+                <Col lg="8">
+                    <Footer />
+                </Col>
+            </Row>
+        </section>
+        </>
+        
     )
 }
