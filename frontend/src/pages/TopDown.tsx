@@ -204,7 +204,7 @@ export default function TopDown(){
                         })}
                         <h3>Energy consumption for both transport types</h3>
                         <div style={{marginBottom: "20px"}}>
-                            <ResponsiveContainer width="90%" height={300}>
+                            <ResponsiveContainer width="100%" height={340}>
                                 <BarChart data={ftypes.map(_ftype => {
                                     const ftype = _ftype as FuelType
                                     return {

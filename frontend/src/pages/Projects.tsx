@@ -90,7 +90,7 @@ export default function Projects(){
                             <p>
                                 A project is related to a specific MYC urban mobility plan. 
                                 It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
-                                <Button variant="link" onClick={handleShow} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Read more</span></span></Button>
+                                <Button variant="link" onClick={handleShow} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Read more</span></span></Button>
                             </p>
                             <p>
                                 You can start by creating a new project, or checking public projects if available.
@@ -105,11 +105,11 @@ export default function Projects(){
                         }
                     </Col>
                 </Row>
-                <Row>
+                <Row className="projectsLists">
                     {initialized && <ProjectsList ownedProjects={projects} publicProjects={publicProjects} adminProjects={adminProjects} handleEditProject={handleEditProject} isAdmin={isAdmin}/>}
                 </Row>
             </Container></section>
-            <section>
+            <section className="footer">
                 <div className="container">
                     <Row className="justify-content-md-center">
                         <Col lg="12">
@@ -154,35 +154,41 @@ const ProjectsList = ({ownedProjects, publicProjects, adminProjects, handleEditP
     }) => (
     
         <Col>
-            <Row>
+
+            <Row className="projectsList">
                 <Col>
                     <DetailedProjects projects={ownedProjects} handleEditProject={handleEditProject} showOwner={false}/>
                 </Col>
             </Row>
 
             {isAdmin ?
-            <>  
-            <Row>
-                <Col>
-                    <h3>(Admin) Public projects</h3>
-                    <DetailedProjects projects={publicProjects} handleEditProject={handleEditProject} showOwner={true}/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h3>(Admin) Private projects</h3>
-                    <DetailedProjects projects={adminProjects} handleEditProject={handleEditProject} showOwner={true}/>
-                </Col>
-            </Row>
-            </>
-                : <>
-            <Row>
-                <Col>
-                    <h3>Public projects</h3>
-                    <PublicProjects publicProjects={publicProjects} handleEditProject={handleEditProject}/>
-                </Col>
-            </Row>
-            </>
+
+                <>
+                    <Row className="projectsList">
+                        <Col>
+                            <h3>(Admin) Public projects</h3>
+                            <DetailedProjects projects={publicProjects} handleEditProject={handleEditProject} showOwner={true}/>
+                        </Col>
+                    </Row>
+                    <Row className="projectsList">
+                        <Col>
+                            <h3>(Admin) Private projects</h3>
+                            <DetailedProjects projects={adminProjects} handleEditProject={handleEditProject} showOwner={true}/>
+                        </Col>
+                    </Row>
+                </>
+
+            :
+            
+                <>
+                    <Row className="projectsList">
+                        <Col>
+                            <h3>Public projects</h3>
+                            <PublicProjects publicProjects={publicProjects} handleEditProject={handleEditProject}/>
+                        </Col>
+                    </Row>
+                </>
+            
             }
 
         </Col>
@@ -224,7 +230,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
             <Table>
                 <thead>
                     <tr>
-                        <th>#</th>
+                        {/* <th>#</th> */}
                         <th>Name</th>
                         <th>Type</th>
                         {showOwner && <th>Author</th>}
@@ -236,7 +242,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                 <tbody style={{verticalAlign: "middle"}}>
                     {projects.map(project => 
                         <tr key={project.id}>
-                            <td>{project.id}</td>
+                            {/* <td>{project.id}</td> */}
                             <td>{project.name}</td>
                             <td>
                                 <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>}>
@@ -329,7 +335,7 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
         <Table>
             <thead>
                 <tr>
-                    <th>#</th>
+                    {/* <th>#</th> */}
                     <th>Name</th>
                     <th>Type</th>
                     <th>Author</th>

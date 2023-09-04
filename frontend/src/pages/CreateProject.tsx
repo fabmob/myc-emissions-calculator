@@ -277,7 +277,7 @@ export default function CreateProject() {
                                         <Form.Label>Territory area (km²)</Form.Label>
                                         <InputGroup>
                                             <Form.Control type="input" placeholder="" value={projectArea} onChange={e => setProjectArea(e.target.value)}/>
-                                            <InputGroup.Text>km²</InputGroup.Text>
+                                            {/* <InputGroup.Text>km²</InputGroup.Text> */}
                                         </InputGroup>
                                     </Form.Group>
                                 </Col>
@@ -302,18 +302,19 @@ export default function CreateProject() {
                                             {projectReferenceYears.map((year,i) => (
                                                 (i>0) && <Badge key={i} bg="secondary"><span className="item"><span>{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></span></span></Badge>
                                             ))}
-                                            <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span></span></span></Badge>
+                                            <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Badge>
                                         </InputGroup>
                                     </Form.Group>                              
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col>                            
-                                    <Button size="lg" variant="primary" type="submit">
-                                        {project.id ? <span className="item"><span>Edit</span></span> : <span className="item"><span>Create</span></span>}
-                                    </Button>
-                                </Col>
-                            </Row>
+                            {project.id ? '' : 
+                                <Row>
+                                    <Col style={{display: "flex", justifyContent: "right"}}>                            
+                                        <Button size="lg" variant="primary" type="submit">
+                                            <span className="item"><span>Create</span></span>
+                                        </Button>
+                                    </Col>
+                                </Row>}
                         </Form>
 
                     </Col>

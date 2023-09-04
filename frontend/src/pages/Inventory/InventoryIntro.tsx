@@ -42,7 +42,7 @@ export default function InventoryIntro(){
         <Container>
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
-                    <h1>Inventory / Base Year</h1>
+                    <h1>Inventory</h1>
                     <DescAndNav 
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
                         nextNav={{link: '/project/' + project.id + '/Inventory/step/1', content: "Start →", variant: "primary"}}
@@ -148,7 +148,7 @@ export default function InventoryIntro(){
             </Row>
         </Container>
         </section>
-        <section>
+        <section className="footer">
             <Row className="justify-content-md-center">
                 <Col lg="8">
                     <Footer />

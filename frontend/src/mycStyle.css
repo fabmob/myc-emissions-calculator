@@ -135,22 +135,6 @@ input.cellError {
     border-radius: 10px;
     
 }
-.card {
-    background-color: #E6E6E6;
-    border-radius: 24px;
-    border: none;
-    padding: 30px 36px;
-}
-/* .card-header {
-    border: none;
-    background-color: inherit;
-} */
-/* .card-header:first-child {
-    border-radius: 24px;
-} */
-/* .card-header h2{
-    font-size: 24px;
-} */
 .table {
     --bs-table-bg: transparent;
 }
@@ -169,18 +153,20 @@ input.cellError {
 
 
 
-/*adriens edits*/
+/* adriens edits */
 
-/*—————————————————————*/
-/*setting up variables*/
+/* variables ————————————————————— */
+
     :root {
-        /*spacing*/
+        /* spacing */
+            --spacing-xxs: 0.8rem;
+            --spacing-xs: 1.2rem;
             --spacing-s: 1.8rem;
             --spacing-m: 2.4rem;
             --spacing-l: 3.6rem;
             --spacing-xl: 5.6rem;
             --spacing-xxl: 7.2rem;
-        /*colors*/
+        /* colors */
             /*grey (luminance variations)*/
             --c-h0-s0-l0: #000000;
             --c-h0-s0-l1: #292929;
@@ -214,9 +200,7 @@ input.cellError {
             --c-edition-t0: #9747FF;
             --c-edition-t1: hsla(266,100%,64%,60%);
             --c-edition-t2: hsla(266,100%,64%,10%);
-
-            
-        /*fonts*/
+        /* fonts */
             /*for headings and body copy*/
             --t-lh-main: 140%;
             /*for headings*/
@@ -238,7 +222,7 @@ input.cellError {
             --t-lh-p2: var(--t-lh-main);
             --t-fs-p3: 1.2rem; /*small*/
             --t-lh-p3: 180%;
-        /*tables*/
+        /* tables */
             --table-border-color: var(--c-h1-s0-l4);
             --table-cell-padding: 0.6rem;
     }
@@ -246,779 +230,411 @@ input.cellError {
 
 
 
-/*—————————————————————*/
-/*fix for the management of ALL dimensions*/
+/* management of ALL dimensions ————————————————————— */
 
-/*setting 1rem to 10px.*/
-/*all dimensions should now be set in rem.*/
-/*this value can be used as a global zoom level.*/
-/*it is handy to play with to achieve responsiveness.*/
-html {
-    font-size: 10px;
-}
-
+    /* setting 1rem to 10px. */
+    /* all dimensions should now be set in rem. */
+    /* this value can be used as a global zoom level. */
+    /* it is handy to play with to achieve responsiveness. */
+        html {
+            font-size: 10px;
+        }
 
 
 
-/*—————————————————————*/
-/*fix for the padding and spacing of general /recurring elements*/
 
-/* this is what the markup structure should be like in ALL cases : */
-/* ~/body
-        /.App
-            /.container [= a bootstrap container containing the whole page, targeted as a direct child of .App]
+/* page sections, rows, columns ————————————————————— */
+
+    /* this is what the markup structure should be like in ALL cases : */
+    /* ~/body
+            /.App [= the page]
                 /section [= a vertical section of the page]
                     /.container [= a bootstrap container containing the content of the section]
                         /.row [= a bootsrap row]
                             /.col [= a bootstrap column]
                                 /* [= any piece of content] */
 
-/*repad page container*/
-/* div.App > div.container {
-    padding: 6rem 10rem 14rem 10rem !important;
-} */
-div.App > div.container {
-    margin: 0;
-    padding: 0;
-}
-div.App section {
-    width: 100%;
-    padding: 6rem 10rem 14rem 10rem;
-}
-/*footer stuff*/
-/* footer {
-    padding: 6rem 0 0 0;
-} */
-div.App > div.container > section > .row:not(:last-child) {
-    height: auto !important;
-    /* margin: 0 !important; */
-    margin-bottom: var(--spacing-xxl);
-}
-div.App > div.container > section:not(:last-child) {
-    margin-bottom: var(--spacing-xxl);
-}
-/*fix the spacing of items inside of columns*/
-.row {
-    --bs-gutter-x: 4.2rem;
-}
-.row>.col,
-.row>[class^=col-] {
-    /* background: var(--c-edition-t2); */
-    overflow: hidden;
-}
-.row > .col > *:not(button),
-.row > [class^=col-] > *:not(button) {
-    /* background: var(--c-edition-t2); */
-}
-.row > .col > *:not(:last-child),
-.row > [class^=col-] > *:not(:last-child) {
-    margin-bottom: var(--spacing-m) !important;
-}
-/*set medium column width to 600px*/
-@media (min-width: 1200px) {
-    .col-xl-8 {
-        flex: 0 0 auto;
-        width: 60rem;
-    }
-}
-@media (min-width: 992px) {
-    .col-lg-8 {
-        flex: 0 0 auto;
-        width: 60rem;
-    }
-}
-
-
-
-
-/*—————————————————————*/
-/*fix for the colors*/
-
-/*text colors*/
-html, 
-body {
-    color: var(--c-h0-s0-l1);
-}
-h1,h2,h3,
-p,span,text {
-    color: inherit;
-}
-h1,h2,h3 {
-    color: var(--c-h0-s0-l1);
-}
-body {
-    background-color: unset;
-}
-
-
-
-
-/*—————————————————————*/
-/*fix for the fonts*/
-p,span,text {
-    font-size: inherit;
-}
-/*paragraph spacing*/
-p:not(:last-of-type), text:not(:last-of-type) {
-    margin-bottom: 0.8em;
-}
-p:last-of-type, text:last-of-type {
-    margin-bottom: 0;
-}
-/*temp fix : this is meant to apply to page content title, not to h1*/
-/* h1 {
-    margin-top: 1.6rem;
-} */
-/*1. headings*/
-    h1, h2, h3 {
-        font-family: var(--t-ff-h);
-        font-weight: var(--t-fw-h);
-        line-height: var(--t-lh-main);
-        margin: 0.33em 0 0.67em 0;
-    }
-    h1 {font-size: var(--t-fs-h1);} 
-    h2 {font-size: var(--t-fs-h2);} 
-    h3 {font-size: var(--t-fs-h3);}
-    h4, h5, h6 {
-        /*these are not supposed to exist*/
-        font-family: "Times New Roman";
-        color: red;
-    }
-/*2. body copy*/
-/*2.1. body copy styles*/
-    /*body copy style:  all*/
-        .p-reg,
-        .p-mono,
-        body {
-            line-height: var(--t-lh-main);    
+    /* sections */
+        /* size and pad sections */
+        div.App section {
+            width: 100%;
+            padding: 6rem 10rem 14rem 10rem;
         }
-    /*body copy style: regular*/
-        .p-reg,
-        body {
-            font-family: var(--t-ff-p-regular);
-            font-weight: var(--t-fw-p-regular);
+
+    /* columns */
+        /* fix the spacing of items inside of columns */
+        .row {
+            --bs-gutter-x: 4.2rem;
         }
-    /*body copy style: regular bold*/
-        .p-reg-bold {
-            font-family: var(--t-ff-p-regular);
-            font-weight: var(--t-fw-p-regular-bold);
+        .row > .col,
+        .row > [class^=col-] {
+            /* background: var(--c-edition-t2); */
+            overflow: hidden;
         }
-    /*body copy style: mono*/
-        .p-mono,
-        .card-body > span {
-            font-family: var(--t-ff-p-mono);
-            font-weight: var(--t-fw-p-mono);
+        .row > .col > *:not(button),
+        .row > [class^=col-] > *:not(button) {
+            /* background: var(--c-edition-t2); */
         }
-    /*body copy style: mono bold*/
-        .p-mono-bold,
-        .col>form label.form-label,
-        .col>form label.form-label span,
-        .badge {
+        .row > .col > *:not(:last-child),
+        .row > [class^=col-] > *:not(:last-child) {
+            margin-bottom: var(--spacing-m) !important;
+        }
+        /*set medium column width to 600px*/
+        @media (min-width: 1200px) {
+            .col-xl-8 {
+                flex: 0 0 auto;
+                width: 60rem;
+            }
+        }
+        @media (min-width: 992px) {
+            .col-lg-8 {
+                flex: 0 0 auto;
+                width: 60rem;
+            }
+        }
+
+
+
+
+/* colors ————————————————————— */
+
+    /*text colors*/
+    html, 
+    body {
+        color: var(--c-h0-s0-l1);
+    }
+    h1,h2,h3,
+    p,span,text {
+        color: inherit;
+    }
+    h1,h2,h3 {
+        color: var(--c-h0-s0-l1);
+    }
+    body {
+        background-color: unset;
+    }
+    .reqStar:after {
+        content: "*";
+        color: var(--c-h4-s0-l0-t0);
+    }
+
+
+
+
+/* fonts ————————————————————— */
+
+    /* prevent bootstrap to set fontsizes that i don't want */
+        p,span,text {
+            font-size: inherit;
+        }
+
+    /* paragraph spacing */
+        p:not(:last-of-type), text:not(:last-of-type) {
+            margin-bottom: 0.8em;
+        }
+        p:last-of-type, text:last-of-type {
+            margin-bottom: 0;
+    }
+
+    /* 1. headings */
+        h1, h2, h3 {
+            font-family: var(--t-ff-h);
+            font-weight: var(--t-fw-h);
+            line-height: var(--t-lh-main);
+            margin: 0.33em 0 0.67em 0;
+        }
+        h1 {font-size: var(--t-fs-h1);} 
+        h2 {font-size: var(--t-fs-h2);} 
+        h3 {font-size: var(--t-fs-h3);}
+        h4, h5, h6 {
+            /*these are not supposed to exist*/
+            font-family: "Times New Roman";
+            color: red;
+        }
+
+    /* 2. body copy */
+        /* 2.1. body copy styles */
+            /* body copy style:  all */
+                .p-reg,
+                .p-mono,
+                body {
+                    line-height: var(--t-lh-main);    
+                }
+            /* body copy style: regular */
+                .p-reg,
+                body {
+                    font-family: var(--t-ff-p-regular);
+                    font-weight: var(--t-fw-p-regular);
+                }
+            /* body copy style: regular bold */
+                .p-reg-bold {
+                    font-family: var(--t-ff-p-regular);
+                    font-weight: var(--t-fw-p-regular-bold);
+                }
+            /* body copy style: mono */
+                .p-mono,
+                .card-body > span {
+                    font-family: var(--t-ff-p-mono);
+                    font-weight: var(--t-fw-p-mono);
+                }
+            /* body copy style: mono bold */
+                .p-mono-bold,
+                .col>form label.form-label,
+                .col>form label.form-label span,
+                .badge {
+                    font-family: var(--t-ff-p-mono);
+                    font-weight: var(--t-fw-p-mono-bold);
+                }
+        /* 2.2. body copy sizes */
+            /* body copy large */
+                .p1 {
+                    font-size: var(--t-fs-p1);}
+            /* body copy medium */
+                .p2,
+                body {
+                    font-size: var(--t-fs-p2);}
+            /* body copy small */
+                .p3,
+                .col>form label.form-label,
+                .col>form label.form-label span, 
+                .badge {
+                    font-size: var(--t-fs-p3);
+                    line-height: var(--t-lh-p3);}
+
+
+
+
+
+/* buttons ————————————————————— */
+
+    .btn, 
+    [class^=btn-] {
+        /* --bs-btn-font-size: unset; */
+        font-family: var(--t-ff-p-regular);
+        font-weight: var(--t-fw-p-regular-bold);
+        font-size: var(--t-fs-p3);
+        padding: 0.8rem 1.4rem;
+        border: none;
+        border-radius: 1rem;
+        /* the following is useful since we spanned all "item" elements */
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: center;
+    }
+    .btn-sm {
+        font-family: var(--t-ff-p-mono);
+        font-weight: var(--t-fw-p-mono-bold);
+    }
+    .btn-lg {
+        font-size: var(--t-fs-p2);
+        padding: 1rem 1.6rem;
+        border: none;
+    }
+    .btn-link {
+        font-family: var(--t-ff-p-regular);
+        font-weight: var(--t-fw-p-regular);
+        padding: 0;
+        border-radius: 0;
+        text-decoration: none;
+    }
+
+    /* button colors */
+        /* button colors : primary */
+            .btn-primary,
+            .btn-primary:active,
+            .btn-primary:focus {
+                background-color: var(--c-h2-s0_l2);
+                --bs-btn-active-bg: var(--c-h2-s0_l2);
+            }
+            .btn-primary:focus {
+                box-shadow: none;
+            }
+            .btn-primary:hover {
+                color: var(--c-h2-s0_l2);
+                background-color: var(--c-h2-s0_l3);
+            }
+        /* button colors : secondary */
+            .btn-secondary,
+            .btn-secondary:active,
+            .btn-secondary:focus {
+                background-color: var(--c-h2-s0_l3);
+                border-color: var(--c-h2-s0_l3);
+                --bs-btn-active-bg: var(--c-h2-s0_l3);
+            }
+            .btn-secondary:hover {
+                color: var(--c-h2-s0_l2);
+                background-color: var(--c-h2-s0_l3);
+            }
+        /* button colors : link */
+            .btn-link,
+            .btn-link:hover {
+                color: var(--c-h0-s0-l2);
+            }
+        /* button colors : various */
+            .btn-action {
+                background-color: var(--c-h1-s0-l2);
+                color: var(--c-h0-s0-l6);
+                --bs-btn-disabled-bg: var(--c-h0-s0-l4);
+                --bs-btn-disabled-color: var(--c-h0-s0-l3);
+            }
+            .btn-action:hover {
+                background-color: var(--c-h1-s0-l3);
+                color: var(--c-h1-s0-l2);
+            }
+            .bg-success {
+                background-color: var(--c-h5-s0-l0-t0) !important;
+            }
+            .btn-success {
+                --bs-btn-color: var(--c-h0-s0-l6);
+                --bs-btn-bg: var(--c-h5-s0-l0-t0);
+                --bs-btn-hover-color: var(--c-h0-s0-l6);
+                --bs-btn-hover-bg: var(--c-h5-s0-l0-t1);
+                --bs-btn-focus-shadow-rgb: 60,153,110;
+                --bs-btn-active-color: var(--c-h0-s0-l6);
+                --bs-btn-active-bg: var(--c-h5-s0-l0-t1);
+                --bs-btn-active-shadow: none;
+            }
+            .btn-danger {
+                background-color: var(--c-h4-s0-l0-t0) !important;
+            }
+            .btn.disabled,
+            .btn:disabled, 
+            fieldset:disabled .btn {
+                color: var(--c-h0-s0-l3);
+                background-color: var(--c-h0-s0-l4);
+                border-color: var(--c-h0-s0-l4);
+                opacity: 1;
+                pointer-events: none;
+            }
+    
+    
+    /* badges and small buttons ————————————————————— */
+
+        .badge, .btn-sm {
+            padding: 0 0.6rem;
+            /* padding: 0rem; */
+            /* min-width: 2.2rem; */
+            height: 2.2rem;
+            display: inline-flex;
+            align-items: center;
+            line-height: 100%;
+            margin-right: 0.8rem;
+            border-radius: 0.6rem !important;
+            font-size: var(--t-fs-p3);
+        }
+        .badge > svg.icon:first-child {
+            margin-left: -0.4rem;
+        }
+        .badge > svg.icon:last-child {
+            margin-right: -0.4rem;
+        }
+        /*default colors*/
+        .bg-secondary {
+            color: var(--c-h0-s0-l1);
+            background-color: var(--c-h0-s0-l4) !important; 
+            /*forced to use "!important" as it is used in the overritten rule*/
+        }
+        .bg-disabled {
+            color: var(--c-h0-s0-l6);
+            background-color: var(--c-h0-s0-l3) !important; 
+            /*forced to use "!important" as it is used in the overritten rule*/
+        }
+
+
+
+
+
+
+
+/* tables ————————————————————— */
+
+    table.table {
+        border-collapse: collapse; 
+        border-spacing: 0; /* ← this is cellspacing */
+        overflow: hidden;
+        /* the following is to switch to an auto col width layout : */
+            /* width: 100%;
+            table-layout: fixed; */
+    }
+
+
+    table.table tr,
+    table.table tr th, td { 
+        /* reset padding */
+            margin: 0 !important;
+            padding: 0 !important;
+        border-color: var(--table-border-color);
+    }
+    table.table tr td {
+        line-height: 0;
+        font-size: var(--t-fs-p2);
+    }
+    table.table tr td > * {
+        line-height: 100%;
+    }
+
+    /* table/cell */
+        table.table tr td,
+        table.table tr th {
+            min-width: calc(3.7rem * 1); /* temporary fix for modulo cell sizing */
+            max-width: calc(3.7rem * 4); /* temporary fix for modulo cell sizing */
+            height: 3.7rem !important; /* temporary fix for modulo cell sizing */
+            padding: var(--table-cell-padding) !important;
             font-family: var(--t-ff-p-mono);
             font-weight: var(--t-fw-p-mono-bold);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            color: var(--c-h0-s0-l3);
         }
-/*2.2. body copy sizes*/
-    /*body copy large*/
-        .p1 {
-            font-size: var(--t-fs-p1);}
-    /*body copy medium*/
-        .p2,
-        body {
-            font-size: var(--t-fs-p2);}
-    /*body copy small*/
-        .p3,
-        .col>form label.form-label,
-        .col>form label.form-label span, 
-        .badge {
+        table.table tr th {
             font-size: var(--t-fs-p3);
-            line-height: var(--t-lh-p3);}
+        }
+        /* table/cell/diagonal bar */
+            .tdDiagonalBar {
+                width: 100%;
+                height: 100%;
+                background: pink;
+            }
+            svg.diagonalBar {
+                position: absolute;
+                width: calc(100%);
+                height: calc(100%);
+                margin: calc(-1 * var(--table-cell-padding));
+            }
+            svg.diagonalBar line {
+                stroke: var(--table-border-color);
+                stroke-width: 2.375%;
+            }
+
+        /* table/cell/form field */
+            table.table td .form-control {
+                color: var(--c-h0-s0-l1);
+                width: calc(100% + 2 * var(--table-cell-padding));
+                height: calc(100% + 2 * var(--table-cell-padding));
+                margin: calc(-1 * var(--table-cell-padding));
+                border: var(--bs-border-width) solid transparent;
+            }
+            table.table tr td > input {
+                border-radius: 0;
+            }
+
+        /* table/cell/button */
+            table.table td button {
+                border-radius: 0.6rem;
+            }
+            
+        /* table/cell/multiple badges */
+            table.table .hstack {
+                gap: 0rem !important; /* managing this with badge margins instead */ 
+            }
 
 
 
+/* "item" elements —————————————————————*/
 
-
-/*—————————————————————*/
-/* fix for the buttons */
-.btn, 
-[class^=btn-] {
-    /* --bs-btn-font-size: unset; */
-    font-family: var(--t-ff-p-regular);
-    font-weight: var(--t-fw-p-regular-bold);
-    font-size: var(--t-fs-p3);
-    padding: 0.8rem 1.4rem;
-    border: none;
-    border-radius: 1rem;
-    /* the following is useful since we spanned all "item" elements */
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: center;
-}
-.btn-sm {
-    font-family: var(--t-ff-p-mono);
-    font-weight: var(--t-fw-p-mono-bold);
-}
-.btn-lg {
-    font-size: var(--t-fs-p2);
-    padding: 1rem 1.6rem;
-    border: none;
-}
-.btn-link {
-    font-family: var(--t-ff-p-regular);
-    font-weight: var(--t-fw-p-regular);
-    padding: 0;
-    border-radius: 0;
-    text-decoration: none;
-}
-/*button colors*/
-.btn-primary,
-.btn-primary:active,
-.btn-primary:focus {
-    background-color: var(--c-h2-s0_l2);
-    /* border-color: var(--c-h2-s0_l2); */
-    /* --bs-btn-active-border-color: var(--c-h2-s0_l2); */
-    --bs-btn-active-bg: var(--c-h2-s0_l2);
-}
-.btn-primary:focus {
-    box-shadow: none;
-}
-.btn-primary:hover {
-    color: var(--c-h2-s0_l2);
-    background-color: var(--c-h2-s0_l3);
-    /* border-color: var(--c-h2-s0_l3); */
-}
-.btn-secondary,
-.btn-secondary:active,
-.btn-secondary:focus {
-    background-color: var(--c-h2-s0_l3);
-    border-color: var(--c-h2-s0_l3);
-    /* --bs-btn-active-border-color: var(--c-h2-s0_l3); */
-    --bs-btn-active-bg: var(--c-h2-s0_l3);
-}
-.btn-secondary:hover {
-    color: var(--c-h2-s0_l2);
-    background-color: var(--c-h2-s0_l3);
-    /* border-color: var(--c-h2-s0_l3); */
-}
-.btn-action {
-    background-color: var(--c-h1-s0-l2);
-    /* border-color: var(--c-h1-s0-l2); */
-    color: var(--c-h0-s0-l6);
-    --bs-btn-disabled-bg: var(--c-h0-s0-l4);
-    --bs-btn-disabled-color: var(--c-h0-s0-l3);
-}
-.btn-action:hover {
-    background-color: var(--c-h1-s0-l3);
-    /* border-color: var(--c-h1-s0-l3); */
-    color: var(--c-h1-s0-l2);
-}
-/*button link*/
-.btn-link,
-.btn-link:hover {
-    color: var(--c-h0-s0-l2);
-}
-/*not really meant to be here. create a colors fix section ?*/
-.bg-success {
-    /* background: var(--c-h5-s0-l0-t0); */
-    background-color: var(--c-h5-s0-l0-t0) !important;
-}
-.btn-success {
-    --bs-btn-color: var(--c-h0-s0-l6);
-    --bs-btn-bg: var(--c-h5-s0-l0-t0);
-    /* --bs-btn-border-color: var(--c-h5-s0-l0-t0); */
-    --bs-btn-hover-color: var(--c-h0-s0-l6);
-    --bs-btn-hover-bg: var(--c-h5-s0-l0-t1);
-    /* --bs-btn-hover-border-color: var(--c-h5-s0-l0-t1); */
-    --bs-btn-focus-shadow-rgb: 60,153,110;
-    --bs-btn-active-color: var(--c-h0-s0-l6);
-    --bs-btn-active-bg: var(--c-h5-s0-l0-t1);
-    /* --bs-btn-active-border-color: var(--c-h5-s0-l0-t1); */
-    --bs-btn-active-shadow: none;
-    /* --bs-btn-disabled-color: #fff; */
-    /* --bs-btn-disabled-bg: #198754; */
-    /* --bs-btn-disabled-border-color: #198754; */
-}
-.btn-danger {
-    background-color: var(--c-h4-s0-l0-t0) !important;
-}
-.btn.disabled,
-.btn:disabled, 
-fieldset:disabled .btn {
-    color: var(--c-h0-s0-l3);
-    background-color: var(--c-h0-s0-l4);
-    border-color: var(--c-h0-s0-l4);
-    opacity: 1;
-    pointer-events: none;
-}
-
-
-
-
-/*—————————————————————*/
-/*fix for the project/config tab*/
-
-/*respace items*/
-.col>form>*:not(:last-child) {
-    margin-bottom: var(--spacing-m) !important;
-}
-.form-control {
-    /*width: 100%;*/
-    padding:  var(--table-cell-padding);
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: inherit;
-    color: inherit;
-    background-color: var(--bs-body-bg);
-}
-.col>form label.form-label,
-.col>form label.form-label span {
-    color: var(--c-h0-s0-l3);
-}
-
-
-
-
-/*—————————————————————*/
-/*fix for the tables*/
-/*row*/
-table.table {
-    border-collapse: collapse; 
-    border-spacing: 0; /* cellspacing */
-    /* this is to swap to an auto col width layout : */
-    /* width: 100%;
-    table-layout: fixed; */
-    overflow: hidden;
-}
-/*reset padding*/
-table.table tr,
-table.table tr th, td { 
-    margin: 0 !important;
-    padding: 0 !important;
-}
-table.table tr td {
-    line-height: 0;
-    font-size: var(--t-fs-p2);
-}
-table.table tr th,
-table.table tr td {
-    /* max-width: 0; */
-    overflow: hidden;
-    /* text-overflow: ellipsis; */
-    white-space: nowrap;
-    max-width: calc(3.7rem * 7); /*temporary*/
-}
-table.table tr td > * {
-    line-height: 100%;
-}
-/*set padding*/
-/*cell*/
-/*table.table tr td > *:not(input) {
-    margin: var(--table-cell-padding) !important;
-}*/
-table.table tr td,
-table.table tr th {
-    padding: var(--table-cell-padding) !important;
-    font-family: var(--t-ff-p-mono);
-    font-weight: var(--t-fw-p-mono-bold);
-}
-/*not great*/
-table.table tr th {
-    height: 3.7rem !important;
-    vertical-align: middle;
-    color: var(--c-h0-s0-l3);
-    font-size: var(--t-fs-p3);
-}
-table.table tr td > input {
-    border-radius: 0;
-}
-td, tr, th {
-    border-color: var(--table-border-color);
-}
-.tdDiagonalBar {
-    width: 100%;
-    height: 100%;
-    background: pink;
-}
-svg.diagonalBar {
-    position: absolute;
-    width: calc(100%);
-    height: calc(100%);
-    margin: calc(-1 * var(--table-cell-padding));
-}
-svg.diagonalBar line {
-    stroke: var(--table-border-color);
-    stroke-width: 2.375%;
-}
-table.table td .form-control {
-    color: var(--c-h0-s0-l1);
-    width: calc(100% + 2 * var(--table-cell-padding));
-    height: calc(100% + 2 * var(--table-cell-padding));
-    margin: calc(-1 * var(--table-cell-padding));
-    border: var(--bs-border-width) solid transparent;
-}
-table.table td button {
-    border-radius: 0.6rem;
-}
-
-
-
-
-/*—————————————————————*/
-/*fix for the header*/
-nav.navbar {
-    height: 6.4rem;
-    padding: unset;
-}
-nav.navbar .bg-light {
-    background: var(--c-h0-s0-l5);
-}
-nav.navbar a {
-    font-size: var(--t-fs-p2);
-    color: var(--c-h0-s0-l3);
-}
-.navbar-nav .nav-link.active, 
-.navbar-nav .nav-link.show {
-    color: var(--c-h0-s0-l2);
-}
-nav.navbar a#github-link {
-    display: inline-block;
-    width: 2.4rem;
-    height: auto;
-}
-nav.navbar a#github-link > svg {
-    width: 100%;
-    fill: currentColor;
-}
-.dropdown-toggle::after {
-    display: none;
-}
-
-
-
-
-
-/*—————————————————————*/
-/*fix for the icons*/
-.icon {
-    fill: none; 
-    stroke: currentColor; 
-    stroke-linecap: square;
-}
-.icon-size-s {
-    stroke-width: calc(1.375rem*0.14);
-    height: 1.7rem;
-    width: 1.7rem;
-}
-.icon-size-m {
-    stroke-width: calc(2.25rem*0.1);
-    height: 2rem;
-    width: 2rem;
-}
-.icon-size-l {
-    stroke-width: calc(3rem*0.1);
-    height: 2.6rem;
-    width: 2.6rem;
-}
-
-
-
-
-/*—————————————————————*/
-/*fix for the badges and small buttons*/
-.badge, .btn-sm {
-    padding: 0 0.6rem;
-    /* padding: 0rem; */
-    /* min-width: 2.2rem; */
-    height: 2.2rem;
-    display: inline-flex;
-    align-items: center;
-    line-height: 100%;
-    margin-right: 0.8rem;
-    border-radius: 0.6rem !important;
-    font-size: var(--t-fs-p3);
-}
-.badge > svg.icon:first-child {
-    margin-left: -0.4rem;
-}
-.badge > svg.icon:last-child {
-    margin-right: -0.4rem;
-}
-/*default colors*/
-.bg-secondary {
-    color: var(--c-h0-s0-l1);
-    background-color: var(--c-h0-s0-l4) !important; 
-    /*forced to use "!important" as it is used in the overritten rule*/
-}
-.bg-disabled {
-    color: var(--c-h0-s0-l6);
-    background-color: var(--c-h0-s0-l3) !important; 
-    /*forced to use "!important" as it is used in the overritten rule*/
-}
-
-
-
-/*—————————————————————*/
-/*fix for the cards*/
-.card {
-    background-color: var(--c-h0-s0-l4);
-    border-radius: 2.4rem;
-    border: none;
-    padding: 3rem 3.6rem 3.6rem 3.6rem;
-}
-.card > *:not(:last-child),
-.card-body > *:not(:last-child) {
-    margin-bottom: 1.4rem;
-}
-.card-header {
-    background-color: unset;
-    border-bottom: 0;
-}
-.card-header .row {
-    display: flex;
-    justify-content: space-between;
-    flex-flow: row nowrap;
-}
-.card-header .row > * {
-    width: auto;
-    gap: 0.8rem;
-}
-.card-header .nav {
-    /* background: pink; */
-    /* display: flex;
-    justify-content: center; */
-}
-.card-header,
-.card-body {
-    padding: 0;
-}
-.card-body > span {
-    color: var(--c-h0-s0-l2);
-    padding: var(--table-cell-padding); /*cell padding - this is supposed to be in a table cell*/
-    border-top: 1px solid var(--table-border-color);
-}
-/* .h1, .h2, .h3, .h4, .h5, .h6, 
-h1, h2, h3, h4, h5, h6 {
-    margin-bottom: 0;
-} */
-.card-body {
-    display: flex;
-    flex-flow: column nowrap;
-}
-.card-body .results-preview {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: var(--spacing-s);
-    margin: 0;
-}
-.card-body .results-preview > * {
-    width: 100%;
-}
-.card-body .results-preview .chart-content,
-.chart-content {
-    background: var(--c-h0-s0-l5) !important;
-    padding: 4.8rem !important;
-    font-size: var(--t-fs-p3);
-    font-family: var(--t-ff-p-mono);
-}
-.card-body .results-preview .chart-content svg path,
-.chart-content svg path{
-    stroke: var(--c-h0-s0-l5);
-    stroke-width: 0rem;
-    stroke-linejoin: round;
-}
-/* .card-body .results-preview .chart svg path {
-    stroke: var(--c-h0-s0-l5);
-    stroke-width: 1rem;
-} */
-.chart-header,
-.chart-header .commands {
-    /* background:pink; */
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: .8rem;
-}
-
-
-/*—————————————————————*/
-/*fix for the stepper*/
-.stepLeft {
-    padding: 3rem;
-    font-size: var(--t-fs-p3);
-}
-.projectStepContainer > * {
-    display: flex;
-    gap: 4.2rem;
-}
-.projectStepContainer .stepLeft ol li {
-    flex-flow: row nowrap;
-    padding: 0.6rem 1rem 0.6rem 0rem;
-}
-.projectStepContainer .stepLeft ol li > * {
-    padding: 0;
-    white-space: nowrap;
-}
-/* .projectStepContainer .stepLeft ol li button:after {
-    margin-left: 1rem;
-} */
-/* .projectStepContainer .stepLeft ol li button {
-    display: flex;
-    justify-content: space-between;
-} */
-.progressMenu > *:not(:last-child) {
-    margin-bottom: 3rem;
-}
-.projectStepContainer .stepLeft .progressMenu .progressBar {
-    /* background: pink; */
-}
-/*need a fix for the line height*/
-.projectStepContainer .stepLeft .progressMenu .lastSaved > span {
-    max-width: 100%;
-    white-space: break-spaces;
-}
-.projectStepContainer .stepLeft .progressMenu .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.projectStepContainer .stepLeft .progressMenu .header > * {
-    width: auto;
-    flex: 0 0;
-}
-.projectStepContainer .stepRight {
-    padding: 0;
-    /*temp - before i put the logos in*/
-    /* padding-bottom: calc(3 * var(--spacing-l)); */
-}
-.descAndNav .col-4 {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-between;
-}
-
-.descAndNav .desc button,
-.desc button {
-    font-size: inherit;
-    color: var(--c-h0-s0-l3);
-    vertical-align: baseline;
-    line-height: inherit;
-}
-.descAndNav .nav {
-    flex-flow: row nowrap;
-    align-items: center;
-    gap: 0.8rem;
-    margin-left: 0;
-    margin-right: 0;
-}
-.descAndNav .nav > * {
-    padding-left: 0;
-    padding-right: 0;
-}
-.descAndNav .prevNav,
-.descAndNav .nextNav {
-    display: flex;
-    flex-flow: row nowrap;
-    
-}
-.descAndNav .prevNav button,
-.descAndNav .nextNav button {
-    display: flex;
-    flex-flow: row nowrap;
-    white-space: nowrap;
-    justify-content: center;
-    width: 100%;
-}
-.projectStepContainer .user-note-button {
-    font-size: var(--t-fs-p3);
-    font-weight: var(--t-fw-p-mono-bold);
-    font-family: var(--t-ff-p-mono);
-    color: var(--c-h0-s0-l3);
-    padding: var(--table-cell-padding);
-}
-.projectStepContainer .user-note {
-    font-size: var(--t-fs-p2);
-    font-weight: var(--t-fw-p-mono);
-    font-family: var(--t-ff-p-mono);
-    color: var(--c-h0-s0-l1);
-    margin-bottom: 0 !important;
-}
-.projectStepContainer .user-note .form-control {
-    background-color: unset;
-    border: var(--bs-border-width) solid transparent;
-    border-top: var(--bs-border-width) solid var(--table-border-color);
-    border-radius: 0;
-}
-
-
-
-/*fix for the logos of partners*/
-:root {
-    --logo-common-scale-base: 1rem;
-    --logo-common-scale-factor: 1.5;
-}
-.partnerLine {
-    display: flex;
-    flex-flow: row wrap;
-    gap: 3rem 7rem;
-    align-items: center;
-    width: 100%;
-    /* margin: 6.4rem auto 9.2rem auto; */
-    margin:  0 auto 9.2rem auto;
-    /* justify-content: space-between; */
-}
-.partnerLine .img-wrapper {
-    height: 7rem;
-    display: flex;
-    align-items: center;
-}
-.partnerLine img {
-    height: fit-content;
-}
-.partnerLine img.logo-ADB       { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-ADEME     { width: calc( var(--logo-common-scale-base) * 4.2 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-AFD       { width: calc( var(--logo-common-scale-base) * 6.0 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-Cerema    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-Codatu    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-DTFA      { width: calc( var(--logo-common-scale-base) * 7.6 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-EB        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-ECF       { width: calc( var(--logo-common-scale-base) * 4.6 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-EU        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-Euroclima { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-FFEM      { width: calc( var(--logo-common-scale-base) * 3.8 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-FMECD     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-FMENCNSCP { width: calc( var(--logo-common-scale-base) * 10.1 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-GIZ       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-GPIT      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-ITDP      { width: calc( var(--logo-common-scale-base) * 4.3 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-KFW       { width: calc( var(--logo-common-scale-base) * 2.9 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-MP        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-MTE       { width: calc( var(--logo-common-scale-base) * 5.9 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-Platforma { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-SMFA      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-SSATP     { width: calc( var(--logo-common-scale-base) * 4.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-TRUFI     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-TUMI      { width: calc( var(--logo-common-scale-base) * 5.1 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-UCLG      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-UNH       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-.partnerLine img.logo-WI        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-
-
-
-/*—————————————————————*/
-/*fix for illustrations*/
-div.illustration {
-    /* background: pink; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-
-
-/*—————————————————————*/
-/*fix for the "item" elements*/
 .item {
     /* background: var(--c-edition-t2); */
     font-size: inherit;
@@ -1026,183 +642,620 @@ div.illustration {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    gap: 0.4em;
+    gap: 0.6em;
     justify-content: center;
     width: fit-content;
     /* margin: 0 auto; */
 }
-.item span {
-
-}
 
 
 
 
+/* icons ————————————————————— */
 
-/*—————————————————————*/
-/*fix for the modals and tooltips*/
-:root {
-    --modal-xs-content-width: 30rem;
-    --modal-s-content-width: 30rem;
-    --modal-m-content-width: 40rem;
-    --modal-l-content-width: 60rem;
-    --modal-xs-base-padding: 1.4rem;
-    --modal-xs-padding: 
-        var(--modal-xs-base-padding) 
-        var(--modal-xs-base-padding) 
-        2rem 
-        var(--modal-xs-base-padding);
-    --modal-s-base-padding: 2.4rem;
-    --modal-s-padding: 
-        var(--modal-s-base-padding) 
-        var(--modal-s-base-padding) 
-        3.6rem 
-        var(--modal-s-base-padding);
-    --modal-m-base-padding: 4.8rem;
-    --modal-m-padding: 
-        var(--modal-m-base-padding) 
-        var(--modal-m-base-padding) 
-        7.2rem 
-        var(--modal-m-base-padding);
-    --modal-l-base-padding: 4.8rem;
-    --modal-l-padding: 
-        var(--modal-l-base-padding) 
-        var(--modal-l-base-padding) 
-        7.2rem 
-        var(--modal-l-base-padding);
-    --modal-xs-width: calc( var(--modal-xs-content-width) + 2 * var(--modal-xs-base-padding) );
-    --modal-s-width: calc( var(--modal-s-content-width) + 2 * var(--modal-s-base-padding) );
-    --modal-m-width: calc( var(--modal-m-content-width) + 2 * var(--modal-m-base-padding) );
-    --modal-l-width: calc( var(--modal-l-content-width) + 2 * var(--modal-l-base-padding) );
-    --modal-box-shadow-size-factor: 0.3;
-    --modal-box-shadow: 
-        0 calc(var(--modal-box-shadow-size-factor) * 17.900rem) calc(var(--modal-box-shadow-size-factor) * 28.800rem) rgba(0,0,0,0.1650),
-        0 calc(var(--modal-box-shadow-size-factor) * 07.478rem) calc(var(--modal-box-shadow-size-factor) * 12.030rem) rgba(0,0,0,0.1186),
-        0 calc(var(--modal-box-shadow-size-factor) * 03.998rem) calc(var(--modal-box-shadow-size-factor) * 06.433rem) rgba(0,0,0,0.0984),
-        0 calc(var(--modal-box-shadow-size-factor) * 02.242rem) calc(var(--modal-box-shadow-size-factor) * 03.606rem) rgba(0,0,0,0.0825),
-        0 calc(var(--modal-box-shadow-size-factor) * 01.190rem) calc(var(--modal-box-shadow-size-factor) * 01.915rem) rgba(0,0,0,0.0667),
-        0 calc(var(--modal-box-shadow-size-factor) * 00.495rem) calc(var(--modal-box-shadow-size-factor) * 00.797rem) rgba(0,0,0,0.0464);
-    --modal-drop-shadow:
-        0 calc(var(--modal-box-shadow-size-factor) * 17.900rem) calc(var(--modal-box-shadow-size-factor) * 28.800rem) rgba(0,0,0,0.1650),
-        0 calc(var(--modal-box-shadow-size-factor) * 07.478rem) calc(var(--modal-box-shadow-size-factor) * 12.030rem) rgba(0,0,0,0.1186),
-        0 calc(var(--modal-box-shadow-size-factor) * 03.998rem) calc(var(--modal-box-shadow-size-factor) * 06.433rem) rgba(0,0,0,0.0984),
-        0 calc(var(--modal-box-shadow-size-factor) * 02.242rem) calc(var(--modal-box-shadow-size-factor) * 03.606rem) rgba(0,0,0,0.0825),
-        0 calc(var(--modal-box-shadow-size-factor) * 01.190rem) calc(var(--modal-box-shadow-size-factor) * 01.915rem) rgba(0,0,0,0.0667),
-        0 calc(var(--modal-box-shadow-size-factor) * 00.495rem) calc(var(--modal-box-shadow-size-factor) * 00.797rem) rgba(0,0,0,0.0464);
-}
-
-
-/*remove border radiuses*/
-div.modal .modal-content,
-.tooltip .tooltip-inner {
-    border-radius: 0;
-    box-shadow: var(--modal-box-shadow);
-}
-/*reset padding and margins*/
-div.modal .modal-content > * {
-    padding: 0;
-    margin: 0;
-}
-/*space out inner elements*/
-div.modal .modal-content > *:not(:last-child) {
-    margin-bottom: 1.4rem;
-}
-div.modal .modal-content .modal-header {
-    border-bottom: none;
-}
-div.modal .modal-content .modal-footer {
-    border-top: none;
-}
-div.modal .modal-content .modal-footer > * {
-    margin: 0;
-}
-/*headers*/
-div.modal .modal-content .modal-header .modal-title {
-    /*it has an h4 tag ! inherited from the react component*/
-    font-size: var(--t-fs-h3);
-    font-weight: var(--t-fw-h);
-    font-family: var(--t-ff-h);
-}
-/*necessary because outside of body*/
-/*so it gets the fs of html which is 1rem*/
-div.modal, 
-.tooltip {
-    font-size: var(--t-fs-p2);
-}
-.modal-sm,
-.tooltip .tooltip-inner {
-    width: var(--modal-s-width);
-}
-.modal-sm .modal-content,
-.tooltip .tooltip-inner {
-    padding: var(--modal-s-padding);
-}
-.modal-md,
-.modal-lg {
-    width: var(--modal-m-width);
-}
-.modal-md .modal-content,
-.modal-lg .modal-content {
-    padding: var(--modal-m-padding);
-}
-.modal-xl {
-    width: var(--modal-l-width);
-}
-.modal-xl .modal-content {
-    padding: var(--modal-l-padding);
-}
-.tooltip .tooltip-arrow {
-    --bs-tooltip-arrow-width: 3.5355339059327376rem;
-    --bs-tooltip-arrow-height: 1.7677669529663688rem;
-
-    width: var(--bs-tooltip-arrow-width);
-    height: var(--bs-tooltip-arrow-height);
-}
-/* shadow */
+    .icon {
+        fill: none; 
+        stroke: currentColor; 
+        stroke-linecap: square;
+    }
+    /* WORKING HERE 230901-175815 */
+    /* trying to fix the spacing around icons / the size of a mono-icon badge */
+    /* what has been tried (negative icon margin) is not satisfying as icons become offset in other contexts. */
+    .icon-size-s {
+        stroke-width: calc(1.375rem * 0.14);
+        height: 1.55rem;
+        width: 1.55rem;
+        margin: -0.3rem;
+    }
+    .icon-size-m {
+        stroke-width: calc(2.25rem * 0.1);
+        height: 2.2rem;
+        width: 2.2rem;
+        margin: -0.4rem;
+    }
+    .icon-size-l {
+        stroke-width: calc(3rem * 0.1);
+        height: 2.56rem;
+        width: 2.56rem;
+        margin: -0.48rem;
+    }
 
 
 
-/* welcome page */
-/*fix for the hero*/
-.illustration {
-    background: var(--c-h0-s0-l5);
-    padding: var(--spacing-l);
-    width: 100%;
-    height: 100%;
-    min-height: 38rem;
-}
-section.hero {
-    background: var(--c-h1-s0-l4);
-}
-section.hero .illustration {
-    /* background: pink; */
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
-}
-section.hero .illustration .layers-wrapper {
-    /* background: lightblue; */
-    width: 100%;
-    height: 100%;
-    display: block;
-    position: relative;
-}
-section.hero .illustration .layers-wrapper img {
-    filter: drop-shadow(0 1.4rem 1.4rem var(--c-h0-s0-l3));
-    width: 100%;
-    height: auto;
-}
-section.hero .illustration .layers-wrapper img:nth-child(1) {
-    /* background: blue; */
-}
-section.hero .illustration .layers-wrapper img:nth-child(1),
-section.hero .illustration .layers-wrapper img:nth-child(2),
-section.hero .illustration .layers-wrapper img:nth-child(3) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: auto;
-    width: 100%;
+
+
+
+/* cards ————————————————————— */
+
+    .card {
+        background-color: var(--c-h0-s0-l4);
+        border-radius: 2.4rem;
+        border: none;
+        padding: 3rem 3.6rem 3.6rem 3.6rem;
+    }
+    .card > *:not(:last-child),
+    .card-body > *:not(:last-child) {
+        margin-bottom: 1.4rem;
+    }
+    .card-header {
+        background-color: unset;
+        border-bottom: 0;
+    }
+    .card-header .row {
+        display: flex;
+        justify-content: space-between;
+        flex-flow: row nowrap;
+    }
+    .card-header .row > * {
+        width: auto;
+        gap: 0.8rem;
+    }
+    .card-header .nav {
+        /* background: pink; */
+        /* display: flex;
+        justify-content: center; */
+    }
+    .card-header .nav button[title='Duplicate Scenario'] {
+        padding: 0 .6rem;
+    }
+    .card-header,
+    .card-body {
+        padding: 0;
+    }
+    .card-body > span {
+        color: var(--c-h0-s0-l2);
+        padding: var(--table-cell-padding); /*cell padding - this is supposed to be in a table cell*/
+        border-top: 1px solid var(--table-border-color);
+    }
+    /* .h1, .h2, .h3, .h4, .h5, .h6, 
+    h1, h2, h3, h4, h5, h6 {
+        margin-bottom: 0;
+    } */
+    .card-body {
+        display: flex;
+        flex-flow: column nowrap;
+    }
+    .card-body div.table {
+        padding: 0;
+        overflow: hidden;
+    }
+    .card-body .results-preview {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: var(--spacing-s);
+        margin: 0;
+    }
+    .card-body .results-preview > * {
+        width: 100%;
+    }
+    .card-body .results-preview .chart-content,
+    .chart-content {
+        background: var(--c-h0-s0-l5) !important;
+        padding: 4.8rem !important;
+        font-size: var(--t-fs-p3);
+        font-family: var(--t-ff-p-mono);
+    }
+    .card-body .results-preview .chart-content svg path,
+    .chart-content svg path{
+        stroke: var(--c-h0-s0-l5);
+        stroke-width: 0rem;
+        stroke-linejoin: round;
+    }
+    /* .card-body .results-preview .chart svg path {
+        stroke: var(--c-h0-s0-l5);
+        stroke-width: 1rem;
+    } */
+
+
+/* charts ————————————————————— */
+    .chart-header,
+    .chart-header .commands {
+        /* background:pink; */
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: .8rem;
+    }
+    .recharts-wrapper .recharts-surface {
+        overflow: visible;
+    }
+    .recharts-wrapper ul.recharts-default-legend {
+        /* background: pink; */
+        display: flex;
+        flex-flow: row nowrap;
+        overflow: scroll;
+        
+    }
+    .recharts-wrapper ul.recharts-default-legend:after {
+        position: absolute;
+        right: 0;  
+        height: 100%;
+        width: var(--spacing-l);
+        content: "";
+        background: linear-gradient(to left,
+           var(--c-h0-s0-l5), 
+           transparent
+        );
+        pointer-events: none; /* so the text is still selectable */
+      }
+    .recharts-wrapper ul.recharts-default-legend li {
+        /* background: yellow; */
+        display: flex;
+        flex-flow: row nowrap;
+        white-space: nowrap;
+    }
+    .recharts-wrapper ul.recharts-default-legend li .recharts-legend-item-text {
+        /* background: yellow; */
+        /* display: flex;
+        flex-flow: row nowrap; */
+        white-space: nowrap;
+        color: var(--c-h0-s0-l2) !important;
+    }
+    .recharts-wrapper p.recharts-tooltip-label {
+        /* font-size: var(--t-fs-p2); */
+        font-weight: var(--t-fw-h);
+        color: var(--c-h0-s0-l1);
+    }
+    .recharts-wrapper ul.recharts-tooltip-item-list {
+        /* background: orange; */
+    }
+    .recharts-wrapper ul.recharts-tooltip-item-list li {
+        /* background: cyan; */
+        padding: 0 !important;
+    }
+
+
+/* page header ————————————————————— */
+
+    nav.navbar {
+        height: 6.4rem;
+        padding: unset;
+    }
+    nav.navbar .bg-light {
+        background: var(--c-h0-s0-l5);
+    }
+    nav.navbar a {
+        font-size: var(--t-fs-p2);
+        color: var(--c-h0-s0-l3);
+    }
+    .navbar-nav .nav-link.active, 
+    .navbar-nav .nav-link.show {
+        color: var(--c-h0-s0-l2);
+    }
+    nav.navbar a#github-link {
+        display: inline-block;
+        width: 2.4rem;
+        height: auto;
+    }
+    nav.navbar a#github-link > svg {
+        width: 100%;
+        fill: currentColor;
+    }
+    .dropdown-toggle::after {
+        display: none;
 }
 
+
+
+/* page footer */
+
+    /* on most pages, the footer is a section element (the last of the page).
+       on calculation steps, it is a div element (within the right hand side column). */
+
+    /* logos of partners ————————————————————— */
+        :root {
+            --logo-common-scale-base: 1rem;
+            --logo-common-scale-factor: 1.5;
+        }
+        .partnerLine {
+            display: flex;
+            flex-flow: row wrap;
+            gap: 3rem 7rem;
+            align-items: center;
+            width: 100%;
+            /* margin: 6.4rem auto 9.2rem auto; */
+            margin:  0 auto 9.2rem auto;
+            /* justify-content: space-between; */
+        }
+        .partnerLine .img-wrapper {
+            height: 7rem;
+            display: flex;
+            align-items: center;
+        }
+        .partnerLine img {
+            height: fit-content;
+        }
+        .partnerLine img.logo-ADB       { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-ADEME     { width: calc( var(--logo-common-scale-base) * 4.2 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-AFD       { width: calc( var(--logo-common-scale-base) * 6.0 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-Cerema    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-Codatu    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-DTFA      { width: calc( var(--logo-common-scale-base) * 7.6 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-EB        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-ECF       { width: calc( var(--logo-common-scale-base) * 4.6 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-EU        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-Euroclima { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-FFEM      { width: calc( var(--logo-common-scale-base) * 3.8 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-FMECD     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-FMENCNSCP { width: calc( var(--logo-common-scale-base) * 10.1 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-GIZ       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-GPIT      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-ITDP      { width: calc( var(--logo-common-scale-base) * 4.3 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-KFW       { width: calc( var(--logo-common-scale-base) * 2.9 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-MP        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-MTE       { width: calc( var(--logo-common-scale-base) * 5.9 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-Platforma { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-SMFA      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-SSATP     { width: calc( var(--logo-common-scale-base) * 4.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-TRUFI     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-TUMI      { width: calc( var(--logo-common-scale-base) * 5.1 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-UCLG      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-UNH       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+        .partnerLine img.logo-WI        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+
+
+
+/* illustrations —————————————————————*/
+
+    div.illustration {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: var(--c-h0-s0-l5);
+        padding: var(--spacing-l);
+        width: 100%;
+        height: 100%;
+        min-height: 38rem;
+    }
+
+
+
+
+/* modals and tooltips ————————————————————— */
+
+    :root {
+        --modal-xs-content-width: 30rem;
+        --modal-s-content-width: 30rem;
+        --modal-m-content-width: 40rem;
+        --modal-l-content-width: 60rem;
+        --modal-xs-base-padding: 1.4rem;
+        --modal-xs-padding: 
+            var(--modal-xs-base-padding) 
+            var(--modal-xs-base-padding) 
+            2rem 
+            var(--modal-xs-base-padding);
+        --modal-s-base-padding: 2.4rem;
+        --modal-s-padding: 
+            var(--modal-s-base-padding) 
+            var(--modal-s-base-padding) 
+            3.6rem 
+            var(--modal-s-base-padding);
+        --modal-m-base-padding: 4.8rem;
+        --modal-m-padding: 
+            var(--modal-m-base-padding) 
+            var(--modal-m-base-padding) 
+            7.2rem 
+            var(--modal-m-base-padding);
+        --modal-l-base-padding: 4.8rem;
+        --modal-l-padding: 
+            var(--modal-l-base-padding) 
+            var(--modal-l-base-padding) 
+            7.2rem 
+            var(--modal-l-base-padding);
+        --modal-xs-width: calc( var(--modal-xs-content-width) + 2 * var(--modal-xs-base-padding) );
+        --modal-s-width: calc( var(--modal-s-content-width) + 2 * var(--modal-s-base-padding) );
+        --modal-m-width: calc( var(--modal-m-content-width) + 2 * var(--modal-m-base-padding) );
+        --modal-l-width: calc( var(--modal-l-content-width) + 2 * var(--modal-l-base-padding) );
+        --modal-box-shadow-size-factor: 0.3;
+
+        /* shadow */
+            --modal-box-shadow: 
+                0 calc(var(--modal-box-shadow-size-factor) * 17.900rem) calc(var(--modal-box-shadow-size-factor) * 28.800rem) rgba(0,0,0,0.1650),
+                0 calc(var(--modal-box-shadow-size-factor) * 07.478rem) calc(var(--modal-box-shadow-size-factor) * 12.030rem) rgba(0,0,0,0.1186),
+                0 calc(var(--modal-box-shadow-size-factor) * 03.998rem) calc(var(--modal-box-shadow-size-factor) * 06.433rem) rgba(0,0,0,0.0984),
+                0 calc(var(--modal-box-shadow-size-factor) * 02.242rem) calc(var(--modal-box-shadow-size-factor) * 03.606rem) rgba(0,0,0,0.0825),
+                0 calc(var(--modal-box-shadow-size-factor) * 01.190rem) calc(var(--modal-box-shadow-size-factor) * 01.915rem) rgba(0,0,0,0.0667),
+                0 calc(var(--modal-box-shadow-size-factor) * 00.495rem) calc(var(--modal-box-shadow-size-factor) * 00.797rem) rgba(0,0,0,0.0464);
+            --modal-drop-shadow:
+                0 calc(var(--modal-box-shadow-size-factor) * 17.900rem) calc(var(--modal-box-shadow-size-factor) * 28.800rem) rgba(0,0,0,0.1650),
+                0 calc(var(--modal-box-shadow-size-factor) * 07.478rem) calc(var(--modal-box-shadow-size-factor) * 12.030rem) rgba(0,0,0,0.1186),
+                0 calc(var(--modal-box-shadow-size-factor) * 03.998rem) calc(var(--modal-box-shadow-size-factor) * 06.433rem) rgba(0,0,0,0.0984),
+                0 calc(var(--modal-box-shadow-size-factor) * 02.242rem) calc(var(--modal-box-shadow-size-factor) * 03.606rem) rgba(0,0,0,0.0825),
+                0 calc(var(--modal-box-shadow-size-factor) * 01.190rem) calc(var(--modal-box-shadow-size-factor) * 01.915rem) rgba(0,0,0,0.0667),
+                0 calc(var(--modal-box-shadow-size-factor) * 00.495rem) calc(var(--modal-box-shadow-size-factor) * 00.797rem) rgba(0,0,0,0.0464);
+    }
+
+
+    /* remove border radiuses */
+        div.modal .modal-content,
+        .tooltip .tooltip-inner {
+            border-radius: 0;
+            box-shadow: var(--modal-box-shadow);
+        }
+    /* reset padding and margins */
+        div.modal .modal-content > * {
+            padding: 0;
+            margin: 0;
+        }
+    /* space out inner elements */
+        div.modal .modal-content > *:not(:last-child) {
+            margin-bottom: 1.4rem;
+        }
+        div.modal .modal-content .modal-header {
+            border-bottom: none;
+        }
+        div.modal .modal-content .modal-footer {
+            border-top: none;
+        }
+        div.modal .modal-content .modal-footer > * {
+            margin: 0;
+        }
+    /*headers*/
+        div.modal .modal-content .modal-header .modal-title {
+            /*it has an h4 tag ! inherited from the react component*/
+            font-size: var(--t-fs-h3);
+            font-weight: var(--t-fw-h);
+            font-family: var(--t-ff-h);
+        }
+    /*necessary because outside of body*/
+    /*so it gets the fs of html which is 1rem*/
+        div.modal, 
+        .tooltip {
+            font-size: var(--t-fs-p2);
+        }
+    .modal-sm,
+    .tooltip .tooltip-inner {
+        width: var(--modal-s-width);
+    }
+    .modal-sm .modal-content,
+    .tooltip .tooltip-inner {
+        padding: var(--modal-s-padding);
+    }
+    .modal-md,
+    .modal-lg {
+        width: var(--modal-m-width);
+    }
+    .modal-md .modal-content,
+    .modal-lg .modal-content {
+        padding: var(--modal-m-padding);
+    }
+    .modal-xl {
+        width: var(--modal-l-width);
+    }
+    .modal-xl .modal-content {
+        padding: var(--modal-l-padding);
+    }
+    .tooltip .tooltip-arrow {
+        --bs-tooltip-arrow-width: 3.5355339059327376rem;
+        --bs-tooltip-arrow-height: 1.7677669529663688rem;
+
+        width: var(--bs-tooltip-arrow-width);
+        height: var(--bs-tooltip-arrow-height);
+    }
+    .modal-dialog {
+        /* position: relative; */
+        /* width: auto; */
+        /* pointer-events: none; */
+        margin: var(--bs-modal-margin);
+        margin: 4.8rem auto 4.8rem auto;
+    }
+    /* tooltip */
+        /* hide tooltip cloned info icon */
+        .tooltip .tooltip-inner .tooltip-header .icon {
+            display: none;
+        }
+        /* pad header */
+        .tooltip .tooltip-inner .tooltip-header {
+            margin-bottom: var(--spacing-xxs);
+        }
+
+
+
+
+/* page : home ————————————————————— */
+
+    /* section : hero */
+        section.hero {
+            background: var(--c-h1-s0-l4);
+        }
+        section.hero .illustration {
+            /* background: pink; */
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
+        }
+        section.hero .illustration .layers-wrapper {
+            /* background: lightblue; */
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: relative;
+        }
+        section.hero .illustration .layers-wrapper img {
+            filter: drop-shadow(0 1.4rem 1.4rem var(--c-h0-s0-l3));
+            width: 100%;
+            height: auto;
+        }
+        section.hero .illustration .layers-wrapper img:nth-child(1) {
+            /* background: blue; */
+        }
+        section.hero .illustration .layers-wrapper img:nth-child(1),
+        section.hero .illustration .layers-wrapper img:nth-child(2),
+        section.hero .illustration .layers-wrapper img:nth-child(3) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: auto;
+            width: 100%;
+        }
+
+
+
+
+/* page : projects ————————————————————— */
+
+    .projectsLists {
+        padding: var(--spacing-xl) 0; /* needs to be bigger */
+    }
+    .projectsLists .projectsList { /* would rather add bottom-only margin or padding so the element starts sharp */
+        padding: 0 0 var(--spacing-xl) 0;
+    }
+
+
+
+
+
+/* page : project/edit ————————————————————— */
+
+    /* respace sections of the whole form */
+    .col > form > *:not(:last-child) {
+        margin-bottom: var(--spacing-m) !important;
+    }
+
+    /* restyle form elements */
+        .form-control {
+            /* width: 100%; */
+            padding:  var(--table-cell-padding);
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            color: inherit;
+            background-color: var(--bs-body-bg);
+        }
+        .col > form label.form-label,
+        .col > form label.form-label span {
+            color: var(--c-h0-s0-l3);
+        }
+
+
+
+/* page : calculation/stepper ————————————————————— */
+
+    .stepLeft {
+        padding: 3rem;
+        font-size: var(--t-fs-p3);
+    }
+    .projectStepContainer > * {
+        display: flex;
+        gap: 4.2rem;
+    }
+    .projectStepContainer .stepLeft ol li {
+        flex-flow: row nowrap;
+        padding: 0.6rem 1rem 0.6rem 0rem;
+    }
+    .projectStepContainer .stepLeft ol li > * {
+        padding: 0;
+        white-space: nowrap;
+    }
+    /* .projectStepContainer .stepLeft ol li button:after {
+        margin-left: 1rem;
+    } */
+    /* .projectStepContainer .stepLeft ol li button {
+        display: flex;
+        justify-content: space-between;
+    } */
+    .progressMenu > *:not(:last-child) {
+        margin-bottom: 3rem;
+    }
+    .projectStepContainer .stepLeft .progressMenu .progressBar {
+        /* background: pink; */
+    }
+    /*need a fix for the line height*/
+    .projectStepContainer .stepLeft .progressMenu .lastSaved > span {
+        max-width: 100%;
+        white-space: break-spaces;
+    }
+    .projectStepContainer .stepLeft .progressMenu .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .projectStepContainer .stepLeft .progressMenu .header > * {
+        width: auto;
+        flex: 0 0;
+    }
+    .projectStepContainer .stepRight {
+        padding: 0;
+        /* temp - before i put the logos in */
+        /* padding-bottom: calc(3 * var(--spacing-l)); */
+    }
+    .descAndNav .col-4 {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-between;
+    }
+
+    .descAndNav .desc button,
+    .desc button {
+        font-size: inherit;
+        color: var(--c-h0-s0-l3);
+        vertical-align: baseline;
+        line-height: inherit;
+    }
+    .descAndNav .nav {
+        flex-flow: row nowrap;
+        align-items: center;
+        gap: 0.8rem;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .descAndNav .nav > * {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .descAndNav .prevNav,
+    .descAndNav .nextNav {
+        display: flex;
+        flex-flow: row nowrap;
+        
+    }
+    .descAndNav .prevNav button,
+    .descAndNav .nextNav button {
+        display: flex;
+        flex-flow: row nowrap;
+        white-space: nowrap;
+        justify-content: center;
+        width: 100%;
+    }
+    .projectStepContainer .user-note-button {
+        font-size: var(--t-fs-p3);
+        font-weight: var(--t-fw-p-mono-bold);
+        font-family: var(--t-ff-p-mono);
+        color: var(--c-h0-s0-l3);
+        padding: var(--table-cell-padding);
+    }
+    .projectStepContainer .user-note {
+        font-size: var(--t-fs-p2);
+        font-weight: var(--t-fw-p-mono);
+        font-family: var(--t-ff-p-mono);
+        color: var(--c-h0-s0-l1);
+        margin-bottom: 0 !important;
+    }
+    .projectStepContainer .user-note .form-control {
+        background-color: unset;
+        border: var(--bs-border-width) solid transparent;
+        border-top: var(--bs-border-width) solid var(--table-border-color);
+        border-radius: 0;
+    }

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { Button, Container, Row, Col, Card, Table, Badge, Alert } from 'react-bootstrap'
 import {ProjectStage, ProjectType, TotalEnergyAndEmissions, FuelType, EmissionsResults} from '../frontendTypes'
 import ProjectNav from '../components/ProjectNav'
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts'
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'
 import Footer from "../components/Footer"
 
 import './Project.css'
@@ -102,10 +102,13 @@ export default function ProjectSummary(){
                             ? <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>hide(props.title)}><span className="item"><span>See less</span></span></Button>
                             : <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>show(props.title)}><span className="item"><span>See more</span></span></Button>
                         }
-                        {(props.stage === "Climate" && props.stageId != undefined && project.stages?.Climate.length && <Button variant="link" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#copy"}/></svg></span></Button>) || ""}
+                        {(props.stage === "Climate" && props.stageId != undefined && project.stages?.Climate.length && <Button variant="link" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#copy"}/></svg></span></Button>) || ""}
                     
                         <Button onClick={e => navigate(introUrl)} style={{minWidth: "93px"}}>
-                        {project.stages?.[props.stage].length ? <span className="item"><span>Edit</span></span> : <span className="item"><span>Create</span><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span>}
+                        {project.stages?.[props.stage].length ? 
+                            <span className="item"><span>Edit</span></span> :
+                            <span className="item"><span>Create</span><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span>
+                        }
                         </Button>
                     </Col>
                 </Row>
@@ -213,7 +216,7 @@ export default function ProjectSummary(){
                         <Col xs lg="8">
                             <ProjectNav current="Edition" project={project} />
                             <StepCard title='1. Inventory' stage="Inventory">
-                                <span>Indexing - The GHG emission inventory for urban transport is the sum of all transport-related activities emissions that can be attributed to the city or country for a given year (base year).</span>
+                                <span>The GHG emission inventory for urban transport is the sum of all transport-related activities emissions that can be attributed to the city or country for a given year (base year).</span>
                                 {inventoryResultsError && <Alert variant='warning'>Failed to compute inventory results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory steps again and fill missing data.</Alert>}
                                 {project.stages?.Inventory?.[0]?.step >= 7 && !inventoryResultsError && <Row className="results-preview align-items-center">
                                     <Col className="chart-content" sm="4" style={{background: "white", padding: "20px"}}>
@@ -230,6 +233,7 @@ export default function ProjectSummary(){
                                                 {inventoryEmissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
                                             </Pie>
                                             <Tooltip />
+                                            <Legend />
                                             </PieChart>
                                         </ResponsiveContainer>
                                     </Col>
@@ -268,7 +272,7 @@ export default function ProjectSummary(){
                                 }
                             </StepCard>
                             <StepCard title='2. BAU Scenario' stage="BAU">
-                                <span>Projecting - The Business-as-usual scenario aims to describe the transport related emissions if nothing changed in the years to come from the current status quo.</span>
+                                <span>The Business-as-usual scenario aims to describe the transport related emissions if nothing changed in the years to come from the current status quo.</span>
                                 {bauResultsError && <Alert variant='warning'>Failed to compute BAU results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and BAU steps again and fill missing data.</Alert>}
                                 {bauResults?.emissions && <Row className="results-preview align-items-center">
                                     <Col className="chart-content" sm="8" style={{background: "white", padding: "20px"}}>
@@ -280,7 +284,7 @@ export default function ProjectSummary(){
                                 }
                             </StepCard>
                             <StepCard title='3. Climate Scenario' stage="Climate" stageId={0}>
-                                <span>Comparing - The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
+                                <span>The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
                                 {climateResultsError[0] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
                                 {climateResults?.[0]?.emissions && <Row className="results-preview align-items-center">
                                     <Col className="chart-content" sm="8" style={{background: "white", padding: "20px"}}>
@@ -297,7 +301,7 @@ export default function ProjectSummary(){
                                 }
                                 return (
                                     <StepCard title={`3. Climate Scenario (${index + 1})`} stage="Climate" stageId={index} key={index}>
-                                        <span>Comparing - The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
+                                        <span>The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
                                         {climateResultsError[index] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
                                         {climateResults?.[index]?.emissions && <Row className="results-preview align-items-center">
                                             <Col className="chart-content" sm="8" style={{background: "white", padding: "20px"}}>
@@ -317,7 +321,7 @@ export default function ProjectSummary(){
                     </Row>
                 </Container>
             </section>
-            <section>
+            <section className="footer">
                 <div className="container">
                     <Row className="justify-content-md-center">
                         <Col lg="8">

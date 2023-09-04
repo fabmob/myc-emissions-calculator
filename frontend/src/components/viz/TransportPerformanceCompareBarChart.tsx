@@ -89,19 +89,19 @@ export default function TransportPerformanceCompareBarChart (props: {
                 <div className="commands">
                     {props.project.name && 
                     <CSVLink data={csvExport} filename={props.project.name.replace(" ", "_") + "_emissions.csv"} className="btn btn-link">
-                        <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>
+                        <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
                     </CSVLink>}                      
                     <Button variant="link" onClick={handleDownload} style={{width: "100%", padding: "4px 4px"}}>
                         {isLoading 
                         ? <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg></span>
-                        : <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>}
+                        : <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>Graph</span></span>}
                     </Button>
                 </div>
             </div>
             <div className="chart-content">
                 <div>
-                    <ResponsiveContainer width="90%" height={300}>
-                        <BarChart margin={{left: 50, top: props.showPercents? 20: 0}} data={chartData} ref={ref}>
+                    <ResponsiveContainer width="100%" height={340}>
+                        <BarChart data={chartData} ref={ref}>
                             <XAxis dataKey="name" />    
                             <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + unit} domain={[0, maxValRoundedAbove]}/>
                             <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)} wrapperStyle={{zIndex: 10}}/>

@@ -16,7 +16,7 @@ export default function WelcomePage(){
             <Methodology />
             <Devs />
             {/* <Partners /> */}
-            <section>
+            <section className="footer">
                 <div className="container">
                     <Row className="justify-content-md-center">
                         <Col lg="12">
@@ -43,10 +43,20 @@ const Jumbo = () => {
                             <p>The MYC GHG emissions calculator helps governmental organizations and consulting agencies to estimate both present and future greenhouse gas (GHG) emissions for local transports.</p>
                             <p>Future estimations can be made according to the current emission trends ("BAU Scenario") and to GHG reduction plans ("Climate Scenarios").</p>
                         </div>
-                        {keycloak.authenticated ?
-                        <Button variant="action" size="lg" onClick={() => navigate('/projects')}><span className="item"><span>Get started</span></span></Button>
-                        : <Button variant="primary" size="lg" onClick={() => keycloak.login()}><span className="item"><span>Login</span></span></Button>
-                        }
+                        {/* {keycloak.authenticated ?
+                            <Button variant="action" size="lg" 
+                                onClick={() => navigate('/projects')}><span className="item"><span>Get started</span></span>
+                            </Button>
+                            : 
+                            <Button variant="primary" size="lg" 
+                                onClick={() => keycloak.login()}><span className="item"><span>Login</span></span>
+                            </Button>
+                        } */}
+                        <Button variant="action" size="lg" 
+                                onClick={() => 
+                                    {keycloak.authenticated ? navigate('/projects') : keycloak.login()}}>
+                            <span className="item"><span>Get started</span></span>
+                        </Button>                        
                     </Col>
                     <Col lg="7">
                         <div className="illustration">

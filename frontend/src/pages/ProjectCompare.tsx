@@ -263,22 +263,22 @@ export default function ProjectCompare(){
                         <tbody>
                             <tr>
                                 <td><Badge bg="disabled"><span className="item"><span>Inventory</span></span></Badge></td>
-                                <td>{project.name && <CSVLink data={csvs.Inventory} filename={project.name.replace(" ", "_") + "_Inventory_Inputs.csv"} className="btn btn-primary">
-                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>
+                                <td>{project.name && <CSVLink data={csvs.Inventory} filename={project.name.replace(" ", "_") + "_Inventory_Inputs.csv"} className="btn btn-primary btn-sm">
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
                                 </CSVLink>}</td>
                                 <td>{sourcesUsed.Inventory.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
                             <tr>
                                 <td><Badge bg="disabled"><span className="item"><span>BAU Scenario</span></span></Badge></td>
-                                <td>{project.name && <CSVLink data={csvs.BAU} filename={project.name.replace(" ", "_") + "_BAU_Inputs.csv"} className="btn btn-primary">
-                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>
+                                <td>{project.name && <CSVLink data={csvs.BAU} filename={project.name.replace(" ", "_") + "_BAU_Inputs.csv"} className="btn btn-primary btn-sm">
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
                                 </CSVLink>}</td>
                                 <td>{sourcesUsed.BAU.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
                             <tr>
                                 <td><Badge bg="disabled"><span className="item"><span>Climate Scenarios</span></span></Badge></td>
-                                <td>{project.name && <CSVLink data={csvs.Climate} filename={project.name.replace(" ", "_") + "_Climate_Inputs.csv"} className="btn btn-primary">
-                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#document"}/></svg></span>
+                                <td>{project.name && <CSVLink data={csvs.Climate} filename={project.name.replace(" ", "_") + "_Climate_Inputs.csv"} className="btn btn-primary btn-sm">
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
                                 </CSVLink>}</td>
                                 <td>{sourcesUsed.Climate.map(e => e ? "[" + e + "] ": "")}</td>
                             </tr>
@@ -305,7 +305,7 @@ export default function ProjectCompare(){
             </Row>
         </Container>
         </section>
-        <section>
+        <section className="footer">
                 <div className="container">
                     <Row className="justify-content-md-center">
                         <Col lg="8">
@@ -367,8 +367,8 @@ const Options = (
         <>
             <Card className={"d-print-none" + (pin ? " stickyOptions" : "")} style={{textAlign: "left", marginBottom: "20px"}}>
                 <Card.Header onClick={() => setShowBody(p=>!p)} style={{cursor: "pointer"}}>
-                    Visualisations option (click to display)
-                    <span style={{float: "right"}} onClick={(e) => {e.stopPropagation(); setPin(p => !p)}}>📌</span>
+                    Settings
+                    {/* <span style={{float: "right"}} onClick={(e) => {e.stopPropagation(); setPin(p => !p)}}>📌</span> */}
                 </Card.Header>
                 {showBody && <Card.Body>
                     <Form.Group className="mb-3">

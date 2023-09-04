@@ -41,7 +41,7 @@ const ProjectStepContainerWrapper = (props: {
                                     <Form.Control as="textarea" rows={3} value={props.noteValue} onChange={e => setNote(e.target.value)} />
                                 </Form.Group>
                             )}
-                            <Row className="justify-content-md-center">
+                            <Row className="footer justify-content-md-center">
                                 <Col lg="8">
                                     <Footer />
                                 </Col>

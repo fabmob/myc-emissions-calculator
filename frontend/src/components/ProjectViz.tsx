@@ -266,7 +266,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                     <div className="inputDesc">Inputs are in the Socio economic data step</div>
                 </Col>
                 <Col lg="6">
-                    {project?.outputSocioEconomicDataComputed?.population !== undefined && <ResponsiveContainer width="90%" height={300}>
+                    {project?.outputSocioEconomicDataComputed?.population !== undefined && <ResponsiveContainer width="100%" height={340}>
                         <BarChart margin={{left: 50, top: showPercents? 20: 0}} data={(project.outputSocioEconomicDataComputed.population).map((e,i)=>({name:dates[i], population: Math.round(e), percent: computePercentIncrease(e, project?.outputSocioEconomicDataComputed?.population?.[i-1])}))}>
                             <XAxis dataKey="name"  />
                             <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value)} />
@@ -288,7 +288,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                     <div className="inputDesc">Inputs are in the Socio economic data step</div>
                 </Col>
                 <Col lg="6">
-                    {project?.outputSocioEconomicDataComputed?.gdp !== undefined && <ResponsiveContainer width="90%" height={300}>
+                    {project?.outputSocioEconomicDataComputed?.gdp !== undefined && <ResponsiveContainer width="100%" height={340}>
                         <BarChart margin={{left: 50, top: showPercents? 20: 0}} data={(project.outputSocioEconomicDataComputed.gdp).map((e,i)=>({name:dates[i], gdp: Math.round(e), percent: computePercentIncrease(e, project?.outputSocioEconomicDataComputed?.gdp?.[i-1])}))}>
                             <XAxis dataKey="name"  />
                             <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + "Mrd$"} />
@@ -310,7 +310,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                     <div className="inputDesc">Inputs are in the Transport activity data step</div>
                 </Col>
                 <Col lg="6">
-                    <ResponsiveContainer width="90%" height={300}>
+                    <ResponsiveContainer width="100%" height={340}>
                         <BarChart margin={{left: 50, top: showPercents? 20: 0}} data={dataVkt}>
                             <XAxis dataKey="name" />
                             <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + "Mkm"} />
@@ -342,7 +342,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                     <div className="inputDesc">as well as the Vehicle occupancy step</div>
                 </Col>
                 <Col lg="6">
-                    <ResponsiveContainer width="90%" height={300}>
+                    <ResponsiveContainer width="100%" height={340}>
                         <BarChart margin={{left: 10}} data={dataPassengersModalShare}>
                             <XAxis dataKey="name" />
                             <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + "%"} domain={[0,100]}/>
@@ -366,7 +366,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                     <div className="inputDesc">as well as the Vehicle occupancy step</div>
                 </Col>
                 <Col lg="6">
-                    <ResponsiveContainer width="90%" height={300}>
+                    <ResponsiveContainer width="100%" height={340}>
                         <BarChart margin={{left: 10}} data={dataFreightModalShare}>
                             <XAxis dataKey="name" />
                             <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + "%"} domain={[0,100]}/>
@@ -390,7 +390,7 @@ export default function ProjectViz(props: {project: ProjectType}){
                     <div className="inputDescNoLink">Inputs are all the previous steps</div>
                 </Col>
                 <Col lg="6">
-                    <ResponsiveContainer width="90%" height={300}>
+                    <ResponsiveContainer width="100%" height={340}>
                         <BarChart margin={{left: 50, top: showPercents? 20: 0}} data={typeOfGHGIsWTW?dataEnergyWTW[1]:dataEnergyTTW[1]}>
                             <XAxis dataKey="name" />
                             <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + 't'} domain={dataEnergyDomain}/>

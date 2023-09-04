@@ -77,13 +77,10 @@
     cursor: pointer;
 }
 
-.recharts-legend-item-text {
+/* .recharts-legend-item-text {
     color: black !important
-}
-.reqStar:after {
-    content:"*";
-    color:red;
-}
+} */
+
 .form-switch {
     white-space: nowrap;
 }
