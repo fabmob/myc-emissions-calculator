@@ -4,7 +4,7 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import {ProjectType} from '../frontendTypes'
 import { Container, Button, Row, Col, Stack, Modal, OverlayTrigger, Tooltip, Table, Badge } from 'react-bootstrap'
 
-export default function GetStarted(){
+export default function Projects(){
     const { keycloak, initialized } = useKeycloak();
     const [ projects, setProjects ] = useState([] as ProjectType[])
     const [ publicProjects, setPublicProjects ] = useState([] as ProjectType[])
@@ -82,17 +82,14 @@ export default function GetStarted(){
             <Container>
                 <Row className="justify-content-md-center align-items-center" style={{height: "calc(100vh - 200px)", paddingTop: "20px"}}>
                     <Col xs lg="8">
-                        <h1 style={{marginBottom: "40px"}}>Get Started</h1>
+                        <h1 style={{marginBottom: "40px"}}>Projects</h1>
                         <p>
-                            To compile an inventory and obtain the BAU scenario, you will require different input data - for the 
-                            <OverlayTrigger placement="right" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
-                                <span style={{whiteSpace: "nowrap"}}> year of reference🛈 </span>
-                            </OverlayTrigger> 
-                            and its projected evolution until 2050 (if you want to calculate BAU).<br/> 
-                            You can find the details <a href='#' onClick={handleShow}>here</a>
+                            A project is related to a specific MYC urban mobility plan. 
+                            It can be at a local level for Sustainable Urban Mobility plans (SUMP) or 
+                            at a national level for National Urban Mobility Plans (NUMP). 
+                            <Button variant="link" onClick={handleShow} style={{padding: "0"}}>🛈 Read more on projects</Button>
                         </p>
-
-                        <p>Cities which can not provide all of the required data can contact the <a href="https://www.mobiliseyourcity.net/about_the_partnership">MobiliseYourCity Secretariat </a> to check if suitable data are available.</p>
+                        <p>You can start by creating a new project, or checking public projects if available.</p>
                         
                         {initialized ?
                         <Stack gap={2} className="col-md-5 mx-auto">
@@ -102,36 +99,25 @@ export default function GetStarted(){
                         }
                     </Col>
                     <Row>
-                        {initialized && <Projects ownedProjects={projects} publicProjects={publicProjects} adminProjects={adminProjects} handleEditProject={handleEditProject} isAdmin={isAdmin}/>}
+                        {initialized && <ProjectsList ownedProjects={projects} publicProjects={publicProjects} adminProjects={adminProjects} handleEditProject={handleEditProject} isAdmin={isAdmin}/>}
                     </Row>
                 </Row>
             </Container>
             <Modal size="lg" centered show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Required input data</Modal.Title>
+                    <Modal.Title>Projects</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ol>
-                        <li><b>Socio-economic data</b></li>
-                        <ul>
-                        <li>Population (Number of inhabitants) </li>
-                        <li>GDP (Gross domestic product)</li>
-                        <li><i>Their evolution until 2050</i> </li>
-                        </ul>  
-                    <li><b>Vehicle kilometers travelled</b></li>
-                        <ul>
-                        <li>Direct input of the vehicle kilometers travelled for each vehicle category to be assessed for the reference year. This approach can often be applied, when data from a transport model are available. </li>
-                            <li><i>The expected growth rate of the total vehicle kilometers travelled (vkt) should be given in order to calculate the Business-as-usual (BAU) scenario</i></li>
-                        </ul> 
-                    <li><b>Further required transport data</b></li>
-                        <ul>
-                        <li>Average Load (freight transport) and average occupancy (passenger transport) per vehicle category</li>
-                        <li>Distribution of the vkt by fuel type per vehicle category</li>
-                        <li>Average fuel/energy consumption by category per vehicle category</li>
-                        <li>CO2 content of the grid electricity production</li>
-                        <li><i>Their evolution until 2050</i></li>
-                        </ul> 
-                    </ol>
+                    <p>
+                        Projects are divided in three stages:
+                    </p>
+                    <ul>
+                        <li>An inventory, where transport activity is described for a reference year, and current yearly GHG emissions are computed</li>
+                        <li>A business as usual (BAU) scenario, where the transport related emissions are described if nothing changed in the years to come</li>
+                        <li>One or more climate scenarios, where the predicted transport related emissions are described when a strategy, policy, programme or project were to be introduced</li>
+                    </ul>
+                    <p>More information on these stages and which data they require will be detailed during the completion process.</p>
+                    <p>Once your project is complete, you can validate it. This will let admins know that it can be consulted and maybe published as inspiration for other community members.</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -143,7 +129,7 @@ export default function GetStarted(){
     )
 }
 
-const Projects = ({ownedProjects, publicProjects, adminProjects, handleEditProject, isAdmin}: 
+const ProjectsList = ({ownedProjects, publicProjects, adminProjects, handleEditProject, isAdmin}: 
     {
         ownedProjects: ProjectType[], 
         publicProjects: ProjectType[], 
@@ -196,10 +182,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
         setShowDeleteConfirmModal(true)
     }
     const openProject = (p: ProjectType) => {
-        let url = "/project/" + p.id + "/step/" + p.step
-        if (p.step === 9) {
-            url = "/project/" + p.id + "/viz"
-        }
+        let url = "/project/" + p.id + "/edit"
         return navigate(url)
     }
     return (
@@ -212,7 +195,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                         <th>Type</th>
                         {showOwner && <th>Author</th>}
                         <th>Status</th>
-                        <th>Progress</th>
+                        <th>Inventory progress</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -228,10 +211,10 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                             </td>
                             {showOwner && <td>{project.owner}</td>}
                             <td>{project.status === 'draft' ? <Badge bg="secondary">Draft</Badge> : <Badge bg="success">Validated</Badge>}</td>
-                            <td><ProjectProgress step={project.step}/></td>
+                            <td><ProjectProgress step={project.stages["Inventory"][0]?.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
                                 <Button variant="primary" className="btn-sm" style={{marginRight: "2px"}} onClick={() => openProject(project)}>Open</Button>
-                                <Button variant="success" className="btn-sm" style={{marginRight: "2px"}} disabled={project.step < 9 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
+                                <Button variant="action" className="btn-sm" style={{marginRight: "2px", borderRadius: "10px"}} disabled={project.stages["Inventory"][0]?.step < 8 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}>Validate</Button>
                                 <Button variant="danger" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}>Delete</Button>
                             </td>
                         </tr>
@@ -296,7 +279,7 @@ const ProjectProgress = ({step} : {step: number}) => {
     for (let i = 0; i < step; i++) {
         res += '🟩'
     }
-    for (let i = step; i < 9; i++) {
+    for (let i = step; i < 8; i++) {
         res += '🟧'
     }
     return <span style={{whiteSpace: "nowrap"}}>{res}</span>

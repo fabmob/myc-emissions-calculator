@@ -1,10 +1,26 @@
-import {EnergyAndEmissionsDefaultValues} from './types'
-// DEPRECATED, these values shouldn't be used, values are sent by frontend for each project
-export const energyAndEmissionsDefaultValues: EnergyAndEmissionsDefaultValues = {
-    "Gasoline": {pci: 32.8148148148148, ges: [86241.3703703704, 86241.3703703704, 86241.3703703704, 86241.3703703704, 86241.3703703704, 86241.3703703704]},
-    "Diesel": {pci: 36.2869198312236, ges: [91369.9807424594, 91369.9807424594, 91369.9807424594, 91369.9807424594, 91369.9807424594, 91369.9807424594]},
-    "LPG": {pci: 24.6997389033943, ges: [72691.8616407982, 72691.8616407982, 72691.8616407982, 72691.8616407982, 72691.8616407982, 72691.8616407982]},
-    "NG": {pci: 48.0, ges: [67772.2608695652, 67772.2608695652, 67772.2608695652, 67772.2608695652, 67772.2608695652, 67772.2608695652]},
-    "Hybrid": {pci: 32.8148148148148, ges: [85192.3703703704, 85192.3703703704, 85192.3703703704, 85192.3703703704, 85192.3703703704, 85192.3703703704]},
-    "Electric": {pci: 3.6, ges: [20556, 20556, 20556, 20556, 20556, 20556]}
+import {EmissionsFactors} from './types'
+
+export const energyAndEmissionsDefaultValues: EmissionsFactors = {
+    "WTW": {
+        "Gasoline": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: "89400", source: ''},
+        "Diesel": {lowerHeatingValue: "43.1", density: "0.832", pci: "35.8592", ges: "90400", source: ''},
+        "CNG": {lowerHeatingValue: "45.1", density: "1", pci: "45.1", ges: "68100", source: ''},
+        "LPG": {lowerHeatingValue: "46", density: "0.522193211488251", pci: "24.020887728", ges: "75300", source: ''},
+        "LNG": {lowerHeatingValue: "45.1", density: "0.39", pci: "17.589", ges: "80270", source: ''},
+        "Hybrid": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: "89400", source: ''},
+        "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: "0", source: ''},
+        "Hydrogen": {lowerHeatingValue: "119.88", density: "1", pci: "119.88", ges: "132900", source: ''},
+        "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: "0", source: ''}
+    },
+    "TTW": {
+        "Gasoline": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: "75200", source: ''},
+        "Diesel": {lowerHeatingValue: "43.1", density: "0.832", pci: "35.8592", ges: "74500", source: ''},
+        "CNG": {lowerHeatingValue: "45.1", density: "1", pci: "45.1", ges: "59400", source: ''},
+        "LPG": {lowerHeatingValue: "46", density: "0.522193211488251", pci: "24.020887728", ges: "67300", source: ''},
+        "LNG": {lowerHeatingValue: "45.1", density: "0.39", pci: "17.589", ges: "59420", source: ''},
+        "Hybrid": {lowerHeatingValue: "43.2", density: "0.745", pci: "32.184", ges: "75200", source: ''},
+        "Electric": {lowerHeatingValue: "3.6", density: "1", pci: "3.6", ges: "0", source: ''},
+        "Hydrogen": {lowerHeatingValue: "119.88", density: "1", pci: "119.88", ges: "0", source: ''},
+        "None": {lowerHeatingValue: "0", density: "0", pci: "0", ges: "0", source: ''}
+    }
 }

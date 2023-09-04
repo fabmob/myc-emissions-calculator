@@ -24,7 +24,7 @@ export default function TopDown(){
             "Gasoline": {toe: "0", source: "NA"},
             "Diesel": {toe: "0", source: "NA"},
             "LPG": {toe: "0", source: "NA"},
-            "NG": {toe: "0", source: "NA"},
+            "CNG": {toe: "0", source: "NA"},
             "Hybrid": {toe: "0", source: "NA"},
             "Electric": {toe: "0", source: "NA"},
             "Hydrogen": {toe: "0", source: "NA"},
@@ -34,7 +34,7 @@ export default function TopDown(){
             "Gasoline": {toe: "0", source: "NA"},
             "Diesel": {toe: "0", source: "NA"},
             "LPG": {toe: "0", source: "NA"},
-            "NG": {toe: "0", source: "NA"},
+            "CNG": {toe: "0", source: "NA"},
             "Hybrid": {toe: "0", source: "NA"},
             "Electric": {toe: "0", source: "NA"},
             "Hydrogen": {toe: "0", source: "NA"},
@@ -55,19 +55,19 @@ export default function TopDown(){
                 .then(data => {
                     console.log(data.project)
                     setProject(data.project)
-                    if (data?.project?.steps?.[8]) {
+                    if (data?.project?.stages?.['Inventory']?.[0]?.steps?.[8]) {
                         // Patch old project with missing fuel types
                         for (let j = 0; j < ftypes.length; j++) {
                             let ftype = ftypes[j] as FuelType
-                            if (!data.project.steps[8].passengers[ftype]) {
-                                data.project.steps[8].passengers[ftype] = {toe: "0", source: "NA"}
+                            if (!data.project.stages['Inventory'][0].steps[8].passengers[ftype]) {
+                                data.project.stages['Inventory'][0].steps[8].passengers[ftype] = {toe: "0", source: "NA"}
                             }
-                            if (!data.project.steps[8].freight[ftype]) {
-                                data.project.steps[8].freight[ftype] = {toe: "0", source: "NA"}
+                            if (!data.project.stages['Inventory'][0].steps[8].freight[ftype]) {
+                                data.project.stages['Inventory'][0].steps[8].freight[ftype] = {toe: "0", source: "NA"}
                             }
                         }
                         
-                        setInputData(data.project.steps[8] as InputTopDown)
+                        setInputData(data.project.stages['Inventory'][0].steps[8] as InputTopDown)
                     }
                 });
         }
@@ -113,13 +113,13 @@ export default function TopDown(){
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token },
             body: JSON.stringify({ inputData: inputData })
         };
-        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/step/8', requestOptions)
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/8', requestOptions)
             .then(response => response.json())
             .then(() => navigate('/project/' + projectId + '/viz'));
     }
     return (
         <Container className="projectStepContainer">
-            <Progress project={project} currentStep={8} />
+            <Progress project={project} currentStep={8} stage='Inventory' />
             <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
                 <Col xs lg="8">
                     <h1>Top Down validation</h1>

@@ -1,0 +1,1 @@
+CREATE Table ProjectSources (sourceId INTEGER PRIMARY KEY AUTOINCREMENT, projectId INTEGER, value STRING, FOREIGN KEY(projectId) REFERENCES Projects(id))

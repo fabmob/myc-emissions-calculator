@@ -10,7 +10,7 @@ import { Image } from 'react-bootstrap'
 
 export default function WelcomePage(){
     return (
-        <>
+        <div style={{textAlign: "center", backgroundColor: "white"}}>
             <Jumbo />
             <Methodology />
             <Devs />
@@ -20,7 +20,7 @@ export default function WelcomePage(){
                     <Image src="/GitHub-Mark-32px.png" alt="github"></Image>
                 </a>
             </footer>
-        </>
+        </div>
     )
 }
 const Jumbo = () => {
@@ -41,7 +41,7 @@ const Jumbo = () => {
                         It enables calculating GHG inventories of cities as well as BAU (business as usual) scenarios. <b>Governments can therefore calculate the environmental effects of local urban mobility activity and foresee the evolution if no actions is taken.</b>
                         </p>
                         {keycloak.authenticated ?
-                        <Button variant="success" size="lg" onClick={() => navigate('/getStarted')}>Get Started</Button>
+                        <Button variant="success" size="lg" onClick={() => navigate('/projects')}>Get Started</Button>
                         : <Button variant="primary" size="lg" onClick={() => keycloak.login()}>Login</Button>
                         }
                     </Col>
@@ -72,7 +72,7 @@ const Devs = () => (
         <Row className='align-items-center'>
             <Col lg={{span: '5', order: 'last'}} className="p-5">
                 <h1>Creators</h1>
-                <p>The tool was developed by <a href="https://lafabriquedesmobilites.fr/" target="_blank" rel="noreferrer">Fabrique des Mobilités </a> based on the excel model created by the <a href="http://www.ifeu.de">Institute for Energy and Environmental Research</a> in cooperation with the German and French development agencies GIZ and AFD. It is not allowed to use the tool for commercial purposes.</p>
+                <p>The tool was developed by <a href="https://lafabriquedesmobilites.fr/" target="_blank" rel="noreferrer">Fabrique des Mobilités </a> based on the <a href="https://www.mobiliseyourcity.net/mobiliseyourcity-emissions-calculator" target="_blank" rel="noreferrer">excel</a> model created by the <a href="http://www.ifeu.de">Institute for Energy and Environmental Research</a> in cooperation with the German and French development agencies GIZ and AFD. It is not allowed to use the tool for commercial purposes.</p>
                 <p>The developers are not responsible for the accuracy of the results. Any modification of the tool is the responsibility of the user.</p>
             </Col>
             <Col lg={{span: '5', order: 'first', offset: '1'}} className="p-5">

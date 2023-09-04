@@ -1,24 +1,13 @@
-.progressMenu .btn {
-    background-color: initial !important;
-    border: none !important;
-    font-size: 12px !important;
-}
 
-.progressMenu .stepTodo {
-    color: orange !important;
-}
+
 .progressMenu .stepDisabled {
     color: lightgray !important;
 }
 .progressMenu .currentStep {
     font-weight: bold;
-    color: orange !important;
-    text-decoration: underline
 }
 .progressMenu .currentStepDone {
     font-weight: bold;
-    color: green !important;
-    text-decoration: underline
 }
 .progressMenu .currentStepDone:after {
     content: '\2713';
@@ -27,13 +16,9 @@
     padding-right: 2px;
 }
 
-.progressMenu .stepDone {
-    color: green !important;
-}
 .progressMenu .stepDone:after {
     content: '\2713';
     display: inline-block;
-    color: green;
     padding-left: 2px;
     padding-right: 2px;
 }

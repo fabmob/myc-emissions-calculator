@@ -2,15 +2,214 @@
   color: rgb(102, 102, 102);
 }
 
-.btn-primary {
-    background-color: #1bb9d9;
-    border-color: #1bb9d9;
+.btn-primary, .btn-secondary {
+    padding: 8px 14px;
+    font-weight: 700;
+    border-radius: 10px;
+}
+.btn-primary,.btn-primary:active,.btn-primary:focus {
+    background-color: #a2217c;
+    border-color: #a2217c;
+    --bs-btn-active-border-color: #a2217c;
+    --bs-btn-active-bg: #a2217c;
+}
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.25rem   #a2217b6e;
 }
 .btn-primary:hover {
-    background-color: #44c9ec;
-    border-color: #44c9ec;
+    background-color: #caa6c0;
+    border-color: #caa6c0;
+    color: #A2217C;
+}
+.btn-secondary,.btn-secondary:active,.btn-secondary:focus {
+    background-color: #CE8DBB;
+    border-color: #CE8DBB;
+
+    --bs-btn-active-border-color: #CE8DBB;
+    --bs-btn-active-bg: #CE8DBB;
+}
+.btn-secondary:hover {
+    background-color: #caa6c0;
+    border-color: #caa6c0;
+    color: #A2217C;
+}
+.btn-sm {
+    padding: 0 0.5rem;
+    font-size: 12px;
+    border-radius: 10px;
+}
+.btn-action {
+    background-color: #2CB1D5;
+    border-color: #2CB1D5;
+    --bs-btn-disabled-bg: #2CB1D5;
+    --bs-btn-disabled-color: white;
+    color: white;
+    font-weight: 700;
+    border-radius: 0.25rem;
+}
+.btn-action:hover {
+    background-color: #AAE0EE;
+    border-color: #AAE0EE;
+    color: #2CB1D5;
+}
+.btn-link {
+    color: #808080;
+    text-decoration: none;
+    font-weight: 500;
+}
+.btn-link:hover {
+    color: #B3B3B3;
+}
+
+h1, h2, h3 {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 700;
+    color: #292929;
+}  
+body {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    background-color: #F5F5F5;    
+}
+b {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+}
+.item {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    color: #B3B3B3;
+}
+.item-sm {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 22px;
+    color: #B3B3B3 !important;
+    white-space: nowrap;
+}
+.bg-info {
+    background-color: #EBEBEB !important;
+    color: #292929;
+}
+.badge.bg-info:hover {
+    cursor: pointer;
+    background-color: #0000000d !important;
+}
+.bg-disabled {
+    background-color: #B3B3B3;
 }
 .inputTable thead th {
     background-color: #9e2886;
     color: white;
+}
+
+td, tr, th {
+    border-color: #67CAE4;
+}
+table thead tr {
+    border-top: none;
+}
+table tbody tr:last-child {
+    border-bottom: none;
+}
+tbody {
+    border-top: none !important;
+    color: #B3B3B3;
+    --bs-table-color: #B3B3B3;
+    font-weight: 700;
+}
+table tr td:first-child,
+table tr th:first-child {
+    border-left: none;
+}
+table tr td:last-child,
+table tr th:last-child {
+    border-right: none;
+}
+td {
+    vertical-align: middle;
+}
+.cellError {
+    color: #FF5C77 !important;
+}
+input.cellError {
+    background-color: #FF5C771A !important;
+}
+.infoTooltip, .errorTooltip {
+    /* Prevents the tooltip from messing with the page when it's created */
+    top:0;
+    left:0;
+}
+.infoTooltip.show, .errorTooltip.show {
+    opacity: 1 !important;
+    
+}
+.tooltip-inner {
+    padding: 20px;
+    text-align: left;
+    font-weight: 500;
+    max-width: 350px;
+}
+.errorTooltip .tooltip-inner {
+    background-color: #ffedf0;
+    color: #FF5C77;
+}
+.errorTooltip .tooltip-arrow::before {
+    border-bottom-color: #ffedf0;
+}
+.infoTooltip .tooltip-inner {
+    background-color: white;
+    color: #292929;
+}
+.infoTooltip .tooltip-arrow::before {
+    border-top-color: white;
+}
+.stepLeft {
+    background-color: rgb(237, 249, 253);
+}
+.stepLeft, .stepRight {
+    padding-top: 20px;
+}
+@media only screen and (min-width: 1400px)  {
+    .stepLeft, .stepRight {
+        padding: 20px;
+    }
+}
+
+.btn-imglink {
+    padding-left: 0;
+}
+.btn-imglink:hover {
+    opacity: 0.6;
+}
+.btn-group-lg .btn {
+    border-radius: 10px;
+    
+}
+.card {
+    background-color: #E6E6E6;
+    border-radius: 24px;
+    border: none;
+    padding: 30px 36px;
+}
+.card-header {
+    border: none;
+    background-color: inherit;
+}
+.card-header:first-child {
+    border-radius: 24px;
+}
+.card-header h2{
+    font-size: 24px;
+}
+.table {
+    --bs-table-bg: transparent;
 }
