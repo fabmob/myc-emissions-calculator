@@ -45,7 +45,7 @@ export default function InventoryIntro(){
                     <h1>Inventory</h1>
                     <DescAndNav 
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
-                        nextNav={{link: '/project/' + project.id + '/Inventory/step/1', content: "Start →", variant: "primary"}}
+                        nextNav={{link: '/project/' + project.id + '/Inventory/step/1', content: "Start", showArrow: true, variant: "primary"}}
                     >
                         <div className="text desc">
                             <p>The emission inventory for the transport sector is calculated using the bottom-up approach - based on transport activity. It relies on the ASIF framework, considering Activity, Structure, Intensity and Fuel.</p>

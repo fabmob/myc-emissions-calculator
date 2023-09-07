@@ -245,8 +245,8 @@ export default function InventoryStep1(){
                 <h1>Vehicles and fuels in use</h1>
                 {error && <Alert variant='danger'>{error}</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/intro', content: "<- Prev.", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/intro', content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     
                 >
                     <div className="text desc">
