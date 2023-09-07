@@ -95,17 +95,24 @@ const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep
                 
             </Row>
             <ol style={{"marginTop": "40px"}}>
-                {stepsToUse.map((step, index) => (
-                    <li key={index + 1}>
-                        <Button
-                            className={getClassName(index + 1)}
-                            variant="link"
-                            disabled={props.project.stages?.[props.stage][0]?.step < index + 1}
-                            onClick={() => link((index + 1).toString())}>
-                            <span className="item"><span>{step}</span></span>
-                        </Button>
-                    </li>
-                ))}
+                {stepsToUse.map((step, index) => {
+                    const className = getClassName(index + 1)
+                    return (
+                        <li key={index + 1}>
+                            <Button
+                                className={className}
+                                variant="link"
+                                disabled={props.project.stages?.[props.stage][0]?.step < index + 1}
+                                onClick={() => link((index + 1).toString())}>
+                                {/* <span className="item"><span>{step}</span></span> */}
+                                <span className="item">
+                                    <span>{step}</span>
+                                    {(className === "currentStepDone" || className === "stepDone") && <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#check"}/></svg>}
+                                </span>
+                            </Button>
+                        </li>
+                    )
+                    })}
             </ol>
         </div>
     );
