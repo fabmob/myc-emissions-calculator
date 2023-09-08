@@ -16,7 +16,7 @@ import { inputsAsCsv } from '../utils/inputsAsCsv'
 import { CSVLink } from 'react-csv'
 import Footer from "../components/Footer"
 
-export default function ProjectCompare(){
+export default function ProjectCompare(props: {project: ProjectType}){
     const { keycloak, initialized } = useKeycloak()
     const navigate = useNavigate()
     const params = useParams()
@@ -34,30 +34,16 @@ export default function ProjectCompare(){
     const projectId = params.projectId
     
     useEffect(() => {
-        if (initialized && keycloak.authenticated && projectId){
-            const requestOptions = {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
-            };
-            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
-                .then(response => {
-                    if (response.status !== 200) {
-                        navigate('/')
-                    }
-                    return response.json()
-                })
-                .then(data => {
-                    console.log("get projetcs reply", data)
-                    setProject(data.project)
-                    fetchInventoryResults()
-                    fetchBAUResults()
-                    for (let i = 0; i < data.project.stages.Climate.length; i++) {
-                        fetchClimateResults(data.project, i)
-                    }
-                    setDisplayedClimateScenarios(data.project.stages.Climate.map((e:any)=>true))
-                });
+        if (initialized && keycloak.authenticated && props.project.id){
+            setProject(props.project)
+            fetchInventoryResults()
+            fetchBAUResults()
+            for (let i = 0; i < props.project.stages.Climate.length; i++) {
+                fetchClimateResults(props.project, i)
             }
-    }, [keycloak, initialized, projectId, navigate])
+            setDisplayedClimateScenarios(props.project.stages.Climate.map((e:any)=>true))
+        }
+    }, [keycloak, initialized, props.project, navigate])
     
     const fetchInventoryResults = () => {
         const requestOptions = {
@@ -141,173 +127,150 @@ export default function ProjectCompare(){
     }
     return (
         <>
-        <section>
-        <Container>
-            <Row className="justify-content-md-center">
-                <Col xs lg="8">
-                    <h1>{project.name}</h1>
-                </Col>
-            </Row>
-             <Row className="justify-content-md-center">
-                <Col xs lg="8">
-                    <ProjectNav current="Compare" project={project} />
-                    <div className="chart-header">
-                        <h2>Graphs</h2>
-                        <div className="commands">                   
-                            <Button variant="link" onClick={() => setShowOptionsModal(true)} style={{width: "100%", padding: "4px 4px"}}>
-                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#settings"}/></svg><span>Settings</span></span>
-                            </Button>
-                        </div>
-                    </div>
-                    <EmissionsCompareBarChart 
-                        project={project} 
-                        bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
-                        climateEmissionsData={climateResults.map((e => typeOfGHGIsWTW ? e.emissions.WTW : e.emissions.TTW)) || []}
-                        displayedVtypes={displayedVtypes}
-                        displayedClimateScenarios={displayedClimateScenarios}
-                        showPercents={showPercents}
-                        showLabels={showLabels}
-                        highContrastColors={highContrastColors}
-                    ></EmissionsCompareBarChart>
-                    <VktCompareBarChart 
-                        project={project} 
-                        bauVktData={bauResults?.vkt || {}} 
-                        climateVktData={climateResults.map(e => e?.vkt) || []}
-                        displayedVtypes={displayedVtypes}
-                        displayedClimateScenarios={displayedClimateScenarios}
-                        showPercents={showPercents}
-                        showLabels={showLabels}
-                        highContrastColors={highContrastColors}
-                    ></VktCompareBarChart>
-                    <ModalShareCompareBarChart
-                        project={project}
-                        title="Passenger modal share"
-                        bauModalShareData={bauResults?.modalShare?.passengers || {}}
-                        climateModalShareData={climateResults.map(e=>e?.modalShare?.passengers) || []}
-                        displayedClimateScenarios={displayedClimateScenarios}
-                        showLabels={showLabels}
-                        highContrastColors={highContrastColors}
-                    ></ModalShareCompareBarChart>
-                    <ModalShareCompareBarChart
-                        project={project}
-                        title="Freight modal share"
-                        bauModalShareData={bauResults?.modalShare?.freight || {}}
-                        climateModalShareData={climateResults.map(e => e?.modalShare?.freight) || []}
-                        displayedClimateScenarios={displayedClimateScenarios}
-                        showLabels={showLabels}
-                        highContrastColors={highContrastColors}
-                    ></ModalShareCompareBarChart>
-                    <TransportPerformanceCompareBarChart 
-                        title="Passenger transport performance (pkm)"
-                        project={project} 
-                        bauTransportPerformanceData={bauResults?.transportPerformance?.passengers || {}} 
-                        climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.passengers) || []}
-                        displayedVtypes={displayedVtypes}
-                        displayedClimateScenarios={displayedClimateScenarios}
-                        showPercents={showPercents}
-                        showLabels={showLabels}
-                        highContrastColors={highContrastColors}
-                    ></TransportPerformanceCompareBarChart>
-                    <TransportPerformanceCompareBarChart 
-                        title="Freight transport performance (tkm)"
-                        project={project} 
-                        bauTransportPerformanceData={bauResults?.transportPerformance?.freight || {}} 
-                        climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.freight) || []}
-                        displayedVtypes={displayedVtypes}
-                        displayedClimateScenarios={displayedClimateScenarios}
-                        showPercents={showPercents}
-                        showLabels={showLabels}
-                        highContrastColors={highContrastColors}
-                    ></TransportPerformanceCompareBarChart>
-                    <EmissionsPerUkmCompareBarChart 
-                        title="Passenger emissions per transport performance (gCO2/pkm)"
-                        project={project} 
-                        bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
-                        climateEmissionsData={climateResults.map((e => typeOfGHGIsWTW ? e.emissions.WTW : e.emissions.TTW)) || []}
-                        bauTransportPerformanceData={bauResults?.transportPerformance?.passengers || {}} 
-                        climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.passengers) || []}
-                        displayedVtypes={displayedVtypes}
-                        displayedClimateScenarios={displayedClimateScenarios}
-                        showPercents={showPercents}
-                        showLabels={showLabels}
-                        highContrastColors={highContrastColors}
-                    ></EmissionsPerUkmCompareBarChart>
-                    <EmissionsPerUkmCompareBarChart 
-                        title="Freight emissions per transport performance (gCO2/tkm)"
-                        project={project} 
-                        bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
-                        climateEmissionsData={climateResults.map((e => typeOfGHGIsWTW ? e.emissions.WTW : e.emissions.TTW)) || []}
-                        bauTransportPerformanceData={bauResults?.transportPerformance?.freight || {}} 
-                        climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.freight) || []}
-                        displayedVtypes={displayedVtypes}
-                        displayedClimateScenarios={displayedClimateScenarios}
-                        showPercents={showPercents}
-                        showLabels={showLabels}
-                        highContrastColors={highContrastColors}
-                    ></EmissionsPerUkmCompareBarChart>
-                    <h2>Datasets</h2>
-                    <Table bordered>
-                        <thead>
-                            <tr>
-                                <th className="item-sm"><span className="item"><span>Dataset</span></span></th>
-                                <th className="item-sm"><span className="item"><span>Action</span></span></th>
-                                <th className="item-sm"><span className="item"><span>Sources</span></span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><Badge bg="disabled"><span className="item"><span>Inventory</span></span></Badge></td>
-                                <td>{project.name && <CSVLink data={csvs.Inventory} filename={project.name.replace(" ", "_") + "_Inventory_Inputs.csv"} className="btn btn-primary btn-sm">
-                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
-                                </CSVLink>}</td>
-                                <td>{sourcesUsed.Inventory.map(e => e ? "[" + e + "] ": "")}</td>
-                            </tr>
-                            <tr>
-                                <td><Badge bg="disabled"><span className="item"><span>BAU Scenario</span></span></Badge></td>
-                                <td>{project.name && <CSVLink data={csvs.BAU} filename={project.name.replace(" ", "_") + "_BAU_Inputs.csv"} className="btn btn-primary btn-sm">
-                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
-                                </CSVLink>}</td>
-                                <td>{sourcesUsed.BAU.map(e => e ? "[" + e + "] ": "")}</td>
-                            </tr>
-                            <tr>
-                                <td><Badge bg="disabled"><span className="item"><span>Climate Scenarios</span></span></Badge></td>
-                                <td>{project.name && <CSVLink data={csvs.Climate} filename={project.name.replace(" ", "_") + "_Climate_Inputs.csv"} className="btn btn-primary btn-sm">
-                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
-                                </CSVLink>}</td>
-                                <td>{sourcesUsed.Climate.map(e => e ? "[" + e + "] ": "")}</td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                    <h2>Sources</h2>
-                    <Table bordered>
-                        <thead>
-                            <tr>
-                                <th className="item-sm"><span className="item"><span>Source</span></span></th>
-                                <th className="item-sm"><span className="item"><span>ID</span></span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {project?.sources?.map(({value, sourceId}, index) => {
-                                return (<tr key={index}>
-                                    <td><Badge bg="disabled"><span className="item"><span>{value}</span></span></Badge></td>
-                                    <td>[{sourceId}]</td>
-                                </tr>)
-                            })}
-                        </tbody>
-                    </Table>
-                </Col>
-            </Row>
-        </Container>
-        </section>
-        <section className="footer">
-                <div className="container">
-                    <Row className="justify-content-md-center">
-                        <Col lg="8">
-                            <Footer />
-                        </Col>
-                    </Row>
+            <div className="chart-header">
+                <h2>Graphs</h2>
+                <div className="commands">                   
+                    <Button variant="link" onClick={() => setShowOptionsModal(true)} style={{width: "100%", padding: "4px 4px"}}>
+                        <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#settings"}/></svg><span>Settings</span></span>
+                    </Button>
                 </div>
-            </section>
+            </div>
+            <EmissionsCompareBarChart 
+                project={project} 
+                bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
+                climateEmissionsData={climateResults.map((e => typeOfGHGIsWTW ? e.emissions.WTW : e.emissions.TTW)) || []}
+                displayedVtypes={displayedVtypes}
+                displayedClimateScenarios={displayedClimateScenarios}
+                showPercents={showPercents}
+                showLabels={showLabels}
+                highContrastColors={highContrastColors}
+            ></EmissionsCompareBarChart>
+            <VktCompareBarChart 
+                project={project} 
+                bauVktData={bauResults?.vkt || {}} 
+                climateVktData={climateResults.map(e => e?.vkt) || []}
+                displayedVtypes={displayedVtypes}
+                displayedClimateScenarios={displayedClimateScenarios}
+                showPercents={showPercents}
+                showLabels={showLabels}
+                highContrastColors={highContrastColors}
+            ></VktCompareBarChart>
+            <ModalShareCompareBarChart
+                project={project}
+                title="Passenger modal share"
+                bauModalShareData={bauResults?.modalShare?.passengers || {}}
+                climateModalShareData={climateResults.map(e=>e?.modalShare?.passengers) || []}
+                displayedClimateScenarios={displayedClimateScenarios}
+                showLabels={showLabels}
+                highContrastColors={highContrastColors}
+            ></ModalShareCompareBarChart>
+            <ModalShareCompareBarChart
+                project={project}
+                title="Freight modal share"
+                bauModalShareData={bauResults?.modalShare?.freight || {}}
+                climateModalShareData={climateResults.map(e => e?.modalShare?.freight) || []}
+                displayedClimateScenarios={displayedClimateScenarios}
+                showLabels={showLabels}
+                highContrastColors={highContrastColors}
+            ></ModalShareCompareBarChart>
+            <TransportPerformanceCompareBarChart 
+                title="Passenger transport performance (pkm)"
+                project={project} 
+                bauTransportPerformanceData={bauResults?.transportPerformance?.passengers || {}} 
+                climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.passengers) || []}
+                displayedVtypes={displayedVtypes}
+                displayedClimateScenarios={displayedClimateScenarios}
+                showPercents={showPercents}
+                showLabels={showLabels}
+                highContrastColors={highContrastColors}
+            ></TransportPerformanceCompareBarChart>
+            <TransportPerformanceCompareBarChart 
+                title="Freight transport performance (tkm)"
+                project={project} 
+                bauTransportPerformanceData={bauResults?.transportPerformance?.freight || {}} 
+                climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.freight) || []}
+                displayedVtypes={displayedVtypes}
+                displayedClimateScenarios={displayedClimateScenarios}
+                showPercents={showPercents}
+                showLabels={showLabels}
+                highContrastColors={highContrastColors}
+            ></TransportPerformanceCompareBarChart>
+            <EmissionsPerUkmCompareBarChart 
+                title="Passenger emissions per transport performance (gCO2/pkm)"
+                project={project} 
+                bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
+                climateEmissionsData={climateResults.map((e => typeOfGHGIsWTW ? e.emissions.WTW : e.emissions.TTW)) || []}
+                bauTransportPerformanceData={bauResults?.transportPerformance?.passengers || {}} 
+                climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.passengers) || []}
+                displayedVtypes={displayedVtypes}
+                displayedClimateScenarios={displayedClimateScenarios}
+                showPercents={showPercents}
+                showLabels={showLabels}
+                highContrastColors={highContrastColors}
+            ></EmissionsPerUkmCompareBarChart>
+            <EmissionsPerUkmCompareBarChart 
+                title="Freight emissions per transport performance (gCO2/tkm)"
+                project={project} 
+                bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
+                climateEmissionsData={climateResults.map((e => typeOfGHGIsWTW ? e.emissions.WTW : e.emissions.TTW)) || []}
+                bauTransportPerformanceData={bauResults?.transportPerformance?.freight || {}} 
+                climateTransportPerformanceData={climateResults.map(e => e?.transportPerformance?.freight) || []}
+                displayedVtypes={displayedVtypes}
+                displayedClimateScenarios={displayedClimateScenarios}
+                showPercents={showPercents}
+                showLabels={showLabels}
+                highContrastColors={highContrastColors}
+            ></EmissionsPerUkmCompareBarChart>
+            <h2>Datasets</h2>
+            <Table bordered>
+                <thead>
+                    <tr>
+                        <th className="item-sm"><span className="item"><span>Dataset</span></span></th>
+                        <th className="item-sm"><span className="item"><span>Action</span></span></th>
+                        <th className="item-sm"><span className="item"><span>Sources</span></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><Badge bg="disabled"><span className="item"><span>Inventory</span></span></Badge></td>
+                        <td>{project.name && <CSVLink data={csvs.Inventory} filename={project.name.replace(" ", "_") + "_Inventory_Inputs.csv"} className="btn btn-primary btn-sm">
+                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
+                        </CSVLink>}</td>
+                        <td>{sourcesUsed.Inventory.map(e => e ? "[" + e + "] ": "")}</td>
+                    </tr>
+                    <tr>
+                        <td><Badge bg="disabled"><span className="item"><span>BAU Scenario</span></span></Badge></td>
+                        <td>{project.name && <CSVLink data={csvs.BAU} filename={project.name.replace(" ", "_") + "_BAU_Inputs.csv"} className="btn btn-primary btn-sm">
+                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
+                        </CSVLink>}</td>
+                        <td>{sourcesUsed.BAU.map(e => e ? "[" + e + "] ": "")}</td>
+                    </tr>
+                    <tr>
+                        <td><Badge bg="disabled"><span className="item"><span>Climate Scenarios</span></span></Badge></td>
+                        <td>{project.name && <CSVLink data={csvs.Climate} filename={project.name.replace(" ", "_") + "_Climate_Inputs.csv"} className="btn btn-primary btn-sm">
+                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
+                        </CSVLink>}</td>
+                        <td>{sourcesUsed.Climate.map(e => e ? "[" + e + "] ": "")}</td>
+                    </tr>
+                </tbody>
+            </Table>
+            <h2>Sources</h2>
+            <Table bordered>
+                <thead>
+                    <tr>
+                        <th className="item-sm"><span className="item"><span>Source</span></span></th>
+                        <th className="item-sm"><span className="item"><span>ID</span></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {project?.sources?.map(({value, sourceId}, index) => {
+                        return (<tr key={index}>
+                            <td><Badge bg="disabled"><span className="item"><span>{value}</span></span></Badge></td>
+                            <td>[{sourceId}]</td>
+                        </tr>)
+                    })}
+                </tbody>
+            </Table>
             <OptionsModal
                 show={showOptionsModal} 
                 onHide={() => setShowOptionsModal(false)}
