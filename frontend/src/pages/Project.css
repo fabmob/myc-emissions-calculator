@@ -88,9 +88,3 @@ h2 .badge {
     font-size: 12px;
     vertical-align: middle;
 }
-.stickyOptions {
-    position: sticky !important;
-    top: 10px;
-    z-index: 1;
-    border: 1px solid gray !important;
-}

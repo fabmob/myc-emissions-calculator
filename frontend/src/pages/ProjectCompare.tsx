@@ -1,7 +1,7 @@
 import React, {useState, useEffect, SetStateAction} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Button, Container, Row, Col, Card, Table, Badge, Form } from 'react-bootstrap'
+import { Button, Container, Row, Col, Card, Table, Badge, Form, Modal } from 'react-bootstrap'
 import {ProjectType, TotalEnergyAndEmissions, EmissionsResults, InputStep2, InputInventoryStep1} from '../frontendTypes'
 import ProjectNav from '../components/ProjectNav'
 
@@ -30,6 +30,7 @@ export default function ProjectCompare(){
     const [showPercents, setShowPercents] = useState(false)
     const [showLabels, setShowLabels] = useState(false)
     const [highContrastColors, setHighContrastColors] = useState(false)
+    const [showOptionsModal, setShowOptionsModal] = useState(false)
     const projectId = params.projectId
     
     useEffect(() => {
@@ -150,21 +151,14 @@ export default function ProjectCompare(){
              <Row className="justify-content-md-center">
                 <Col xs lg="8">
                     <ProjectNav current="Compare" project={project} />
-                    <h2>Graphs</h2>
-                    <Options 
-                        project={project} 
-                        setDisplayedVtypes={setDisplayedVtypes} 
-                        typeOfGHGIsWTW={typeOfGHGIsWTW} 
-                        setTypeOfGHGIsWTW={setTypeOfGHGIsWTW}
-                        showPercents={showPercents} 
-                        setShowPercents={setShowPercents}
-                        showLabels={showLabels} 
-                        setShowLabels={setShowLabels}
-                        highContrastColors={highContrastColors}
-                        setHighContrastColors={setHighContrastColors}
-                        displayedClimateScenarios={displayedClimateScenarios}
-                        setDisplayedClimateScenarios={setDisplayedClimateScenarios}
-                    />
+                    <div className="chart-header">
+                        <h2>Graphs</h2>
+                        <div className="commands">                   
+                            <Button variant="link" onClick={() => setShowOptionsModal(true)} style={{width: "100%", padding: "4px 4px"}}>
+                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#settings"}/></svg><span>Settings</span></span>
+                            </Button>
+                        </div>
+                    </div>
                     <EmissionsCompareBarChart 
                         project={project} 
                         bauEmissionsData={(typeOfGHGIsWTW ? bauResults?.emissions?.WTW : bauResults?.emissions?.TTW) || {}} 
@@ -314,16 +308,30 @@ export default function ProjectCompare(){
                     </Row>
                 </div>
             </section>
+            <OptionsModal
+                show={showOptionsModal} 
+                onHide={() => setShowOptionsModal(false)}
+                project={project} 
+                setDisplayedVtypes={setDisplayedVtypes} 
+                typeOfGHGIsWTW={typeOfGHGIsWTW} 
+                setTypeOfGHGIsWTW={setTypeOfGHGIsWTW}
+                showPercents={showPercents} 
+                setShowPercents={setShowPercents}
+                showLabels={showLabels} 
+                setShowLabels={setShowLabels}
+                highContrastColors={highContrastColors}
+                setHighContrastColors={setHighContrastColors}
+                displayedClimateScenarios={displayedClimateScenarios}
+                setDisplayedClimateScenarios={setDisplayedClimateScenarios}
+            />
         </>
     )
 }
 type SetBoolean = (key:boolean | ((k:boolean) => boolean)) => void
-const Options = (
-    {project, setDisplayedVtypes, typeOfGHGIsWTW, setTypeOfGHGIsWTW, showPercents, setShowPercents, showLabels, setShowLabels, highContrastColors, setHighContrastColors, displayedClimateScenarios, setDisplayedClimateScenarios}: 
-    {project: ProjectType, setDisplayedVtypes: React.Dispatch<SetStateAction<{[key:string]: boolean}>>, typeOfGHGIsWTW: boolean, setTypeOfGHGIsWTW: SetBoolean, showPercents: boolean, setShowPercents: SetBoolean, showLabels: boolean, setShowLabels: SetBoolean, highContrastColors: boolean, setHighContrastColors: SetBoolean, displayedClimateScenarios: boolean[], setDisplayedClimateScenarios: React.Dispatch<SetStateAction<boolean[]>>}
+const OptionsModal = (
+    {project, show, onHide, setDisplayedVtypes, typeOfGHGIsWTW, setTypeOfGHGIsWTW, showPercents, setShowPercents, showLabels, setShowLabels, highContrastColors, setHighContrastColors, displayedClimateScenarios, setDisplayedClimateScenarios}: 
+    {project: ProjectType, show: boolean, onHide: () => void, setDisplayedVtypes: React.Dispatch<SetStateAction<{[key:string]: boolean}>>, typeOfGHGIsWTW: boolean, setTypeOfGHGIsWTW: SetBoolean, showPercents: boolean, setShowPercents: SetBoolean, showLabels: boolean, setShowLabels: SetBoolean, highContrastColors: boolean, setHighContrastColors: SetBoolean, displayedClimateScenarios: boolean[], setDisplayedClimateScenarios: React.Dispatch<SetStateAction<boolean[]>>}
     ) => {
-    const [showBody, setShowBody] = useState(false)
-    const [pin, setPin] = useState(false)
     const [selectedVtypes, setSelectedVtypes] = useState({} as {[key:string]: boolean})
     useEffect(() => {
         const inventoryStep1 : InputInventoryStep1 = project.stages?.Inventory?.[0]?.steps?.[1] || {}
@@ -364,77 +372,74 @@ const Options = (
         })
     }
     return (
-        <>
-            <Card className={"d-print-none" + (pin ? " stickyOptions" : "")} style={{textAlign: "left", marginBottom: "20px"}}>
-                <Card.Header onClick={() => setShowBody(p=>!p)} style={{cursor: "pointer"}}>
-                    Settings
-                    {/* <span style={{float: "right"}} onClick={(e) => {e.stopPropagation(); setPin(p => !p)}}>📌</span> */}
-                </Card.Header>
-                {showBody && <Card.Body>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Displayed categories of transport</Form.Label>
-                        <Row>
-                        {vtypes.map((vtype, index) => {
-                            return (
-                                <Col xs="4" key={index}>
-                                    <Form.Switch style={{margin: "5px"}} id={"custom-switch-" + vtype} key={index}>
-                                        <Form.Switch.Input  name={vtype} checked={selectedVtypes[vtype]} onChange={updateSelectedVtypes}/>
-                                        <Form.Switch.Label>{vtype}</Form.Switch.Label>
-                                    </Form.Switch>
-                                </Col>
-                            )
-                        })}
-                        </Row>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Displayed Climate Scenarios</Form.Label>
-                        <Row>
-                        {displayedClimateScenarios.map((displayed, index) => {
-                            return (
-                                <Col xs="4" key={index}>
-                                    <Form.Switch style={{margin: "5px"}} key={index}>
-                                        <Form.Switch.Input  name={index.toString()} checked={displayed} onChange={updateSelectedScenario}/>
-                                        <Form.Switch.Label>{index+1}</Form.Switch.Label>
-                                    </Form.Switch>
-                                </Col>
-                            )
-                        })}
-                        </Row>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>GHG emission type</Form.Label>
-                        <Form.Check
-                            id="custom-switch-wtw"
-                            type="radio"
-                            checked={typeOfGHGIsWTW}
-                            onChange={() => setTypeOfGHGIsWTW(true)}
-                            label="Well To Wheel (WTW)"
-                        />
-                        <Form.Check
-                            id="custom-switch-ttw"
-                            type="radio"
-                            checked={!typeOfGHGIsWTW}
-                            onChange={() => setTypeOfGHGIsWTW(false)}
-                            label="Tank To Wheel (TTW)"
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Graph content</Form.Label>
-                        <Form.Switch style={{margin: "5px"}} id="custom-switch-percent">
-                            <Form.Switch.Input checked={showPercents} onChange={() => setShowPercents((p:boolean)=>!p)}/>
-                            <Form.Switch.Label>Display percents changes compared to BAU</Form.Switch.Label>
-                        </Form.Switch>
-                        <Form.Switch style={{margin: "5px"}} id="custom-switch-labels">
-                            <Form.Switch.Input checked={showLabels} onChange={() => setShowLabels((p:boolean)=>!p)}/>
-                            <Form.Switch.Label>Display labels</Form.Switch.Label>
-                        </Form.Switch>
-                        <Form.Switch style={{margin: "5px"}} id="custom-switch-labels">
-                            <Form.Switch.Input checked={highContrastColors} onChange={() => setHighContrastColors((p:boolean)=>!p)}/>
-                            <Form.Switch.Label>Use high contrast colors</Form.Switch.Label>
-                        </Form.Switch>
-                    </Form.Group>
-                </Card.Body>}
-            </Card>
-        </>
+        <Modal size="xl" centered show={show} onHide={onHide}>
+            <Modal.Header closeButton>
+                <Modal.Title>Settings</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form.Group className="mb-3">
+                    <Form.Label>Displayed categories of transport</Form.Label>
+                    <Row>
+                    {vtypes.map((vtype, index) => {
+                        return (
+                            <Col xs="6" key={index}>
+                                <Form.Switch style={{margin: "5px"}} id={"custom-switch-" + vtype} key={index}>
+                                    <Form.Switch.Input  name={vtype} checked={selectedVtypes[vtype]} onChange={updateSelectedVtypes}/>
+                                    <Form.Switch.Label>{vtype}</Form.Switch.Label>
+                                </Form.Switch>
+                            </Col>
+                        )
+                    })}
+                    </Row>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Displayed Climate Scenarios</Form.Label>
+                    <Row>
+                    {displayedClimateScenarios.map((displayed, index) => {
+                        return (
+                            <Col xs="4" key={index}>
+                                <Form.Switch style={{margin: "5px"}} key={index}>
+                                    <Form.Switch.Input  name={index.toString()} checked={displayed} onChange={updateSelectedScenario}/>
+                                    <Form.Switch.Label>{index+1}</Form.Switch.Label>
+                                </Form.Switch>
+                            </Col>
+                        )
+                    })}
+                    </Row>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>GHG emission type</Form.Label>
+                    <Form.Check
+                        id="custom-switch-wtw"
+                        type="radio"
+                        checked={typeOfGHGIsWTW}
+                        onChange={() => setTypeOfGHGIsWTW(true)}
+                        label="Well To Wheel (WTW)"
+                    />
+                    <Form.Check
+                        id="custom-switch-ttw"
+                        type="radio"
+                        checked={!typeOfGHGIsWTW}
+                        onChange={() => setTypeOfGHGIsWTW(false)}
+                        label="Tank To Wheel (TTW)"
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Graph content</Form.Label>
+                    <Form.Switch style={{margin: "5px"}} id="custom-switch-percent">
+                        <Form.Switch.Input checked={showPercents} onChange={() => setShowPercents((p:boolean)=>!p)}/>
+                        <Form.Switch.Label>Display percents changes compared to BAU</Form.Switch.Label>
+                    </Form.Switch>
+                    <Form.Switch style={{margin: "5px"}} id="custom-switch-labels">
+                        <Form.Switch.Input checked={showLabels} onChange={() => setShowLabels((p:boolean)=>!p)}/>
+                        <Form.Switch.Label>Display labels</Form.Switch.Label>
+                    </Form.Switch>
+                    <Form.Switch style={{margin: "5px"}} id="custom-switch-labels">
+                        <Form.Switch.Input checked={highContrastColors} onChange={() => setHighContrastColors((p:boolean)=>!p)}/>
+                        <Form.Switch.Label>Use high contrast colors</Form.Switch.Label>
+                    </Form.Switch>
+                </Form.Group>
+            </Modal.Body>
+        </Modal>
     );
   }
