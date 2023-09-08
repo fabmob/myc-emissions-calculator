@@ -77,7 +77,7 @@ export function createProject(project: types.Project, owner: string): [string | 
             new Date().toString(),
             owner,
             project.projectName,
-            project.isSump,
+            project.isSump ? 1 : 0,
             project.projectCountry,
             project.projectCity,
             project.partnerLocation,
