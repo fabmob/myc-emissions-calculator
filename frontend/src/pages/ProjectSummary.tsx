@@ -217,7 +217,6 @@ export default function ProjectSummary(props : {project: ProjectType}){
                         <Table bordered>
                             <thead>
                                 <tr>
-                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
                                     <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></th>
                                     <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuel</span></span></th>
                                     <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG emissions (1000t GHG) ({"WTW"})</span></span></th>
