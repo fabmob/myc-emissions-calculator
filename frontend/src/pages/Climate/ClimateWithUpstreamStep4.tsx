@@ -10,6 +10,7 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function ClimateWithUpstreamStep4(){
     const { keycloak, initialized } = useKeycloak();
@@ -194,7 +195,7 @@ export default function ClimateWithUpstreamStep4(){
                                         fuelJsx.push(<tr key={vtype + ftype}>
                                             {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
                                             <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
-                                            <td>{bAUCons}</td>
+                                            <OutputNumberTd value={bAUCons} decimals={1}></OutputNumberTd>
                                             <td>
                                                 {consSource 
                                                 ? <ValidSource source={consSource} onClick={(e:any) => configureSource(vtype, ftype)}/>

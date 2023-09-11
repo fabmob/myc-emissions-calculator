@@ -10,6 +10,7 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function BAUStep3(){
     const { keycloak, initialized } = useKeycloak();
@@ -195,7 +196,7 @@ export default function BAUStep3(){
                                         fuelJsx.push(<tr key={vtype + ftype}>
                                             {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
                                             <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
-                                            <td>{invCons}</td>
+                                            <OutputNumberTd value={invCons} decimals={1}></OutputNumberTd>
                                             <td>
                                                 {consSource 
                                                 ? <ValidSource source={consSource} onClick={(e:any) => configureSource(vtype, ftype)}/>

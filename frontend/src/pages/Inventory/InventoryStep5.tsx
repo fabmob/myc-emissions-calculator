@@ -11,6 +11,7 @@ import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import EditEmissionFactors from '../../components/EditEmissionFactors'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function InventoryStep5(){
     const { keycloak, initialized } = useKeycloak();
@@ -209,9 +210,7 @@ export default function InventoryStep5(){
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput("energy", networkName, ftype, e.target.value)}></Form.Control>
                                     </td>
-                                    <td>
-                                        {computedValue}
-                                    </td>
+                                    <OutputNumberTd value={computedValue}></OutputNumberTd>
                                     <td>{Math.round(computedValue * 100 / parseFloat(value) - 100) || '0'}%</td>
                                 </tr>)
                             }
@@ -284,9 +283,7 @@ export default function InventoryStep5(){
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput("emissions", networkName, ftype, e.target.value)}></Form.Control>
                                     </td>
-                                    <td>
-                                        {computedValue}
-                                    </td>
+                                    <OutputNumberTd value={computedValue}></OutputNumberTd>
                                     <td>{Math.round(parseFloat(computedValue) * 100 / parseFloat(value) - 100) || '0'}%</td>
                                 </tr>)
                             }

@@ -12,6 +12,7 @@ import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWr
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function BAUStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -225,7 +226,7 @@ export default function BAUStep2(){
                                         const invPercent = project.stages.Inventory[0].steps?.[2].vtypes?.[vtype].fuels?.[ftype]?.percent || "?"
                                         fuelJsx.push(<tr key={vtype + ftype}>
                                             <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
-                                            <td>{parseFloat((parseFloat(value) / 100 * vkt).toFixed(10)) || ""}</td>
+                                            <OutputNumberTd value={(parseFloat(value) / 100 * vkt)}></OutputNumberTd>
                                             <td>{invPercent}</td>
                                             <td>
                                                 {percentSource 
@@ -241,7 +242,7 @@ export default function BAUStep2(){
                                         <tr key={vtype}>
                                             <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>All</td>
-                                            <td>{vkt}</td>
+                                            <OutputNumberTd value={vkt}></OutputNumberTd>
                                             <td>100</td>
                                             <TdDiagonalBar></TdDiagonalBar>
                                             <td className={totalPercent > 100 ? "cellError": ""}>{totalPercent || 0}</td>

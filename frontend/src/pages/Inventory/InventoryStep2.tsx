@@ -12,6 +12,7 @@ import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function InventoryStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -287,7 +288,7 @@ export default function InventoryStep2(){
                                 fuelJsx.push(<tr key={vtype + ftype}>
                                     <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     <TdDiagonalBar colSpan={computationApproach === "fleet" ? '3' : '1'}></TdDiagonalBar>
-                                    <td>{parseFloat((parseFloat(value) / 100 * parseFloat(vkt)).toFixed(10)) || ""}</td>
+                                    <OutputNumberTd value={parseFloat(value) / 100 * parseFloat(vkt)}></OutputNumberTd>
                                     <td>
                                         {percentSource 
                                         ? <ValidSource source={percentSource} onClick={(e:any) => configureSource(vtype, ftype)}/>

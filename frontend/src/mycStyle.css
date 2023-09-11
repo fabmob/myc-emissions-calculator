@@ -166,9 +166,26 @@ input.cellError {
     font-weight: 900;
 }
 
+.outputNumber {
+    text-align: right;
+    .regular {
+        display: block
+    }
+    .hover {
+        display: none;
+    }
+}
 
-
-
+.outputNumber:hover {
+    .regular {
+        display: none
+    }
+    .hover {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
 
 
 

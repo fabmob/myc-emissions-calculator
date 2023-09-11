@@ -10,6 +10,7 @@ import Footer from "../components/Footer"
 import './Project.css'
 import EmissionsTable from '../components/viz/EmissionsTable'
 import EmissionsBarChart from '../components/viz/EmissionsBarChart'
+import OutputNumberTd from '../components/OutputNumberTd'
 
 export default function ProjectSummary(props : {project: ProjectType}){
     const { keycloak, initialized } = useKeycloak()
@@ -233,7 +234,7 @@ export default function ProjectSummary(props : {project: ProjectType}){
                                         fuelJsx.push(<tr key={vtype + ftype}>
                                             {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
                                             <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
-                                            <td>{co2}</td>
+                                            <OutputNumberTd value={co2[0]}></OutputNumberTd>
                                         </tr>)
                                     }
                                     return [

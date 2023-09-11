@@ -13,6 +13,7 @@ import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import { computeVktAfterASI } from '../../utils/asiComputations'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function ClimateWithoutUpstreamStep5(){
     const { keycloak, initialized } = useKeycloak();
@@ -253,8 +254,8 @@ export default function ClimateWithoutUpstreamStep5(){
                                         const bAUPercent = project.stages.BAU[0].steps?.[2].vtypes?.[vtype].fuels?.[ftype]?.percent[yearIndex] || "?"
                                         fuelJsx.push(<tr key={vtype + ftype}>
                                             <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
-                                            <td>{parseFloat((parseFloat(value) / 100 * (computedASI?.baseVkt?.[vtype]?.[yearIndex+1] || 0)).toFixed(10)) || ""}</td>
-                                            <td>{bAUPercent}</td>
+                                            <OutputNumberTd value={(parseFloat(value) / 100 * (computedASI?.baseVkt?.[vtype]?.[yearIndex+1] || 0))}></OutputNumberTd>
+                                            <OutputNumberTd value={bAUPercent} decimals={0}></OutputNumberTd>
                                             <td>
                                                 {percentSource 
                                                 ? <ValidSource source={percentSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
@@ -269,10 +270,10 @@ export default function ClimateWithoutUpstreamStep5(){
                                         <tr key={vtype}>
                                             <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>All</td>
-                                            <td>{computedASI?.baseVkt?.[vtype]?.[yearIndex+1]}</td>
-                                            <td>100</td>
+                                            <OutputNumberTd value={computedASI?.baseVkt?.[vtype]?.[yearIndex+1] || 0}></OutputNumberTd>
+                                            <OutputNumberTd value={100} decimals={0}></OutputNumberTd>
                                             <TdDiagonalBar></TdDiagonalBar>
-                                            <td className={totalPercent > 100 ? "cellError": ""}>{totalPercent || 0}</td>
+                                            <OutputNumberTd cls={totalPercent > 100 ? "cellError": ""} value={totalPercent || 0} decimals={0}></OutputNumberTd>
                                         </tr>,
                                         fuelJsx
                                     ]

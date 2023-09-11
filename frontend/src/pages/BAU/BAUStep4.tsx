@@ -10,6 +10,7 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function BAUStep4(){
     const { keycloak, initialized } = useKeycloak();
@@ -156,9 +157,7 @@ export default function BAUStep4(){
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('electricity', network)}/>
                                         : <Button variant="action" onClick={e => configureSource('electricity', network)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
-                                    <td>
-                                        {inventoryValue}
-                                    </td>
+                                    <OutputNumberTd value={inventoryValue}></OutputNumberTd>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput('electricity', network, yearIndex, e.target.value)}></Form.Control>
                                     </td>
@@ -188,9 +187,7 @@ export default function BAUStep4(){
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('hydrogen', network)}/>
                                         : <Button variant="action" onClick={e => configureSource('hydrogen', network)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
-                                    <td>
-                                        {inventoryValue}
-                                    </td>
+                                    <OutputNumberTd value={inventoryValue}></OutputNumberTd>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput('hydrogen', network, yearIndex, e.target.value)}></Form.Control>
                                     </td>

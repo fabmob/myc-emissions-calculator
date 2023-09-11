@@ -12,6 +12,7 @@ import EditEmissionFactors from '../../components/EditEmissionFactors'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import TTWorWTWSelector from '../../components/TTWorWTWSelector'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function InventoryStep7(){
     const { keycloak, initialized } = useKeycloak();
@@ -174,7 +175,7 @@ export default function InventoryStep7(){
                                         ? <td>{ges}</td>
                                         : <TdDiagonalBar></TdDiagonalBar>
                                     }
-                                    <td>{co2}</td>
+                                    <OutputNumberTd value={co2[0]}></OutputNumberTd>
                                 </tr>)
                             }
                             return [
