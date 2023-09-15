@@ -145,7 +145,7 @@ export default function InventoryStep8(){
                                     <td>
                                         {vehicle.source 
                                         ? <ValidSource source={vehicle.source} onClick={(e:any) => configureSource(vtype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={vehicle.value} onChange={e => updateInput(vtype, e.target.value)}></Form.Control>

@@ -87,14 +87,11 @@ export default function Projects(){
                     </Col>
                     <Col xs lg="6">
                         <div className="text desc">
-                            <p>
-                                A project is related to a specific MYC urban mobility plan. 
-                                It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
-                                <Button variant="link" onClick={handleShow} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Read more</span></span></Button>
+                            <p>A project is related to a specific MYC urban mobility plan. 
+                            It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
+                            <Button variant="link" onClick={handleShow} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Read more</span></span></Button>
                             </p>
-                            <p>
-                                You can start by creating a new project, or checking public projects if available.
-                            </p>
+                            <p>You can start by creating a new project, or checking public projects if available.</p>
                         </div>
                         {initialized ?
                         // <Stack gap={2} className="col-md-5">
@@ -245,7 +242,7 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                             {/* <td>{project.id}</td> */}
                             <td>{project.name}</td>
                             <td>
-                                <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>}>
+                                <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>} offset={[0, 20]}>
                                     {project.isSump ? <Badge bg="primary"><span className="item"><span>SUMP</span></span></Badge> : <Badge bg="info"><span className="item"><span>NUMP</span></span></Badge>}              
                                 </OverlayTrigger>
                             </td>

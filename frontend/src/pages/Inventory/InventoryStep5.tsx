@@ -204,7 +204,7 @@ export default function InventoryStep5(){
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("energy", networkName, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource("energy", networkName, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource("energy", networkName, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput("energy", networkName, ftype, e.target.value)}></Form.Control>
@@ -279,7 +279,7 @@ export default function InventoryStep5(){
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("emissions", networkName, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource("emissions", networkName, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource("emissions", networkName, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput("emissions", networkName, ftype, e.target.value)}></Form.Control>

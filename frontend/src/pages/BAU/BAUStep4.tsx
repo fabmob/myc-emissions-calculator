@@ -154,7 +154,7 @@ export default function BAUStep4(){
                                     <td>
                                         {source
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('electricity', network)}/>
-                                        : <Button variant="action" onClick={e => configureSource('electricity', network)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource('electricity', network)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         {inventoryValue}
@@ -186,7 +186,7 @@ export default function BAUStep4(){
                                     <td>
                                         {source
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('hydrogen', network)}/>
-                                        : <Button variant="action" onClick={e => configureSource('hydrogen', network)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource('hydrogen', network)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         {inventoryValue}

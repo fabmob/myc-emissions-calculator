@@ -198,7 +198,7 @@ export default function ClimateWithUpstreamStep4(){
                                             <td>
                                                 {consSource 
                                                 ? <ValidSource source={consSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                                : <Button variant="action" onClick={e => configureSource(vtype, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                                : <Button size="sm" variant="action" onClick={e => configureSource(vtype, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                             </td>
                                             <td>
                                                 <Form.Control value={cons} onChange={e => updateInputCons(vtype, ftype, yearIndex, e.target.value)}></Form.Control>

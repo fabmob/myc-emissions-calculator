@@ -296,7 +296,7 @@ export default function ClimateWithoutUpstreamStep4(){
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
                                                     ? <td>{source
                                                         ? <ValidSource source={source} onClick={(e:any) => configureSource(goalvtype, originvtype)}/>
-                                                        : <Button variant="action" onClick={e => configureSource(goalvtype, originvtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
+                                                        : <Button size="sm" variant="action" onClick={e => configureSource(goalvtype, originvtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
                                                     : <TdDiagonalBar></TdDiagonalBar>
                                                 }
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
@@ -357,7 +357,7 @@ export default function ClimateWithoutUpstreamStep4(){
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
                                                     ? <td>{source
                                                         ? <ValidSource source={source} onClick={(e:any) => configureSource(goalvtype, originvtype)}/>
-                                                        : <Button variant="action" onClick={e => configureSource(goalvtype, originvtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
+                                                        : <Button size="sm" variant="action" onClick={e => configureSource(goalvtype, originvtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
                                                     : <TdDiagonalBar></TdDiagonalBar>
                                                 }
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 

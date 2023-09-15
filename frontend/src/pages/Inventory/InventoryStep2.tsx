@@ -291,7 +291,7 @@ export default function InventoryStep2(){
                                     <td>
                                         {percentSource 
                                         ? <ValidSource source={percentSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource(vtype, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <PercentInput value={value} onChange={(e:any) => updateInputPercent(vtype, ftype, e.target.value)} invalid={totalPercent > 100}></PercentInput>
@@ -305,7 +305,7 @@ export default function InventoryStep2(){
                                     <td>
                                         {vktSource
                                         ? <ValidSource source={vktSource} onClick={(e:any) => configureSource(vtype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     {computationApproach === "fleet" && <td><Form.Control value={fleetStock} onChange={e => updateInputFleetStock(vtype, e.target.value)}></Form.Control></td>}
                                     {computationApproach === "fleet" && <td><Form.Control value={fleetMileage} onChange={e => updateInputFleetMileage(vtype, e.target.value)}></Form.Control></td>}

@@ -53,7 +53,9 @@ export default function BAUIntro(){
                             <p>You will need to project evolutions of transport activity on your territory.</p>
                         </div>
                     </DescAndNav>
-                    <img src='/pictures/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
+                    <div className="illustration">
+                        <img src='/pictures/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
+                    </div>
                     <h3>Required for this calculation</h3>
                     <Table>
                         <thead>

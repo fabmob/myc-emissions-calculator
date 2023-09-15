@@ -168,7 +168,7 @@ export default function ClimateWithUpstreamStep2(){
                                             <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
-                                            : <Button variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
+                                            : <Button size="sm" variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
                                             <td>
                                                 <Form.Control value={ukm} onChange={(e:any) => updateInput(vtype, yearIndex, e.target.value)}></Form.Control>
                                             </td>

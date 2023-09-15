@@ -230,7 +230,7 @@ export default function BAUStep2(){
                                             <td>
                                                 {percentSource 
                                                 ? <ValidSource source={percentSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                                : <Button variant="action" onClick={e => configureSource(vtype, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                                : <Button size="sm" variant="action" onClick={e => configureSource(vtype, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                             </td>
                                             <td>
                                                 <PercentInput value={value} onChange={(e:any) => updateInputPercent(vtype, ftype, yearIndex, e.target.value)} invalid={totalPercent > 100}></PercentInput>

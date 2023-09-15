@@ -54,6 +54,7 @@ export default function InventoryIntro(){
                     <div className="illustration">
                         <img src='/pictures/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
                     </div>
+
                     <h3>Required for this calculation</h3>
                     <Table>
                         <thead>
@@ -97,6 +98,7 @@ export default function InventoryIntro(){
                             </tr>
                         </tbody>
                     </Table>
+                    
                     <h3>Required for later calculations</h3>
                     <Table>
                         <thead>

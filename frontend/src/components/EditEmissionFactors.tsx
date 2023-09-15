@@ -132,7 +132,7 @@ export default function EditEmissionFactors (props: {
                                         <td>
                                             {fuel.source 
                                             ? <ValidSource source={fuel.source} onClick={(e:any) => configureSource(ftype)}/>
-                                            : <Button variant="action" onClick={e => configureSource(ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
+                                            : <Button size="sm" variant="action" onClick={e => configureSource(ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                         </td>
                                         <td><Form.Control value={fuel.lowerHeatingValue} onChange={e => updateInput(ftype, "lowerHeatingValue", e.target.value)}></Form.Control></td>
                                         <td><Form.Control value={fuel.density} onChange={e => updateInput(ftype, "density", e.target.value)}></Form.Control></td>

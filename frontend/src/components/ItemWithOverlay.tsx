@@ -10,7 +10,7 @@ export default function ItemWithOverlay (props: {children: React.ReactNode, over
         </Tooltip>
     )
     return (
-        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={tooltip}>
+        <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={tooltip} offset={[0, 20]}>
             <span>{props.children}</span>
         </OverlayTrigger>
     )
