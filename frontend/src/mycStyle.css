@@ -139,11 +139,53 @@ input.cellError {
     --bs-table-bg: transparent;
 }
 
+@font-face {
+    font-family: "Gravur Condensed";
+    src: url("/public/fonts/GravurCondensed/GravurCondensed-Thin.otf") format("opentype");
+    font-weight: 100;
+}
+@font-face {
+    font-family: "Gravur Condensed";
+    src: url("/public/fonts/GravurCondensed/GravurCondensed-Light.otf") format("opentype");
+    font-weight: 300;
+}
+@font-face {
+    font-family: "Gravur Condensed";
+    src: url("/public/fonts/GravurCondensed/GravurCondensed-Regular.otf") format("opentype");
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Gravur Condensed";
+    src: url("/public/fonts/GravurCondensed/GravurCondensed-Bold.otf") format("opentype");
+    font-weight: bold;
+}
 
+@font-face {
+    font-family: "Gravur Condensed";
+    src: url("/public/fonts/GravurCondensed/GravurCondensed-Black.otf") format("opentype");
+    font-weight: 900;
+}
 
+.outputNumber {
+    text-align: right;
+    .regular {
+        display: block
+    }
+    .hover {
+        display: none;
+    }
+}
 
-
-
+.outputNumber:hover {
+    .regular {
+        display: none
+    }
+    .hover {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
 
 
 

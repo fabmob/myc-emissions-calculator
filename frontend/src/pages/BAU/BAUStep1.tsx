@@ -12,6 +12,7 @@ import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function BAUStep1(){
     const { keycloak, initialized } = useKeycloak();
@@ -134,8 +135,8 @@ export default function BAUStep1(){
                 <h1>Transport activity</h1>
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/BAU/intro', content: "<- Prev.", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/BAU/intro', content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
                     <div className="text desc">
@@ -168,7 +169,7 @@ export default function BAUStep1(){
                                     return (
                                         <tr key={vtype}>
                                             <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
-                                            <td>{inventoryVehicle.vkt}</td>
+                                            <OutputNumberTd value={inventoryVehicle.vkt}></OutputNumberTd>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
                                             : <Button variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>

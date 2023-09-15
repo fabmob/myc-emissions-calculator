@@ -137,8 +137,8 @@ export default function ClimateWithUpstreamStep2(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
                     <div className="text desc">
                         <p>Please enter the transport performances (Mio. passenger-kilometers or Mio. tons-kilometers). The same data can be entered for the following years taking into account the changes planned in the climate scenario.</p>

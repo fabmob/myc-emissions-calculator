@@ -11,6 +11,7 @@ import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import { computeVktAfterASI } from '../../utils/asiComputations'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function ClimateWithoutUpstreamStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -149,8 +150,8 @@ export default function ClimateWithoutUpstreamStep2(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
                     <div className="text desc">
                         <p>Give the potential additional vehicle kilometers for the vehicle categories below if more vehicle kilometers are expected as a result of the planned measures for the corresponding year.</p>
@@ -190,14 +191,14 @@ export default function ClimateWithoutUpstreamStep2(){
                                     return (
                                         <tr key={vtype}>
                                             <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
-                                            <td>{bAUVkt?.[vtype]?.[yearIndex + 1]}</td>
+                                            <OutputNumberTd value={bAUVkt?.[vtype]?.[yearIndex + 1]}></OutputNumberTd>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
                                             : <Button variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
                                             <td>
                                                 <Form.Control value={addedVkt} onChange={(e:any) => updateInput(vtype, yearIndex, e.target.value)}></Form.Control>
                                             </td>
-                                            <td>{climateVkt[vtype]?.[yearIndex + 1] || ""}</td>
+                                            <OutputNumberTd value={climateVkt[vtype]?.[yearIndex + 1] || ""}></OutputNumberTd>
                                         </tr>
                                     )
                                 })}

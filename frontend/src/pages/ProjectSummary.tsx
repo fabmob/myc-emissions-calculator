@@ -10,8 +10,9 @@ import Footer from "../components/Footer"
 import './Project.css'
 import EmissionsTable from '../components/viz/EmissionsTable'
 import EmissionsBarChart from '../components/viz/EmissionsBarChart'
+import OutputNumberTd from '../components/OutputNumberTd'
 
-export default function ProjectSummary(){
+export default function ProjectSummary(props : {project: ProjectType}){
     const { keycloak, initialized } = useKeycloak()
     const navigate = useNavigate()
     const params = useParams()
@@ -27,31 +28,17 @@ export default function ProjectSummary(){
     const defaultColors = ["#2CB1D5", "#A2217C", "#808080", "#67CAE4", "#CE8DBB", "#B3B3B3", "#C5E8F2", "#EBD1E1", "#E6E6E6"]
     
     useEffect(() => {
-        if (initialized && keycloak.authenticated && projectId){
-            const requestOptions = {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
-            };
-            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
-                .then(response => {
-                    if (response.status !== 200) {
-                        navigate('/')
-                    }
-                    return response.json()
-                })
-                .then(data => {
-                    console.log("get projetcs reply", data)
-                    setProject(data.project)
-                    if (data.project?.stages?.Inventory?.length > 0)
-                        fetchInventoryResults()
-                    if (data.project?.stages?.BAU?.length > 0)
-                        fetchBAUResults()
-                    for (let i = 0; i < data.project.stages.Climate.length; i++) {
-                        fetchClimateResults(data.project, i)
-                    }
-                });
+        if (initialized && keycloak.authenticated && props.project.id){
+            setProject(props.project)
+            if (props.project?.stages?.Inventory?.length > 0)
+                fetchInventoryResults()
+            if (props.project?.stages?.BAU?.length > 0)
+                fetchBAUResults()
+            for (let i = 0; i < props.project?.stages?.Climate?.length; i++) {
+                fetchClimateResults(props.project, i)
             }
-    }, [keycloak, initialized, projectId, navigate])
+        }
+    }, [keycloak, initialized, props.project, navigate])
     
     const hide = (state: string) => {
         setHideParams(prevHideParams => {
@@ -205,131 +192,107 @@ export default function ProjectSummary(){
     })as any[])
     return (
         <>
-            <section>
-                <Container>
-                    <Row className="justify-content-md-center">
-                        <Col xs lg="8">
-                            <h1>{project.name}</h1>
-                        </Col>
-                    </Row>
-                    <Row className="justify-content-md-center">
-                        <Col xs lg="8">
-                            <ProjectNav current="Edition" project={project} />
-                            <StepCard title='1. Inventory' stage="Inventory">
-                                <span>The GHG emission inventory for urban transport is the sum of all transport-related activities emissions that can be attributed to the city or country for a given year (base year).</span>
-                                {inventoryResultsError && <Alert variant='warning'>Failed to compute inventory results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory steps again and fill missing data.</Alert>}
-                                {project.stages?.Inventory?.[0]?.step >= 7 && !inventoryResultsError && <Row className="results-preview align-items-center">
-                                    <Col className="chart-content" sm="4" style={{background: "white", padding: "20px"}}>
-                                        <ResponsiveContainer width="100%" height={200}>
-                                            <PieChart width={200} height={200}>
-                                            <Pie
-                                                dataKey="value"
-                                                data={inventoryEmissionsPieData}
-                                                cx="50%"
-                                                cy="50%"
-                                                outerRadius={70}
-                                                innerRadius={40}
-                                            >
-                                                {inventoryEmissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
-                                            </Pie>
-                                            <Tooltip />
-                                            <Legend />
-                                            </PieChart>
-                                        </ResponsiveContainer>
-                                    </Col>
-                                    <Col className="table" sm="8">
-                                        <Table bordered>
-                                            <thead>
-                                                <tr>
-                                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
-                                                    <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></th>
-                                                    <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuel</span></span></th>
-                                                    <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG emissions (1000t GHG) ({"WTW"})</span></span></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {Object.keys(inventoryTotalEnergyAndEmissions["WTW"]).map((vtype, index) => {
-                                                    const fuels = inventoryTotalEnergyAndEmissions["WTW"][vtype]
-                                                    const ftypes = Object.keys(fuels)
-                                                    let fuelJsx = []
-                                                    for (let i = 0; i < ftypes.length; i++) {
-                                                        const ftype = ftypes[i] as FuelType
-                                                        const co2 = fuels[ftype]?.co2 || ''
-                                                        fuelJsx.push(<tr key={vtype + ftype}>
-                                                            {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
-                                                            <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
-                                                            <td>{co2}</td>
-                                                        </tr>)
-                                                    }
-                                                    return [
-                                                        fuelJsx
-                                                    ]
-                                                })}
-                                            </tbody>
-                                        </Table>
-                                    </Col>
-                                </Row>
-                                }
-                            </StepCard>
-                            <StepCard title='2. BAU Scenario' stage="BAU">
-                                <span>The Business-as-usual scenario aims to describe the transport related emissions if nothing changed in the years to come from the current status quo.</span>
-                                {bauResultsError && <Alert variant='warning'>Failed to compute BAU results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and BAU steps again and fill missing data.</Alert>}
-                                {bauResults?.emissions && <Row className="results-preview align-items-center">
-                                    <Col className="chart-content" sm="8" style={{background: "white", padding: "20px"}}>
-                                        <EmissionsBarChart emissionsData={bauResults?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
-                                    </Col>
-                                    <Col sm="4">
-                                    </Col>
-                                </Row>
-                                }
-                            </StepCard>
-                            <StepCard title='3. Climate Scenario' stage="Climate" stageId={0}>
-                                <span>The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
-                                {climateResultsError[0] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
-                                {climateResults?.[0]?.emissions && <Row className="results-preview align-items-center">
-                                    <Col className="chart-content" sm="8" style={{background: "white", padding: "20px"}}>
-                                        <EmissionsBarChart emissionsData={climateResults?.[0]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
-                                    </Col>
-                                    <Col sm="4">
-                                    </Col>
-                                </Row>
-                                }
-                            </StepCard>
-                            {project?.stages?.Climate.map((scenario, index) => {
-                                if (index === 0) {
-                                    return <div key={0}></div>
-                                }
-                                return (
-                                    <StepCard title={`3. Climate Scenario (${index + 1})`} stage="Climate" stageId={index} key={index}>
-                                        <span>The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
-                                        {climateResultsError[index] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
-                                        {climateResults?.[index]?.emissions && <Row className="results-preview align-items-center">
-                                            <Col className="chart-content" sm="8" style={{background: "white", padding: "20px"}}>
-                                                <EmissionsBarChart emissionsData={climateResults?.[index]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
-                                            </Col>
-                                            <Col sm="4">
-                                            </Col>
-                                        </Row>
-                                        }
-                                    </StepCard>
-                                )
-                            })}
-                            {project?.stages?.Climate?.length > 0 &&
-                                <div style={{marginBottom: "30px"}}><Button variant="link" onClick={_=>navigate(`/project/${project.id}/Climate/${project.stages.Climate.length}/intro`)}><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span>Add another climate scenario</span></span></Button></div>
-                            }
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-            <section className="footer">
-                <div className="container">
-                    <Row className="justify-content-md-center">
-                        <Col lg="8">
-                            <Footer />
-                        </Col>
-                    </Row>
-                </div>
-            </section>
-        </>
+            <StepCard title='1. Inventory' stage="Inventory">
+                <span>The GHG emission inventory for urban transport is the sum of all transport-related activities emissions that can be attributed to the city or country for a given year (base year).</span>
+                {inventoryResultsError && <Alert variant='warning'>Failed to compute inventory results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory steps again and fill missing data.</Alert>}
+                {project.stages?.Inventory?.[0]?.step >= 7 && !inventoryResultsError && <Row className="results-preview align-items-center">
+                    <Col className="chart-content" sm="4" style={{background: "white", padding: "20px"}}>
+                        <ResponsiveContainer width="100%" height={200}>
+                            <PieChart width={200} height={200}>
+                            <Pie
+                                dataKey="value"
+                                data={inventoryEmissionsPieData}
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={70}
+                                innerRadius={40}
+                            >
+                                {inventoryEmissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                            </Pie>
+                            <Tooltip />
+                            <Legend />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </Col>
+                    <Col className="table" sm="8">
+                        <Table bordered>
+                            <thead>
+                                <tr>
+                                    <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></th>
+                                    <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuel</span></span></th>
+                                    <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG emissions (1000t GHG) ({"WTW"})</span></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {Object.keys(inventoryTotalEnergyAndEmissions["WTW"]).map((vtype, index) => {
+                                    const fuels = inventoryTotalEnergyAndEmissions["WTW"][vtype]
+                                    const ftypes = Object.keys(fuels)
+                                    let fuelJsx = []
+                                    for (let i = 0; i < ftypes.length; i++) {
+                                        const ftype = ftypes[i] as FuelType
+                                        const co2 = fuels[ftype]?.co2 || ''
+                                        fuelJsx.push(<tr key={vtype + ftype}>
+                                            {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
+                                            <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                            <OutputNumberTd value={co2[0]}></OutputNumberTd>
+                                        </tr>)
+                                    }
+                                    return [
+                                        fuelJsx
+                                    ]
+                                })}
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Row>
+                }
+            </StepCard>
+            <StepCard title='2. BAU Scenario' stage="BAU">
+                <span>The Business-as-usual scenario aims to describe the transport related emissions if nothing changed in the years to come from the current status quo.</span>
+                {bauResultsError && <Alert variant='warning'>Failed to compute BAU results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and BAU steps again and fill missing data.</Alert>}
+                {bauResults?.emissions && <Row className="results-preview align-items-center">
+                    <Col className="chart-content" sm="8" style={{background: "white", padding: "20px"}}>
+                        <EmissionsBarChart emissionsData={bauResults?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
+                    </Col>
+                    <Col sm="4">
+                    </Col>
+                </Row>
+                }
+            </StepCard>
+            <StepCard title='3. Climate Scenario' stage="Climate" stageId={0}>
+                <span>The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
+                {climateResultsError[0] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
+                {climateResults?.[0]?.emissions && <Row className="results-preview align-items-center">
+                    <Col className="chart-content" sm="8" style={{background: "white", padding: "20px"}}>
+                        <EmissionsBarChart emissionsData={climateResults?.[0]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
+                    </Col>
+                    <Col sm="4">
+                    </Col>
+                </Row>
+                }
+            </StepCard>
+            {project?.stages?.Climate.map((scenario, index) => {
+                if (index === 0) {
+                    return <div key={0}></div>
+                }
+                return (
+                    <StepCard title={`3. Climate Scenario (${index + 1})`} stage="Climate" stageId={index} key={index}>
+                        <span>The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
+                        {climateResultsError[index] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
+                        {climateResults?.[index]?.emissions && <Row className="results-preview align-items-center">
+                            <Col className="chart-content" sm="8" style={{background: "white", padding: "20px"}}>
+                                <EmissionsBarChart emissionsData={climateResults?.[index]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>
+                            </Col>
+                            <Col sm="4">
+                            </Col>
+                        </Row>
+                        }
+                    </StepCard>
+                )
+            })}
+            {project?.stages?.Climate?.length > 0 &&
+                <div style={{marginBottom: "30px"}}><Button variant="link" onClick={_=>navigate(`/project/${project.id}/Climate/${project.stages.Climate.length}/intro`)}><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span>Add another climate scenario</span></span></Button></div>
+            }
+        </>             
     )
 }
