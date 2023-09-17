@@ -88,7 +88,7 @@ export default function ClimateIntro(){
                     <h1>Climate Scenario</h1>
                     <DescAndNav 
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
-                        nextNav={{trigger: nextTrigger, content: "Start ->", variant: "primary"}}
+                        nextNav={{trigger: nextTrigger, content: "Start", showArrow: true, variant: "primary"}}
                     >
                         <div className="text desc">
                             <p>This step enables calculating a climate scenario, based on mitigations actions. Calculating the impact of NUMP/SUMP measures in the MYC Calculator requires bundling measures based on the ASI : Avoid-Shift-Improve.</p>

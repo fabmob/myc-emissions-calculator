@@ -12,6 +12,7 @@ import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWr
 import { computeVktAfterASI } from '../../utils/asiComputations'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function ClimateWithoutUpstreamStep4(){
     const { keycloak, initialized } = useKeycloak();
@@ -229,8 +230,8 @@ export default function ClimateWithoutUpstreamStep4(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
                     <div className="text desc">
                         <p>If one of the two previous parameters (vehicle kilometer or load) is impacted it is mandatory to specify the transport mode that is the source of these new trips in the table.</p>
@@ -285,14 +286,14 @@ export default function ClimateWithoutUpstreamStep4(){
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}><Badge bg="disabled"><span className="item"><span>{goalvtype}</span></span></Badge></td>}
                                                 {/* {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex].toFixed(0)}</td>}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex+1].toFixed(0)}</td>} */}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length} className={pkmStartOfYear < 0 ? "cellError": ""}>{pkmStartOfYear}</td>}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length} className={pkmEndOfYear < 0 ? "cellError": ""}>{pkmEndOfYear}</td>}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length}>{computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype]?.toFixed(0)}</td>}
+                                                {index === 0 && <OutputNumberTd style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length} cls={pkmStartOfYear < 0 ? "cellError": ""} value={pkmStartOfYear} decimals={0}></OutputNumberTd>}
+                                                {index === 0 && <OutputNumberTd style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length} cls={pkmEndOfYear < 0 ? "cellError": ""} value={pkmEndOfYear} decimals={0}></OutputNumberTd>}
+                                                {index === 0 && <OutputNumberTd style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => !isVtypeFreight(vtype)).length} value={computedASI ? computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] : ""} decimals={0}></OutputNumberTd>}
                                                 <td>{originvtype === "Induced Traffic" 
                                                     ? <ItemWithOverlay overlayContent="Part of additional trips that were induced. These trips are new, not shifted from another transport type."><Badge bg="disabled"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Induced traffic</span></span></Badge></ItemWithOverlay>
                                                     : <Badge bg="disabled"><span className="item"><span>{originvtype}</span></span></Badge>
                                                 }</td>
-                                                <td>{invTripLen}</td>
+                                                <OutputNumberTd value={invTripLen} decimals={1}></OutputNumberTd>
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
                                                     ? <td>{source
                                                         ? <ValidSource source={source} onClick={(e:any) => configureSource(goalvtype, originvtype)}/>
@@ -350,9 +351,9 @@ export default function ClimateWithoutUpstreamStep4(){
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}><Badge bg="disabled"><span className="item"><span>{goalvtype}</span></span></Badge></td>}
                                                 {/* {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex].toFixed(0)}</td>}
                                                 {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.baseVkt?.[goalvtype]?.[yearIndex+1].toFixed(0)}</td>} */}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.pkmsStartOfYear?.[yearIndex+1]?.[goalvtype].toFixed(0)}</td>}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.pkmsEndOfYear?.[yearIndex+1]?.[goalvtype].toFixed(0)}</td>}
-                                                {index === 0 && <td style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1}>{computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype]?.toFixed(0)}</td>}
+                                                {index === 0 && <OutputNumberTd style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1} value={computedASI ? computedASI.pkmsStartOfYear?.[yearIndex+1]?.[goalvtype] : ""} decimals={0}></OutputNumberTd>}
+                                                {index === 0 && <OutputNumberTd style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1} value={computedASI ? computedASI.pkmsEndOfYear?.[yearIndex+1]?.[goalvtype] : ""} decimals={0}></OutputNumberTd>}
+                                                {index === 0 && <OutputNumberTd style={{verticalAlign: "top"}} rowSpan={Object.keys(inputData.vtypes).filter(vtype => isVtypeFreight(vtype)).length -1} value={computedASI ? computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype]: ""} decimals={0}></OutputNumberTd>}
                                                 <td><Badge bg="disabled"><span className="item"><span>{originvtype}</span></span></Badge></td>
                                                 {computedASI && computedASI.pkmsAdded?.[yearIndex+1]?.[goalvtype] > 0 
                                                     ? <td>{source

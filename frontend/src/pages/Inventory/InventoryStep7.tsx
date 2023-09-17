@@ -12,6 +12,7 @@ import EditEmissionFactors from '../../components/EditEmissionFactors'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import TTWorWTWSelector from '../../components/TTWorWTWSelector'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function InventoryStep7(){
     const { keycloak, initialized } = useKeycloak();
@@ -128,8 +129,8 @@ export default function InventoryStep7(){
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber}>
                 <h1>Results</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev.", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
                     <div className="text desc">
                         <p>This page displays a short summary of emissions for the reference year. More tables and visualisations are available in the Compare section of the project.</p>
@@ -174,7 +175,7 @@ export default function InventoryStep7(){
                                         ? <td>{ges}</td>
                                         : <TdDiagonalBar></TdDiagonalBar>
                                     }
-                                    <td>{co2}</td>
+                                    <OutputNumberTd value={co2[0]}></OutputNumberTd>
                                 </tr>)
                             }
                             return [
