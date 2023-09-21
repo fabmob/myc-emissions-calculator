@@ -150,6 +150,14 @@ export default function InventoryStep5(){
                 </DescAndNav>
                 <h3>Energy balance</h3>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol3" /> {/* Network */}
+                        <col className="tablecol4" /> {/* Fuels */}
+                        <col className="tablecol1" /> {/* Src */}
+                        <col className="tablecolfluid" /> {/* Energy balance */}
+                        <col className="tablecol3" /> {/* Calculated */}
+                        <col className="tablecol2" /> {/* Gap */}
+                    </colgroup>
                     <thead>
                         <tr>
                             <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
@@ -223,6 +231,14 @@ export default function InventoryStep5(){
                 </Table>
                 <h3>Emissions</h3>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol3" /> {/* Network */}
+                        <col className="tablecol4" /> {/* Fuels */}
+                        <col className="tablecol1" /> {/* Src */}
+                        <col className="tablecolfluid" /> {/* Emissions */}
+                        <col className="tablecol3" /> {/* Calculated */}
+                        <col className="tablecol2" /> {/* Gap */}
+                    </colgroup>
                     <thead>
                         <tr>
                             <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>

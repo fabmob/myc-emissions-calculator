@@ -139,6 +139,12 @@ export default function InventoryStep7(){
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
                 <h3>GHG emissions</h3>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol5" /> {/* Vehicle */}
+                        <col className="tablecol3" /> {/* Fuels */}
+                        <col className="tablecolfluid" /> {/* Emissions Factor */}
+                        <col className="tablecolfluid" /> {/* GHG Emissions */}
+                    </colgroup>
                     <thead>
                         <tr>
                             <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
@@ -172,7 +178,7 @@ export default function InventoryStep7(){
                                     {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
                                     <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     {ftype !== "Electric" && ftype !== "Hydrogen" 
-                                        ? <td>{ges}</td>
+                                        ? <OutputNumberTd value={ges} decimals={0}></OutputNumberTd>
                                         : <TdDiagonalBar></TdDiagonalBar>
                                     }
                                     <OutputNumberTd value={co2[0]}></OutputNumberTd>

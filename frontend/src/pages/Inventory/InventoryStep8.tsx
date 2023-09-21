@@ -130,6 +130,11 @@ export default function InventoryStep8(){
                     </div>
                 </DescAndNav>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol5" /> {/* Passenger transport */}
+                        <col className="tablecol1" /> {/* Src */}
+                        <col className="tablecolfluid" /> {/* Avg trip len */}
+                    </colgroup>
                     <thead>
                         <tr>
                             <th className="item-sm"><ItemWithOverlay overlayContent="Passenger transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Passenger transport</span></span></ItemWithOverlay></th>

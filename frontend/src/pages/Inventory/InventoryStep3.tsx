@@ -168,6 +168,12 @@ export default function InventoryStep3(){
                     </div>
                 </DescAndNav>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol5" /> {/* Vehicle */}
+                        <col className="tablecol3" /> {/* Fuels */}
+                        <col className="tablecol1" /> {/* Src */}
+                        <col className="tablecolfluid" /> {/* Cons */}
+                    </colgroup>
                     <thead>
                         <tr>
                             <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
