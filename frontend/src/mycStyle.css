@@ -1,191 +1,174 @@
-.App {
-  color: rgb(102, 102, 102);
-}
+/* alexs edits */
 
-h1, h2, h3 {
-    font-family: 'Roboto Mono';
-    font-style: normal;
-    font-weight: 700;
-    color: #292929;
-}  
-body {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 500;
-    background-color: #F5F5F5;    
-}
-b {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 700;
-}
-.item {
-    font-family: 'Roboto Mono';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 25px;
-    color: #B3B3B3;
-}
-.item-sm {
-    font-family: 'Roboto Mono';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 22px;
-    color: #B3B3B3;
-    white-space: nowrap;
-}
-.bg-info {
-    background-color: #EBEBEB !important;
-    color: #292929;
-}
-.badge.bg-info:hover {
-    cursor: pointer;
-    background-color: #0000000d !important;
-}
-.bg-disabled {
-    background-color: #B3B3B3;
-}
-.inputTable thead th {
-    background-color: #9e2886;
-    color: white;
-}
+    b {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 700;
+    }
+    .bg-info {
+        background-color: #EBEBEB !important;
+        color: #292929;
+    }
+    .badge.bg-info:hover {
+        cursor: pointer;
+        background-color: #0000000d !important;
+    }
+    .bg-disabled {
+        background-color: #B3B3B3;
+    }
 
-td, tr, th {
-    border-color: #67CAE4;
-}
-table thead tr {
-    border-top: none;
-}
-table tbody tr:last-child {
-    border-bottom: none;
-}
-tbody {
-    border-top: none !important;
-    color: #B3B3B3;
-    --bs-table-color: #B3B3B3;
-    font-weight: 700;
-}
-table tr td:first-child,
-table tr th:first-child {
-    border-left: none;
-}
-table tr td:last-child,
-table tr th:last-child {
-    border-right: none;
-}
-td {
-    vertical-align: middle;
-}
-.cellError {
-    color: #FF5C77 !important;
-}
-input.cellError {
-    background-color: #FF5C771A !important;
-}
-.infoTooltip, .errorTooltip {
-    /* Prevents the tooltip from messing with the page when it's created */
-    top:0;
-    left:0;
-}
-.infoTooltip.show, .errorTooltip.show {
-    opacity: 1 !important;
+    /* table */
+        .inputTable thead th {
+            background-color: #9e2886;
+            color: white;
+        }
+        td, tr, th {
+            border-color: #67CAE4;
+        }
+        table thead tr {
+            border-top: none;
+        }
+        table tbody tr:last-child {
+            border-bottom: none;
+        }
+        tbody {
+            border-top: none !important;
+            /* color: #B3B3B3;
+            --bs-table-color: #B3B3B3; */
+            /* font-weight: 700; */
+        }
+        table tr td:first-child,
+        table tr th:first-child {
+            border-left: none;
+        }
+        table tr td:last-child,
+        table tr th:last-child {
+            border-right: none;
+        }
+        td {
+            vertical-align: middle;
+        }
+        .cellError {
+            color: #FF5C77 !important;
+        }
+        input.cellError {
+            background-color: #FF5C771A !important;
+        }
+        .table {
+            --bs-table-bg: transparent;
+        }
     
-}
-.tooltip-inner {
-    padding: 20px;
-    text-align: left;
-    font-weight: 500;
-    max-width: 350px;
-}
-.errorTooltip .tooltip-inner {
-    background-color: #ffedf0;
-    color: #FF5C77;
-}
-.errorTooltip .tooltip-arrow::before {
-    border-bottom-color: #ffedf0;
-}
-.infoTooltip .tooltip-inner {
-    background-color: white;
-    color: #292929;
-}
-.infoTooltip .tooltip-arrow::before {
-    border-top-color: white;
-}
-.stepLeft {
-    background-color: rgb(237, 249, 253);
-}
-.stepLeft, .stepRight {
-    padding-top: 20px;
-}
-@media only screen and (min-width: 1400px)  {
-    .stepLeft, .stepRight {
-        padding: 20px;
-    }
-}
+    /* tooltip */
+        .infoTooltip, .errorTooltip {
+            /* Prevents the tooltip from messing with the page when it's created */
+            top:0;
+            left:0;
+        }
+        .infoTooltip.show, .errorTooltip.show {
+            opacity: 1 !important;
+            
+        }
+        .tooltip-inner {
+            padding: 20px;
+            text-align: left;
+            font-weight: 500;
+            max-width: 350px;
+        }
+        .errorTooltip .tooltip-inner {
+            background-color: #ffedf0;
+            color: #FF5C77;
+        }
+        .errorTooltip .tooltip-arrow::before {
+            border-bottom-color: #ffedf0;
+        }
+        .infoTooltip .tooltip-inner {
+            background-color: white;
+            color: #292929;
+        }
+        .infoTooltip .tooltip-arrow::before {
+            border-top-color: white;
+        }
 
-.btn-imglink {
-    padding-left: 0;
-}
-.btn-imglink:hover {
-    opacity: 0.6;
-}
-.btn-group-lg .btn {
-    border-radius: 10px;
-    
-}
-.table {
-    --bs-table-bg: transparent;
-}
+    /* fonts */
+        @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Thin.otf") format("opentype");
+            font-weight: 100;
+        } @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Light.otf") format("opentype");
+            font-weight: 300;
+        } @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Regular.otf") format("opentype");
+            font-weight: normal;
+        } @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Bold.otf") format("opentype");
+            font-weight: bold;
+        } @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Black.otf") format("opentype");
+            font-weight: 900;
+        }
 
-@font-face {
-    font-family: "Gravur Condensed";
-    src: url("/public/fonts/GravurCondensed/GravurCondensed-Thin.otf") format("opentype");
-    font-weight: 100;
-}
-@font-face {
-    font-family: "Gravur Condensed";
-    src: url("/public/fonts/GravurCondensed/GravurCondensed-Light.otf") format("opentype");
-    font-weight: 300;
-}
-@font-face {
-    font-family: "Gravur Condensed";
-    src: url("/public/fonts/GravurCondensed/GravurCondensed-Regular.otf") format("opentype");
-    font-weight: normal;
-}
-@font-face {
-    font-family: "Gravur Condensed";
-    src: url("/public/fonts/GravurCondensed/GravurCondensed-Bold.otf") format("opentype");
-    font-weight: bold;
-}
+    /* output number */
+        .outputNumber {
+            text-align: right;
+            .regular {
+                display: block
+            }
+            .hover {
+                display: none;
+            }
+        }
+        .outputNumber:hover {
+            .regular {
+                display: none
+            }
+            .hover {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
 
-@font-face {
-    font-family: "Gravur Condensed";
-    src: url("/public/fonts/GravurCondensed/GravurCondensed-Black.otf") format("opentype");
-    font-weight: 900;
-}
-
-.outputNumber {
-    text-align: right;
-    .regular {
-        display: block
-    }
-    .hover {
-        display: none;
-    }
-}
-
-.outputNumber:hover {
-    .regular {
-        display: none
-    }
-    .hover {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-}
+    /* no need */
+        /* .stepLeft {
+            background-color: rgb(237, 249, 253);
+        } */
+        /* .stepLeft, .stepRight {
+            padding-top: 20px;
+        } */
+        /* @media only screen and (min-width: 1400px)  {
+            .stepLeft, .stepRight {
+                padding: 20px;
+            }
+        } */
+        /* .btn-imglink {
+            padding-left: 0;
+        }
+        .btn-imglink:hover {
+            opacity: 0.6;
+        }
+        .btn-group-lg .btn {
+            border-radius: 10px;
+        } */
+        /* .App {
+            color: rgb(102, 102, 102);
+        } */
+        /* h1, h2, h3 {
+            font-family: 'Roboto Mono';
+            font-style: normal;
+            font-weight: 700;
+            color: #292929;
+        }   */
+        /* body {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 500;
+            background-color: #F5F5F5; 
+        } */
 
 
 
@@ -304,36 +287,46 @@ input.cellError {
         }
 
     /* columns */
-        /* fix the spacing of items inside of columns */
-        .row {
+        .container, 
+        .row { /* for some reason these variables are set for these elements and not :root by bootstrap */
+            /* edit gap between columns */
             --bs-gutter-x: 4.2rem;
+            /* edit gap between rows */
+            --bs-gutter-y: 0; /* this is the default bootstrap value */
+            box-shadow: 0 0 0 1rem hsla(40,100%,50%,100%);
         }
         .row > .col,
-        .row > [class^=col-] {
-            /* background: var(--c-edition-t2); */
-            overflow: hidden;
+        .row > [class^=col-], 
+        .row > [class*= col-] {
+            background: var(--c-edition-t2);
         }
-        .row > .col > *:not(button),
-        .row > [class^=col-] > *:not(button) {
-            /* background: var(--c-edition-t2); */
-        }
-        .row > .col > *:not(:last-child),
-        .row > [class^=col-] > *:not(:last-child) {
-            margin-bottom: var(--spacing-m) !important;
-        }
+
+            /* exceptions */
+                .row > .col > *:not(button),
+                .row > [class^=col-] > *:not(button),
+                .row > [class*= col-] > *:not(button) {
+                    /* background: var(--c-edition-t2); */
+                }
+                .row > .col > *:not(:last-child),
+                .row > [class^=col-] > *:not(:last-child),
+                .row > [class*= col-] > *:not(:last-child) {
+                    margin-bottom: var(--spacing-m) !important;
+                }
+        
+        
         /*set medium column width to 600px*/
-        @media (min-width: 1200px) {
-            .col-xl-8 {
-                flex: 0 0 auto;
-                width: calc(60rem + var(--bs-gutter-x));
+            @media (min-width: 1200px) {
+                .col-xl-8 {
+                    flex: 0 0 auto;
+                    /* width: calc(60rem + var(--bs-gutter-x)); */
+                }
             }
-        }
-        @media (min-width: 992px) {
-            .col-lg-8 {
-                flex: 0 0 auto;
-                width: calc(60rem + var(--bs-gutter-x));
+            @media (min-width: 992px) {
+                .col-lg-8 {
+                    flex: 0 0 auto;
+                    /* width: calc(60rem + var(--bs-gutter-x)); */
+                }
             }
-        }
 
 
 
@@ -344,6 +337,9 @@ input.cellError {
     html, 
     body {
         color: var(--c-h0-s0-l1);
+    }
+    body {
+        background: var(--c-h0-s0-l5);
     }
     h1,h2,h3,
     p,span,text {
@@ -680,6 +676,7 @@ input.cellError {
 .item {
     /* background: var(--c-edition-t2); */
     font-size: inherit;
+    line-height: inherit; /* not sure */
     color: inherit;
     display: flex;
     flex-flow: row nowrap;
@@ -687,8 +684,25 @@ input.cellError {
     gap: 0.6em;
     justify-content: center;
     width: fit-content;
-    /* margin: 0 auto; */
 }
+
+    /* alex's styles */
+        /* .item, 
+        .item-sm {
+            font-family: 'Roboto Mono';
+            font-style: normal;
+            font-weight: 700;
+            color: #B3B3B3;
+        } */
+        /* .item {
+            font-size: 18px;
+            line-height: 25px;
+        } */
+        /* .item-sm {
+            font-size: 12px;
+            line-height: 22px;
+            white-space: nowrap;
+        } */
 
 
 
@@ -919,12 +933,14 @@ input.cellError {
     /* logos of partners ————————————————————— */
         :root {
             --logo-common-scale-base: 1rem;
-            --logo-common-scale-factor: 1; /* BACKUP : 1.5 */
+            /* --logo-common-scale-factor: 1; */ /* ISO with proto */
+            --logo-common-scale-factor: 1.5; /* adjusted while working */
         }
         .partnerLine {
             display: flex;
             flex-flow: row wrap;
-            gap: 3rem 3.7rem; /* BACKUP : 3rem 7rem */
+            /* gap: 3rem 3.7rem; */ /* ISO with proto */
+            gap: 3rem 7rem; /* adjusted while working */
             align-items: center;
             width: 100%;
             margin:  0 auto 9.2rem auto;
@@ -1273,6 +1289,8 @@ input.cellError {
     /* step right */
         .projectStepContainer .stepRight {
             padding: 0;
+            /* background: var(--c-edition-t2); */
+            overflow: visible;
             /* temp - before i put the logos in */
             /* padding-bottom: calc(3 * var(--spacing-l)); */
         }

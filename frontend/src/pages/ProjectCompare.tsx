@@ -131,7 +131,7 @@ export default function ProjectCompare(props: {project: ProjectType}){
                 <h2>Graphs</h2>
                 <div className="commands">                   
                     <Button variant="link" onClick={() => setShowOptionsModal(true)} style={{width: "100%", padding: "4px 4px"}}>
-                        <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#settings"}/></svg><span>Settings</span></span>
+                        <span className="item"><span>Settings</span></span>
                     </Button>
                 </div>
             </div>
@@ -345,7 +345,7 @@ const OptionsModal = (
                     <Row>
                     {vtypes.map((vtype, index) => {
                         return (
-                            <Col xs="6" key={index}>
+                            <Col lg="6" key={index}>
                                 <Form.Switch style={{margin: "5px"}} id={"custom-switch-" + vtype} key={index}>
                                     <Form.Switch.Input  name={vtype} checked={selectedVtypes[vtype]} onChange={updateSelectedVtypes}/>
                                     <Form.Switch.Label>{vtype}</Form.Switch.Label>
@@ -360,7 +360,7 @@ const OptionsModal = (
                     <Row>
                     {displayedClimateScenarios.map((displayed, index) => {
                         return (
-                            <Col xs="4" key={index}>
+                            <Col lg="4" key={index}>
                                 <Form.Switch style={{margin: "5px"}} key={index}>
                                     <Form.Switch.Input  name={index.toString()} checked={displayed} onChange={updateSelectedScenario}/>
                                     <Form.Switch.Label>{index+1}</Form.Switch.Label>

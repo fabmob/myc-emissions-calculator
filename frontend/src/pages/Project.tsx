@@ -43,12 +43,12 @@ export default function Project({page}:{page:"config" | "edit" | "viz"}){
             <section>
                 <Container>
                     <Row className="justify-content-md-center">
-                        <Col xs lg="8">
+                        <Col lg="6">
                             <h1>{project.name || "New Project"}</h1>
                         </Col>
                     </Row>
                     <Row className="justify-content-md-center">
-                        <Col xs lg="8">
+                        <Col lg="6">
                             {project.id && <ProjectNav current={page} project={project} />}
                             {page === "config" && <CreateProject project={project} />}
                             {page === "edit" && <ProjectSummary project={project} />}
@@ -60,7 +60,7 @@ export default function Project({page}:{page:"config" | "edit" | "viz"}){
             <section className="footer">
                 <div className="container">
                     <Row className="justify-content-md-center">
-                        <Col lg="8">
+                        <Col lg="6">
                             <Footer />
                         </Col>
                     </Row>

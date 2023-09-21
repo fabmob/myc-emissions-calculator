@@ -85,7 +85,7 @@ export default function Projects(){
                     <Col lg="12">
                         <h1>Projects</h1>
                     </Col>
-                    <Col xs lg="6">
+                    <Col lg="6">
                         <div className="text desc">
                             <p>A project is related to a specific MYC urban mobility plan. 
                             It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
