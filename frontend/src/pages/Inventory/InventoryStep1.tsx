@@ -260,6 +260,12 @@ export default function InventoryStep1(){
                     </div>
                 </DescAndNav>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol5" /> {/* Vehicle */}
+                        <col className="tablecol2" /> {/* Network */}
+                        <col className="tablecol4" /> {/* Type */}
+                        <col className="tablecolfluid" /> {/* Fuels */}
+                    </colgroup>
                     <thead>
                         <tr>
                             <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
@@ -282,12 +288,11 @@ export default function InventoryStep1(){
                                 <td>{networkBadge}</td>
                                 <td>{typeBadge}</td>
                                 <td>
-                                    <Stack direction="horizontal" gap={2}>
-                                        {Object.keys(vehicle.fuels).map((ftype, index) => (
-                                            <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}><span className="item"><span>{ftype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
-                                        ))}
-                                        <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
-                                    </Stack>
+                                    {Object.keys(vehicle.fuels).map((ftype, index) => (
+                                        <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}><span className="item"><span>{ftype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
+                                    ))}
+                                    <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
+                                    
                                 </td>
                             </tr>)
                         })}

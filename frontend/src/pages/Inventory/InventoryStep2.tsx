@@ -242,6 +242,26 @@ export default function InventoryStep2(){
                 </DescAndNav>
                 <ApproachSelector></ApproachSelector>
                 <Table bordered>
+                    {computationApproach === "fleet" 
+                        ? <colgroup>
+                            <col className="tablecol3" /> {/* Vehicule */}
+                            <col className="tablecol2" /> {/* Fuels */}
+                            <col className="tablecol1" /> {/* Src */}
+                            <col className="tablecolfluid" /> {/* Vehicule stock */}
+                            <col className="tablecolfluid" /> {/* Avg mileage */}
+                            <col className="tablecol3" /> {/* Computed VKT */}
+                            <col className="tablecol1" /> {/* Src */}
+                            <col className="tablecol2" /> {/* VKT% */}
+                        </colgroup>
+                        : <colgroup>
+                            <col className="tablecol4" /> {/* Vehicule */}
+                            <col className="tablecol3" /> {/* Fuels */}
+                            <col className="tablecol1" /> {/* Src */}
+                            <col className="tablecolfluid" /> {/* VKT Input */}
+                            <col className="tablecol1" /> {/* Src */}
+                            <col className="tablecol2" /> {/* VKT% */}
+                        </colgroup>
+                    }
                     <thead>
                         <tr>
                             <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
@@ -311,7 +331,7 @@ export default function InventoryStep2(){
                                     {computationApproach === "fleet" && <td><Form.Control value={fleetStock} onChange={e => updateInputFleetStock(vtype, e.target.value)}></Form.Control></td>}
                                     {computationApproach === "fleet" && <td><Form.Control value={fleetMileage} onChange={e => updateInputFleetMileage(vtype, e.target.value)}></Form.Control></td>}
                                     {computationApproach === "vkt" && <td><Form.Control value={vkt} onChange={e => updateInputVkt(vtype, e.target.value)}></Form.Control></td>}
-                                    {computationApproach === "fleet" && <td>{vkt}</td>}
+                                    {computationApproach === "fleet" && <OutputNumberTd value={vkt}></OutputNumberTd>}
                                     <TdDiagonalBar></TdDiagonalBar>
                                     <td className={totalPercent > 100 ? "cellError": ""}>{totalPercent || 0}</td>
                                 </tr>,

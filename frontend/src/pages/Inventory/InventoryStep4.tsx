@@ -121,6 +121,11 @@ export default function InventoryStep4(){
                 </DescAndNav>
                 <h3>Electricity</h3>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol5" /> {/* Network */}
+                        <col className="tablecol1" /> {/* Src */}
+                        <col className="tablecolfluid" /> {/* Emissions Input */}
+                    </colgroup>
                     <thead>
                         <tr>
                             <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
@@ -147,6 +152,11 @@ export default function InventoryStep4(){
                 </Table>
                 <h3>Hydrogen</h3>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol5" /> {/* Network */}
+                        <col className="tablecol1" /> {/* Src */}
+                        <col className="tablecolfluid" /> {/* Emissions Input */}
+                    </colgroup>
                     <thead>
                         <tr>
                             <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>

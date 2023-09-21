@@ -595,6 +595,7 @@ input.cellError {
         border-collapse: collapse; 
         border-spacing: 0; /* ← this is cellspacing */
         overflow: hidden;
+        table-layout: fixed;
         /* the following is to switch to an auto col width layout : */
             /* width: 100%;
             table-layout: fixed; */
@@ -609,7 +610,7 @@ input.cellError {
         border-color: var(--table-border-color);
     }
     table.table tr td {
-        line-height: 0;
+        line-height: 26px;
         font-size: var(--t-fs-p2);
     }
     table.table tr td > * {
@@ -619,15 +620,14 @@ input.cellError {
     /* table/cell */
         table.table tr td,
         table.table tr th {
-            min-width: calc(3.7rem * 1); /* temporary fix for modulo cell sizing */
-            max-width: calc(3.7rem * 4); /* temporary fix for modulo cell sizing */
+            /* min-width: calc(3.7rem * 1); /* temporary fix for modulo cell sizing */
+            /* max-width: calc(3.7rem * 4); /* temporary fix for modulo cell sizing */
             height: 3.7rem !important; /* temporary fix for modulo cell sizing */
             padding: var(--table-cell-padding) !important;
             font-family: var(--t-ff-p-mono);
             font-weight: var(--t-fw-p-mono-bold);
-            white-space: nowrap;
+            /* white-space: nowrap; */
             overflow: hidden;
-            text-overflow: ellipsis;
             vertical-align: middle;
             color: var(--c-h0-s0-l3);
         }
@@ -672,7 +672,24 @@ input.cellError {
             table.table .hstack {
                 gap: 0rem !important; /* managing this with badge margins instead */ 
             }
-
+    .tablecolfluid {
+        width: 100%;
+    }
+    .tablecol1 {
+        width: calc(3.7rem * 1);
+    }
+    .tablecol2 {
+        width: calc(3.7rem * 2);
+    }
+    .tablecol3 {
+        width: calc(3.7rem * 3);
+    }
+    .tablecol4 {
+        width: calc(3.7rem * 4);
+    }
+    .tablecol5 {
+        width: calc(3.7rem * 5);
+    }
 
 
 /* "item" elements —————————————————————*/
