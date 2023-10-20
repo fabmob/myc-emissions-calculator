@@ -122,15 +122,15 @@ export default function InventoryStep4(){
                 <h3>Electricity</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol5" /> {/* Network */}
+                        <col className="tablecol4" /> {/* Network */}
                         <col className="tablecol1" /> {/* Src */}
                         <col className="tablecolfluid" /> {/* Emissions Input */}
                     </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Emissions of production of 1kWh of electricity, leave empty or set to zero if unavailable"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions (gCO2/kWh)</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Emissions of production of 1kWh of electricity, leave empty or set to zero if unavailable"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions (gCO2/kWh)</span></span></ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -138,7 +138,7 @@ export default function InventoryStep4(){
                             const network = networkString as "road" | "rail"
                             const source = inputData.electricity?.[network].source
                             return (<tr key={network}>
-                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}><span className="item"><span>{network}</span></span></Badge></td>
+                            <td><Badge className="badge-read-only" style={{textTransform: "capitalize"}}><span className="item"><span>{network}</span></span></Badge></td>
                             <td>
                                 {source
                                 ? <ValidSource source={source} onClick={(e:any) => configureSource("electricity", network)}/>
@@ -153,15 +153,15 @@ export default function InventoryStep4(){
                 <h3>Hydrogen</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol5" /> {/* Network */}
+                        <col className="tablecol4" /> {/* Network */}
                         <col className="tablecol1" /> {/* Src */}
                         <col className="tablecolfluid" /> {/* Emissions Input */}
                     </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Emissions of production of 1kg of hydrogen, leave empty or set to zero if unavailable"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions (gCO2/kg)</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Emissions of production of 1kg of hydrogen, leave empty or set to zero if unavailable"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions (gCO2/kg)</span></span></ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -169,7 +169,7 @@ export default function InventoryStep4(){
                             const network = networkString as "road" | "rail"
                             const source = inputData.hydrogen?.[network].source
                             return (<tr key={network}>
-                            <td><Badge bg="disabled" style={{textTransform: "capitalize"}}><span className="item"><span>{network}</span></span></Badge></td>
+                            <td><Badge className="badge-read-only" style={{textTransform: "capitalize"}}><span className="item"><span>{network}</span></span></Badge></td>
                             <td>
                                 {source
                                 ? <ValidSource source={source} onClick={(e:any) => configureSource("hydrogen", network)}/>

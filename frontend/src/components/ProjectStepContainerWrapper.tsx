@@ -2,7 +2,6 @@ import React from "react";
 import {Container, Row, Col,Button, Form} from 'react-bootstrap'
 import {ProjectType, ProjectStage} from '../frontendTypes'
 import Progress from "./Progress"
-import './Progress.css'
 import ItemWithOverlay from "./ItemWithOverlay";
 import Footer from "../components/Footer"
 

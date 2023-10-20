@@ -115,12 +115,12 @@ export default function EditEmissionFactors (props: {
                     <Table bordered>
                         <thead>
                             <tr>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Fuels types, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Source of factors, default values use EN 16258. Click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                                <th className="item-sm"><span className="item"><span>Lower heating value (TJ/1000t or MJ/kWh)</span></span></th>
-                                <th className="item-sm"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Tank to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e TTW (kg/Tj)</span></span></ItemWithOverlay></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Well to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e WTW (kg/Tj)</span></span></ItemWithOverlay></th>
+                                <th><ItemWithOverlay overlayContent="Fuels types, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                                <th><ItemWithOverlay overlayContent="Source of factors, default values use EN 16258. Click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                <th><span className="item"><span>Lower heating value (TJ/1000t or MJ/kWh)</span></span></th>
+                                <th><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></th>
+                                <th><ItemWithOverlay overlayContent="Tank to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e TTW (kg/Tj)</span></span></ItemWithOverlay></th>
+                                <th><ItemWithOverlay overlayContent="Well to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e WTW (kg/Tj)</span></span></ItemWithOverlay></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,7 +128,7 @@ export default function EditEmissionFactors (props: {
                                 const ftype = ftypeString as FuelType
                                 const fuel = props.inputData.emissionFactors.WTW[ftype]
                                 return <tr key={index}>
-                                        <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                        <td style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                         <td>
                                             {fuel.source 
                                             ? <ValidSource source={fuel.source} onClick={(e:any) => configureSource(ftype)}/>

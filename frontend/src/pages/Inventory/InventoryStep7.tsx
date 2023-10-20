@@ -140,27 +140,27 @@ export default function InventoryStep7(){
                 <h3>GHG emissions</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol5" /> {/* Vehicle */}
+                        <col className="tablecol4" /> {/* Vehicle */}
                         <col className="tablecol3" /> {/* Fuels */}
-                        <col className="tablecolfluid" /> {/* Emissions Factor */}
+                        <col className="tablecol4" /> {/* Emissions Factor */}
                         <col className="tablecolfluid" /> {/* GHG Emissions */}
                     </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Emission factors per fuel. This values can be edited using the Edit GHG emission factors link below the pie chart."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emission Factor (kg/TJ) ({ttwOrWtw})</span></span></ItemWithOverlay></th>
-                            <th className="item-sm">
+                            <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Emission factors per fuel. This values can be edited using the Edit GHG emission factors link below the pie chart."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emission Factor (kg/TJ) ({ttwOrWtw})</span></span></ItemWithOverlay></th>
+                            <th>
                                 <ItemWithOverlay overlayContent={
                                     <div>
                                         Emissions (1000 tons of greenhouse gases) computed by the tool, using previous steps inputs. Values for each transport mode and fuel are computed as
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                        <Badge bg="disabled"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> x 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 x <Badge bg="disabled"><span className="item"><span>Fuel emission factor (kg/TJ)</span></span></Badge> / 10^6
+                                        <Badge className="badge-read-only"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> × <Badge className="badge-read-only"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> × 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 × <Badge className="badge-read-only"><span className="item"><span>Fuel emission factor (kg/TJ)</span></span></Badge> / 10^6
                                         </div>
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited using the Edit GHG emission factors link below the pie chart.
                                     </div>
                                 }>
-                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG emissions (1000t GHG) ({ttwOrWtw})</span></span>
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG em. (1000t GHG - {ttwOrWtw})</span></span>
                                 </ItemWithOverlay>
                             </th>
                         </tr>
@@ -175,8 +175,8 @@ export default function InventoryStep7(){
                                 const co2 = fuels[ftype]?.co2 || ''
                                 let ges = emissionFactorsInputData.emissionFactors[ttwOrWtw][ftype].ges
                                 fuelJsx.push(<tr key={vtype + ftype}>
-                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
-                                    <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>}
+                                    <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     {ftype !== "Electric" && ftype !== "Hydrogen" 
                                         ? <OutputNumberTd value={ges} decimals={0}></OutputNumberTd>
                                         : <TdDiagonalBar></TdDiagonalBar>

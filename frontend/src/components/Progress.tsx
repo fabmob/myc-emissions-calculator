@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom"
 import {Button, Row, Col,ProgressBar} from 'react-bootstrap'
 import {ProjectType, ProjectStage} from '../frontendTypes'
-import './Progress.css'
 
 const steps : {[stage in ProjectStage]: string[]} = {
     "Inventory": [
@@ -31,12 +30,12 @@ const steps : {[stage in ProjectStage]: string[]} = {
     ]
 }
 const withoutUpstreamClimateSteps = [
-    "1.1 Use of vehicles : avoided",
-    "2.1 Use of vehicles : added",
-    "2.2 vehicles load",
-    "2.3 vehicles shift",
-    "3.1 Fuel breakdown",
-    "3.2 Fuel consumption factors",
+    "Use of vehicles : avoided",
+    "Use of vehicles : added",
+    "Vehicles load",
+    "Vehicles shift",
+    "Fuel breakdown",
+    "Fuel consumption factors",
     "Results"
 ]
 
@@ -85,25 +84,26 @@ const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep
             <hr/>
             <Row>
                 <Col className="progressBar">
-                    <ProgressBar now={progressValue} label={`${progressValue}%`} visuallyHidden />
+                    <span>
+                        <ProgressBar now={progressValue} label={`${progressValue}%`} visuallyHidden />
+                    </span>
                 </Col>
             </Row>
             <Row>
                 <Col className="lastSaved">
-                    <span className="item-sm">Last saved : {'\n'}{new Date(props.project.modifiedDate).toLocaleString()}</span>
+                    <span>Last saved : {new Date(props.project.modifiedDate).toLocaleString()}</span>
                 </Col>
                 
             </Row>
-            <ol style={{"marginTop": "40px"}}>
+            <ol>
                 {stepsToUse.map((step, index) => {
                     const className = getClassName(index + 1)
                     return (
-                        <li key={index + 1}>
+                        <li className={className} key={index + 1} onClick={() => link((index + 1).toString())}>
                             <Button
-                                className={className}
                                 variant="link"
                                 disabled={props.project.stages?.[props.stage][0]?.step < index + 1}
-                                onClick={() => link((index + 1).toString())}>
+                                >
                                 {/* <span className="item"><span>{step}</span></span> */}
                                 <span className="item">
                                     <span>{step}</span>

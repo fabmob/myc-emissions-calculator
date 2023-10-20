@@ -45,7 +45,8 @@ export default function BAUIntro(){
                     <h1>BAU Scenario</h1>
                     <DescAndNav 
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
-                        nextNav={{link: '/project/' + project.id + '/BAU/step/1', content: "Start →", variant: "primary"}}
+                        nextNav={{link: '/project/' + project.id + '/BAU/step/1', content: "Start", showArrow: true, variant: "primary"}}
+
                     >
                         <div className="text desc">
                             <p>After defining the initial situation in your city/country, it is necessary to project transport emissions into the future on a business-as-usual basis.</p>
@@ -58,65 +59,73 @@ export default function BAUIntro(){
                     </div>
                     <h3>Required for this calculation</h3>
                     <Table>
+                        <colgroup>
+                            <col className="tablecol6" /> {/* Data */}
+                            <col className="tablecolfluid" /> {/* Unit */}
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th className="item-sm"><span className="item"><span>Data</span></span></th>
-                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
+                                <th><span className="item"><span>Data</span></span></th>
+                                <th><span className="item"><span>Unit</span></span></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">
-                                        <ItemWithOverlay overlayContent="mileage and transport performance for each transport mode per year">
+                                    <ItemWithOverlay overlayContent="mileage and transport performance for each transport mode per year">
+                                        <Badge className="badge-read-only">
                                             <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected transport activity</span></span>
-                                        </ItemWithOverlay>
-                                    </Badge>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
-                                <td className="item-sm">vkt: vehicle-kilometre and tkm: ton-kilometre</td>
+                                <td>vkt: vehicle-kilometre and tkm: ton-kilometre</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                 </td>
-                                <td className="item-sm">%vkt and %tkm</td>
+                                <td>%vkt and %tkm</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                 </td>
-                                <td className="item-sm">l-kW-kg/100km</td>
+                                <td>l-kW-kg/100km</td>
                             </tr>
                         </tbody>
                     </Table>
                     <h3>Required for later calculations</h3>
                     <Table>
+                        <colgroup>
+                            <col className="tablecol6" /> {/* Data */}
+                            <col className="tablecolfluid" /> {/* Unit */}
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th className="item-sm"><span className="item"><span>Data</span></span></th>
-                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
+                                <th><span className="item"><span>Data</span></span></th>
+                                <th><span className="item"><span>Unit</span></span></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">
-                                        <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
+                                    <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
+                                        <Badge className="badge-read-only">
                                             <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected occupation rate per transport category</span></span>
-                                        </ItemWithOverlay>
-                                    </Badge>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
-                                <td className="item-sm">passengers / load (tons)</td>
+                                <td>passengers / load (tons)</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">
-                                        <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
+                                    <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
+                                        <Badge className="badge-read-only">
                                             <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected CO2 content of electricity and hydrogen production</span></span>
-                                        </ItemWithOverlay>
-                                    </Badge>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
-                                <td className="item-sm">gCO2/kWh or gCO2/kg</td>
+                                <td>gCO2/kWh or gCO2/kg</td>
                             </tr>
                         </tbody>
                     </Table>

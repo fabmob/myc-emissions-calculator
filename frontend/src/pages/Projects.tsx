@@ -87,9 +87,11 @@ export default function Projects(){
                     </Col>
                     <Col lg="6">
                         <div className="text desc">
-                            <p>A project is related to a specific MYC urban mobility plan. 
-                            It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP). 
-                            <Button variant="link" onClick={handleShow} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Read more</span></span></Button>
+                            <p>
+                                A project is related to a specific MYC urban mobility plan. 
+                                It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP).&nbsp;<Button variant="link" onClick={handleShow} style={{padding: "0"}}>
+                                    <span className="item"><span>Read more...</span></span>
+                                </Button>
                             </p>
                             <p>You can start by creating a new project, or checking public projects if available.</p>
                         </div>
@@ -225,15 +227,23 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
     return (
         <>
             <Table>
+                <colgroup>
+                    <col className="tablecol7" /> {/* Name */}
+                    <col className="tablecol2" /> {/* Type */}
+                    <col className="tablecol4" /> {/* Status */}
+                    <col className="tablecol4" /> {/* Inventory progress */}
+                    <col className="tablecolfluid" /> {/* Action */}
+                    {showOwner && <col className="tablecol3" />} {/* Author */}
+                </colgroup>
                 <thead>
                     <tr>
                         {/* <th>#</th> */}
                         <th>Name</th>
                         <th>Type</th>
-                        {showOwner && <th>Author</th>}
                         <th>Status</th>
-                        <th>Inventory progress</th>
-                        <th>Action</th>
+                        <th>Inv. progress</th>
+                        <th>Actions</th>
+                        {showOwner && <th>Author</th>}
                     </tr>
                 </thead>
                 <tbody style={{verticalAlign: "middle"}}>
@@ -242,18 +252,18 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                             {/* <td>{project.id}</td> */}
                             <td>{project.name}</td>
                             <td>
-                                <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>} offset={[0, 20]}>
-                                    {project.isSump ? <Badge bg="primary"><span className="item"><span>SUMP</span></span></Badge> : <Badge bg="info"><span className="item"><span>NUMP</span></span></Badge>}              
+                                <OverlayTrigger placement="top" delay={{ show: 50, hide: 50 }} overlay={<Tooltip className="infoTooltip">{project.isSump && project.city + ", "}{project.country}</Tooltip>} offset={[0, 24]}>
+                                    {project.isSump ? <Badge bg="primary"><span className="item"><span>SUMP</span></span></Badge> : <Badge className="badge-default"><span className="item"><span>NUMP</span></span></Badge>}              
                                 </OverlayTrigger>
                             </td>
-                            {showOwner && <td>{project.owner}</td>}
-                            <td>{project.status === 'draft' ? <Badge bg="secondary"><span className="item"><span>Draft</span></span></Badge> : <Badge bg="info"><span className="item"><span>Validated</span></span></Badge>}</td>
+                            <td>{project.status === 'draft' ? <Badge className="badge-default"><span className="item"><span>Draft</span></span></Badge> : <Badge className="badge-default"><span className="item"><span>Validated</span></span></Badge>}</td>
                             <td><ProjectProgress step={project.stages["Inventory"][0]?.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
                                 <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}><span className="item"><span>Open</span></span></Button>
                                 <Button variant="secondary" className="btn-sm" disabled={project.stages["Inventory"][0]?.step < 8 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}><span className="item"><span>Validate</span></span></Button>
                                 <Button variant="secondary" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}><span className="item"><span>Delete</span></span></Button>
                             </td>
+                            {showOwner && <td>{project.owner}</td>}
                         </tr>
                     )}
                 </tbody>
@@ -330,6 +340,12 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
     }
     return (
         <Table>
+            <colgroup>
+                <col className="tablecol7" /> {/* Name */}
+                <col className="tablecol2" /> {/* Type */}
+                <col className="tablecol2" /> {/* Author */}
+                <col className="tablecolfluid" /> {/* Action */}
+            </colgroup>
             <thead>
                 <tr>
                     {/* <th>#</th> */}
@@ -346,7 +362,7 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
                         <td>{project.name}</td>
                         <td>
                             <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>}>
-                                {project.isSump ? <Badge bg="primary"><span className="item"><span>SUMP</span></span></Badge> : <Badge bg="info"><span className="item"><span>NUMP</span></span></Badge>}
+                                {project.isSump ? <Badge bg="primary"><span className="item"><span>SUMP</span></span></Badge> : <Badge className="badge-default"><span className="item"><span>NUMP</span></span></Badge>}
                             </OverlayTrigger>
                         </td>
                         <td>{project.owner}</td>

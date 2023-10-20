@@ -19,6 +19,9 @@ export default function DescAndNav (props: {children: React.ReactNode, prevNav?:
         <Row className="descAndNav">
             <Col lg="8">
                 {props.children}
+                {/* {props.seeMoreCallBack && <Button variant="link" onClick={e => props.seeMoreCallBack && props.seeMoreCallBack()}>
+                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>See more</span></span>
+                </Button>} */}
             </Col>
             <Col lg="4">
                 <div className="nav">
@@ -41,7 +44,9 @@ export default function DescAndNav (props: {children: React.ReactNode, prevNav?:
                 </div>
                 <div className="info">
                     <div>
-                        {props.seeMoreCallBack && <Button variant="link" onClick={e => props.seeMoreCallBack && props.seeMoreCallBack()}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>See more</span></span></Button>}
+                        {props.seeMoreCallBack && <Button variant="link" onClick={e => props.seeMoreCallBack && props.seeMoreCallBack()}>
+                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>See more</span></span>
+                        </Button>}
                     </div>
                 </div>
             </Col>

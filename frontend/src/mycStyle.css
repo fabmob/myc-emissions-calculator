@@ -5,25 +5,13 @@
         font-style: normal;
         font-weight: 700;
     }
-    .bg-info {
-        background-color: #EBEBEB !important;
-        color: #292929;
-    }
-    .badge.bg-info:hover {
-        cursor: pointer;
-        background-color: #0000000d !important;
-    }
-    .bg-disabled {
-        background-color: #B3B3B3;
-    }
+
+
 
     /* table */
         .inputTable thead th {
             background-color: #9e2886;
             color: white;
-        }
-        td, tr, th {
-            border-color: #67CAE4;
         }
         table thead tr {
             border-top: none;
@@ -59,20 +47,13 @@
         }
     
     /* tooltip */
+        .tooltip-button {
+            background: var(--c-edition-t0) !important;
+        }
         .infoTooltip, .errorTooltip {
             /* Prevents the tooltip from messing with the page when it's created */
             top:0;
             left:0;
-        }
-        .infoTooltip.show, .errorTooltip.show {
-            opacity: 1 !important;
-            
-        }
-        .tooltip-inner {
-            padding: 20px;
-            text-align: left;
-            font-weight: 500;
-            max-width: 350px;
         }
         .errorTooltip .tooltip-inner {
             background-color: #ffedf0;
@@ -114,7 +95,7 @@
 
     /* output number */
         .outputNumber {
-            text-align: right;
+            /* text-align: right; */ /* finalement je pense que c'est moins pire à gauche 230924-192644 */
             .regular {
                 display: block
             }
@@ -293,12 +274,12 @@
             --bs-gutter-x: 4.2rem;
             /* edit gap between rows */
             --bs-gutter-y: 0; /* this is the default bootstrap value */
-            box-shadow: 0 0 0 1rem hsla(40,100%,50%,100%);
+            /* box-shadow: 0 0 0 1rem hsla(40,100%,50%,100%); */
         }
         .row > .col,
         .row > [class^=col-], 
         .row > [class*= col-] {
-            background: var(--c-edition-t2);
+            /* background: var(--c-edition-t2); */
         }
 
             /* exceptions */
@@ -469,13 +450,32 @@
         padding: 1rem 1.6rem;
         border: none;
     }
-    .btn-link {
-        font-family: var(--t-ff-p-regular);
-        font-weight: var(--t-fw-p-regular);
-        padding: 0;
-        border-radius: 0;
-        text-decoration: none;
-    }
+    /* links */
+    
+        a, 
+        link, 
+        .btn-link {
+            display: inline-block;
+            font-family: var(--t-ff-p-regular);
+            font-weight: var(--t-fw-p-regular);
+            padding: 0;
+            border-radius: 0;
+            text-decoration: underline;
+            text-underline-offset: 0.2em;
+        }
+        /* if within text, space it out */
+            /* to do */
+        /* button colors : link */
+            a, 
+            link, 
+            .btn-link,
+            a:hover, 
+            link:hover, 
+            .btn-link:hover {
+                color: var(--c-h0-s0-l2);
+                text-decoration-color: var(--c-h0-s0-l3);
+            }
+
 
     /* button colors */
         /* button colors : primary */
@@ -503,11 +503,6 @@
             .btn-secondary:hover {
                 color: var(--c-h2-s0_l2);
                 background-color: var(--c-h2-s0_l3);
-            }
-        /* button colors : link */
-            .btn-link,
-            .btn-link:hover {
-                color: var(--c-h0-s0-l2);
             }
         /* button colors : various */
             .btn-action {
@@ -557,10 +552,17 @@
             display: inline-flex;
             align-items: center;
             line-height: 100%;
-            margin-right: 0.8rem;
             border-radius: 0.6rem !important;
             font-size: var(--t-fs-p3);
         }
+        .badge:not(:last-child),
+        .btn-sm:not(:last-child) {
+            /* border: 10px solid red; */
+            margin-right: 0.8rem; /* pas ouf. il faudrait utiliser flexbox à la place mais complexe dans les tableaux. */
+        }
+
+
+
         .badge > svg.icon:first-child {
             margin-left: -0.4rem;
         }
@@ -568,19 +570,60 @@
             margin-right: -0.4rem;
         }
         /*default colors*/
-        .bg-secondary {
+        .badge-default {
+            background-color: var(--c-h0-s0-l4) !important;
             color: var(--c-h0-s0-l1);
-            background-color: var(--c-h0-s0-l4) !important; 
-            /*forced to use "!important" as it is used in the overritten rule*/
         }
-        .bg-disabled {
+        .badge-default:hover {
+            background-color: var(--c-h0-s0-l5) !important;
+            cursor: pointer;
+        }
+        .badge-read-only {
             color: var(--c-h0-s0-l6);
             background-color: var(--c-h0-s0-l3) !important; 
+            cursor: default;
             /*forced to use "!important" as it is used in the overritten rule*/
         }
 
 
 
+
+/* bs dropdown menu ————————————————————— */ 
+    
+    .dropdown-menu {
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        margin: 0;
+        line-height: 0;
+        background: transparent;
+    }
+
+
+
+/* form, form fields (like in /project/config-tab) ————————————————————— */
+
+    .form-control {
+        /* width: 100%; */
+        padding:  var(--table-cell-padding);
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        color: inherit;
+        background-color: var(--bs-body-bg);
+        border-radius: 0;
+        border-color: var(--table-border-color);
+    }
+    .col > form label.form-label,
+    .col > form label.form-label span {
+        color: var(--c-h0-s0-l3);
+    }
+
+    /* on the config tab */
+        /* respace sections of the form */
+        .col > form > *:not(:last-child) {
+            margin-bottom: var(--spacing-m) !important;
+        }
 
 
 
@@ -597,21 +640,43 @@
             table-layout: fixed; */
     }
 
-
     table.table tr,
     table.table tr th, td { 
         /* reset padding */
             margin: 0 !important;
             padding: 0 !important;
-        border-color: var(--table-border-color);
+            border-color: var(--table-border-color);
     }
     table.table tr td {
-        line-height: 26px;
+        line-height: 0;
+        /* line-height: 26px; */ /* alexs edit 230921-141931 */
         font-size: var(--t-fs-p2);
     }
     table.table tr td > * {
         line-height: 100%;
     }
+
+    /* table header cells */
+        table.table thead tr th {
+            border-right: 0;
+            border-left: 0;
+            cursor: default;
+        }
+        /* give the text an overflow ellipsis */ 
+            table.table th .item {
+                max-width: 100%;
+            }
+            table.table th .item > span {
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        /* lets temporarily hide the info icons */
+        table.table th .item > .icon {
+            display: none;
+        }
+
 
     /* table/cell */
         table.table tr td,
@@ -622,7 +687,7 @@
             padding: var(--table-cell-padding) !important;
             font-family: var(--t-ff-p-mono);
             font-weight: var(--t-fw-p-mono-bold);
-            /* white-space: nowrap; */
+            white-space: nowrap;
             overflow: hidden;
             vertical-align: middle;
             color: var(--c-h0-s0-l3);
@@ -686,6 +751,12 @@
     .tablecol5 {
         width: calc(3.7rem * 5);
     }
+    .tablecol6 {
+        width: calc(3.7rem * 6);
+    }
+    .tablecol7 {
+        width: calc(3.7rem * 7);
+    }
 
 
 /* "item" elements —————————————————————*/
@@ -702,24 +773,6 @@
     justify-content: center;
     width: fit-content;
 }
-
-    /* alex's styles */
-        /* .item, 
-        .item-sm {
-            font-family: 'Roboto Mono';
-            font-style: normal;
-            font-weight: 700;
-            color: #B3B3B3;
-        } */
-        /* .item {
-            font-size: 18px;
-            line-height: 25px;
-        } */
-        /* .item-sm {
-            font-size: 12px;
-            line-height: 22px;
-            white-space: nowrap;
-        } */
 
 
 
@@ -766,78 +819,85 @@
         border: none;
         padding: 3rem 3.6rem 3.6rem 3.6rem;
     }
-    .card > *:not(:last-child),
-    .card-body > *:not(:last-child) {
-        margin-bottom: 1.4rem;
-    }
-    .card-header {
-        background-color: unset;
-        border-bottom: 0;
-    }
-    .card-header .row {
-        display: flex;
-        justify-content: space-between;
-        flex-flow: row nowrap;
-    }
-    .card-header .row > * {
-        width: auto;
-        gap: 0.8rem;
-    }
-    .card-header .nav {
-        /* background: pink; */
-        /* display: flex;
-        justify-content: center; */
-    }
-    .card-header .nav button[title='Duplicate Scenario'] {
-        padding: 0 .6rem;
-    }
     .card-header,
     .card-body {
         padding: 0;
     }
-    .card-body > span {
-        color: var(--c-h0-s0-l2);
-        padding: var(--table-cell-padding); /*cell padding - this is supposed to be in a table cell*/
-        border-top: 1px solid var(--table-border-color);
+    .card > *:not(:last-child),
+    .card-body > *:not(:last-child) {
+        margin-bottom: 1.4rem;
     }
-    /* .h1, .h2, .h3, .h4, .h5, .h6, 
-    h1, h2, h3, h4, h5, h6 {
-        margin-bottom: 0;
-    } */
-    .card-body {
-        display: flex;
-        flex-flow: column nowrap;
-    }
-    .card-body div.table {
-        padding: 0;
-        overflow: hidden;
-    }
-    .card-body .results-preview {
-        display: flex;
-        flex-flow: column nowrap;
-        gap: var(--spacing-s);
-        margin: 0;
-    }
-    .card-body .results-preview > * {
-        width: 100%;
-    }
-    .card-body .results-preview .chart-content,
-    .chart-content {
-        background: var(--c-h0-s0-l5) !important;
-        padding: 4.8rem !important;
-        font-size: var(--t-fs-p3);
-        font-family: var(--t-ff-p-mono);
-    }
-    .card-body .results-preview .chart-content svg path,
-    .chart-content svg path{
-        stroke: var(--c-h0-s0-l5);
-        stroke-width: 0rem;
-        stroke-linejoin: round;
-    }
-    /* .card-body .results-preview .chart svg path {
-        stroke: var(--c-h0-s0-l5);
-        stroke-width: 1rem;
-    } */
+    
+    /* card header */
+        .card-header {
+            background-color: unset;
+            border-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row nowrap;
+        }
+        .card-header .title,
+        .card-header .nav {
+            width: auto;
+            gap: 0.8rem;
+            align-content: center;
+        }
+        .card-header .title h3 {
+            margin: 0;
+        }
+        .card-header .nav button[class^='btn-primary'],
+        .card-header .nav button[class*='btn-primary'] {
+            /* background: pink; */
+            min-width: 8.6rem;
+        }
+        .card-header .nav button[title='Duplicate Scenario'] {
+            padding: 0 .6rem;
+        }
+
+    /* card body */
+        .card-body > span {
+            color: var(--c-h0-s0-l2);
+            padding: var(--table-cell-padding); /*cell padding - this is supposed to be in a table cell*/
+            border-top: 1px solid var(--table-border-color);
+        }
+        /* .h1, .h2, .h3, .h4, .h5, .h6, 
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: 0;
+        } */
+        .card-body {
+            display: flex;
+            flex-flow: column nowrap;
+        }
+        .card-body div.table {
+            padding: 0;
+            overflow: hidden;
+        }
+        .card-body .results-preview {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: var(--spacing-s);
+            margin: 0;
+        }
+        .card-body .results-preview > * {
+            width: 100%;
+        }
+        .card-body .results-preview .chart-content,
+        .chart-content {
+            background: var(--c-h0-s0-l5) !important;
+            padding: 4.8rem !important;
+            font-size: var(--t-fs-p3);
+            font-family: var(--t-ff-p-mono);
+        }
+        .card-body .results-preview .chart-content svg path,
+        .chart-content svg path{
+            stroke: var(--c-h0-s0-l5);
+            stroke-width: 0rem;
+            stroke-linejoin: round;
+        }
+        /* .card-body .results-preview .chart svg path {
+            stroke: var(--c-h0-s0-l5);
+            stroke-width: 1rem;
+        } */
 
 
 /* charts ————————————————————— */
@@ -1012,6 +1072,7 @@
         width: 100%;
         height: 100%;
         min-height: 38rem;
+        overflow: hidden;
     }
 
 
@@ -1099,6 +1160,10 @@
             }
 
     /* specific to modal */
+        /* set font size */
+            div.modal {
+                font-size: var(--t-fs-p2);
+            }
         /* reset padding and margins */
             div.modal .modal-content > * {
                 padding: 0;
@@ -1134,6 +1199,24 @@
             padding: var(--modal-s-padding);
         }
         /* specific to tooltip */
+            .infoTooltip.show, 
+            .errorTooltip.show {
+                opacity: 1 !important;
+            }
+            .tooltip-inner {
+                /* padding: 20px; */
+                text-align: left;
+                /* font-weight: 500; */
+                /* max-width: 350px; */
+            }
+            /* set font size */
+                .tooltip {
+                    font-size: var(--t-fs-p3);
+                }
+            /* bolden header */
+                .tooltip .tooltip-header {
+                    font-weight: var(--t-fw-p-mono-bold);
+                }
             /* pad tooltip header */
                 .tooltip .tooltip-inner .tooltip-header {
                     margin-bottom: var(--spacing-xxs);
@@ -1228,29 +1311,6 @@
 
 
 
-/* page : project/edit ————————————————————— */
-
-    /* respace sections of the whole form */
-    .col > form > *:not(:last-child) {
-        margin-bottom: var(--spacing-m) !important;
-    }
-
-    /* restyle form elements */
-        .form-control {
-            /* width: 100%; */
-            padding:  var(--table-cell-padding);
-            font-size: inherit;
-            font-weight: inherit;
-            line-height: inherit;
-            color: inherit;
-            background-color: var(--bs-body-bg);
-        }
-        .col > form label.form-label,
-        .col > form label.form-label span {
-            color: var(--c-h0-s0-l3);
-        }
-
-
 
 /* page : calculation/stepper ————————————————————— */
     
@@ -1262,47 +1322,93 @@
     /* step left */
         .stepLeft {
             padding: 3rem;
+            background: var(--c-h1-s0-l5);
+        }
+        .stepLeft span,
+        .stepLeft li,
+        .stepLeft a,
+        .stepLeft .btn-link { /* ! overwriting default link styles here ! to iso the proto */
             font-size: var(--t-fs-p3);
+            font-weight: var(--t-fw-p-regular-bold);
+            text-decoration: none;
         }
-        .projectStepContainer .stepLeft ol li {
-            flex-flow: row nowrap;
-            padding: 0.6rem 1rem 0.6rem 0rem;
-        }
-        .projectStepContainer .stepLeft ol li > * {
-            padding: 0;
-            white-space: nowrap;
-        }
-        /* .projectStepContainer .stepLeft ol li button:after {
-            margin-left: 1rem;
-        } */
-        /* .projectStepContainer .stepLeft ol li button {
-            display: flex;
-            justify-content: space-between;
-        } */
-        .progressMenu > *:not(:last-child) {
-            margin-bottom: 3rem;
-        }
-        .projectStepContainer .stepLeft .progressMenu .progressBar {
-            /* background: pink; */
-        }
-        /*need a fix for the line height*/
+        /* header */
+            .projectStepContainer .stepLeft .progressMenu .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .projectStepContainer .stepLeft .progressMenu .header h3 {
+                margin: 0.4rem 0 0 0;
+            }
+            .projectStepContainer .stepLeft .progressMenu .header > * {
+                width: auto;
+                flex: 0 0;
+            }
+        /* progress bar and last saved mention */
+        .projectStepContainer .stepLeft .progressMenu .progressBar > span,
         .projectStepContainer .stepLeft .progressMenu .lastSaved > span {
-            max-width: 100%;
-            white-space: break-spaces;
-        }
-        .projectStepContainer .stepLeft .progressMenu .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .projectStepContainer .stepLeft .progressMenu .header h3 {
-            margin: 0.4rem 0 0 0;
-        }
-        .projectStepContainer .stepLeft .progressMenu .header > * {
-            width: auto;
-            flex: 0 0;
-        }
-
+            padding: 0rem 1rem;
+            display: inline-block;
+            width: 100%;
+        } 
+        /* progress bar */
+            /* bg */
+            .projectStepContainer .stepLeft .progressMenu .progress {
+                height: 0.5rem;
+                background: var(--c-h0-s0-l4);
+            }  
+            /* fg */
+            .projectStepContainer .stepLeft .progressMenu .progress-bar {
+                background: var(--c-h1-s0-l2);
+            }
+        /* last saved mention */
+            /*need a fix for the line height*/
+            .projectStepContainer .stepLeft .progressMenu .lastSaved > span {
+                max-width: 100%;
+                white-space: break-spaces;
+                color: var(--c-h0-s0-l3);
+            }
+        /* progress links */
+            /* text color */
+                .progressMenu ol li button,
+                .progressMenu ol li button:hover {
+                    color: var(--c-h0-s0-l1);
+                }
+                .progressMenu ol li.stepDisabled, 
+                .progressMenu ol li.stepDisabled button {
+                    color: var(--c-h0-s0-l3);
+                }
+            .progressMenu ol {
+                list-style-position: inside;
+                padding-left: 0;
+            }
+            /* aligning number and step name */
+                .progressMenu ol li::marker,
+                .progressMenu ol li .item span {
+                    line-height: var(--t-lh-p3);
+                }
+                .progressMenu ol li::marker,
+                .progressMenu ol li button {
+                    vertical-align: baseline;    
+                }
+            .progressMenu ol li {
+                flex-flow: row nowrap;
+                background: transparent;
+                padding: 0.6rem 1rem;
+                cursor: pointer;
+            }
+            .progressMenu li.currentStep,
+            .progressMenu li.currentStepDone {
+                background: var(--c-h1-s0-l4);
+            }
+            .progressMenu ol li > * {
+                padding: 0;
+                white-space: nowrap;
+            }
+            .progressMenu > *:not(:last-child) {
+                margin-bottom: 3rem;
+            }
     /* step right */
         .projectStepContainer .stepRight {
             padding: 0;
@@ -1312,19 +1418,36 @@
             /* padding-bottom: calc(3 * var(--spacing-l)); */
         }
         /* desc and nav */
+            .descAndNav {
+                position: relative;
+            }
+            .descAndNav .text.desc {
+                height: 16rem;
+                max-height: 16rem;
+                overflow: scroll;
+            }
+            .descAndNav .text.desc:after {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: var(--spacing-l);
+                content: "";
+                background: linear-gradient(to top, var(--c-h0-s0-l6), transparent );
+                pointer-events: none;
+            }
             .descAndNav .col-4 {
                 display: flex;
                 flex-flow: column nowrap;
                 justify-content: space-between;
             }
-
-            .descAndNav .desc button,
-            .desc button {
-                font-size: inherit;
-                color: var(--c-h0-s0-l3);
-                vertical-align: baseline;
-                line-height: inherit;
-            }
+            /* this is for buttons within text */
+                .text button {
+                    font-size: inherit;
+                    color: var(--c-h0-s0-l3);
+                    vertical-align: baseline;
+                    line-height: inherit;
+                    
+                }
             .descAndNav .nav {
                 flex-flow: row nowrap;
                 align-items: center;
@@ -1340,7 +1463,7 @@
             .descAndNav .nextNav {
                 display: flex;
                 flex-flow: row nowrap;
-                
+                flex: 1 1 0;
             }
             .descAndNav .prevNav button,
             .descAndNav .nextNav button {
@@ -1349,6 +1472,26 @@
                 white-space: nowrap;
                 justify-content: center;
                 width: 100%;
+            }
+        /* years horizontal tabs */
+            ul.nav-tabs {
+                --bs-nav-tabs-border-width: 0;
+                --bs-nav-tabs-border-radius: 0;
+                --bs-nav-tabs-link-active-color: var(--c-h0-s0-l1);
+                --bs-nav-tabs-link-active-bg: var(--c-h1-s0-l4);
+                border-bottom: 0;
+            }
+            ul.nav-tabs li.nav-item button {
+                font-size: var(--t-fs-p3);
+                font-weight: var(--t-fw-p-regular-bold);
+                color: var(--c-h0-s0-l1);
+                padding: 0.6rem 1rem;
+                text-align: left;
+                transition: none; /* the existing transition is nice but it does not exist in the steps nav and i prefer to stay coherent */
+            }
+            div.tab-content .tab-pane > hr {
+                margin-top: -1rem; /* dirty fix */
+                margin-bottom: 1.4rem;
             }
         /* user note */
             .projectStepContainer .user-note-button {

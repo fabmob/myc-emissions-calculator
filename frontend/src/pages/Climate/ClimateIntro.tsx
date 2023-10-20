@@ -67,11 +67,11 @@ export default function ClimateIntro(){
         return (
             <div style={{display: "flex", marginBottom: "10px"}}>
                 <Dropdown onSelect={(key:any) => method === "With upstream calculation" ? setMethod("Without upstream calculation") : setMethod("With upstream calculation")}>
-                    <Dropdown.Toggle as={Badge} bg="info" style={{margin: "0 10px 0 10px"}}>
+                    <Dropdown.Toggle as={Badge} className="badge-default" style={{margin: "0 10px 0 10px"}}>
                         {method === "With upstream calculation" ? "With upstream calculation" : "Without upstream calculation"}
                     </Dropdown.Toggle>
-                    <Dropdown.Menu style={{padding: "10px"}}>
-                        <Dropdown.Item as={Badge} bg="info">
+                    <Dropdown.Menu>
+                        <Dropdown.Item as={Badge} className="badge-default">
                             {method === "Without upstream calculation" ? "With upstream calculation" : "Without upstream calculation"}
                         </Dropdown.Item>
                     </Dropdown.Menu>
@@ -92,7 +92,7 @@ export default function ClimateIntro(){
                     >
                         <div className="text desc">
                             <p>This step enables calculating a climate scenario, based on mitigations actions. Calculating the impact of NUMP/SUMP measures in the MYC Calculator requires bundling measures based on the ASI : Avoid-Shift-Improve.</p>
-                            <p>In order to derive transport demand data for the calculations two different data input approaches are possible : <Button variant="link" onClick={e => setShowInfo(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>with upstream calculations or without</span></span></Button>. This will depend on if you count with a transport model. In order to avoid wrong results please choose and apply just one approach.</p>
+                            <p>In order to derive transport demand data for the calculations two different data input approaches are possible : <Button variant="link" onClick={e => setShowInfo(true)} style={{padding: "0"}}><span className="item"><span>with upstream calculations or without</span></span></Button>. This will depend on if you count with a transport model. In order to avoid wrong results please choose and apply just one approach.</p>
                         </div>
                     </DescAndNav>
                     <div className="illustration">
@@ -106,75 +106,79 @@ export default function ClimateIntro(){
                     {/* <h3>{method}, the calculation of transport related emissions requires information on</h3> */}
                     <h3>Required for this calculation</h3>
                     <Table>
+                        <colgroup>
+                            <col className="tablecol6" /> {/* Data */}
+                            <col className="tablecolfluid" /> {/* Unit */}
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th className="item-sm"><span className="item"><span>Data</span></span></th>
-                                <th className="item-sm"><span className="item"><span>Unit</span></span></th>
+                                <th><span className="item"><span>Data</span></span></th>
+                                <th><span className="item"><span>Unit</span></span></th>
                             </tr>
                         </thead>
                         {method === "With upstream calculation" 
                         ? <tbody>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected transport activity - mileage for each transport mode per year</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected transport activity - mileage for each transport mode per year</span></span></Badge>
                                 </td>
-                                <td className="item-sm">vkt: vehicle-kilometre</td>
+                                <td>vkt: vehicle-kilometre</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected transport performance for each transport mode per year</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected transport performance for each transport mode per year</span></span></Badge>
                                 </td>
-                                <td className="item-sm">pkm: passenger-km or tkm: tons-km</td>
+                                <td>pkm: passenger-km or tkm: tons-km</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                 </td>
-                                <td className="item-sm">%vkt and %tkm</td>
+                                <td>%vkt and %tkm</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                 </td>
-                                <td className="item-sm">l-kW-kg/100km</td>
+                                <td>l-kW-kg/100km</td>
                             </tr>
                         </tbody>
                         : <tbody>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected avoided transport activity</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected avoided transport activity</span></span></Badge>
                                 </td>
-                                <td className="item-sm">vkt: vehicle-kilometre</td>
+                                <td>vkt: vehicle-kilometre</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected added transport activity</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected added transport activity</span></span></Badge>
                                 </td>
-                                <td className="item-sm">vkt: vehicle-kilometre</td>
+                                <td>vkt: vehicle-kilometre</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle load</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected vehicle load</span></span></Badge>
                                 </td>
-                                <td className="item-sm">passengers or tons</td>
+                                <td>passengers or tons</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle shift - orgin of shifted trips</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected vehicle shift - orgin of shifted trips</span></span></Badge>
                                 </td>
-                                <td className="item-sm">% of trips</td>
+                                <td>% of trips</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                 </td>
-                                <td className="item-sm">%vkt and %tkm</td>
+                                <td>%vkt and %tkm</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                 </td>
-                                <td className="item-sm">l-kW-kg/100km</td>
+                                <td>l-kW-kg/100km</td>
                             </tr>
                         </tbody>
                         }

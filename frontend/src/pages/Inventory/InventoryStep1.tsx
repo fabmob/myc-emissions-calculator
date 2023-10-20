@@ -261,35 +261,35 @@ export default function InventoryStep1(){
                 </DescAndNav>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol5" /> {/* Vehicle */}
+                        <col className="tablecol4" /> {/* Vehicle */}
                         <col className="tablecol2" /> {/* Network */}
-                        <col className="tablecol4" /> {/* Type */}
+                        <col className="tablecol3" /> {/* Type */}
                         <col className="tablecolfluid" /> {/* Fuels */}
                     </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Used network, can be road or rail. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Type of transport, can be public transport, private transport or freight. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Type</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Used network, can be road or rail. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Type of transport, can be public transport, private transport or freight. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Type</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
                         {Object.keys(inputData.vtypes).map((vtype, index) => {
                             const vehicle = inputData.vtypes[vtype]
-                            let networkBadge = <Badge bg="info" onClick={e => networkTrigger(vtype)}><span className="item"><span>{vehicle.network} v</span></span></Badge>
-                            let typeBadge = <Badge bg="info" onClick={e => typeTrigger(vtype)}><span className="item"><span>{vehicle.type} v</span></span></Badge>
+                            let networkBadge = <Badge className="badge-default" onClick={e => networkTrigger(vtype)}><span className="item"><span>{vehicle.network} v</span></span></Badge>
+                            let typeBadge = <Badge className="badge-default" onClick={e => typeTrigger(vtype)}><span className="item"><span>{vehicle.type} v</span></span></Badge>
                             if (defaultVehiclesParams[vtype]) {
-                                networkBadge = <Badge bg="disabled"><span className="item"><span>{vehicle.network}</span></span></Badge>
-                                typeBadge = <Badge bg="disabled"><span className="item"><span>{vehicle.type}</span></span></Badge>
+                                networkBadge = <Badge className="badge-read-only"><span className="item"><span>{vehicle.network}</span></span></Badge>
+                                typeBadge = <Badge className="badge-read-only"><span className="item"><span>{vehicle.type}</span></span></Badge>
                             }
                             return (<tr key={index}>
-                                <td><Badge bg="info" onClick={e=>removeVehicle(vtype)}><span className="item"><span>{vtype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge></td>
+                                <td><Badge className="badge-default" onClick={e=>removeVehicle(vtype)}><span className="item"><span>{vtype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge></td>
                                 <td>{networkBadge}</td>
                                 <td>{typeBadge}</td>
                                 <td>
                                     {Object.keys(vehicle.fuels).map((ftype, index) => (
-                                        <Badge key={index} bg="info" onClick={e=>removeFuel(vtype, ftype as FuelType)}><span className="item"><span>{ftype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
+                                        <Badge key={index} className="badge-default" onClick={e=>removeFuel(vtype, ftype as FuelType)}><span className="item"><span>{ftype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
                                     ))}
                                     <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
                                     

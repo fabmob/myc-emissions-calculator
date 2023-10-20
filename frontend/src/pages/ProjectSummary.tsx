@@ -82,23 +82,21 @@ export default function ProjectSummary(props : {project: ProjectType}){
         }
         return (<Card className="mb-5">
             <Card.Header>
-                <Row className='align-items-center'>
-                    <Col lg={props.stage === "Climate" ? "8" : "9"} className="title"><h3>{props.title}</h3></Col>
-                    <Col lg={props.stage === "Climate" ? "4" : "3"} className="nav">
+                    <div className="title"><h3>{props.title}</h3></div>
+                    <div className="nav">
                         {!hideParams[props.title] 
                             ? <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>hide(props.title)}><span className="item"><span>See less</span></span></Button>
                             : <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>show(props.title)}><span className="item"><span>See more</span></span></Button>
                         }
                         {(props.stage === "Climate" && props.stageId != undefined && project.stages?.Climate.length && <Button variant="link" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#copy"}/></svg></span></Button>) || ""}
                     
-                        <Button onClick={e => navigate(introUrl)} style={{minWidth: "93px"}}>
+                        <Button onClick={e => navigate(introUrl)}>
                         {project.stages?.[props.stage].length ? 
                             <span className="item"><span>Edit</span></span> :
                             <span className="item"><span>Create</span><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span>
                         }
                         </Button>
-                    </Col>
-                </Row>
+                </div>
             </Card.Header>
             {!hideParams[props.title] && <Card.Body>
                 {props.children}
@@ -216,11 +214,16 @@ export default function ProjectSummary(props : {project: ProjectType}){
                     </Col>
                     <Col lg="8" className="table">
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" /> {/* Vehicle */}
+                                <col className="tablecol3" /> {/* Fuel */}
+                                <col className="tablecolfluid" /> {/* GHG emissions */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></th>
-                                    <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuel</span></span></th>
-                                    <th className="item-sm"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG emissions (1000t GHG) ({"WTW"})</span></span></th>
+                                    <th><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></th>
+                                    <th><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuel</span></span></th>
+                                    <th><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG em. (1000t GHG - {"WTW"})</span></span></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -232,8 +235,8 @@ export default function ProjectSummary(props : {project: ProjectType}){
                                         const ftype = ftypes[i] as FuelType
                                         const co2 = fuels[ftype]?.co2 || ''
                                         fuelJsx.push(<tr key={vtype + ftype}>
-                                            {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>}
-                                            <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                            {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>}
+                                            <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                             <OutputNumberTd value={co2[0]}></OutputNumberTd>
                                         </tr>)
                                     }

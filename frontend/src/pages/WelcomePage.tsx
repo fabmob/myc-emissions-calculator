@@ -101,7 +101,7 @@ const Devs = () => (
                 <Col lg="12"><h2>Creators</h2></Col>
                 <Col lg="5">
                     <div className="text">
-                        <p>The tool was developed by <a href="https://lafabriquedesmobilites.fr/" target="_blank" rel="noreferrer">Fabrique des Mobilités </a> based on the <a href="https://www.mobiliseyourcity.net/mobiliseyourcity-emissions-calculator" target="_blank" rel="noreferrer">excel</a> model created by the <a href="http://www.ifeu.de">Institute for Energy and Environmental Research</a> in cooperation with the German and French development agencies GIZ and AFD.</p>
+                        <p>The tool was developed by <a href="https://lafabriquedesmobilites.fr/" target="_blank" rel="noreferrer">Fabrique des Mobilités </a> based on the <a href="https://www.mobiliseyourcity.net/mobiliseyourcity-emissions-calculator" target="_blank" rel="noreferrer">Excel</a> model created by the <a href="http://www.ifeu.de">Institute for Energy and Environmental Research</a> in cooperation with the German and French development agencies GIZ and AFD.</p>
                         <p>The developers are not responsible for the accuracy of the results. Any modification of the tool is the responsibility of the user. It is not allowed to use the tool for commercial purposes.</p>
                     </div>
                 </Col>

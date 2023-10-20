@@ -50,7 +50,7 @@ const ChoiceModal = (props: {
                         </Form.Group>
                     }
                     {props.availableChoices && props.availableChoices.map(choice => (
-                        <div key={choice}><Badge onClick={e => setChoice(choice)} bg="info"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span>{choice}</span></span></Badge></div>
+                        <div key={choice}><Badge onClick={e => setChoice(choice)} className="badge-default"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span>{choice}</span></span></Badge></div>
                     ))
                     }
                 </Modal.Body>

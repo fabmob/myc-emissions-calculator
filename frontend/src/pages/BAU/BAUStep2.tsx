@@ -186,24 +186,31 @@ export default function BAUStep2(){
                     className="mb-3"
                     fill
                 >
-                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" /> {/* Vehicle */}
+                                <col className="tablecol3" /> {/* Fuels */}
+                                <col className="tablecol3" /> {/* VKT */}
+                                <col className="tablecol2" /> {/* Inventory VKT */}
+                                <col className="tablecol1" /> {/* Source */}
+                                <col className="tablecolfluid" /> {/* Share per fuel */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm">
-                                        <ItemWithOverlay overlayContent={
+                                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent={
                                             <div>Vehicle kilometers travelled. Values for each fuel are computed as
                                                 <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                                    (<Badge bg="disabled"><span className="item"><span>Inventory VKT per vehicle and fuel (Mkm/y)</span></span></Badge> x ( 1 + <Badge bg="disabled"><span className="item"><span>Yearly vkt growth (%)</span></span></Badge> / 100) ^ <Badge bg="disabled"><span className="item"><span>Number of years</span></span></Badge>) x <Badge bg="disabled"><span className="item"><span>VKT (%)</span></span></Badge> / 100
+                                                    (<Badge className="badge-read-only"><span className="item"><span>Inv. VKT per vehicle and fuel (Mkm/y)</span></span></Badge> × ( 1 + <Badge className="badge-read-only"><span className="item"><span>Yearly vkt growth (%)</span></span></Badge> / 100) ^ <Badge className="badge-read-only"><span className="item"><span>Number of years</span></span></Badge>) × <Badge className="badge-read-only"><span className="item"><span>VKT (%)</span></span></Badge> / 100
                                                 </div>
                                             </div>
                                         }><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Computed VKT (Mkm/y)</span></span></ItemWithOverlay>
                                     </th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of share values used during Inventory"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Inv. VKT (%)</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT share, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (%)</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Reminder of share values used during Inventory"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Inv. VKT (%)</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of VKT share, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (%)</span></span></ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -225,7 +232,7 @@ export default function BAUStep2(){
                                         const percentSource = vehicle?.fuels[ftype]?.percentSource
                                         const invPercent = project.stages.Inventory[0].steps?.[2].vtypes?.[vtype].fuels?.[ftype]?.percent || "?"
                                         fuelJsx.push(<tr key={vtype + ftype}>
-                                            <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                            <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                             <OutputNumberTd value={(parseFloat(value) / 100 * vkt)}></OutputNumberTd>
                                             <td>{invPercent}</td>
                                             <td>
@@ -240,7 +247,7 @@ export default function BAUStep2(){
                                     }
                                     return [
                                         <tr key={vtype}>
-                                            <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
+                                            <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>All</td>
                                             <OutputNumberTd value={vkt}></OutputNumberTd>
                                             <td>100</td>
