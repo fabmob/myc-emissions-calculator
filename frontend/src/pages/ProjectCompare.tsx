@@ -348,7 +348,7 @@ const OptionsModal = (
             <Modal.Header closeButton>
                 <Modal.Title>Settings</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="masked-overflow-y">
                 <Form.Group className="mb-3">
                     <Form.Label>Displayed categories of transport</Form.Label>
                     <Row>

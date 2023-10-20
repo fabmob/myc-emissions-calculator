@@ -233,7 +233,7 @@ export default function ClimateWithoutUpstreamStep4(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc">
+                    <div className="text desc masked-overflow-y">
                         <p>If one of the two previous parameters (vehicle kilometer or load) is impacted it is mandatory to specify the transport mode that is the source of these new trips in the table.</p>
                         <p>Example: The goal transport modes categories are buses and train. Concerning the extensions of the train planned for 2020 the new users are expected to be for 50% of them previous bus users, 25% car users and 25% motorcycle users. And the users of a new bus line opening in 2025 are expected to be for 50% of them previous car users, 30% NMT users and 20% of trips will be induced.</p>
                         <p>Remark: Only enter the effect for the first year it occurs. The tool automatically takes it into account for subsequent years.</p>

@@ -132,7 +132,7 @@ export default function InventoryStep7(){
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc">
+                    <div className="text desc masked-overflow-y">
                         <p>This page displays a short summary of emissions for the reference year. More tables and visualisations are available in the Compare section of the project.</p>
                     </div>
                 </DescAndNav>

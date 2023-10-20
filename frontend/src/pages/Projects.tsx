@@ -86,7 +86,7 @@ export default function Projects(){
                         <h1>Projects</h1>
                     </Col>
                     <Col lg="6">
-                        <div className="text desc">
+                        <div className="text desc masked-overflow-y">
                             <p>
                                 A project is related to a specific MYC urban mobility plan. 
                                 It can be at a local level for Sustainable Urban Mobility plans (SUMP) or at a national level for National Urban Mobility Plans (NUMP).&nbsp;<Button variant="link" onClick={handleShow} style={{padding: "0"}}>
@@ -121,7 +121,7 @@ export default function Projects(){
                 <Modal.Header closeButton>
                     <Modal.Title>Projects</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <div className="text">
                         <p>Projects are divided in three stages:</p>
                         <ul>
@@ -287,7 +287,7 @@ const ValidateConfirmModal = ({showValidateConfirmModal, handleCloseValidateConf
         <Modal.Header closeButton>
             <Modal.Title>Validate confirmation</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="masked-overflow-y">
             <p>Are you sure you want to validate the project {projectBeingEdited.name} ?</p>
             <p>Validated projects are marked as complete, and might later be published to every user</p>
         </Modal.Body>
@@ -307,7 +307,7 @@ const DeleteConfirmModal = ({showDeleteConfirmModal, handleCloseDeleteConfirmMod
         <Modal.Header closeButton>
             <Modal.Title>Delete confirmation</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="masked-overflow-y">
             <p>Are you sure you want to delete the project {projectBeingEdited.name} ?</p>
             <p>This operation is definitive, all data related to this project will be lost.</p>
         </Modal.Body>

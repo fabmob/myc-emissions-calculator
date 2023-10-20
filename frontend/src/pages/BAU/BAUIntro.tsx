@@ -48,7 +48,7 @@ export default function BAUIntro(){
                         nextNav={{link: '/project/' + project.id + '/BAU/step/1', content: "Start", showArrow: true, variant: "primary"}}
 
                     >
-                        <div className="text desc">
+                        <div className="text desc masked-overflow-y">
                             <p>After defining the initial situation in your city/country, it is necessary to project transport emissions into the future on a business-as-usual basis.</p>
                             <p>The intention is to show the difference compared to the situation when a strategy, policy, programme or project were to be introduced. The BAU scenario serves as a reference scenario (baseline emissions), which illustrates the results of current trends often in contrast to alternative scenarios that take into account specific interventions</p>
                             <p>You will need to project evolutions of transport activity on your territory.</p>

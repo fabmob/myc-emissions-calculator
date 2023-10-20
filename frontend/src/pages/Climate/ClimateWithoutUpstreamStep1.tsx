@@ -155,7 +155,7 @@ export default function ClimateWithoutUpstreamStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <div className="text desc">
+                    <div className="text desc masked-overflow-y">
                     <p>Please enter the percentage of vehicle kilometers travelled (vkt) that will be avoided with the planned mitigation measures.</p>
                     </div>                
                 </DescAndNav>
@@ -227,7 +227,7 @@ export default function ClimateWithoutUpstreamStep1(){
                 <Modal.Header closeButton>
                     <Modal.Title>Avoided vkt information</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>Example of measure: Parking space reduction</p>
                     <p>Remark 1: "Avoid" means that the trip does not take place at all. If the trip is just replaced by a trip with a different mode of transport, it has to be entered in section "Shift".</p>
                     <p>Remark 2: Only enter the effect for the first year it occurs. The tool automatically takes it into account for subsequent years.</p>

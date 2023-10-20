@@ -102,12 +102,12 @@ export default function InventoryStep4(){
     return (
         <>
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
-                <h1>CO2 content of alternative energy production</h1>
+                <h1>CO2 content of alt. energy production</h1>
                 <DescAndNav 
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc">
+                    <div className="text desc masked-overflow-y">
                         <p>
                             In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).
                         </p>

@@ -237,7 +237,7 @@ export default function InventoryStep2(){
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <div className="text desc">
+                    <div className="text desc masked-overflow-y">
                         <p>
                             Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
                         </p>
@@ -361,7 +361,7 @@ export default function InventoryStep2(){
                 <Modal.Header closeButton>
                     <Modal.Title>Transport activity information</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>The composition of a city-specific vehicle fleet strongly influences local transport emissions. The more private cars are on the road and the larger or older the vehicles are, the higher their fuel consumption is and the higher the related GHG emissions are. In other words, GHG emissions depend on the vehicle fleet and on the distribution of VKT across the fleet's vehicle mix.</p>
                     <p>Data on the vehicle fleet is generally available from vehicle registration statistics for passenger cars, taxis, trucks, and motorcycles (e-bikes are mostly excluded), which includes technical specifications for the different vehicle types. Once the registered fleet is documented for the base year, e.g. 2015, only newly registered (and deregistered) vehicles have to be monitored each year.</p>
                     <p>If there are no big differences in the fleet compositions across different cities in a country, using national averages for urban fleet composition may be considered. Where the fleet is known to be quite specific, however, these local characteristics should be accounted for, e.g. prosperous metropolitan areas may have a larger number of new and larger cars than less prosperous mid-sized cities with a smaller but older fleet.</p>
@@ -376,7 +376,7 @@ export default function InventoryStep2(){
                 <Modal.Header closeButton>
                     <Modal.Title>There are two possible approaches to calculate vehicle mileage in the tool</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p><b>VKT approach :</b> The first possible methodology to calculate vehicle mileage is called vehicle kilometre approach. Data needed for this approach can be provided by a transport planning model or derived from traffic counts. For rail transport with freight and passenger trains, vehicle Stock and average annual mileage (or total mileage) may be available from the national rail operator.</p>
                     <p><b>Fleet approach :</b> The so-called fleet approach is based on activity of vehicles. The number of registered vehicles in the urban area is multiplied with the average annual mileage per vehicle category.</p>
                 </Modal.Body>

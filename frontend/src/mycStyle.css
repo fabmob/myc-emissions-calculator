@@ -48,7 +48,7 @@
     
     /* tooltip */
         .tooltip-button {
-            background: var(--c-edition-t0) !important;
+            /* background: var(--c-edition-t0) !important; */
         }
         .infoTooltip, .errorTooltip {
             /* Prevents the tooltip from messing with the page when it's created */
@@ -231,6 +231,7 @@
         /* tables */
             --table-border-color: var(--c-h1-s0-l4);
             --table-cell-padding: 0.6rem;
+            --table-cell-height: 3.7rem;
     }
 
 
@@ -398,8 +399,8 @@
                 }
             /* body copy style: mono bold */
                 .p-mono-bold,
-                .col>form label.form-label,
-                .col>form label.form-label span,
+                form label.form-label,
+                form label.form-label span,
                 .badge {
                     font-family: var(--t-ff-p-mono);
                     font-weight: var(--t-fw-p-mono-bold);
@@ -414,8 +415,8 @@
                     font-size: var(--t-fs-p2);}
             /* body copy small */
                 .p3,
-                .col>form label.form-label,
-                .col>form label.form-label span, 
+                form label.form-label,
+                form label.form-label span, 
                 .badge {
                     font-size: var(--t-fs-p3);
                     line-height: var(--t-lh-p3);}
@@ -435,12 +436,14 @@
         padding: 0.8rem 1.4rem;
         border: none;
         border-radius: 1rem;
+        transition: none;
         /* the following is useful since we spanned all "item" elements */
             display: flex;
             flex-flow: row nowrap;
             align-items: center;
             justify-content: center;
     }
+
     .btn-sm {
         font-family: var(--t-ff-p-mono);
         font-weight: var(--t-fw-p-mono-bold);
@@ -451,7 +454,6 @@
         border: none;
     }
     /* links */
-    
         a, 
         link, 
         .btn-link {
@@ -460,11 +462,19 @@
             font-weight: var(--t-fw-p-regular);
             padding: 0;
             border-radius: 0;
-            text-decoration: underline;
-            text-underline-offset: 0.2em;
+            text-decoration: none;
         }
         /* if within text, space it out */
             /* to do */
+            .text a, 
+            .text link, 
+            .text .btn-link,
+            p a, 
+            p link, 
+            p .btn-link {
+                text-decoration: underline;
+                text-underline-offset: 0.2em;
+            }
         /* button colors : link */
             a, 
             link, 
@@ -475,13 +485,23 @@
                 color: var(--c-h0-s0-l2);
                 text-decoration-color: var(--c-h0-s0-l3);
             }
-
-
+            /* btn link active state */
+                .btn-link.btn-check:checked+.btn, 
+                .btn-link.btn.active, 
+                .btn-link.btn.show, 
+                .btn-link.btn:first-child:active, 
+                :not(.btn-check)+.btn-link.btn:active {
+                    color: var(--c-h0-s0-l2);
+                    background-color: none;
+                    border-color: none;
+                }
+    
     /* button colors */
         /* button colors : primary */
             .btn-primary,
             .btn-primary:active,
             .btn-primary:focus {
+                /* color: var(--c-h0-s0-l6); */
                 background-color: var(--c-h2-s0_l2);
                 --bs-btn-active-bg: var(--c-h2-s0_l2);
             }
@@ -496,6 +516,7 @@
             .btn-secondary,
             .btn-secondary:active,
             .btn-secondary:focus {
+                /* color: var(--c-h0-s0-l6); */
                 background-color: var(--c-h2-s0_l3);
                 border-color: var(--c-h2-s0_l3);
                 --bs-btn-active-bg: var(--c-h2-s0_l3);
@@ -554,6 +575,8 @@
             line-height: 100%;
             border-radius: 0.6rem !important;
             font-size: var(--t-fs-p3);
+            user-select: none;
+            text-align: initial;
         }
         .badge:not(:last-child),
         .btn-sm:not(:last-child) {
@@ -610,15 +633,39 @@
         font-weight: inherit;
         line-height: inherit;
         color: inherit;
-        background-color: var(--bs-body-bg);
+        background-color: unset;
         border-radius: 0;
         border-color: var(--table-border-color);
     }
-    .col > form label.form-label,
-    .col > form label.form-label span {
+    form label.form-label,
+    form label.form-label span {
         color: var(--c-h0-s0-l3);
     }
-
+    input, textarea {
+        background-color: unset !important;
+        transition: none !important;
+        border: none !important;
+        border-radius: 0;
+        outline: var(--table-border-color) solid var(--bs-border-width) !important;
+        outline-offset: calc(var(--bs-border-width) * -1) !important;
+    }
+    /* make outline larger when in focus */
+        input:focus, textarea:focus {
+            background-color: unset !important;
+            box-shadow: none !important;
+            outline: var(--c-h1-s0-l3) solid 0.4rem !important;
+            outline-offset: -0.2rem !important;
+        }
+    /* some inputs are doubled. the clone needs to be put in the bg */
+        input.rbt-input-hint {
+            z-index: -1;
+        }
+    /* deal with inputs inside tables */
+        table td input, 
+        table td textarea {
+            outline: transparent solid 0.1rem !important;
+            outline-offset: -0.05rem !important;
+        }
     /* on the config tab */
         /* respace sections of the form */
         .col > form > *:not(:last-child) {
@@ -633,7 +680,7 @@
     table.table {
         border-collapse: collapse; 
         border-spacing: 0; /* ← this is cellspacing */
-        overflow: hidden;
+        /* overflow: hidden; */
         table-layout: fixed;
         /* the following is to switch to an auto col width layout : */
             /* width: 100%;
@@ -646,6 +693,13 @@
             margin: 0 !important;
             padding: 0 !important;
             border-color: var(--table-border-color);
+        /* show overflow */
+            /* overflow: hidden !important; */
+    }
+    table.table tr th > :not(input),
+    table.table tr td > :not(input) { 
+        /* hide overflow */
+            /* overflow: hidden !important; */
     }
     table.table tr td {
         line-height: 0;
@@ -660,8 +714,13 @@
         table.table thead tr th {
             border-right: 0;
             border-left: 0;
-            cursor: default;
+
+            cursor: pointer;
         }
+        /* change bg on hover */
+            table.table thead tr th:hover {
+                background: var(--c-h0-s0-l5);
+            }
         /* give the text an overflow ellipsis */ 
             table.table th .item {
                 max-width: 100%;
@@ -681,9 +740,9 @@
     /* table/cell */
         table.table tr td,
         table.table tr th {
-            /* min-width: calc(3.7rem * 1); /* temporary fix for modulo cell sizing */
-            /* max-width: calc(3.7rem * 4); /* temporary fix for modulo cell sizing */
-            height: 3.7rem !important; /* temporary fix for modulo cell sizing */
+            /* min-width: calc(var(--table-cell-height) * 1); /* temporary fix for modulo cell sizing */
+            /* max-width: calc(var(--table-cell-height) * 4); /* temporary fix for modulo cell sizing */
+            height: var(--table-cell-height) !important; /* temporary fix for modulo cell sizing */
             padding: var(--table-cell-padding) !important;
             font-family: var(--t-ff-p-mono);
             font-weight: var(--t-fw-p-mono-bold);
@@ -691,6 +750,7 @@
             overflow: hidden;
             vertical-align: middle;
             color: var(--c-h0-s0-l3);
+            /* background-color: pink; */
         }
         table.table tr th {
             font-size: var(--t-fs-p3);
@@ -699,7 +759,6 @@
             .tdDiagonalBar {
                 width: 100%;
                 height: 100%;
-                background: pink;
             }
             svg.diagonalBar {
                 position: absolute;
@@ -720,9 +779,6 @@
                 margin: calc(-1 * var(--table-cell-padding));
                 border: var(--bs-border-width) solid transparent;
             }
-            table.table tr td > input {
-                border-radius: 0;
-            }
 
         /* table/cell/button */
             table.table td button {
@@ -737,25 +793,25 @@
         width: 100%;
     }
     .tablecol1 {
-        width: calc(3.7rem * 1);
+        width: calc(var(--table-cell-height) * 1);
     }
     .tablecol2 {
-        width: calc(3.7rem * 2);
+        width: calc(var(--table-cell-height) * 2);
     }
     .tablecol3 {
-        width: calc(3.7rem * 3);
+        width: calc(var(--table-cell-height) * 3);
     }
     .tablecol4 {
-        width: calc(3.7rem * 4);
+        width: calc(var(--table-cell-height) * 4);
     }
     .tablecol5 {
-        width: calc(3.7rem * 5);
+        width: calc(var(--table-cell-height) * 5);
     }
     .tablecol6 {
-        width: calc(3.7rem * 6);
+        width: calc(var(--table-cell-height) * 6);
     }
     .tablecol7 {
-        width: calc(3.7rem * 7);
+        width: calc(var(--table-cell-height) * 7);
     }
 
 
@@ -858,7 +914,7 @@
         .card-body > span {
             color: var(--c-h0-s0-l2);
             padding: var(--table-cell-padding); /*cell padding - this is supposed to be in a table cell*/
-            border-top: 1px solid var(--table-border-color);
+            border-top: var(--bs-border-width) solid var(--table-border-color);
         }
         /* .h1, .h2, .h3, .h4, .h5, .h6, 
         h1, h2, h3, h4, h5, h6 {
@@ -920,18 +976,6 @@
             flex-flow: row nowrap;
             overflow: scroll;
             
-        }
-        .recharts-wrapper ul.recharts-default-legend:after {
-            position: absolute;
-            right: 0;  
-            height: 100%;
-            width: var(--spacing-l);
-            content: "";
-            background: linear-gradient(to left,
-            var(--c-h0-s0-l5), 
-            transparent
-            );
-            pointer-events: none; /* so the text is still selectable */
         }
         .recharts-wrapper ul.recharts-default-legend li {
             /* background: yellow; */
@@ -1081,40 +1125,48 @@
 /* modals and tooltips ————————————————————— */
     /* variables */
         :root {
-            --modal-xs-content-width: 30rem;
-            --modal-s-content-width: 30rem;
-            --modal-m-content-width: 40rem;
-            --modal-l-content-width: 60rem;
-            --modal-xs-base-padding: 1.4rem;
-            --modal-xs-padding: 
-                var(--modal-xs-base-padding) 
-                var(--modal-xs-base-padding) 
-                2rem 
-                var(--modal-xs-base-padding);
-            --modal-s-base-padding: 2.4rem;
-            --modal-s-padding: 
-                var(--modal-s-base-padding) 
-                var(--modal-s-base-padding) 
-                3.6rem 
-                var(--modal-s-base-padding);
-            --modal-m-base-padding: 4.8rem;
-            --modal-m-padding: 
-                var(--modal-m-base-padding) 
-                var(--modal-m-base-padding) 
-                7.2rem 
-                var(--modal-m-base-padding);
-            --modal-l-base-padding: 4.8rem;
-            --modal-l-padding: 
-                var(--modal-l-base-padding) 
-                var(--modal-l-base-padding) 
-                7.2rem 
-                var(--modal-l-base-padding);
-            --modal-xs-width: calc( var(--modal-xs-content-width) + 2 * var(--modal-xs-base-padding) );
-            --modal-s-width: calc( var(--modal-s-content-width) + 2 * var(--modal-s-base-padding) );
-            --modal-m-width: calc( var(--modal-m-content-width) + 2 * var(--modal-m-base-padding) );
-            --modal-l-width: calc( var(--modal-l-content-width) + 2 * var(--modal-l-base-padding) );
-            --modal-box-shadow-size-factor: 0.3;
-            /* shadow */
+            /* modal content width */
+                --modal-xs-content-width: 30rem;
+                --modal-s-content-width: 30rem;
+                --modal-m-content-width: 40rem;
+                --modal-l-content-width: 60rem;
+            /* modal width */
+                --modal-xs-width: calc( var(--modal-xs-content-width) + 2 * var(--modal-xs-base-padding) );
+                --modal-s-width: calc( var(--modal-s-content-width) + 2 * var(--modal-s-base-padding) );
+                --modal-m-width: calc( var(--modal-m-content-width) + 2 * var(--modal-m-base-padding) );
+                --modal-l-width: calc( var(--modal-l-content-width) + 2 * var(--modal-l-base-padding) );
+            /* modal vertical offset */
+                --modal-xs-v-offset : 12.9rem;
+                --modal-s-v-offset : 12.9rem;
+                --modal-m-v-offset : 12.9rem;
+                --modal-l-v-offset : 12.9rem;
+            /* modal padding */
+                --modal-xs-base-padding: 1.4rem;
+                --modal-xs-padding: 
+                    var(--modal-xs-base-padding) 
+                    var(--modal-xs-base-padding) 
+                    2rem 
+                    var(--modal-xs-base-padding);
+                --modal-s-base-padding: 2.4rem;
+                --modal-s-padding: 
+                    var(--modal-s-base-padding) 
+                    var(--modal-s-base-padding) 
+                    3.6rem 
+                    var(--modal-s-base-padding);
+                --modal-m-base-padding: 4.8rem;
+                --modal-m-padding: 
+                    var(--modal-m-base-padding) 
+                    var(--modal-m-base-padding) 
+                    7.2rem 
+                    var(--modal-m-base-padding);
+                --modal-l-base-padding: 4.8rem;
+                --modal-l-padding: 
+                    var(--modal-l-base-padding) 
+                    var(--modal-l-base-padding) 
+                    7.2rem 
+                    var(--modal-l-base-padding);
+            /* modal shadow */
+                --modal-box-shadow-size-factor: 0.3;
                 --modal-box-shadow: 
                     0 calc(var(--modal-box-shadow-size-factor) * 17.900rem) calc(var(--modal-box-shadow-size-factor) * 28.800rem) rgba(0,0,0,0.1650),
                     0 calc(var(--modal-box-shadow-size-factor) * 07.478rem) calc(var(--modal-box-shadow-size-factor) * 12.030rem) rgba(0,0,0,0.1186),
@@ -1130,15 +1182,8 @@
                     0 calc(var(--modal-box-shadow-size-factor) * 01.190rem) calc(var(--modal-box-shadow-size-factor) * 01.915rem) rgba(0,0,0,0.0667),
                     0 calc(var(--modal-box-shadow-size-factor) * 00.495rem) calc(var(--modal-box-shadow-size-factor) * 00.797rem) rgba(0,0,0,0.0464);
         }
-    /* common to all sizes */
-        /* pad surface in which modal appears */
-            .modal-dialog {
-                /* position: relative; */
-                /* width: auto; */
-                /* pointer-events: none; */
-                margin: var(--bs-modal-margin);
-                margin: 4.8rem auto 4.8rem auto;
-            }
+    /* for all modals and tooltips */
+        /* 1) main container, covering the entire screen surface */
             div.modal, 
             .tooltip {
                 /* default font style */
@@ -1149,95 +1194,95 @@
                     color: var(--c-h0-s0-l1);
                     border-top-color: var(--c-h0-s0-l6); /* will inherit to arrow */
             }
-        /* remove border radiuses */
-            div.modal .modal-content,
-            .tooltip .tooltip-inner {
-                border-radius: 0;
-                box-shadow: var(--modal-box-shadow);
-                /* default colors */
-                    background: var(--c-h0-s0-l6);
-                    color: inherit;
-            }
+        /* 2) secondary container, basically a column where to insert the modal */
+            /* pad surface in which modal appears */
+                .modal-dialog {
+                    margin: var(--modal-m-v-offset) auto var(--modal-m-v-offset) auto;
+                }
+        /* 3) the modal itself */
+            /* remove border radiuses */
+                div.modal .modal-content,
+                .tooltip .tooltip-inner {
+                    border: none;
+                    border-radius: 0;
+                    box-shadow: var(--modal-box-shadow);
+                    /* default colors */
+                        background: var(--c-h0-s0-l6);
+                        color: inherit;
+                }
+            /* hide modal content overflow */
+                .tooltip .tooltip-inner .tooltip-header, 
+                .tooltip .tooltip-inner .tooltip-content,
+                div.modal .modal-content .modal-header, 
+                div.modal .modal-content .modal-body, 
+                div.modal .modal-content .modal-footer {
+                    overflow: hidden;
+                } 
 
-    /* specific to modal */
-        /* set font size */
-            div.modal {
-                font-size: var(--t-fs-p2);
-            }
-        /* reset padding and margins */
-            div.modal .modal-content > * {
-                padding: 0;
-                margin: 0;
-            }
-        /* space out inner elements */
-            div.modal .modal-content > *:not(:last-child) {
-                margin-bottom: 1.4rem;
-            }
-            div.modal .modal-content .modal-header {
-                border-bottom: none;
-            }
-            div.modal .modal-content .modal-footer {
-                border-top: none;
-            }
-            div.modal .modal-content .modal-footer > * {
-                margin: 0;
-            }
-        /*headers*/
-            div.modal .modal-content .modal-header .modal-title {
-                /* it has an h4 tag ! inherited from the react component */
-                font-size: var(--t-fs-h3);
-                font-weight: var(--t-fw-h);
-                font-family: var(--t-ff-h);
-            }
-    /* modal : small size */
-        .modal-sm,
-        .tooltip .tooltip-inner {
-            width: var(--modal-s-width);
-        }
-        .modal-sm .modal-content,
-        .tooltip .tooltip-inner {
-            padding: var(--modal-s-padding);
-        }
-        /* specific to tooltip */
-            .infoTooltip.show, 
-            .errorTooltip.show {
-                opacity: 1 !important;
-            }
-            .tooltip-inner {
-                /* padding: 20px; */
-                text-align: left;
-                /* font-weight: 500; */
-                /* max-width: 350px; */
-            }
+    /* for all modals */
+        /* 1) main container, covering the entire screen surface */
             /* set font size */
-                .tooltip {
-                    font-size: var(--t-fs-p3);
+                div.modal {
+                    font-size: var(--t-fs-p2);
                 }
-            /* bolden header */
-                .tooltip .tooltip-header {
-                    font-weight: var(--t-fw-p-mono-bold);
+                div.modal,
+                div.modal .modal-dialog {
+                    transition: none !important;
                 }
-            /* pad tooltip header */
-                .tooltip .tooltip-inner .tooltip-header {
-                    margin-bottom: var(--spacing-xxs);
+            /*  */
+        /* 2) secondary container, basically a column where to insert the modal */
+            div.modal .modal-dialog {
+                min-height: unset; /* override the default value */
+                max-height: calc(100vh - 2 * var(--modal-m-v-offset));
+                background: var(--c-edition-t1);
+            }
+        /* 3) the modal itself */
+            div.modal .modal-dialog .modal-content {
+                /* no styles for now */
+                max-height: inherit; /* same as secondary container */
+            }
+        /* 4) the content of the modal */
+            /* set content max-height */
+                div.modal .modal-dialog .modal-content .modal-body {
+                    overflow: scroll;
+                    padding: 0;
                 }
-            /* set tooltip arrow size and specs */
-                .tooltip .tooltip-arrow {
-                    --bs-tooltip-arrow-width: 3.5355339059327376rem;
-                    --bs-tooltip-arrow-height: 1.7677669529663688rem;
-                    width: var(--bs-tooltip-arrow-width);
-                    height: var(--bs-tooltip-arrow-height);
-                    pointer-events: none;
-                    border-top-color: inherit;
+                div.modal .modal-dialog.modal-sm .modal-content .modal-body {
+                    overflow: initial;
                 }
-                .tooltip .tooltip-arrow:before {
-                    border-top-color: inherit;
+            /* reset padding and margins of inner elements */
+                div.modal .modal-dialog .modal-content > * {
+                    padding: 0;
+                    margin: 0;
                 }
-            /* hide info icon when cloned from page content */
-                .tooltip .tooltip-inner .tooltip-header .icon {
-                    display: none;
+            /* space out inner elements */
+                div.modal .modal-content > *:not(:last-child) {
+                    margin-bottom: 1.4rem;
                 }
-    /* modal : medium size */
+                div.modal .modal-content .modal-header {
+                    border-bottom: none;
+                }
+                div.modal .modal-content .modal-footer {
+                    border-top: none;
+                }
+                div.modal .modal-content .modal-footer > * {
+                    margin: 0;
+                }
+            /*headers*/
+                div.modal .modal-content .modal-header .modal-title {
+                    /* it has an h4 tag ! inherited from the react component */
+                    font-size: var(--t-fs-h3);
+                    font-weight: var(--t-fw-h);
+                    font-family: var(--t-ff-h);
+                }
+    /* for modals of large size */
+        .modal-xl {
+            width: var(--modal-l-width);
+        }
+        .modal-xl .modal-content {
+            padding: var(--modal-l-padding);
+        }
+    /* for modals of medium size */
         .modal-md,
         .modal-lg {
             width: var(--modal-m-width);
@@ -1246,13 +1291,77 @@
         .modal-lg .modal-content {
             padding: var(--modal-m-padding);
         }
-    /* modal : large size */
-        .modal-xl {
-            width: var(--modal-l-width);
+    /* for modals of small size and tooltips */
+        .modal-sm,
+        .tooltip .tooltip-inner {
+            width: var(--modal-s-width);
         }
-        .modal-xl .modal-content {
-            padding: var(--modal-l-padding);
+        .modal-sm .modal-content,
+        .tooltip .tooltip-inner {
+            padding: var(--modal-s-padding);
         }
+    /* for modals of small size */
+        /* for the selector modal */
+            div.modal.selector .modal-body .input-group,
+            div.modal.selector .modal-body .form-label,
+            div.modal.selector .modal-body .option {
+                height: var(--table-cell-height);
+                margin: 0;
+                padding: 0;
+            }
+            div.modal.selector .modal-body .form-label,
+            div.modal.selector .modal-body .option {
+                padding: var(--table-cell-padding);
+            }
+            div.modal.selector .modal-body .form-label {
+                line-height: inherit;
+            }
+            div.modal.selector .modal-body .option {
+                border-top: var(--bs-border-width) solid var(--table-border-color);
+            }
+            /* div.modal.selector,
+            div.modal.selector .modal-dialog {
+                transition: none;
+            } */
+    /* for tooltips */
+        .infoTooltip.show, 
+        .errorTooltip.show {
+            opacity: 1 !important;
+        }
+        .tooltip-inner {
+            /* padding: 20px; */
+            text-align: left;
+            /* font-weight: 500; */
+            /* max-width: 350px; */
+        }
+        /* set font size */
+            .tooltip {
+                font-size: var(--t-fs-p3);
+            }
+        /* bolden header */
+            .tooltip .tooltip-header {
+                font-weight: var(--t-fw-p-mono-bold);
+            }
+        /* pad tooltip header */
+            .tooltip .tooltip-inner .tooltip-header {
+                margin-bottom: var(--spacing-xxs);
+            }
+        /* set tooltip arrow size and specs */
+            .tooltip .tooltip-arrow {
+                --bs-tooltip-arrow-width: 3.5355339059327376rem;
+                --bs-tooltip-arrow-height: 1.7677669529663688rem;
+                width: var(--bs-tooltip-arrow-width);
+                height: var(--bs-tooltip-arrow-height);
+                pointer-events: none;
+                border-top-color: inherit;
+            }
+            .tooltip .tooltip-arrow:before {
+                border-top-color: inherit;
+            }
+        /* hide info icon when cloned from page content */
+            .tooltip .tooltip-inner .tooltip-header .icon {
+                display: none;
+            }
 
 
 
@@ -1426,15 +1535,6 @@
                 max-height: 16rem;
                 overflow: scroll;
             }
-            .descAndNav .text.desc:after {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                height: var(--spacing-l);
-                content: "";
-                background: linear-gradient(to top, var(--c-h0-s0-l6), transparent );
-                pointer-events: none;
-            }
             .descAndNav .col-4 {
                 display: flex;
                 flex-flow: column nowrap;
@@ -1494,13 +1594,6 @@
                 margin-bottom: 1.4rem;
             }
         /* user note */
-            .projectStepContainer .user-note-button {
-                font-size: var(--t-fs-p3);
-                font-weight: var(--t-fw-p-mono-bold);
-                font-family: var(--t-ff-p-mono);
-                color: var(--c-h0-s0-l3);
-                padding: var(--table-cell-padding);
-            }
             .projectStepContainer .user-note {
                 font-size: var(--t-fs-p2);
                 font-weight: var(--t-fw-p-mono);
@@ -1508,9 +1601,79 @@
                 color: var(--c-h0-s0-l1);
                 margin-bottom: 0 !important;
             }
-            .projectStepContainer .user-note .form-control {
-                background-color: unset;
-                border: var(--bs-border-width) solid transparent;
-                border-top: var(--bs-border-width) solid var(--table-border-color);
-                border-radius: 0;
+            .projectStepContainer .user-note .form-label {
+                margin: 0;
+                padding: 0;
+                width: 100%;
             }
+            .projectStepContainer .user-note-button {
+                font-size: var(--t-fs-p3);
+                font-weight: var(--t-fw-p-mono-bold);
+                font-family: var(--t-ff-p-mono);
+                color: var(--c-h0-s0-l3);
+                width: 100%;
+                height: var(--table-cell-height);
+                padding: var(--table-cell-padding);
+            }
+            .projectStepContainer .user-note-button:hover {
+                background: var(--c-h0-s0-l5);  
+            }
+            .projectStepContainer .user-note .form-control {
+                min-height: 20rem;
+            }
+
+
+
+
+/* overflows fading out */
+    /* horizontal overflows */
+        .recharts-wrapper ul.recharts-default-legend:after {
+            content: "";
+            position: absolute;
+            right: 0;  
+            height: 100%;
+            width: var(--spacing-l);
+            content: "";
+            background: linear-gradient(to left, var(--c-h0-s0-l5), transparent);
+            pointer-events: none; /* so the text is still selectable */
+        }
+    /* vertical overflows */
+        .masked-overflow-y {
+            /* scroll bar width, for use in mask calculations */
+                --scrollbar-width: 0.8rem;
+            /* mask fade distance, for use in mask calculations */
+                --mask-height: 3.2rem;
+            /* If content exceeds height of container, overflow! */
+                overflow-y: auto;
+            /* Our height limit */
+                /* height: 300px; */
+            /* Need to make sure container has bottom space,
+            otherwise content at the bottom is always faded out */
+                padding-bottom: var(--mask-height);
+            /* Keep some space between content and scrollbar */
+                padding-right: 2rem;
+            /* The CSS mask */
+                /* The content mask is a linear gradient from top to bottom */
+                --mask-image-content: linear-gradient(
+                    to bottom,
+                    /* transparent, */ /* commented out to make it bottom-only */
+                    black var(--mask-height),
+                    black calc(100% - var(--mask-height)),
+                    transparent);
+                /* Here we scale the content gradient to the width of the container 
+                minus the scrollbar width. The height is the full container height */
+                    --mask-size-content: calc(100% - var(--scrollbar-width)) 100%;
+                /* The scrollbar mask is a black pixel */
+                    --mask-image-scrollbar: linear-gradient(black, black);
+                /* The width of our black pixel is the width of the scrollbar.
+                The height is the full container height */
+                    --mask-size-scrollbar: var(--scrollbar-width) 100%;
+                /* Apply the mask image and mask size variables */
+                    mask-image: var(--mask-image-content), var(--mask-image-scrollbar);
+                    mask-size: var(--mask-size-content), var(--mask-size-scrollbar);
+                /* Position the content gradient in the top left, and the 
+                scroll gradient in the top right */
+                    mask-position: 0 0, 100% 0;
+                /* We don't repeat our mask images */
+                    mask-repeat: no-repeat, no-repeat;
+        }

@@ -117,7 +117,7 @@ export default function InventoryStep6(){
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc">
+                    <div className="text desc masked-overflow-y">
                         <p>
                             The vehicles load isn’t involved in the GHG emissions calculation but is useful to obtain passenger.km out of vehicle.km. It will allow you to compare your GHG emissions with the modal share in your territory on that step of the calculation process. That way you can understand how much GHG emissions represents one transport mode, but also how many passengers or tons it actually represents. It will be used in the Climate Scenario as well.
                         </p>

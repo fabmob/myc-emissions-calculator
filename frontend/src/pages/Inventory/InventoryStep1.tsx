@@ -249,7 +249,7 @@ export default function InventoryStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     
                 >
-                    <div className="text desc">
+                    <div className="text desc masked-overflow-y">
                         <p>Please define all combinations of vehicle and fuel types to be used in the following steps to calculate GHG emissions. You also need to specify :</p>
                         <ul>
                             <li>if they are using the road or rail network</li>
@@ -338,7 +338,7 @@ export default function InventoryStep1(){
                 <Modal.Header closeButton>
                     <Modal.Title>Default categories of transport</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     {Object.keys(defaultVehiclesParams).map((vtype, index) => <p key={index}><b>{vtype} :</b> {defaultVehiclesParams[vtype].desc}</p>)}
                 </Modal.Body>
                 <Modal.Footer>

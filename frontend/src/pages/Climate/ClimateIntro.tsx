@@ -90,7 +90,7 @@ export default function ClimateIntro(){
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
                         nextNav={{trigger: nextTrigger, content: "Start", showArrow: true, variant: "primary"}}
                     >
-                        <div className="text desc">
+                        <div className="text desc masked-overflow-y">
                             <p>This step enables calculating a climate scenario, based on mitigations actions. Calculating the impact of NUMP/SUMP measures in the MYC Calculator requires bundling measures based on the ASI : Avoid-Shift-Improve.</p>
                             <p>In order to derive transport demand data for the calculations two different data input approaches are possible : <Button variant="link" onClick={e => setShowInfo(true)} style={{padding: "0"}}><span className="item"><span>with upstream calculations or without</span></span></Button>. This will depend on if you count with a transport model. In order to avoid wrong results please choose and apply just one approach.</p>
                         </div>
@@ -190,7 +190,7 @@ export default function ClimateIntro(){
             <Modal.Header closeButton>
                 <Modal.Title>With or without upstream calculation</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="masked-overflow-y">
                 <p>The first approach “WITH UPSTREAM CALCULATIONS - INPUT FROM EXTERNAL TRANSPORT PLANNING TOOL” the user can directly enter transport performance (pkm/tkm) and the vehicle kilometers travelled (vkt) provided by an external transport planning tool.</p>
                 <p>If no data from a transport planning tool are available, the second approach “WITHOUT UPSTREAM CALCULATIONS - CALCULATIONS WITHIN THIS TOOL” can be applied. For calculating potential GHG savings from mitigation measures within this approach the “ASI” (Avoid/Shift/Improve) approach is applied. Users have to estimate the effect of transport related actions on the transport demand for each mitigation action type (Avoid, Shift or Improve). E.g. Parking area management may lead to 5% avoided passenger car vehicle kilometers travelled (vkt).</p>
                 <ul>

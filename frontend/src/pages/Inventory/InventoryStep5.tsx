@@ -136,7 +136,7 @@ export default function InventoryStep5(){
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc">
+                    <div className="text desc masked-overflow-y">
                         <p>
                             The top down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><span className="item"><span>energy sales</span></span></Button> on a given territory to evaluate your bottom-up results.
                         </p>                
@@ -321,7 +321,7 @@ export default function InventoryStep5(){
                 <Modal.Header closeButton>
                     <Modal.Title>Energy sales</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>Emissions are calculated using a top-down approach based on statistics on fuel sales in the city. This approach only allows for a rough estimation since a purely sales-based approach does not provide any information on how much of the purchased fuel is actually used within the city. It also does not provide data on the actual transport activities that are related to the city, or their causes - information which is necessary for transport planning. Using energy sales data alone does not adequately monitor the effects of SUMPS, but it can be used to cross-check bottom-up calculations.</p>
                 </Modal.Body>
                 <Modal.Footer>
@@ -334,7 +334,7 @@ export default function InventoryStep5(){
                 <Modal.Header closeButton>
                     <Modal.Title>Uncertainty reasons</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>Energy balance data are based on the total fuel sales within the country. According to the IPCC guidelines 2006, the final energy consumption for the GHG inventory should be calculated as follow: production + import - export - international bunkers - stock change.</p>
                     <p>One reason why the calculations would be different can be for example, that the energy balance does not include fuels bought in neighboring countries and consumed within the country. The emission inventory report should try explaining gaps and analyze the possibility to minimize the related uncertainties.</p>
 

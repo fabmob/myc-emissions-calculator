@@ -102,7 +102,7 @@ export default function EditEmissionFactors (props: {
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Emission factors</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>
                         Emission factors are the last data you need to complete your GHG emissions calculation. Specific GHG emission factors (in kgCO2eq/TJ) apply according to the different fuel types (gasoline, diesel, CNG, LNG).
                     </p>
@@ -169,7 +169,7 @@ export default function EditEmissionFactors (props: {
                 <Modal.Header closeButton>
                     <Modal.Title>Emission factors methodology</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>GHG emissions consider CO2, CH4 and N20 that are transformed into kgCO2eq/TJ.</p>
                     <p>CO2eq is an index created by IPCC to simplify the comparison and cumulate all of the gases in one index. In order to obtain this data, you need to convert other gases emissions in CO2 emissions, multiplying the emission factors by the Global Warming Potential of the gas. It is a measure of how much energy the emissions of 1 ton of a gas will absorb over a given period of time, relative to the emissions of 1 ton of carbon dioxide (CO2) (EPA, 2022).</p>
                     <p>CH4 have a GWP of 28 years average and N20 have a GWP of 265 average. This means that 1ton of CH4 emitted represents 28 tons of CO2.</p>
