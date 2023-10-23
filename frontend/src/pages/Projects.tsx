@@ -230,9 +230,9 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                 <colgroup>
                     <col className="tablecol7" /> {/* Name */}
                     <col className="tablecol2" /> {/* Type */}
-                    <col className="tablecol4" /> {/* Status */}
                     <col className="tablecol4" /> {/* Inventory progress */}
                     <col className="tablecolfluid" /> {/* Action */}
+                    <col className="tablecol4" /> {/* Status */}
                     {showOwner && <col className="tablecol3" />} {/* Author */}
                 </colgroup>
                 <thead>
@@ -240,9 +240,9 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                         {/* <th>#</th> */}
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Status</th>
                         <th>Inv. progress</th>
                         <th>Actions</th>
+                        <th>Status</th>
                         {showOwner && <th>Author</th>}
                     </tr>
                 </thead>
@@ -256,16 +256,24 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                                     {project.isSump ? <Badge bg="primary"><span className="item"><span>SUMP</span></span></Badge> : <Badge className="badge-default"><span className="item"><span>NUMP</span></span></Badge>}              
                                 </OverlayTrigger>
                             </td>
-                            <td>{project.status === 'draft' ? <Badge className="badge-default"><span className="item"><span>Draft</span></span></Badge> : <Badge className="badge-default"><span className="item"><span>Validated</span></span></Badge>}</td>
                             <td><ProjectProgress step={project.stages["Inventory"][0]?.step}/></td>
                             <td style={{whiteSpace: "nowrap"}}>
                                 <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}><span className="item"><span>Open</span></span></Button>
                                 <Button variant="secondary" className="btn-sm" disabled={project.stages["Inventory"][0]?.step < 8 || project.status !== 'draft'} onClick={() => handleShowValidateConfirmModal(project)}><span className="item"><span>Validate</span></span></Button>
                                 <Button variant="secondary" className="btn-sm" onClick={() => handleShowDeleteConfirmModal(project)}><span className="item"><span>Delete</span></span></Button>
                             </td>
+                            <td>{project.status === 'draft' ? <Badge className="badge-default"><span className="item"><span>Draft</span></span></Badge> : <Badge className="badge-default"><span className="item"><span>Validated</span></span></Badge>}</td>
                             {showOwner && <td>{project.owner}</td>}
                         </tr>
                     )}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        {showOwner && <td></td>}
+                    </tr>
                 </tbody>
             </Table>
             <ValidateConfirmModal 
@@ -373,6 +381,12 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
                         </td>
                     </tr>
                 )}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </tbody>
         </Table>
     )

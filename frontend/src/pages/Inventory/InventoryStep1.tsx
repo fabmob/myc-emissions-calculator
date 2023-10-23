@@ -249,15 +249,13 @@ export default function InventoryStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>Please define all combinations of vehicle and fuel types to be used in the following steps to calculate GHG emissions. You also need to specify :</p>
-                        <ul>
-                            <li>if they are using the road or rail network</li>
-                            <li>if they are used for public transport, private transport or freight (if one transport mode is used for multiple, create two categories with unique names)</li>
-                            <li>the fuel types that are used</li>
-                        </ul>
-                        <p>You can also add a custom vehicle category below, if you don’t find it in the list. For each category, you will later need to fill the following information: Total vkt, Vehicle occupancy, Fuel consumptions, Vkt breakdown per fuel.</p>
-                    </div>
+                    <p>Please define all combinations of vehicle and fuel types to be used in the following steps to calculate GHG emissions. You also need to specify :</p>
+                    <ul>
+                        <li>if they are using the road or rail network</li>
+                        <li>if they are used for public transport, private transport or freight (if one transport mode is used for multiple, create two categories with unique names)</li>
+                        <li>the fuel types that are used</li>
+                    </ul>
+                    <p>You can also add a custom vehicle category below, if you don’t find it in the list. For each category, you will later need to fill the following information: Total vkt, Vehicle occupancy, Fuel consumptions, Vkt breakdown per fuel.</p>
                 </DescAndNav>
                 <Table bordered>
                     <colgroup>
@@ -297,9 +295,7 @@ export default function InventoryStep1(){
                             </tr>)
                         })}
                         <tr>
-                            <td>
-                                <Button size="sm" variant="action" onClick={e => setShowAddVehicleModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
-                            </td>
+                            <td><Button size="sm" variant="action" onClick={e => setShowAddVehicleModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button></td>
                             <td></td>
                             <td></td>
                             <td></td>

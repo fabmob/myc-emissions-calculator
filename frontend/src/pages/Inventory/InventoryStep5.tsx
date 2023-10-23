@@ -131,22 +131,20 @@ export default function InventoryStep5(){
     return (
         <>
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
-                <h1>Top down validation</h1>
+                <h1>Top-down validation</h1>
                 <DescAndNav 
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>
-                            The top down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><span className="item"><span>energy sales</span></span></Button> on a given territory to evaluate your bottom-up results.
-                        </p>                
-                        <p>
-                            It is particularly adapted for NUMPs, since it is easier to get the energy balance data at a national scale - but you can also use it if you have the local data.
-                        </p>
-                        <p>
-                            Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}><span className="item"><span>possible reasons</span></span></Button> for uncertainty, for both calculation approach.
-                        </p>
-                    </div>
+                    <p>
+                        The top-down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><span className="item"><span>energy sales</span></span></Button> on a given territory to evaluate your bottom-up results.
+                    </p>                
+                    <p>
+                        It is particularly adapted for NUMPs, since it is easier to get the energy balance data at a national scale - but you can also use it if you have the local data.
+                    </p>
+                    <p>
+                        Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}><span className="item"><span>possible reasons</span></span></Button> for uncertainty, for both calculation approach.
+                    </p>
                 </DescAndNav>
                 <h3>Energy balance</h3>
                 <Table bordered>
@@ -226,7 +224,14 @@ export default function InventoryStep5(){
                                 fuelJsx
                             ]
                         })}
-                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
                 <h3>Emissions</h3>
@@ -307,7 +312,14 @@ export default function InventoryStep5(){
                                 fuelJsx
                             ]
                         })}
-                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>

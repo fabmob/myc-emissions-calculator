@@ -110,9 +110,7 @@ export default function ClimateWithUpstreamStep7(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>This page displays a short summary of emissions for this climate scenario. More tables and visualisations are available in the Compare section of the project.</p>    
-                    </div>
+                    <p>This page displays a short summary of emissions for this climate scenario. More tables and visualisations are available in the Compare section of the project.</p>    
                 </DescAndNav>
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
                 <h3>Emissions</h3>

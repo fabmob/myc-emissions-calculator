@@ -65,12 +65,22 @@ export default function ClimateIntro(){
     }
     const MethodSelector = () => {
         return (
-            <div style={{display: "flex", marginBottom: "10px"}}>
+            <div style={{display: "flex"}}>
                 <Dropdown onSelect={(key:any) => method === "With upstream calculation" ? setMethod("Without upstream calculation") : setMethod("With upstream calculation")}>
                     <Dropdown.Toggle as={Badge} className="badge-default" style={{margin: "0 10px 0 10px"}}>
                         {method === "With upstream calculation" ? "With upstream calculation" : "Without upstream calculation"}
                     </Dropdown.Toggle>
-                    <Dropdown.Menu>
+                    <Dropdown.Menu
+                        popperConfig={{
+                                modifiers: [
+                                {
+                                    name: 'offset',
+                                    options: {
+                                    offset: [0, 8],
+                                    },
+                                },
+                                ],
+                            }}>
                         <Dropdown.Item as={Badge} className="badge-default">
                             {method === "Without upstream calculation" ? "With upstream calculation" : "Without upstream calculation"}
                         </Dropdown.Item>
@@ -83,17 +93,15 @@ export default function ClimateIntro(){
         <>
         <section>
         <Container>
-            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
+            <Row className="justify-content-md-center align-items-center">
                 <Col xs lg="8">
                     <h1>Climate Scenario</h1>
                     <DescAndNav 
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
                         nextNav={{trigger: nextTrigger, content: "Start", showArrow: true, variant: "primary"}}
                     >
-                        <div className="text desc masked-overflow-y">
-                            <p>This step enables calculating a climate scenario, based on mitigations actions. Calculating the impact of NUMP/SUMP measures in the MYC Calculator requires bundling measures based on the ASI : Avoid-Shift-Improve.</p>
-                            <p>In order to derive transport demand data for the calculations two different data input approaches are possible : <Button variant="link" onClick={e => setShowInfo(true)} style={{padding: "0"}}><span className="item"><span>with upstream calculations or without</span></span></Button>. This will depend on if you count with a transport model. In order to avoid wrong results please choose and apply just one approach.</p>
-                        </div>
+                        <p>This step enables calculating a climate scenario, based on mitigations actions. Calculating the impact of NUMP/SUMP measures in the MYC Calculator requires bundling measures based on the ASI : Avoid-Shift-Improve.</p>
+                        <p>In order to derive transport demand data for the calculations two different data input approaches are possible : <Button variant="link" onClick={e => setShowInfo(true)} style={{padding: "0"}}><span className="item"><span>with upstream calculations or without</span></span></Button>. This will depend on if you count with a transport model. In order to avoid wrong results please choose and apply just one approach.</p>
                     </DescAndNav>
                     <div className="illustration">
                         <img src='/pictures/asi-approach-diagram.png' alt="Avoid-Shift-Improve Approach (Transport NAMA Handbook, GIZ, 2015 based on Dalkmann and Brannigan 2007)" style={{width: '100%'}}></img>

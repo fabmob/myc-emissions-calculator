@@ -155,9 +155,7 @@ export default function ClimateWithoutUpstreamStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <div className="text desc masked-overflow-y">
                     <p>Please enter the percentage of vehicle kilometers travelled (vkt) that will be avoided with the planned mitigation measures.</p>
-                    </div>                
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
@@ -210,8 +208,15 @@ export default function ClimateWithoutUpstreamStep1(){
                                         </tr>
                                     )
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
+                            
                         </Table>
                     </Tab>))}
                 </Tabs>

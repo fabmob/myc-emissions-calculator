@@ -158,12 +158,10 @@ export default function ClimateWithoutUpstreamStep6(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>Once transport activity i.e. mileage by mode and fuel is known, it needs to be multiplied with adequate fuel consumption factors.</p>
-                        <p>Please enter the expected average fuel/energy consumption changes - for each vehicle category and per fuel type- for the following years (average fuel/energy consumption per vehicle per 100 km).</p>
-                        <p>If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.</p>
-                        <p>Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.</p>
-                    </div>
+                    <p>Once transport activity i.e. mileage by mode and fuel is known, it needs to be multiplied with adequate fuel consumption factors.</p>
+                    <p>Please enter the expected average fuel/energy consumption changes - for each vehicle category and per fuel type- for the following years (average fuel/energy consumption per vehicle per 100 km).</p>
+                    <p>If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.</p>
+                    <p>Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.</p>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
@@ -217,7 +215,13 @@ export default function ClimateWithoutUpstreamStep6(){
                                         fuelJsx
                                     ]
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}

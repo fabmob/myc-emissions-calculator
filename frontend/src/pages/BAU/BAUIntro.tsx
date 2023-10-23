@@ -40,7 +40,7 @@ export default function BAUIntro(){
         <>
         <section>
         <Container>
-            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
+            <Row className="justify-content-md-center align-items-center">
                 <Col xs lg="8">
                     <h1>BAU Scenario</h1>
                     <DescAndNav 
@@ -48,11 +48,9 @@ export default function BAUIntro(){
                         nextNav={{link: '/project/' + project.id + '/BAU/step/1', content: "Start", showArrow: true, variant: "primary"}}
 
                     >
-                        <div className="text desc masked-overflow-y">
-                            <p>After defining the initial situation in your city/country, it is necessary to project transport emissions into the future on a business-as-usual basis.</p>
-                            <p>The intention is to show the difference compared to the situation when a strategy, policy, programme or project were to be introduced. The BAU scenario serves as a reference scenario (baseline emissions), which illustrates the results of current trends often in contrast to alternative scenarios that take into account specific interventions</p>
-                            <p>You will need to project evolutions of transport activity on your territory.</p>
-                        </div>
+                        <p>After defining the initial situation in your city/country, it is necessary to project transport emissions into the future on a business-as-usual basis.</p>
+                        <p>The intention is to show the difference compared to the situation when a strategy, policy, programme or project were to be introduced. The BAU scenario serves as a reference scenario (baseline emissions), which illustrates the results of current trends often in contrast to alternative scenarios that take into account specific interventions</p>
+                        <p>You will need to project evolutions of transport activity on your territory.</p>
                     </DescAndNav>
                     <div className="illustration">
                         <img src='/pictures/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>

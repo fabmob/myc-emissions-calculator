@@ -212,10 +212,20 @@ export default function InventoryStep2(){
                     {/* <a onClick={e => setShowComputationApproach(true)} href="">Vehicle mileage</a>  */}
                     is computed using the
                     <Dropdown onSelect={(key:any) => computationApproach === "vkt" ? setComputationApproach("fleet") : setComputationApproach("vkt")}>
-                        <Dropdown.Toggle as={Badge} className="badge-default" style={{verticalAlign:"text-top"}}>
+                        <Dropdown.Toggle as={Badge} className="badge-default">
                             {computationApproach === "vkt" ? "Vkt approach" : "Fleet approach"}
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
+                        <Dropdown.Menu
+                            popperConfig={{
+                                modifiers: [
+                                {
+                                    name: 'offset',
+                                    options: {
+                                    offset: [0, 8],
+                                    },
+                                },
+                                ],
+                            }}>
                             <Dropdown.Item as={Badge} className="badge-default">
                                 {computationApproach === "fleet" ? "Vkt approach" : "Fleet approach"}
                             </Dropdown.Item>
@@ -237,17 +247,15 @@ export default function InventoryStep2(){
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>
-                            Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
-                        </p>
-                        <p>
-                            Please enter the vehicle kilometers travelled (Mio km) for the reference year. The total vkt should comply with the actual transport activity within the city or country territory.
-                        </p>
-                        <p>
-                            Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
-                        </p>
-                    </div>
+                    <p>
+                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
+                    </p>
+                    <p>
+                        Please enter the vehicle kilometers travelled (Mio km) for the reference year. The total vkt should comply with the actual transport activity within the city or country territory.
+                    </p>
+                    <p>
+                        Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
+                    </p>
                 </DescAndNav>
                 <ApproachSelector></ApproachSelector>
                 <Table bordered>
@@ -347,7 +355,14 @@ export default function InventoryStep2(){
                                 fuelJsx
                             ]
                         })}
-                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>

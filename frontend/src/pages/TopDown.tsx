@@ -120,9 +120,9 @@ export default function TopDown(){
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={8} stage='Inventory' />
-            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
+            <Row className="justify-content-md-center align-items-center">
                 <Col xs lg="8">
-                    <h1>Top Down validation</h1>
+                    <h1>Top-down validation</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                     <p>
                         A well-known validation approach especially for national GHG inventories is the comparison of the calculated fuel consumption (summed by fuel type and vehicle category) obtained from the present tool (bottom-up approach) with the national energy balance (top-down approach). Differences within a range of +/- 10% are quite common and should not be considered as error but as uncertainty. One reason can be for example, that the energy balance does not include fuels bought in neighboring countries and consumed within the country. The emission inventory report should try explaining gaps and analyze the possibility to minimize the related uncertainties.<br/>

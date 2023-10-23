@@ -235,7 +235,7 @@ export default function ProjectSummary(props : {project: ProjectType}){
                                         const ftype = ftypes[i] as FuelType
                                         const co2 = fuels[ftype]?.co2 || ''
                                         fuelJsx.push(<tr key={vtype + ftype}>
-                                            {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>}
+                                            {i===0 && <td rowSpan={ftypes.length}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>}
                                             <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                             <OutputNumberTd value={co2[0]}></OutputNumberTd>
                                         </tr>)
@@ -244,6 +244,11 @@ export default function ProjectSummary(props : {project: ProjectType}){
                                         fuelJsx
                                     ]
                                 })}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Col>

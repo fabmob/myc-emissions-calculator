@@ -118,16 +118,14 @@ export default function InventoryStep8(){
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>
-                        The average trip length isn’t involved in GHG emissions for the base year. 
-                        It is used to weight the modal shift effect of public transport in the Climate Scenario and it will then be considered constant
-                        during the whole MobiliseYourCity emissions calculation process. Go to modal shift in the Climate Scenario to learn more about it.
-                        </p>
-                        <p>
-                            It is asked to fill it here because the data should be collected during the diagnostic process of collecting data.
-                        </p>
-                    </div>
+                    <p>
+                    The average trip length isn’t involved in GHG emissions for the base year. 
+                    It is used to weight the modal shift effect of public transport in the Climate Scenario and it will then be considered constant
+                    during the whole MobiliseYourCity emissions calculation process. Go to modal shift in the Climate Scenario to learn more about it.
+                    </p>
+                    <p>
+                        It is asked to fill it here because the data should be collected during the diagnostic process of collecting data.
+                    </p>
                 </DescAndNav>
                 <Table bordered>
                     <colgroup>
@@ -157,6 +155,11 @@ export default function InventoryStep8(){
                                     </td>
                                 </tr>)
                         })}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>

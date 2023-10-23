@@ -117,17 +117,15 @@ export default function InventoryStep6(){
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>
-                            The vehicles load isn’t involved in the GHG emissions calculation but is useful to obtain passenger.km out of vehicle.km. It will allow you to compare your GHG emissions with the modal share in your territory on that step of the calculation process. That way you can understand how much GHG emissions represents one transport mode, but also how many passengers or tons it actually represents. It will be used in the Climate Scenario as well.
-                        </p>
-                        <p>
-                            Conventionally drivers of public transport are not included as there are not passengers (incl. taxi), but for private transport drivers should be included if they travel for their own sake.
-                        </p>
-                        <p>
-                            Local city data can be used if available and robust. Otherwise for cities it is recommended to use national data and for countries to use regional specific data.
-                        </p>
-                    </div>
+                    <p>
+                        The vehicles load isn’t involved in the GHG emissions calculation but is useful to obtain passenger.km out of vehicle.km. It will allow you to compare your GHG emissions with the modal share in your territory on that step of the calculation process. That way you can understand how much GHG emissions represents one transport mode, but also how many passengers or tons it actually represents. It will be used in the Climate Scenario as well.
+                    </p>
+                    <p>
+                        Conventionally drivers of public transport are not included as there are not passengers (incl. taxi), but for private transport drivers should be included if they travel for their own sake.
+                    </p>
+                    <p>
+                        Local city data can be used if available and robust. Otherwise for cities it is recommended to use national data and for countries to use regional specific data.
+                    </p>
                 </DescAndNav>
                 <Table bordered>
                     <colgroup>
@@ -158,7 +156,11 @@ export default function InventoryStep6(){
                                 </td>
                             </tr>)
                         })}
-                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>

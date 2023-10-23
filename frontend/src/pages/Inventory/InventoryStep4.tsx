@@ -107,17 +107,15 @@ export default function InventoryStep4(){
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>
-                            In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).
-                        </p>
-                        <p>
-                            If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.
-                        </p>
-                        <p>
-                            Please enter the CO2 content of electricity and hydrogen production, or skip to next step.
-                        </p>
-                    </div>
+                    <p>
+                        In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).
+                    </p>
+                    <p>
+                        If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.
+                    </p>
+                    <p>
+                        Please enter the CO2 content of electricity and hydrogen production, or skip to next step.
+                    </p>
                 </DescAndNav>
                 <h3>Electricity</h3>
                 <Table bordered>
@@ -148,6 +146,11 @@ export default function InventoryStep4(){
                                 <Form.Control value={inputData.electricity?.[network].value} onChange={e => updateInput("electricity", network, e.target.value)}></Form.Control>
                             </td>
                         </tr>)})}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
                 <h3>Hydrogen</h3>
@@ -179,6 +182,11 @@ export default function InventoryStep4(){
                                 <Form.Control value={inputData.hydrogen?.[network].value} onChange={e => updateInput("hydrogen", network, e.target.value)}></Form.Control>
                             </td>
                         </tr>)})}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>

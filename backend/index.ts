@@ -193,7 +193,7 @@ app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: R
     });
 });
 
-// emissions and energy computed for top down checking
+// emissions and energy computed for top-down checking
 app.get('/api/project/:projectId/Inventory/0/emissions', keycloak.protect(), (req: Request, res: Response) => {
     const owner = (req as any).kauth.grant.access_token.content.email
     const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1

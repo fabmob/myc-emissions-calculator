@@ -27,7 +27,7 @@ const ProjectStepContainerWrapper = (props: {
         <>
             <section>
                 <Container className="projectStepContainer">
-                    <Row className="justify-content-md-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
+                    <Row className="justify-content-md-center">
                         <Col lg="3" className="stepLeft">
                             <Progress project={props.project} stage={props.stage} currentStep={props.currentStep} climateScenarioId={props.climateScenarioId} isWithoutUpstream={props.isWithoutUpstream}/>
                         </Col>

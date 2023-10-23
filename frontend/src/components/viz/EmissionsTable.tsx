@@ -42,14 +42,25 @@ export default function EmissionsTable (props: {
                 {Object.keys(props.emissionsData).map((vtype, index) => {
                     const vehicle = props.emissionsData[vtype]
                     return (<tr key={index}>
-                        <td><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
+                        <td>
+                            <Badge className="badge-read-only">
+                                <span className="item"><span>{vtype}</span></span>
+                            </Badge>
+                        </td>
                         {props.project.referenceYears && props.project.referenceYears.map((y, yearIndex) => (
                             <OutputNumberTd key={yearIndex} value={vehicle.co2[yearIndex]} decimals={2}></OutputNumberTd>
                         ))}
                     </tr>)
-                    
                 })}
-                
+
+                <tr>
+                    <td></td>
+                    {props.project.referenceYears && props.project.referenceYears.map(() => {
+                        return (
+                            <td></td>
+                        )
+                    })}
+                </tr>
             </tbody>
         </Table>
     )

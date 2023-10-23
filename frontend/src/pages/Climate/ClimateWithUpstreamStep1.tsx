@@ -155,9 +155,7 @@ export default function ClimateWithUpstreamStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>Mileage is the cornerstorne of the calculation of transport GHG emissions. Please enter VKT computed with your transport planning tool for the current climate scenario.</p>
-                    </div>
+                    <p>Mileage is the cornerstorne of the calculation of transport GHG emissions. Please enter VKT computed with your transport planning tool for the current climate scenario.</p>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
@@ -198,7 +196,12 @@ export default function ClimateWithUpstreamStep1(){
                                         </tr>
                                     )
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}

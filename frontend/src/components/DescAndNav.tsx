@@ -18,10 +18,12 @@ export default function DescAndNav (props: {children: React.ReactNode, prevNav?:
     return (
         <Row className="descAndNav">
             <Col lg="8">
-                {props.children}
-                {/* {props.seeMoreCallBack && <Button variant="link" onClick={e => props.seeMoreCallBack && props.seeMoreCallBack()}>
-                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>See more</span></span>
-                </Button>} */}
+                <div className="text desc masked-overflow-y">
+                    {props.children}{props.seeMoreCallBack && 
+                    <Button className="info-button" variant="link" onClick={e => props.seeMoreCallBack && props.seeMoreCallBack()}>
+                        <span className="item"><span>Read more...</span></span>
+                    </Button>}
+                </div>
             </Col>
             <Col lg="4">
                 <div className="nav">
@@ -39,13 +41,6 @@ export default function DescAndNav (props: {children: React.ReactNode, prevNav?:
                                 <span>{props.nextNav.content}</span>
                                 {props.nextNav.showArrow && <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#right"}/></svg>}
                             </span>
-                        </Button>}
-                    </div>
-                </div>
-                <div className="info">
-                    <div>
-                        {props.seeMoreCallBack && <Button variant="link" onClick={e => props.seeMoreCallBack && props.seeMoreCallBack()}>
-                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>See more</span></span>
                         </Button>}
                     </div>
                 </div>

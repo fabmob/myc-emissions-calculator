@@ -110,9 +110,18 @@ export default function EditEmissionFactors (props: {
                         The table already integrates international ones that you can use as default values if you don’t have specific values.
                     </p>
                     <p>
-                        We would recommend to check out the <Button variant="link" onClick={e => setShowMethodologyModal(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>methodology used</span></span></Button> to obtain those factors first.
+                        We would recommend to check out the <Button variant="link" onClick={e => setShowMethodologyModal(true)} style={{padding: "0"}}><span className="item">
+                            <span>methodology used</span></span></Button> to obtain those factors first.
                     </p>
                     <Table bordered>
+                        <colgroup>
+                            <col className="tablecol4" /> {/* Fuels */}
+                            <col className="tablecol1" /> {/* Source */}
+                            <col className="tablecolfluid" /> {/* Lower heating value */}
+                            <col className="tablecolfluid" /> {/* Fuel density */}
+                            <col className="tablecolfluid" /> {/* CO2e TTW */}
+                            <col className="tablecolfluid" /> {/* CO2e WTW (kg/Tj) */}
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th><ItemWithOverlay overlayContent="Fuels types, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
@@ -140,6 +149,14 @@ export default function EditEmissionFactors (props: {
                                         <td><Form.Control value={props.inputData.emissionFactors.WTW[ftype].ges} onChange={e => updateInput(ftype, "ges", e.target.value, 'WTW')}></Form.Control></td>
                                     </tr>
                             })}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         </tbody>
                     </Table>
                     {props.inputData.note === undefined 

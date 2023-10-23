@@ -122,11 +122,9 @@ export default function BAUStep4(){
                     prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc masked-overflow-y">
-                        <p>In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).</p>
-                        <p>If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.</p>
-                        <p>Please enter the predicted CO2 content of electricity and hydrogen production.</p>
-                    </div>
+                    <p>In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).</p>
+                    <p>If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.</p>
+                    <p>Please enter the predicted CO2 content of electricity and hydrogen production.</p>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
@@ -168,10 +166,22 @@ export default function BAUStep4(){
                                         <Form.Control value={value} onChange={e => updateInput('electricity', network, yearIndex, e.target.value)}></Form.Control>
                                     </td>
                                 </tr>)})}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                         <h3>Hydrogen</h3>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" /> {/* Network */}
+                                <col className="tablecol3" /> {/* Source */}
+                                <col className="tablecol3" /> {/* Inventory emissions */}
+                                <col className="tablecolfluid" /> {/* Emissions */}
+                            </colgroup>
                             <thead>
                                 <tr>
                                     <th><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
@@ -198,6 +208,12 @@ export default function BAUStep4(){
                                         <Form.Control value={value} onChange={e => updateInput('hydrogen', network, yearIndex, e.target.value)}></Form.Control>
                                     </td>
                                 </tr>)})}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}
