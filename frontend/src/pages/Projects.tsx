@@ -112,13 +112,13 @@ export default function Projects(){
                 </Container>
             </section>
             <section className="footer">
-                <div className="container">
+                <Container>
                     <Row className="justify-content-md-center">
                         <Col lg="7">
                             <Footer />
                         </Col>
                     </Row>
-                </div>
+                </Container>
             </section>
             <Modal size="lg" centered show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

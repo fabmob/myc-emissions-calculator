@@ -11,7 +11,6 @@ import { Image } from 'react-bootstrap'
 export default function WelcomePage(){
     return (
         <>
-        {/* <div className="container"> */}
             <Jumbo />
             <Methodology />
             <Devs />
@@ -25,7 +24,6 @@ export default function WelcomePage(){
                     </Row>
                 </div>
             </section>
-        {/* </div> */}
         </>
     )
 }
@@ -36,7 +34,6 @@ const Jumbo = () => {
         <>
         <section className="hero">
             <div className="container">
-                {/* <div id="container"> */}
                 <Row>
                     {/* <Col lg="12"><h1>Get emissions from local transportation</h1></Col> */}
                     <Col lg="5">
@@ -76,7 +73,6 @@ const Jumbo = () => {
                         {/* this should be replaced with an illustration showing the map of a city or/and an emission graph */}
                     </Col>
                 </Row>
-                {/* </div> */}
             </div>
         </section>
         {/* <section className="hero">
@@ -86,7 +82,7 @@ const Jumbo = () => {
                     <Col lg="5">
                         <div className="text">
                             <p>The MYC GHG emissions calculator helps governmental organizations and consulting agencies to estimate both present and future greenhouse gas (GHG) emissions for local transports.</p>
-                            <p>Future estimations can be made according to the current emission trends ("BAU Scenario") and to GHG reduction plans ("Climate Scenarios").</p>
+                            <p>Future estimations can be made according to the current emission trends ("BAU") and to GHG reduction plans ("Climate Scenarios").</p>
                         </div>
                         <Button variant="action" size="lg" 
                                 onClick={() => 

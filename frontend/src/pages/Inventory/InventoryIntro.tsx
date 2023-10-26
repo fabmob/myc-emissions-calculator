@@ -161,11 +161,13 @@ export default function InventoryIntro(){
         </Container>
         </section>
         <section className="footer">
-            <Row className="justify-content-md-center">
-                <Col lg="7">
-                    <Footer />
-                </Col>
-            </Row>
+            <Container>
+                <Row className="justify-content-md-center">
+                    <Col lg="7">
+                        <Footer />
+                    </Col>
+                </Row>
+            </Container>
         </section>
         </>
     )

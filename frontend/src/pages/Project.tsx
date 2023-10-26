@@ -58,13 +58,13 @@ export default function Project({page}:{page:"config" | "edit" | "viz"}){
                 </Container>
             </section>
             <section className="footer">
-                <div className="container">
+                <Container>
                     <Row className="justify-content-md-center">
                         <Col lg="7">
                             <Footer />
                         </Col>
                     </Row>
-                </div>
+                </Container>
             </section>
         </>
     )
