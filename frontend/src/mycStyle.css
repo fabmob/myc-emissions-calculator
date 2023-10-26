@@ -1554,7 +1554,7 @@ nav.navbar {
         }
         .homepage-header .navbar-brand, 
         .homepage-header .nav-link, 
-        .homepage-header nav.navbar a#github-link,
+        .homepage-header nav.navbar span.github-link-container a#github-link,
         .homepage-header nav.navbar .dropdown .dropdown-item {
             color: var(--c-h0-s0-l2);
         }
@@ -1562,8 +1562,8 @@ nav.navbar {
         .homepage-header .navbar-brand:hover,
         .homepage-header .nav-link:focus, 
         .homepage-header .nav-link:hover,
-        .homepage-header nav.navbar a#github-link:focus,
-        .homepage-header nav.navbar a#github-link:hover,
+        .homepage-header nav.navbar span.github-link-container a#github-link:focus,
+        .homepage-header nav.navbar span.github-link-container a#github-link:hover,
         .homepage-header nav.navbar .dropdown .dropdown-item:focus,
         .homepage-header nav.navbar .dropdown .dropdown-item:hover {
             color: var(--c-h0-s0-l6);
