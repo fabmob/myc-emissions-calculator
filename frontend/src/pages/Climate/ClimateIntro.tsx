@@ -94,7 +94,7 @@ export default function ClimateIntro(){
         <section>
         <Container>
             <Row className="justify-content-md-center align-items-center">
-                <Col xs lg="8">
+                <Col xs lg="7">
                     <h1>Climate Scenario</h1>
                     <DescAndNav 
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
@@ -220,7 +220,7 @@ export default function ClimateIntro(){
         </section>
         <section className="footer">
             <Row className="justify-content-md-center">
-                <Col lg="8">
+                <Col lg="7">
                     <Footer />
                 </Col>
             </Row>

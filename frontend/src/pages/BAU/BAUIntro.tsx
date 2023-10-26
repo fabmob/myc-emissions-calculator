@@ -41,7 +41,7 @@ export default function BAUIntro(){
         <section>
         <Container>
             <Row className="justify-content-md-center align-items-center">
-                <Col xs lg="8">
+                <Col xs lg="7">
                     <h1>BAU Scenario</h1>
                     <DescAndNav 
                         prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
@@ -133,7 +133,7 @@ export default function BAUIntro(){
         </section>
         <section className="footer">
             <Row className="justify-content-md-center">
-                <Col lg="8">
+                <Col lg="7">
                     <Footer />
                 </Col>
             </Row>

@@ -104,7 +104,9 @@
                 display: none;
             }
         }
-        .outputNumber:hover {
+        .outputNumber:hover,
+        .outputNumber:focus,
+        .outputNumber:active {
             .regular {
                 display: none
             }
@@ -173,6 +175,15 @@
             --spacing-l: 3.6rem;
             --spacing-xl: 5.6rem;
             --spacing-xxl: 7.2rem;
+            /* section paddings */
+                --section-padding-l-top: 10rem;
+                --section-padding-l-right: 10rem;
+                --section-padding-l-bottom: 14rem;
+                --section-padding-l-left: 10rem;
+                --section-padding-s-top: 6rem;
+                --section-padding-s-right: 1.4rem;
+                --section-padding-s-bottom: 6rem;
+                --section-padding-s-left: 1.4rem;
         /* colors */
             /*grey (luminance variations)*/
             --c-h0-s0-l0: #000000;
@@ -214,8 +225,11 @@
             --t-ff-h: "Gravur Condensed";
             --t-fw-h: 1000;
             --t-fs-h1: 4.8rem; /*big*/
+            --t-lh-h1: 110%;
             --t-fs-h2: 3.6rem; /*medium*/
+            --t-lh-h2: 110%;
             --t-fs-h3: 2.4rem; /*small*/
+            --t-lh-h3: 110%;
             /*for body copy*/
             --t-ff-p-mono: "Roboto Mono";
             --t-fw-p-mono: medium;
@@ -233,6 +247,9 @@
             --table-border-color: var(--c-h1-s0-l4);
             --table-cell-padding: 0.6rem;
             --table-cell-height: 3.7rem;
+        /* breakpoints */
+            --breakpoint-m: 768px;
+        
     }
 
 
@@ -250,8 +267,12 @@
             font-size: 10px;
         /* no anim when scrolling to top between pages */
             scroll-behavior: auto !important;
+        }
+    @media (max-width: 768px) {
+        html {
+            font-size: 8.5px;
+        }
     }
-
 
 
 
@@ -268,10 +289,53 @@
 
     /* sections */
         /* size and pad sections */
+        div.App header {
+            padding: 0 0 0 0;
+        }
         div.App section {
             width: 100%;
-            padding: 6rem 10rem 14rem 10rem;
+            padding: 
+                var(--section-padding-l-top) 
+                var(--section-padding-l-right)
+                var(--section-padding-l-bottom)
+                var(--section-padding-l-left);
         }
+        div.App section.footer {
+            width: 100%;
+            padding: 
+                var(--section-padding-l-top) 
+                var(--section-padding-l-right)
+                var(--section-padding-l-bottom)
+                var(--section-padding-l-left);
+        }
+
+        @media (max-width: 768px) {
+            div.App header {
+                padding: 0 1.4rem 0 1.4rem;
+                padding: 
+                    0 
+                    var(--section-padding-s-right)
+                    0
+                    var(--section-padding-s-left);
+            }
+            div.App section {
+                --reduction-factor: 1/4;
+                width: 100%;
+                padding: 
+                    var(--section-padding-s-top) 
+                    var(--section-padding-s-right)
+                    var(--section-padding-s-bottom)
+                    var(--section-padding-s-left);
+            }
+            div.App section.footer {
+                padding: 
+                    var(--section-padding-s-top) 
+                    var(--section-padding-s-right)
+                    var(--section-padding-s-bottom)
+                    var(--section-padding-s-left);
+            }
+        }
+        
 
     /* columns */
         .container, 
@@ -279,7 +343,7 @@
             /* edit gap between columns */
             --bs-gutter-x: 4.2rem;
             /* edit gap between rows */
-            --bs-gutter-y: 0; /* this is the default bootstrap value */
+            --bs-gutter-y: 6.4rem; /* vertical distance between two columns when they stack up */
             /* box-shadow: 0 0 0 1rem hsla(40,100%,50%,100%); */
         }
         .row > .col,
@@ -302,18 +366,194 @@
         
         
         /*set medium column width to 600px*/
-            @media (min-width: 1200px) {
+            /* @media (min-width: 1200px) {
                 .col-xl-8 {
                     flex: 0 0 auto;
-                    /* width: calc(60rem + var(--bs-gutter-x)); */
+                    width: calc(60rem + var(--bs-gutter-x));
                 }
-            }
-            @media (min-width: 992px) {
+            } */
+            /* @media (min-width: 992px) {
                 .col-lg-8 {
                     flex: 0 0 auto;
-                    /* width: calc(60rem + var(--bs-gutter-x)); */
+                    width: calc(60rem + var(--bs-gutter-x));
                 }
-            }
+            } */
+
+
+/* page header ————————————————————— */
+
+header {
+    background-color: var(--c-h0-s0-l5);
+}
+
+nav.navbar {
+    --bs-nav-link-padding-y: 0.5rem; /* bs default value */
+    --bs-navbar-nav-link-padding-x: 0.8rem;   
+    --bs-navbar-hover-color: var(--c-h0-s0-l1);
+    --bs-navbar-brand-hover-color: var(--bs-navbar-brand-hover-color);
+    height: 6.4rem;
+    padding: 1.45rem 0; /* to prevent it from going up when the toggler is triggered */
+}
+/* links */
+    nav.navbar a,
+    nav.navbar button {
+        font-size: var(--t-fs-p2);
+        font-weight: var(--t-fw-p-regular);
+        color: var(--c-h0-s0-l3);
+    }
+    .navbar-nav .nav-link.active, 
+    .navbar-nav .nav-link.show {
+        color: var(--bs-navbar-hover-color);
+    }
+    nav.navbar a.navbar-brand,
+    nav.navbar .nav-link,
+    nav.navbar #github-link {
+        padding: 
+            var(--bs-nav-link-padding-y) 
+            var(--bs-navbar-nav-link-padding-x) 
+            var(--bs-nav-link-padding-y)
+            var(--bs-navbar-nav-link-padding-x);
+    }
+    nav.navbar a.navbar-brand,
+    nav.navbar #basic-navbar-nav {
+        margin: 0 calc(-1 * var(--bs-navbar-nav-link-padding-x));
+    }
+/* github-link */
+    nav.navbar span.github-link-container a#github-link {
+        display: inline-block;
+        width: 4rem;
+        height: auto;
+    }
+    nav.navbar span.github-link-container a#github-link:hover,
+    nav.navbar span.github-link-container a#github-link:focus {
+        /* mimic .nav-link behavior */
+            color: var(--bs-navbar-hover-color);
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+    }
+    nav.navbar span.github-link-container a#github-link > svg {
+        width: 100%;
+        fill: currentColor;
+    }
+    /* hide on small screens */
+    @media(max-width:768px) {
+        nav.navbar span.github-link-container {
+            display: none;
+        }
+    }
+/* dropdown menu */
+    .dropdown-menu {
+        --bs-dropdown-spacer: 1rem;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        margin: 0;
+        line-height: 0;
+        background: transparent;
+    }
+    .dropdown-menu .dropdown-item {
+        padding: var(--bs-nav-link-padding-y) var(--bs-navbar-nav-link-padding-x);
+        line-height: 100%;
+        /* transition : same as nav-link */
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+            transition-duration: 0.15s, 0.15s, 0.15s;
+            transition-timing-function: ease-in-out, ease-in-out, ease-in-out;
+            transition-delay: 0s, 0s, 0s;
+    }
+    .dropdown-menu .dropdown-item:hover,
+    .dropdown-menu .dropdown-item:focus,
+    .dropdown-menu .dropdown-item:active {
+        background-color: unset;
+    }
+    .dropdown-toggle::after {
+        display: none;
+    }
+/* navbar toggler */
+    .navbar-toggler,
+    .navbar-toggler:hover,
+    .navbar-toggler:focus,
+    .navbar-toggler:active {
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none;
+    }
+    .navbar-toggler .navbar-toggler-icon {
+        background-image: url(/public/navbar-toggler-icon.svg);
+    }
+    .navbar-toggler:hover .navbar-toggler-icon,
+    .navbar-toggler:focus .navbar-toggler-icon,
+    .navbar-toggler:active .navbar-toggler-icon {
+        background-image: url(/public/navbar-toggler-icon.svg);
+        outline: 3px solid hsla(0,0%,50%,0.3);
+        outline-offset: 3px;
+        border-radius: 3px;
+    }
+
+
+/* page footer */
+
+/* on most pages, the footer is a section element (the last of the page).
+   on calculation steps, it is a div element (within the right hand side column). */
+
+    div.projectStepContainer .stepRight .footer {
+        margin-top: 12.8rem;
+    }
+
+/* logos of partners ————————————————————— */
+    :root {
+        --logo-common-scale-base: 1rem;
+        /* --logo-common-scale-factor: 1; */ /* ISO with proto */
+        --logo-common-scale-factor: 1.5; /* adjusted while working */
+    }
+    .partnerLine {
+        display: flex;
+        flex-flow: row wrap;
+        /* gap: 3rem 3.7rem; */ /* ISO with proto */
+        gap: 3rem 7rem; /* adjusted while working */
+        align-items: center;
+        width: 100%;
+        margin:  0 auto 9.2rem auto;
+    }
+    .partnerLine .group {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 3rem 7rem;
+        align-items: center;
+    }
+    .partnerLine .group .img-wrapper {
+        height: 7rem;
+        display: flex;
+        align-items: center;
+    }
+    .partnerLine img {
+        height: fit-content;
+    }
+    .partnerLine img.logo-ADB       { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-ADEME     { width: calc( var(--logo-common-scale-base) * 4.2 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-AFD       { width: calc( var(--logo-common-scale-base) * 6.0 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-Cerema    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-Codatu    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-DTFA      { width: calc( var(--logo-common-scale-base) * 7.6 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-EB        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-ECF       { width: calc( var(--logo-common-scale-base) * 4.6 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-EU        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-Euroclima { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-FFEM      { width: calc( var(--logo-common-scale-base) * 3.8 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-FMECD     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-FMENCNSCP { width: calc( var(--logo-common-scale-base) * 10.1 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-GIZ       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-GPIT      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-ITDP      { width: calc( var(--logo-common-scale-base) * 4.3 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-KFW       { width: calc( var(--logo-common-scale-base) * 2.9 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-MP        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-MTE       { width: calc( var(--logo-common-scale-base) * 5.9 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-Platforma { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-SMFA      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-SSATP     { width: calc( var(--logo-common-scale-base) * 4.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-TRUFI     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-TUMI      { width: calc( var(--logo-common-scale-base) * 5.1 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-UCLG      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-UNH       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-WI        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
 
 
 
@@ -368,9 +608,9 @@
             line-height: var(--t-lh-main);
             margin: 0.33em 0 0.67em 0;
         }
-        h1 {font-size: var(--t-fs-h1);} 
-        h2 {font-size: var(--t-fs-h2);} 
-        h3 {font-size: var(--t-fs-h3);}
+        h1 {font-size: var(--t-fs-h1); line-height: var(--t-lh-h1);} 
+        h2 {font-size: var(--t-fs-h2); line-height: var(--t-lh-h2);} 
+        h3 {font-size: var(--t-fs-h3); line-height: var(--t-lh-h3);}
         h4, h5, h6 {
             /*these are not supposed to exist*/
             font-family: "Times New Roman";
@@ -447,6 +687,15 @@
             flex-flow: row nowrap;
             align-items: center;
             justify-content: center;
+        
+    }
+
+    :focus-visible {
+        background: hsla(0,0%,50%,0.2) !important;
+        outline: .4rem solid hsla(0,0%,50%,0.2) !important;
+        outline-offset: 0rem;
+        box-shadow: none !important;
+        transition: none;
     }
 
     .btn-sm {
@@ -469,12 +718,8 @@
             border-radius: 0;
             text-decoration: none;
         }
-        /* if within text, space it out */
-            .text a:not(:first-child), 
-            .text link:not(:first-child), 
+        /* if within text and a button, space it out */
             .text .btn-link:not(:first-child),
-            p a:not(:first-child), 
-            p link:not(:first-child), 
             p .btn-link:not(:first-child) {
                 margin: 0 0.4em;
             }
@@ -507,7 +752,13 @@
             .btn-link,
             a:hover, 
             link:hover, 
-            .btn-link:hover {
+            .btn-link:hover,
+            a:focus, 
+            link:focus, 
+            .btn-link:focus,
+            a:active, 
+            link:active, 
+            .btn-link:active {
                 color: var(--c-h0-s0-l2);
                 text-decoration-color: var(--c-h0-s0-l3);
             }
@@ -570,7 +821,7 @@
                 --bs-btn-bg: var(--c-h5-s0-l0-t0);
                 --bs-btn-hover-color: var(--c-h0-s0-l6);
                 --bs-btn-hover-bg: var(--c-h5-s0-l0-t1);
-                --bs-btn-focus-shadow-rgb: 60,153,110;
+                /* --bs-btn-focus-shadow-rgb: 60,153,110; */
                 --bs-btn-active-color: var(--c-h0-s0-l6);
                 --bs-btn-active-bg: var(--c-h5-s0-l0-t1);
                 --bs-btn-active-shadow: none;
@@ -615,10 +866,12 @@
         .badge-default {
             background-color: var(--c-h0-s0-l4) !important;
             color: var(--c-h0-s0-l1);
-        }
-        .badge-default:hover {
-            background-color: var(--c-h0-s0-l5) !important;
             cursor: pointer;
+        }
+        .badge-default:hover,
+        .badge-default:focus,
+        .badge-default:active {
+            background-color: var(--c-h0-s0-l5) !important;
         }
         .badge-read-only {
             color: var(--c-h0-s0-l6);
@@ -739,7 +992,9 @@
             cursor: pointer;
         }
         /* change bg on hover */
-            table.table thead tr th:hover {
+            table.table thead tr th:hover,
+            table.table thead tr th:focus,
+            table.table thead tr th:active {
                 background: var(--c-h0-s0-l5);
             }
         /* give the text an overflow ellipsis */ 
@@ -1032,143 +1287,6 @@
         }
 
 
-/* page header ————————————————————— */
-
-    nav.navbar {
-        --bs-navbar-nav-link-padding-x: 0.8rem;   
-        height: 6.4rem;
-        padding: unset;
-    }
-    nav.navbar .bg-light {
-        background: var(--c-h0-s0-l5);
-    }
-    nav.navbar a,
-    nav.navbar button {
-        font-size: var(--t-fs-p2);
-        font-weight: var(--t-fw-p-regular);
-        color: var(--c-h0-s0-l3);
-    }
-    .navbar-nav .nav-link.active, 
-    .navbar-nav .nav-link.show {
-        color: var(--c-h0-s0-l2);
-    }
-    nav.navbar a#github-link {
-        display: inline-block;
-        width: 2.4rem;
-        height: auto;
-    }
-    nav.navbar a#github-link:hover {
-        /* mimic .nav-link behavior */
-            color: var(--bs-navbar-hover-color);
-            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
-    }
-    nav.navbar a#github-link > svg {
-        width: 100%;
-        fill: currentColor;
-    }
-    /* dropdown menu */
-        .dropdown-menu {
-            --bs-dropdown-spacer: 1rem;
-            border: 0;
-            border-radius: 0;
-            padding: 0;
-            margin: 0;
-            line-height: 0;
-            background: transparent;
-        }
-        .dropdown-menu .dropdown-item {
-            padding: var(--bs-nav-link-padding-y) var(--bs-navbar-nav-link-padding-x);
-            line-height: 100%;
-            /* transition : same as nav-link */
-                transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
-                transition-duration: 0.15s, 0.15s, 0.15s;
-                transition-timing-function: ease-in-out, ease-in-out, ease-in-out;
-                transition-delay: 0s, 0s, 0s;
-        }
-        .dropdown-menu .dropdown-item:hover,
-        .dropdown-menu .dropdown-item:active {
-            background-color: unset;
-        }
-        .dropdown-toggle::after {
-            display: none;
-        }
-
-
-
-
-/* page footer */
-
-    /* on most pages, the footer is a section element (the last of the page).
-       on calculation steps, it is a div element (within the right hand side column). */
-
-        section.footer, 
-        div.footer {
-            /* background: pink; */
-        }
-
-        div.projectStepContainer .stepRight .footer {
-            margin-top: 12.8rem;
-        }
-
-    /* logos of partners ————————————————————— */
-        :root {
-            --logo-common-scale-base: 1rem;
-            /* --logo-common-scale-factor: 1; */ /* ISO with proto */
-            --logo-common-scale-factor: 1.5; /* adjusted while working */
-        }
-        .partnerLine {
-            display: flex;
-            flex-flow: row wrap;
-            /* gap: 3rem 3.7rem; */ /* ISO with proto */
-            gap: 3rem 7rem; /* adjusted while working */
-            align-items: center;
-            width: 100%;
-            margin:  0 auto 9.2rem auto;
-        }
-        .partnerLine .group {
-            display: flex;
-            flex-flow: row nowrap;
-            gap: 3rem 7rem;
-            align-items: center;
-        }
-        .partnerLine .group .img-wrapper {
-            height: 7rem;
-            display: flex;
-            align-items: center;
-        }
-        .partnerLine img {
-            height: fit-content;
-        }
-        .partnerLine img.logo-ADB       { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-ADEME     { width: calc( var(--logo-common-scale-base) * 4.2 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-AFD       { width: calc( var(--logo-common-scale-base) * 6.0 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-Cerema    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-Codatu    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-DTFA      { width: calc( var(--logo-common-scale-base) * 7.6 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-EB        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-ECF       { width: calc( var(--logo-common-scale-base) * 4.6 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-EU        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-Euroclima { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-FFEM      { width: calc( var(--logo-common-scale-base) * 3.8 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-FMECD     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-FMENCNSCP { width: calc( var(--logo-common-scale-base) * 10.1 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-GIZ       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-GPIT      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-ITDP      { width: calc( var(--logo-common-scale-base) * 4.3 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-KFW       { width: calc( var(--logo-common-scale-base) * 2.9 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-MP        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-MTE       { width: calc( var(--logo-common-scale-base) * 5.9 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-Platforma { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-SMFA      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-SSATP     { width: calc( var(--logo-common-scale-base) * 4.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-TRUFI     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-TUMI      { width: calc( var(--logo-common-scale-base) * 5.1 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-UCLG      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-UNH       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-        .partnerLine img.logo-WI        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
-
-
-
 /* illustrations —————————————————————*/
 
     div.illustration {
@@ -1430,41 +1548,116 @@
 
 /* page : home ————————————————————— */
 
+    /* navbar */
+        .homepage-header {
+            background-color: unset !important;
+        }
+        .homepage-header .navbar-brand, 
+        .homepage-header .nav-link, 
+        .homepage-header nav.navbar a#github-link,
+        .homepage-header nav.navbar .dropdown .dropdown-item {
+            color: var(--c-h0-s0-l2);
+        }
+        .homepage-header .navbar-brand:focus, 
+        .homepage-header .navbar-brand:hover,
+        .homepage-header .nav-link:focus, 
+        .homepage-header .nav-link:hover,
+        .homepage-header nav.navbar a#github-link:focus,
+        .homepage-header nav.navbar a#github-link:hover,
+        .homepage-header nav.navbar .dropdown .dropdown-item:focus,
+        .homepage-header nav.navbar .dropdown .dropdown-item:hover {
+            color: var(--c-h0-s0-l6);
+        }
+
     /* section : hero */
         section.hero {
-            background: var(--c-h1-s0-l4);
+            background: #390064;
+            background-image: url("/public/pictures/homepage-hero-bg.svg");
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+            margin-top: -6.4rem; /* header height */
+
+            padding-top: calc(var(--section-padding-l-top) 
+                + 6.4rem /* header height */ 
+                + 0rem /* additional padding */) !important;
+            padding-bottom: calc(var(--section-padding-l-bottom) + 3.6rem) !important;
+
+            overflow: hidden;
         }
-        section.hero .illustration {
-            /* background: pink; */
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: center;
-            align-items: center;
+        
+        @media(max-width:768px) {
+            section.hero {
+                padding-top: calc(var(--section-padding-s-top) 
+                    + 6.4rem /* header height */ 
+                    + 0rem /* additional padding */) !important;
+                padding-bottom: calc(var(--section-padding-s-bottom) + 3.6rem) !important;
+            }
         }
-        section.hero .illustration .layers-wrapper {
-            /* background: lightblue; */
-            width: 100%;
-            height: 100%;
-            display: block;
-            position: relative;
-        }
-        section.hero .illustration .layers-wrapper img {
-            filter: drop-shadow(0 1.4rem 1.4rem var(--c-h0-s0-l3));
-            width: 100%;
-            height: auto;
-        }
-        section.hero .illustration .layers-wrapper img:nth-child(1) {
-            /* background: blue; */
-        }
-        section.hero .illustration .layers-wrapper img:nth-child(1),
-        section.hero .illustration .layers-wrapper img:nth-child(2),
-        section.hero .illustration .layers-wrapper img:nth-child(3) {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: auto;
-            width: 100%;
-        }
+
+        /* illustration */
+                section.hero .illustration {
+                    display: flex;
+                    flex-flow: row nowrap;
+                    justify-content: center;
+                    align-items: center;
+                    /* ferdis version */
+                    height: 100%;
+                    overflow: visible;
+                    padding: 0;
+                    background: none;
+                }
+                section.hero .illustration .layers-wrapper {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    position: relative;
+                }
+                section.hero .illustration .layers-wrapper img {
+                    margin-top: auto;
+                    width: 100%;
+                    filter: drop-shadow(0 0.4rem 0.6rem hsla(0,0%,0%,0.2)) drop-shadow(0 0.4rem 0.6rem hsla(0,0%,0%,0.2));
+                    
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 0;
+
+                    border-radius: 0.8rem;
+                    border: var(--bs-border-width) solid var(--c-h0-s0-l3);
+                }
+
+                section.hero .illustration .layers-wrapper img:nth-child(1) {
+                    top: 0;
+                    /* left: 46rem;
+                    width: 24rem; */
+                }
+                section.hero .illustration .layers-wrapper img:nth-child(2) {
+                    top: 90%;
+                    left: 70%;
+                    width: 34%;
+                }
+                @media (max-width: 768px) {
+                    section.hero .illustration .layers-wrapper img:nth-child(2) {
+                        top: 60%;
+                    }
+                }
+
+        /* text */
+            section.hero h1,
+            section.hero .text p,
+            section.hero .text p a:hover,
+            section.hero .text p a:focus {
+                color: var(--c-h0-s0-l6);
+                text-decoration-color: var(--c-h0-s0-l5);
+            }
+            
+            section.hero .text p a {
+                color: var(--c-h0-s0-l4);
+                text-decoration-color: var(--c-h0-s0-l3);
+            }
+
 
 
 
@@ -1477,7 +1670,16 @@
     .projectsLists .projectsList { /* would rather add bottom-only margin or padding so the element starts sharp */
         padding: 0 0 var(--spacing-xl) 0;
     }
-
+    /* style project names to behave like buttons */
+    .projectsLists .projectsList .project-name {
+        color: var(--c-h0-s0-l1);
+        cursor: pointer;
+    }
+    .projectsLists .projectsList .project-name:hover,
+    .projectsLists .projectsList .project-name:focus,
+    .projectsLists .projectsList .project-name:active {
+        color: var(--c-h0-s0-l2);
+    }
 
 
 /* page : project config ————————————————————— */
@@ -1684,7 +1886,9 @@
                 height: var(--table-cell-height);
                 padding: var(--table-cell-padding);
             }
-            .projectStepContainer .user-note-button:hover {
+            .projectStepContainer .user-note-button:hover,
+            .projectStepContainer .user-note-button:focus,
+            .projectStepContainer .user-note-button:active {
                 background: var(--c-h0-s0-l5);  
             }
             .projectStepContainer .user-note .form-control {
@@ -1718,7 +1922,7 @@
                 /* height: 300px; */
             /* Need to make sure container has bottom space,
             otherwise content at the bottom is always faded out */
-                padding-bottom: var(--mask-height);
+                padding-bottom: var(--mask-height) !important;
             /* Keep some space between content and scrollbar */
                 padding-right: 2rem;
             /* The CSS mask */
