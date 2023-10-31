@@ -271,14 +271,13 @@ export default function CreateProject(props : {project: ProjectType}) {
                         </Form.Group>                              
                     </Col>
                 </Row>
-                {project.id ? '' : 
-                    <Row>
-                        <Col style={{display: "flex", justifyContent: "right"}}>                            
-                            <Button size="lg" variant="primary" type="submit">
-                                <span className="item"><span>Create</span></span>
-                            </Button>
-                        </Col>
-                    </Row>}
+                <Row>
+                    <Col style={{display: "flex", justifyContent: "right"}}>                            
+                        <Button size="lg" variant="primary" type="submit">
+                            <span className="item"><span>{project.id ? 'Modify' : 'Create'}</span></span>
+                        </Button>
+                    </Col>
+                </Row>
             </Form>
             <ChoiceModal 
                 showModal={showProjectReferenceYearsModal} 
