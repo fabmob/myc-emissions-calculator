@@ -27,16 +27,14 @@ const ChoiceModal = (props: {
         props.callback(choice)
     }
     return (
-        <Modal size="sm" centered show={props.showModal} onHide={() => props.setShowModal(false)}>
+        <Modal className="selector" size="sm" centered show={props.showModal} onHide={() => props.setShowModal(false)}>
             <Form noValidate validated={validated} onSubmit={checkFrom}>
-                <Modal.Header closeButton>
-                </Modal.Header>
+                {/* <Modal.Header></Modal.Header> */}
                 <Modal.Body>
                     {
                         props.preventCreate 
                         ? <Form.Label>Select an option</Form.Label>
                         : <Form.Group>
-                            <Form.Label>Select an option or create one</Form.Label>
                             {props.valRange 
                                 ? <InputGroup>
                                     <Form.Control type="number" required min={props.valRange[0]} max={props.valRange[1]} value={inputVal} onChange={e => setInputVal(e.target.value)} />
@@ -47,18 +45,21 @@ const ChoiceModal = (props: {
                                     <Form.Control.Feedback type="invalid">Please enter a source, select an existing one or close this modal.</Form.Control.Feedback>
                                 </InputGroup>
                             }
+                            <Form.Label>Select an option or create one</Form.Label>
                         </Form.Group>
                     }
-                    {props.availableChoices && props.availableChoices.map(choice => (
-                        <div key={choice}><Badge onClick={e => setChoice(choice)} bg="info"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span>{choice}</span></span></Badge></div>
-                    ))
-                    }
+                    <div className="options">
+                        {props.availableChoices && props.availableChoices.map(choice => (
+                            <div className="option" key={choice}><Badge onClick={e => setChoice(choice)} className="badge-default"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span>{choice}</span></span></Badge></div>
+                        ))
+                        }
+                    </div>
                 </Modal.Body>
-                <Modal.Footer>
+                {/* <Modal.Footer>
                     <Button variant="primary" type="submit">
                         <span className="item"><span>Save</span></span>
                     </Button>
-                </Modal.Footer>
+                </Modal.Footer> */}
             </Form>
         </Modal>
     )

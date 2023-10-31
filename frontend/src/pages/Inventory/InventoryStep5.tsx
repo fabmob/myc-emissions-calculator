@@ -131,49 +131,47 @@ export default function InventoryStep5(){
     return (
         <>
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
-                <h1>Top down validation</h1>
+                <h1>Top-down validation</h1>
                 <DescAndNav 
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc">
-                        <p>
-                            The top down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>energy sales</span></span></Button> on a given territory to evaluate your bottom-up results.
-                        </p>                
-                        <p>
-                            It is particularly adapted for NUMPs, since it is easier to get the energy balance data at a national scale - but you can also use it if you have the local data.
-                        </p>
-                        <p>
-                            Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>possible reasons</span></span></Button> for uncertainty, for both calculation approach.
-                        </p>
-                    </div>
+                    <p>
+                        The top-down calculation is a well-known validation approach based on the <Button variant="link" onClick={e => setShowEnergySalesModal(true)} style={{padding: "0"}}><span className="item"><span>energy sales</span></span></Button> on a given territory to evaluate your bottom-up results.
+                    </p>                
+                    <p>
+                        It is particularly adapted for NUMPs, since it is easier to get the energy balance data at a national scale - but you can also use it if you have the local data.
+                    </p>
+                    <p>
+                        Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty. Check out the <Button variant="link" onClick={e => setShowPossibleReasonsModal(true)} style={{padding: "0"}}><span className="item"><span>possible reasons</span></span></Button> for uncertainty, for both calculation approach.
+                    </p>
                 </DescAndNav>
                 <h3>Energy balance</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol3" /> {/* Network */}
-                        <col className="tablecol4" /> {/* Fuels */}
+                        <col className="tablecol4" /> {/* Network */}
+                        <col className="tablecol3" /> {/* Fuels */}
                         <col className="tablecol1" /> {/* Src */}
-                        <col className="tablecolfluid" /> {/* Energy balance */}
-                        <col className="tablecol3" /> {/* Calculated */}
-                        <col className="tablecol2" /> {/* Gap */}
+                        <col className="tablecol4" /> {/* Energy balance */}
+                        <col className="tablecol4" /> {/* Calculated */}
+                        <col className="tablecolfluid" /> {/* Gap */}
                     </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of energy value, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                            <th className="item-sm">
+                            <th><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Fuels used by network type"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Source of energy value, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                            <th>
                                 <ItemWithOverlay overlayContent="Energy balance data (1000 Tons of oil equivalent) are based on the total fuel sales within the country. According to the IPCC guidelines 2006, the final energy consumption for the GHG inventory should be calculated as follow: production + import - export - international bunkers - stock change">
                                 <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Energy balance (1000 TOE)</span></span>
                                 </ItemWithOverlay>
                             </th>
-                            <th className="item-sm">
+                            <th>
                                 <ItemWithOverlay overlayContent={
                                     <div>
                                         Energy balance (1000 Tons of oil equivalent) computed by the tool, using previous steps inputs. Values for each fuel are computed as
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                            <Badge bg="disabled"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> x 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 / <Badge bg="disabled"><span className="item"><span>TOE factor (0.041868 TJ)</span></span></Badge> / 1000
+                                            <Badge className="badge-read-only"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> × <Badge className="badge-read-only"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> × 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 / <Badge className="badge-read-only"><span className="item"><span>TOE factor (0.041868 TJ)</span></span></Badge> / 1000
                                         </div>
                                         Lower heating value and fuel density use default values that can be edited at a later step.
                                     </div>
@@ -181,12 +179,12 @@ export default function InventoryStep5(){
                                     <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Calculated (1000 TOE)</span></span>
                                 </ItemWithOverlay>
                             </th>
-                            <th className="item-sm">
+                            <th>
                             <ItemWithOverlay overlayContent={
                                     <div>
                                         Difference between energy balance coming from energy sales and calculation. 
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                            <Badge bg="disabled"><span className="item"><span>Calculated</span></span></Badge> x 100 / <Badge bg="disabled"><span className="item"><span>Energy balance</span></span></Badge> - 100
+                                            <Badge className="badge-read-only"><span className="item"><span>Calculated</span></span></Badge> × 100 / <Badge className="badge-read-only"><span className="item"><span>Energy balance</span></span></Badge> - 100
                                         </div>
                                         Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
                                     </div>
@@ -208,8 +206,8 @@ export default function InventoryStep5(){
                                 const value = inputData.energy?.[networkName]?.fuels?.[ftype]?.value || ''
                                 const source = inputData.energy?.[networkName]?.fuels?.[ftype]?.source || ''
                                 fuelJsx.push(<tr key={net + ftype}>
-                                    {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{networkName}</span></span></Badge></td>}
-                                    <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                    {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{networkName}</span></span></Badge></td>}
+                                    <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("energy", networkName, ftype)}/>
@@ -226,35 +224,42 @@ export default function InventoryStep5(){
                                 fuelJsx
                             ]
                         })}
-                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
                 <h3>Emissions</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol3" /> {/* Network */}
-                        <col className="tablecol4" /> {/* Fuels */}
+                        <col className="tablecol4" /> {/* Network */}
+                        <col className="tablecol3" /> {/* Fuels */}
                         <col className="tablecol1" /> {/* Src */}
-                        <col className="tablecolfluid" /> {/* Emissions */}
-                        <col className="tablecol3" /> {/* Calculated */}
-                        <col className="tablecol2" /> {/* Gap */}
+                        <col className="tablecol4" /> {/* Emissions */}
+                        <col className="tablecol4" /> {/* Calculated */}
+                        <col className="tablecolfluid" /> {/* Gap */}
                     </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by network type"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                            <th className="item-sm">
+                            <th><ItemWithOverlay overlayContent="Energy stats sources usually differ if network is road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Fuels used by network type"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Source of emission value, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                            <th>
                                 <ItemWithOverlay overlayContent="Emissions data (1000 tons of greenhouse gases). It should be proportional to energy balance, if available">
                                 <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions (1000t GHG)</span></span>
                                 </ItemWithOverlay>
                             </th>
-                            <th className="item-sm">
+                            <th>
                                 <ItemWithOverlay overlayContent={
                                     <div>
                                         Emissions (1000 tons of greenhouse gases) computed by the tool, using previous steps inputs. Values for each fuel are computed as
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                        <Badge bg="disabled"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> x 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 x <Badge bg="disabled"><span className="item"><span>Fuel emission factor (kg/TJ)</span></span></Badge> / 10^6
+                                        <Badge className="badge-read-only"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> × <Badge className="badge-read-only"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> × 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 × <Badge className="badge-read-only"><span className="item"><span>Fuel emission factor (kg/TJ)</span></span></Badge> / 10^6
                                         </div>
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited at a later step.
                                     </div>
@@ -262,12 +267,12 @@ export default function InventoryStep5(){
                                     <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Calculated (1000t GHG)</span></span>
                                 </ItemWithOverlay>
                             </th>
-                            <th className="item-sm">
+                            <th>
                             <ItemWithOverlay overlayContent={
                                     <div>
                                         Difference between emissions comming from energy sales and calculation. 
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                            <Badge bg="disabled"><span className="item"><span>Calculated</span></span></Badge> x 100 / <Badge bg="disabled"><span className="item"><span>Emissions</span></span></Badge> - 100
+                                            <Badge className="badge-read-only"><span className="item"><span>Calculated</span></span></Badge> × 100 / <Badge className="badge-read-only"><span className="item"><span>Emissions</span></span></Badge> - 100
                                         </div>
                                         Differences within a range of +/- 10% are quitte common and should not be considered as error but as uncertainty.
                                     </div>
@@ -289,8 +294,8 @@ export default function InventoryStep5(){
                                 const value = inputData.emissions?.[networkName]?.fuels[ftype]?.value || ''
                                 const source = inputData.emissions?.[networkName]?.fuels[ftype]?.source
                                 fuelJsx.push(<tr key={net + ftype}>
-                                    {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{networkName}</span></span></Badge></td>}
-                                    <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                    {i===0 && <td rowSpan={availableFtypes.length} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{networkName}</span></span></Badge></td>}
+                                    <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     <td>
                                         {source 
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource("emissions", networkName, ftype)}/>
@@ -307,7 +312,14 @@ export default function InventoryStep5(){
                                 fuelJsx
                             ]
                         })}
-                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>
@@ -321,7 +333,7 @@ export default function InventoryStep5(){
                 <Modal.Header closeButton>
                     <Modal.Title>Energy sales</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>Emissions are calculated using a top-down approach based on statistics on fuel sales in the city. This approach only allows for a rough estimation since a purely sales-based approach does not provide any information on how much of the purchased fuel is actually used within the city. It also does not provide data on the actual transport activities that are related to the city, or their causes - information which is necessary for transport planning. Using energy sales data alone does not adequately monitor the effects of SUMPS, but it can be used to cross-check bottom-up calculations.</p>
                 </Modal.Body>
                 <Modal.Footer>
@@ -334,7 +346,7 @@ export default function InventoryStep5(){
                 <Modal.Header closeButton>
                     <Modal.Title>Uncertainty reasons</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>Energy balance data are based on the total fuel sales within the country. According to the IPCC guidelines 2006, the final energy consumption for the GHG inventory should be calculated as follow: production + import - export - international bunkers - stock change.</p>
                     <p>One reason why the calculations would be different can be for example, that the energy balance does not include fuels bought in neighboring countries and consumed within the country. The emission inventory report should try explaining gaps and analyze the possibility to minimize the related uncertainties.</p>
 

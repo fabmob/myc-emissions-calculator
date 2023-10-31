@@ -118,35 +118,33 @@ export default function InventoryStep8(){
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
-                    <div className="text desc">
-                        <p>
-                        The average trip length isn’t involved in GHG emissions for the base year. 
-                        It is used to weight the modal shift effect of public transport in the Climate Scenario and it will then be considered constant
-                        during the whole MobiliseYourCity emissions calculation process. Go to modal shift in the Climate Scenario to learn more about it.
-                        </p>
-                        <p>
-                            It is asked to fill it here because the data should be collected during the diagnostic process of collecting data.
-                        </p>
-                    </div>
+                    <p>
+                    The average trip length isn’t involved in GHG emissions for the base year. 
+                    It is used to weight the modal shift effect of public transport in the Climate Scenario and it will then be considered constant
+                    during the whole MobiliseYourCity emissions calculation process. Go to modal shift in the Climate Scenario to learn more about it.
+                    </p>
+                    <p>
+                        It is asked to fill it here because the data should be collected during the diagnostic process of collecting data.
+                    </p>
                 </DescAndNav>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol5" /> {/* Passenger transport */}
+                        <col className="tablecol4" /> {/* Passenger transport */}
                         <col className="tablecol1" /> {/* Src */}
                         <col className="tablecolfluid" /> {/* Avg trip len */}
                     </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Passenger transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Passenger transport</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of average trip length, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><span className="item"><span>Average trip length (km)</span></span></th>
+                            <th><ItemWithOverlay overlayContent="Passenger transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Passenger transport</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Source of average trip length, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                            <th><span className="item"><span>Average trip length (km)</span></span></th>
                         </tr>
                     </thead>
                     <tbody>
                         {Object.keys(inputData.vtypes).map((vtype, index) => {
                             const vehicle = inputData.vtypes[vtype]
                             return (<tr key={index}>
-                                    <td><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
+                                    <td><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                     <td>
                                         {vehicle.source 
                                         ? <ValidSource source={vehicle.source} onClick={(e:any) => configureSource(vtype)}/>
@@ -157,6 +155,11 @@ export default function InventoryStep8(){
                                     </td>
                                 </tr>)
                         })}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>

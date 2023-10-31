@@ -262,23 +262,19 @@ export default function CreateProject(props : {project: ProjectType}) {
                     <Col>
                         <h3>Years of study</h3>
                         <Form.Group className="mb-3">
-                            <Form.Label>
-                                <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={referenceYearTooltip}>
-                                    <span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> Ref. year</span>
-                                </OverlayTrigger>
-                            </Form.Label>
+                            <Form.Label>Reference year</Form.Label>
                             <InputGroup>
                                 <Form.Control type="number" required min="1900" max="2500" value={projectReferenceYears[0]} onChange={e => setProjectReferenceYear(0, e.target.value)} />
                                 <Form.Control.Feedback type="invalid">Please enter a year between 1900 and 2500, avoid white spaces</Form.Control.Feedback>
                             </InputGroup>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Proj. Year(s)</Form.Label>
-                            <InputGroup>
+                            <Form.Label>Projected year(s)</Form.Label>
+                            <InputGroup className='proj-year-options'>
                                 {projectReferenceYears.map((year,i) => (
-                                    (i>0) && <Badge key={i} bg="secondary"><span className="item"><span>{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></span></span></Badge>
+                                    (i>0) && <Badge key={i} className="badge-default"><span className="item"><span>{year} <span style={{"cursor": "pointer"}} onClick={e => removeProjectReferenceYear(i)}><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></span></span></Badge>
                                 ))}
-                                <Badge bg="primary" onClick={_ => setShowProjectReferenceYearsModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Badge>
+                                <Button size="sm" variant="action" onClick={_ => setShowProjectReferenceYearsModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
                             </InputGroup>
                         </Form.Group>                              
                     </Col>

@@ -11,16 +11,22 @@ export default function EmissionsTable (props: {
 
     return (
         <Table bordered>
+            <colgroup>
+                <col className="tablecol4" /> {/* Transport modes */}
+                {props.project.referenceYears && props.project.referenceYears.map((y, yearIndex) => (
+                    <col className="tablecolfluid" />
+                ))}
+            </colgroup>
             <thead>
                 <tr>
-                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
                     {props.project.referenceYears && props.project.referenceYears.map((y, yearIndex) => (
-                        <th key={yearIndex}  className="item-sm" style={{whiteSpace: "initial"}}>
+                        <th key={yearIndex} >
                             <ItemWithOverlay overlayContent={
                                     <div>
                                         Emissions (1000 tons of greenhouse gases) computed by the tool, using previous steps inputs. Values for each transport mode and fuel are computed as
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                        <Badge bg="disabled"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> x 10^6 x <Badge bg="disabled"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 x <Badge bg="disabled"><span className="item"><span>Fuel emission factor (kg/TJ)</span></span></Badge> / 10^6
+                                        <Badge className="badge-read-only"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> × <Badge className="badge-read-only"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> × 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 × <Badge className="badge-read-only"><span className="item"><span>Fuel emission factor (kg/TJ)</span></span></Badge> / 10^6
                                         </div>
                                         These values per fuel are then summed per transport mode.<br/>
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited using the Edit GHG emission factors link above.
@@ -28,8 +34,7 @@ export default function EmissionsTable (props: {
                                 }>
                                     <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> GHG {y} (1000t GHG)
                                 </ItemWithOverlay>
-                            </th>
-                        
+                        </th>
                     ))}
                 </tr>
             </thead>
@@ -37,14 +42,25 @@ export default function EmissionsTable (props: {
                 {Object.keys(props.emissionsData).map((vtype, index) => {
                     const vehicle = props.emissionsData[vtype]
                     return (<tr key={index}>
-                        <td><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
+                        <td>
+                            <Badge className="badge-read-only">
+                                <span className="item"><span>{vtype}</span></span>
+                            </Badge>
+                        </td>
                         {props.project.referenceYears && props.project.referenceYears.map((y, yearIndex) => (
                             <OutputNumberTd key={yearIndex} value={vehicle.co2[yearIndex]} decimals={2}></OutputNumberTd>
                         ))}
                     </tr>)
-                    
                 })}
-                
+
+                <tr>
+                    <td></td>
+                    {props.project.referenceYears && props.project.referenceYears.map(() => {
+                        return (
+                            <td></td>
+                        )
+                    })}
+                </tr>
             </tbody>
         </Table>
     )

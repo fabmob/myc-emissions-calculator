@@ -131,7 +131,7 @@ export default function ProjectCompare(props: {project: ProjectType}){
                 <h2>Graphs</h2>
                 <div className="commands">                   
                     <Button variant="link" onClick={() => setShowOptionsModal(true)} style={{width: "100%", padding: "4px 4px"}}>
-                        <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#settings"}/></svg><span>Settings</span></span>
+                        <span className="item"><span>Settings</span></span>
                     </Button>
                 </div>
             </div>
@@ -223,30 +223,35 @@ export default function ProjectCompare(props: {project: ProjectType}){
             ></EmissionsPerUkmCompareBarChart>
             <h2>Datasets</h2>
             <Table bordered>
+                <colgroup>
+                    <col className="tablecol4" /> {/* Dataset */}
+                    <col className="tablecol3" /> {/* Action */}
+                    <col className="tablecolfluid" /> {/* Sources */}
+                </colgroup>
                 <thead>
                     <tr>
-                        <th className="item-sm"><span className="item"><span>Dataset</span></span></th>
-                        <th className="item-sm"><span className="item"><span>Action</span></span></th>
-                        <th className="item-sm"><span className="item"><span>Sources</span></span></th>
+                        <th><span className="item"><span>Dataset</span></span></th>
+                        <th><span className="item"><span>Action</span></span></th>
+                        <th><span className="item"><span>Sources</span></span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><Badge bg="disabled"><span className="item"><span>Inventory</span></span></Badge></td>
+                        <td><Badge className="badge-read-only"><span className="item"><span>Inventory</span></span></Badge></td>
                         <td>{project.name && <CSVLink data={csvs.Inventory} filename={project.name.replace(" ", "_") + "_Inventory_Inputs.csv"} className="btn btn-primary btn-sm">
                             <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
                         </CSVLink>}</td>
                         <td>{sourcesUsed.Inventory.map(e => e ? "[" + e + "] ": "")}</td>
                     </tr>
                     <tr>
-                        <td><Badge bg="disabled"><span className="item"><span>BAU Scenario</span></span></Badge></td>
+                        <td><Badge className="badge-read-only"><span className="item"><span>BAU Scenario</span></span></Badge></td>
                         <td>{project.name && <CSVLink data={csvs.BAU} filename={project.name.replace(" ", "_") + "_BAU_Inputs.csv"} className="btn btn-primary btn-sm">
                             <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
                         </CSVLink>}</td>
                         <td>{sourcesUsed.BAU.map(e => e ? "[" + e + "] ": "")}</td>
                     </tr>
                     <tr>
-                        <td><Badge bg="disabled"><span className="item"><span>Climate Scenarios</span></span></Badge></td>
+                        <td><Badge className="badge-read-only"><span className="item"><span>Climate Scenarios</span></span></Badge></td>
                         <td>{project.name && <CSVLink data={csvs.Climate} filename={project.name.replace(" ", "_") + "_Climate_Inputs.csv"} className="btn btn-primary btn-sm">
                             <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
                         </CSVLink>}</td>
@@ -256,16 +261,20 @@ export default function ProjectCompare(props: {project: ProjectType}){
             </Table>
             <h2>Sources</h2>
             <Table bordered>
+                <colgroup>
+                    <col className="tablecol4" /> {/* Source */}
+                    <col className="tablecolfluid" /> {/* ID */}
+                </colgroup>
                 <thead>
                     <tr>
-                        <th className="item-sm"><span className="item"><span>Source</span></span></th>
-                        <th className="item-sm"><span className="item"><span>ID</span></span></th>
+                        <th><span className="item"><span>Source</span></span></th>
+                        <th><span className="item"><span>ID</span></span></th>
                     </tr>
                 </thead>
                 <tbody>
                     {project?.sources?.map(({value, sourceId}, index) => {
                         return (<tr key={index}>
-                            <td><Badge bg="disabled"><span className="item"><span>{value}</span></span></Badge></td>
+                            <td><Badge className="badge-read-only"><span className="item"><span>{value}</span></span></Badge></td>
                             <td>[{sourceId}]</td>
                         </tr>)
                     })}
@@ -339,13 +348,13 @@ const OptionsModal = (
             <Modal.Header closeButton>
                 <Modal.Title>Settings</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="masked-overflow-y">
                 <Form.Group className="mb-3">
                     <Form.Label>Displayed categories of transport</Form.Label>
                     <Row>
                     {vtypes.map((vtype, index) => {
                         return (
-                            <Col xs="6" key={index}>
+                            <Col lg="6" key={index}>
                                 <Form.Switch style={{margin: "5px"}} id={"custom-switch-" + vtype} key={index}>
                                     <Form.Switch.Input  name={vtype} checked={selectedVtypes[vtype]} onChange={updateSelectedVtypes}/>
                                     <Form.Switch.Label>{vtype}</Form.Switch.Label>
@@ -360,7 +369,7 @@ const OptionsModal = (
                     <Row>
                     {displayedClimateScenarios.map((displayed, index) => {
                         return (
-                            <Col xs="4" key={index}>
+                            <Col lg="4" key={index}>
                                 <Form.Switch style={{margin: "5px"}} key={index}>
                                     <Form.Switch.Input  name={index.toString()} checked={displayed} onChange={updateSelectedScenario}/>
                                     <Form.Switch.Label>{index+1}</Form.Switch.Label>

@@ -102,7 +102,7 @@ export default function EditEmissionFactors (props: {
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Emission factors</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>
                         Emission factors are the last data you need to complete your GHG emissions calculation. Specific GHG emission factors (in kgCO2eq/TJ) apply according to the different fuel types (gasoline, diesel, CNG, LNG).
                     </p>
@@ -110,17 +110,26 @@ export default function EditEmissionFactors (props: {
                         The table already integrates international ones that you can use as default values if you don’t have specific values.
                     </p>
                     <p>
-                        We would recommend to check out the <Button variant="link" onClick={e => setShowMethodologyModal(true)} style={{padding: "0"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>methodology used</span></span></Button> to obtain those factors first.
+                        We would recommend to check out the <Button variant="link" onClick={e => setShowMethodologyModal(true)} style={{padding: "0"}}><span className="item">
+                            <span>methodology used</span></span></Button> to obtain those factors first.
                     </p>
                     <Table bordered>
+                        <colgroup>
+                            <col className="tablecol4" /> {/* Fuels */}
+                            <col className="tablecol1" /> {/* Source */}
+                            <col className="tablecolfluid" /> {/* Lower heating value */}
+                            <col className="tablecolfluid" /> {/* Fuel density */}
+                            <col className="tablecolfluid" /> {/* CO2e TTW */}
+                            <col className="tablecolfluid" /> {/* CO2e WTW (kg/Tj) */}
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Fuels types, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Source of factors, default values use EN 16258. Click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                                <th className="item-sm"><span className="item"><span>Lower heating value (TJ/1000t or MJ/kWh)</span></span></th>
-                                <th className="item-sm"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Tank to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e TTW (kg/Tj)</span></span></ItemWithOverlay></th>
-                                <th className="item-sm"><ItemWithOverlay overlayContent="Well to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e WTW (kg/Tj)</span></span></ItemWithOverlay></th>
+                                <th><ItemWithOverlay overlayContent="Fuels types, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                                <th><ItemWithOverlay overlayContent="Source of factors, default values use EN 16258. Click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                <th><span className="item"><span>Lower heating value (TJ/1000t or MJ/kWh)</span></span></th>
+                                <th><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></th>
+                                <th><ItemWithOverlay overlayContent="Tank to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e TTW (kg/Tj)</span></span></ItemWithOverlay></th>
+                                <th><ItemWithOverlay overlayContent="Well to wheel emission factor for given fuel"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2e WTW (kg/Tj)</span></span></ItemWithOverlay></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,7 +137,7 @@ export default function EditEmissionFactors (props: {
                                 const ftype = ftypeString as FuelType
                                 const fuel = props.inputData.emissionFactors.WTW[ftype]
                                 return <tr key={index}>
-                                        <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                        <td style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                         <td>
                                             {fuel.source 
                                             ? <ValidSource source={fuel.source} onClick={(e:any) => configureSource(ftype)}/>
@@ -140,6 +149,14 @@ export default function EditEmissionFactors (props: {
                                         <td><Form.Control value={props.inputData.emissionFactors.WTW[ftype].ges} onChange={e => updateInput(ftype, "ges", e.target.value, 'WTW')}></Form.Control></td>
                                     </tr>
                             })}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         </tbody>
                     </Table>
                     {props.inputData.note === undefined 
@@ -169,7 +186,7 @@ export default function EditEmissionFactors (props: {
                 <Modal.Header closeButton>
                     <Modal.Title>Emission factors methodology</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>GHG emissions consider CO2, CH4 and N20 that are transformed into kgCO2eq/TJ.</p>
                     <p>CO2eq is an index created by IPCC to simplify the comparison and cumulate all of the gases in one index. In order to obtain this data, you need to convert other gases emissions in CO2 emissions, multiplying the emission factors by the Global Warming Potential of the gas. It is a measure of how much energy the emissions of 1 ton of a gas will absorb over a given period of time, relative to the emissions of 1 ton of carbon dioxide (CO2) (EPA, 2022).</p>
                     <p>CH4 have a GWP of 28 years average and N20 have a GWP of 265 average. This means that 1ton of CH4 emitted represents 28 tons of CO2.</p>

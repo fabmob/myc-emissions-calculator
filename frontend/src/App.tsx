@@ -40,11 +40,16 @@ import keycloak from "./Keycloak"
 import Project from './pages/Project'
 // import Footer from "./components/Footer"
 
+// adrien test 231021 to reset scroll on every page change
+import ScrollToTop from "./scrollToTop";
+
+
 function App() {
   return (
     <div className="App">
         <ReactKeycloakProvider authClient={keycloak} initOptions={{onLoad: 'check-sso', silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'}}>
             <BrowserRouter>
+              <ScrollToTop />
                 <Nav />
                 <Routes>
                     <Route path="/" element={<WelcomePage />} />

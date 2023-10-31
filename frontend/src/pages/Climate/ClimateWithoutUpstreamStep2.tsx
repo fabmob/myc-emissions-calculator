@@ -153,29 +153,34 @@ export default function ClimateWithoutUpstreamStep2(){
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc">
-                        <p>Give the potential additional vehicle kilometers for the vehicle categories below if more vehicle kilometers are expected as a result of the planned measures for the corresponding year.</p>
-                        <p>Examples of measure: Extension of the bus network (e.g. increase in frequency), expansion of railway networks or extension of service (increase in the frequency of freight trains for example) increase the number of vehicle kilometers.</p>
-                    </div>
+                    <p>Give the potential additional vehicle kilometers for the vehicle categories below if more vehicle kilometers are expected as a result of the planned measures for the corresponding year.</p>
+                    <p>Examples of measure: Extension of the bus network (e.g. increase in frequency), expansion of railway networks or extension of service (increase in the frequency of freight trains for example) increase the number of vehicle kilometers.</p>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
                     fill
                 >
-                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" /> {/* Vehicle */}
+                                <col className="tablecol3" /> {/* BAU VKT */}
+                                <col className="tablecol1" /> {/* Source */}
+                                <col className="tablecol3" /> {/* Added VKT */}
+                                <col className="tablecolfluid" /> {/* Climate VKT */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>BAU VKT (Mkm)</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of added VKT value. Click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Percent of vehicle kilometer travelled added per time period"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Added VKT (Mkm)</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm">
+                                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>BAU VKT (Mkm)</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of added VKT value. Click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Percent of vehicle kilometer travelled added per time period"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Added VKT (Mkm)</span></span></ItemWithOverlay></th>
+                                    <th>
                                         <ItemWithOverlay overlayContent={
                                             <div>Computed Climate VKT using avoided VKT results as input
                                                 <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                                    <Badge bg="disabled"><span className="item"><span>VKT at the end of previous year (Mkm)</span></span></Badge> + <Badge bg="disabled"><span className="item"><span>Added VKT between years (Mkm)</span></span></Badge>
+                                                    <Badge className="badge-read-only"><span className="item"><span>VKT at the end of previous year (Mkm)</span></span></Badge> + <Badge className="badge-read-only"><span className="item"><span>Added VKT between years (Mkm)</span></span></Badge>
                                                 </div>
                                                 First VKT values come from reference year data (inventory).
                                             </div>
@@ -190,7 +195,7 @@ export default function ClimateWithoutUpstreamStep2(){
                                     const addedVkt = vehicle.addedVkt?.[yearIndex] || ""
                                     return (
                                         <tr key={vtype}>
-                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
+                                            <td style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <OutputNumberTd value={bAUVkt?.[vtype]?.[yearIndex + 1]}></OutputNumberTd>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
@@ -202,7 +207,13 @@ export default function ClimateWithoutUpstreamStep2(){
                                         </tr>
                                     )
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}

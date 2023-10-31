@@ -117,29 +117,27 @@ export default function InventoryStep6(){
                     prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <div className="text desc">
-                        <p>
-                            The vehicles load isn’t involved in the GHG emissions calculation but is useful to obtain passenger.km out of vehicle.km. It will allow you to compare your GHG emissions with the modal share in your territory on that step of the calculation process. That way you can understand how much GHG emissions represents one transport mode, but also how many passengers or tons it actually represents. It will be used in the Climate Scenario as well.
-                        </p>
-                        <p>
-                            Conventionally drivers of public transport are not included as there are not passengers (incl. taxi), but for private transport drivers should be included if they travel for their own sake.
-                        </p>
-                        <p>
-                            Local city data can be used if available and robust. Otherwise for cities it is recommended to use national data and for countries to use regional specific data.
-                        </p>
-                    </div>
+                    <p>
+                        The vehicles load isn’t involved in the GHG emissions calculation but is useful to obtain passenger.km out of vehicle.km. It will allow you to compare your GHG emissions with the modal share in your territory on that step of the calculation process. That way you can understand how much GHG emissions represents one transport mode, but also how many passengers or tons it actually represents. It will be used in the Climate Scenario as well.
+                    </p>
+                    <p>
+                        Conventionally drivers of public transport are not included as there are not passengers (incl. taxi), but for private transport drivers should be included if they travel for their own sake.
+                    </p>
+                    <p>
+                        Local city data can be used if available and robust. Otherwise for cities it is recommended to use national data and for countries to use regional specific data.
+                    </p>
                 </DescAndNav>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol5" /> {/* Vehicle */}
+                        <col className="tablecol4" /> {/* Vehicle */}
                         <col className="tablecol1" /> {/* Src */}
                         <col className="tablecolfluid" /> {/* Load */}
                     </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of load value, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Occupancy for passenger vehicles (average number of passengers per vehicle) or load for freight vehicles (average load per vehicle in tons)"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Load (pass. or tons per vehicle)</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Source of load value, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Occupancy for passenger vehicles (average number of passengers per vehicle) or load for freight vehicles (average load per vehicle in tons)"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Load (pass. or tons per vehicle)</span></span></ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,7 +145,7 @@ export default function InventoryStep6(){
                             const vehicle = inputData.vtypes[vtype]
                             
                             return (<tr key={index}>
-                                <td><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
+                                <td><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                 <td>
                                     {vehicle.source 
                                     ? <ValidSource source={vehicle.source} onClick={(e:any) => configureSource(vtype)}/>
@@ -158,7 +156,11 @@ export default function InventoryStep6(){
                                 </td>
                             </tr>)
                         })}
-                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>

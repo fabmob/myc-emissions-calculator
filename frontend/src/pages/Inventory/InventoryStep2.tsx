@@ -202,18 +202,37 @@ export default function InventoryStep2(){
     }
     const ApproachSelector = () => {
         return (
-            <div style={{display: "flex", marginBottom: "10px"}}>
-                <Button variant="link" onClick={e => setShowComputationApproach(true)} style={{padding: "0", border: "0", marginRight: "5px"}}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle mileage</span></span></Button> is computed using the
-                <Dropdown onSelect={(key:any) => computationApproach === "vkt" ? setComputationApproach("fleet") : setComputationApproach("vkt")}>
-                    <Dropdown.Toggle as={Badge} bg="info" style={{margin: "0 10px 0 10px"}}>
-                        {computationApproach === "vkt" ? "Vkt approach" : "Fleet approach"}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu style={{padding: "10px"}}>
-                        <Dropdown.Item as={Badge} bg="info">
-                            {computationApproach === "fleet" ? "Vkt approach" : "Fleet approach"}
-                        </Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+            <div className="text">
+                <p style={{display: "inline-flex", gap:"0.4em"}}>
+                    <Button variant="link" onClick={e => setShowComputationApproach(true)}>
+                        <span className="item">
+                            {/* <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> */}
+                        <span>Vehicle mileage</span></span>
+                    </Button> 
+                    {/* <a onClick={e => setShowComputationApproach(true)} href="">Vehicle mileage</a>  */}
+                    is computed using the
+                    <Dropdown onSelect={(key:any) => computationApproach === "vkt" ? setComputationApproach("fleet") : setComputationApproach("vkt")}>
+                        <Dropdown.Toggle as={Badge} className="badge-default">
+                            {computationApproach === "vkt" ? "Vkt approach" : "Fleet approach"}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu
+                            popperConfig={{
+                                modifiers: [
+                                {
+                                    name: 'offset',
+                                    options: {
+                                    offset: [0, 8],
+                                    },
+                                },
+                                ],
+                            }}>
+                            <Dropdown.Item as={Badge} className="badge-default">
+                                {computationApproach === "fleet" ? "Vkt approach" : "Fleet approach"}
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    .
+                </p>
             </div>
         )
     }
@@ -228,60 +247,58 @@ export default function InventoryStep2(){
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <div className="text desc">
-                        <p>
-                            Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
-                        </p>
-                        <p>
-                            Please enter the vehicle kilometers travelled (Mio km) for the reference year. The total vkt should comply with the actual transport activity within the city or country territory.
-                        </p>
-                        <p>
-                            Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
-                        </p>
-                    </div>
+                    <p>
+                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, it must be subdivided by fuel type e.g.the share of diesel car on the car category’s total mileage.
+                    </p>
+                    <p>
+                        Please enter the vehicle kilometers travelled (Mio km) for the reference year. The total vkt should comply with the actual transport activity within the city or country territory.
+                    </p>
+                    <p>
+                        Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
+                    </p>
                 </DescAndNav>
                 <ApproachSelector></ApproachSelector>
                 <Table bordered>
                     {computationApproach === "fleet" 
                         ? <colgroup>
-                            <col className="tablecol3" /> {/* Vehicule */}
-                            <col className="tablecol2" /> {/* Fuels */}
+                            <col className="tablecol4" /> {/* Vehicule */}
+                            <col className="tablecol3" /> {/* Fuels */}
                             <col className="tablecol1" /> {/* Src */}
-                            <col className="tablecolfluid" /> {/* Vehicule stock */}
-                            <col className="tablecolfluid" /> {/* Avg mileage */}
+                            <col className="tablecol3" /> {/* Vehicule stock */}
+                            <col className="tablecol3" /> {/* Avg mileage */}
                             <col className="tablecol3" /> {/* Computed VKT */}
                             <col className="tablecol1" /> {/* Src */}
-                            <col className="tablecol2" /> {/* VKT% */}
+                            <col className="tablecolfluid" /> {/* VKT% */}
                         </colgroup>
                         : <colgroup>
                             <col className="tablecol4" /> {/* Vehicule */}
                             <col className="tablecol3" /> {/* Fuels */}
                             <col className="tablecol1" /> {/* Src */}
-                            <col className="tablecolfluid" /> {/* VKT Input */}
+                            <col className="tablecol4" /> {/* VKT Input */}
                             <col className="tablecol1" /> {/* Src */}
-                            <col className="tablecol2" /> {/* VKT% */}
+                            <col className="tablecolfluid" /> {/* VKT% */}
                         </colgroup>
                     }
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
                             {computationApproach === "fleet" 
-                                ? <th className="item-sm"><ItemWithOverlay overlayContent="Source of vehicle stock and average mileage values, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                                : <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT value, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
+                                ? <th><ItemWithOverlay overlayContent="Source of vehicle stock and average mileage values, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                : <th><ItemWithOverlay overlayContent="Source of VKT value, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
                             }
-                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Number of registered vehicles"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle stock</span></span></ItemWithOverlay></th>}
-                            {computationApproach === "fleet" && <th className="item-sm"><ItemWithOverlay overlayContent="Average annual mileage per vehicle"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Avg mileage (km)</span></span></ItemWithOverlay></th>}
-                            <th className="item-sm">
+                            {computationApproach === "fleet" && <th><ItemWithOverlay overlayContent="Number of registered vehicles"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle stock</span></span></ItemWithOverlay></th>}
+                            {computationApproach === "fleet" && <th><ItemWithOverlay overlayContent="Average annual mileage per vehicle"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Avg mileage (km)</span></span></ItemWithOverlay></th>}
+                            <th>
                                 <ItemWithOverlay overlayContent={
                                     <div>Vehicle kilometers travelled. Values for each fuel are computed as
-                                    <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}><Badge bg="disabled"><span className="item"><span>Input VKT per vehicle (Mkm/y)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>VKT (%)</span></span></Badge> / 100</div>
+                                    <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}><Badge className="badge-read-only"><span className="item"><span>Input VKT per vehicle (Mkm/y)</span></span></Badge> × <Badge className="badge-read-only"><span className="item"><span>VKT (%)</span></span></Badge> / 100</div>
                                     Set VKT to zero for vehicles that are not yet used in reference year.
                                     </div>
                                 }><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (Mkm/y)</span></span></ItemWithOverlay>
                             </th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of share of vkt for a given fuel, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (%)</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Source of share of vkt for a given fuel, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (%)</span></span></ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -306,7 +323,7 @@ export default function InventoryStep2(){
                                 const percentSource = vehicle?.fuels[ftype]?.percentSource
                             
                                 fuelJsx.push(<tr key={vtype + ftype}>
-                                    <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                    <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     <TdDiagonalBar colSpan={computationApproach === "fleet" ? '3' : '1'}></TdDiagonalBar>
                                     <OutputNumberTd value={parseFloat(value) / 100 * parseFloat(vkt)}></OutputNumberTd>
                                     <td>
@@ -321,7 +338,7 @@ export default function InventoryStep2(){
                             }
                             return [
                                 <tr key={vtype}>
-                                    <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
+                                    <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                     <td>All</td>
                                     <td>
                                         {vktSource
@@ -338,7 +355,14 @@ export default function InventoryStep2(){
                                 fuelJsx
                             ]
                         })}
-                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>
@@ -352,7 +376,7 @@ export default function InventoryStep2(){
                 <Modal.Header closeButton>
                     <Modal.Title>Transport activity information</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>The composition of a city-specific vehicle fleet strongly influences local transport emissions. The more private cars are on the road and the larger or older the vehicles are, the higher their fuel consumption is and the higher the related GHG emissions are. In other words, GHG emissions depend on the vehicle fleet and on the distribution of VKT across the fleet's vehicle mix.</p>
                     <p>Data on the vehicle fleet is generally available from vehicle registration statistics for passenger cars, taxis, trucks, and motorcycles (e-bikes are mostly excluded), which includes technical specifications for the different vehicle types. Once the registered fleet is documented for the base year, e.g. 2015, only newly registered (and deregistered) vehicles have to be monitored each year.</p>
                     <p>If there are no big differences in the fleet compositions across different cities in a country, using national averages for urban fleet composition may be considered. Where the fleet is known to be quite specific, however, these local characteristics should be accounted for, e.g. prosperous metropolitan areas may have a larger number of new and larger cars than less prosperous mid-sized cities with a smaller but older fleet.</p>
@@ -367,7 +391,7 @@ export default function InventoryStep2(){
                 <Modal.Header closeButton>
                     <Modal.Title>There are two possible approaches to calculate vehicle mileage in the tool</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p><b>VKT approach :</b> The first possible methodology to calculate vehicle mileage is called vehicle kilometre approach. Data needed for this approach can be provided by a transport planning model or derived from traffic counts. For rail transport with freight and passenger trains, vehicle Stock and average annual mileage (or total mileage) may be available from the national rail operator.</p>
                     <p><b>Fleet approach :</b> The so-called fleet approach is based on activity of vehicles. The number of registered vehicles in the urban area is multiplied with the average annual mileage per vehicle category.</p>
                 </Modal.Body>

@@ -170,35 +170,41 @@ export default function ClimateWithUpstreamStep3(){
                 <DescAndNav 
                     prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
-                >
-                    <div className="text desc">
-                        <p>Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.</p>
-                        <p>Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.</p>
-                    </div>
+            >
+                    <p>Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.</p>
+                    <p>Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.</p>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
                     fill
                 >
-                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" /> {/* Vehicle */}
+                                <col className="tablecol3" /> {/* Fuels */}
+                                <col className="tablecol3" /> {/* Computed VKT */}
+                                <col className="tablecol3" /> {/* BAU VKT */}
+                                <col className="tablecol1" /> {/* Source */}
+                                <col className="tablecolfluid" /> {/* VKT */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm">
+                                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                                    <th>
                                         <ItemWithOverlay overlayContent={
                                             <div>Vehicle kilometers travelled. Values for each fuel are computed as
                                                 <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                                    <Badge bg="disabled"><span className="item"><span>Upstream VKT per vehicle (Mkm/y)</span></span></Badge> x <Badge bg="disabled"><span className="item"><span>VKT (%)</span></span></Badge> / 100
+                                                    <Badge className="badge-read-only"><span className="item"><span>Upstream VKT per vehicle (Mkm/y)</span></span></Badge> × <Badge className="badge-read-only"><span className="item"><span>VKT (%)</span></span></Badge> / 100
                                                 </div>
                                             </div>
                                         }><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Computed VKT (Mkm/y)</span></span></ItemWithOverlay>
                                     </th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of share values used during BAU scenario"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>BAU. VKT (%)</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT share, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (%)</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Reminder of share values used during BAU scenario"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>BAU. VKT (%)</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of VKT share, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (%)</span></span></ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -221,7 +227,7 @@ export default function ClimateWithUpstreamStep3(){
                                         const percentSource = vehicle?.fuels[ftype]?.percentSource
                                         const bAUPercent = project.stages.BAU[0].steps?.[2].vtypes?.[vtype].fuels?.[ftype]?.percent[yearIndex] || "?"
                                         fuelJsx.push(<tr key={vtype + ftype}>
-                                            <td><Badge bg="disabled"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                            <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                             <OutputNumberTd value={parseFloat(value) / 100 * vkt}></OutputNumberTd>
                                             <OutputNumberTd value={bAUPercent} decimals={0}></OutputNumberTd>
                                             <td>
@@ -236,7 +242,7 @@ export default function ClimateWithUpstreamStep3(){
                                     }
                                     return [
                                         <tr key={vtype}>
-                                            <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
+                                            <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>All</td>
                                             <OutputNumberTd value={vkt}></OutputNumberTd>
                                             <OutputNumberTd value={100} decimals={0}></OutputNumberTd>
@@ -246,7 +252,14 @@ export default function ClimateWithUpstreamStep3(){
                                         fuelJsx
                                     ]
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}

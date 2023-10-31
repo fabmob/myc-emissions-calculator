@@ -139,24 +139,28 @@ export default function BAUStep1(){
                     nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <div className="text desc">
-                        <p>Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, expected yearly growth for the business as usual scenario can be added.</p>
-                        <p>The total vkt should comply with the actual transport activity within the city or country territory</p>
-                    </div>
+                    <p>Mileage is the cornerstorne of the calculation of transport GHG emissions. Once the total vehicle mileage per vehicle category is known, expected yearly growth for the business as usual scenario can be added.</p>
+                    <p>The total vkt should comply with the actual transport activity within the city or country territory</p>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
-                    fill
-                >
-                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
+                    fill>
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (
+                    <Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" /> {/* Transport modes */}
+                                <col className="tablecol4" /> {/* VKT */}
+                                <col className="tablecol1" /> {/* Source */}
+                                <col className="tablecolfluid" /> {/* VKT growth */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Vehicle kilometers travelled for reference year. Set during inventory."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Inventory VKT (Mkm/y)</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of yearly VKT growth, click the blue + button to add a source"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Src</span></span></ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected yearly VKT growth between years, yearly population growth can be used as a proxy"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Yearly VKT growth (%)</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Vehicle kilometers travelled for reference year. Set during inventory."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Inv. VKT (Mkm/y)</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of yearly VKT growth, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Projected yearly VKT growth between years, yearly population growth can be used as a proxy"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Yearly VKT growth (%)</span></span></ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -168,7 +172,7 @@ export default function BAUStep1(){
                                     const vktRate = vehicle.vktRate[yearIndex]
                                     return (
                                         <tr key={vtype}>
-                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled"><span className="item"><span>{vtype}</span></span></Badge></td>
+                                            <td style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <OutputNumberTd value={inventoryVehicle.vkt}></OutputNumberTd>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
@@ -177,7 +181,12 @@ export default function BAUStep1(){
                                         </tr>
                                     )
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}
@@ -194,7 +203,7 @@ export default function BAUStep1(){
                 <Modal.Header closeButton>
                     <Modal.Title>Transport activity information</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>The composition of a city-specific vehicle fleet strongly influences local transport emissions. The more private cars are on the road and the larger or older the vehicles are, the higher their fuel consumption is and the higher the related GHG emissions are. In other words, GHG emissions depend on the vehicle fleet and on the distribution of VKT across the fleet's vehicle mix.</p>
                     <p>Data on the vehicle fleet is generally available from vehicle registration statistics for passenger cars, taxis, trucks, and motorcycles (e-bikes are mostly excluded), which includes technical specifications for the different vehicle types. Once the registered fleet is documented for the base year, e.g. 2015, only newly registered (and deregistered) vehicles have to be monitored each year.</p>
                     <p>If there are no big differences in the fleet compositions across different cities in a country, using national averages for urban fleet composition may be considered. Where the fleet is known to be quite specific, however, these local characteristics should be accounted for, e.g. prosperous metropolitan areas may have a larger number of new and larger cars than less prosperous mid-sized cities with a smaller but older fleet.</p>
