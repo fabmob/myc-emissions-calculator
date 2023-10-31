@@ -228,7 +228,7 @@ export default function BAUStep2(){
                                         const ftype = ftypes[i] as FuelType
                                         const value = vehicle?.fuels[ftype]?.percent[yearIndex] || ""
                                         const percentSource = vehicle?.fuels[ftype]?.percentSource
-                                        const invPercent = project.stages.Inventory[0].steps?.[2].vtypes?.[vtype].fuels?.[ftype]?.percent || "?"
+                                        const invPercent = project.stages.Inventory[0].steps?.[2].vtypes?.[vtype]?.fuels?.[ftype]?.percent || "?"
                                         fuelJsx.push(<tr key={vtype + ftype}>
                                             <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                             <OutputNumberTd value={(parseFloat(value) / 100 * vkt)}></OutputNumberTd>
