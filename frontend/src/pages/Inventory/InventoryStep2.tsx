@@ -103,7 +103,7 @@ export default function InventoryStep2(){
             let tmp = {...prevInputData}
             let vkt = ""
             if (fleetStock) {
-                vkt = (parseFloat(tmp.vtypes[vtype].fleetMileage) * parseFloat(fleetStock)).toString()
+                vkt = (parseFloat(tmp.vtypes[vtype].fleetMileage) * parseFloat(fleetStock) / 1000000).toString()
             }
             tmp.vtypes[vtype].vkt = vkt
             tmp.vtypes[vtype].fleetStock = fleetStock
@@ -203,7 +203,7 @@ export default function InventoryStep2(){
     const ApproachSelector = () => {
         return (
             <div className="text">
-                <p style={{display: "inline-flex", gap:"0.4em"}}>
+                <div style={{display: "inline-flex", gap:"0.4em"}}>
                     <Button variant="link" onClick={e => setShowComputationApproach(true)}>
                         <span className="item">
                             {/* <svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg> */}
@@ -232,7 +232,7 @@ export default function InventoryStep2(){
                         </Dropdown.Menu>
                     </Dropdown>
                     .
-                </p>
+                </div>
             </div>
         )
     }
