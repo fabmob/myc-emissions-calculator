@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Modal, Form, InputGroup, Button, Badge } from "react-bootstrap"
 
 const ChoiceModal = (props: {
@@ -11,6 +11,12 @@ const ChoiceModal = (props: {
 }) => {
     const [inputVal, setInputVal] = useState("")
     const [validated, setValidated] = useState(false)
+    useEffect(() => {
+        if(props.showModal === true) {
+            // Clear validation when reopening popup
+            setValidated(false)
+        }
+    }, [props.showModal])
     const checkFrom = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         event.stopPropagation()
