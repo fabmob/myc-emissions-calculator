@@ -1,7 +1,7 @@
 import React, {useCallback} from "react"
 import { ProjectType, VehicleKilometresTravelledComputed } from "../../frontendTypes"
 import { Bar, BarChart, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { Button, Col, Row } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 import { CSVLink } from "react-csv"
 import { useCurrentPng } from "recharts-to-png"
 import { saveAs } from 'file-saver'
@@ -64,50 +64,51 @@ export default function ModalShareCompareBarChart(props: {
         }
       }, [getPng, props.project])
     return (
-        <div style={{marginTop: "20px"}}>
-            <Row>
-                <Col xs={10}><h3>{props.title}</h3></Col>
-                <Col xs={1}>
-                    {props.project.name && <CSVLink data={csvExport} filename={props.project.name.replace(" ", "_") + props.title.replace(" ", "_") + "vkt.csv"} className="btn btn-primary" style={{width: "100%", padding: "4px 4px"}}>
-                        <img style={{width: "27px"}} src="/icon_dl_csv.svg" alt="Dowload as csv" title="Download as csv"></img>
-                    </CSVLink>}
-                </Col>
-                <Col xs={1}>
-                    <Button onClick={handleDownload} style={{width: "100%", padding: "4px 4px"}}>
+        <div className="chart">
+            <div className="chart-header">
+                <h3>{props.title}</h3>
+                <div className="commands">
+                    {props.project.name && 
+                    <CSVLink data={csvExport} filename={props.project.name.replace(" ", "_") + "_emissions.csv"} className="btn btn-link">
+                        <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>CSV</span></span>
+                    </CSVLink>}                      
+                    <Button variant="link" onClick={handleDownload} style={{width: "100%", padding: "4px 4px"}}>
                         {isLoading 
-                        ? <img style={{width: "27px"}} src="/icon_spinner.svg" alt="Image is loading" title="Image is loading"></img>
-                        : <img style={{width: "27px"}} src="/icon_dl_image.svg" alt="Download graph as png" title="Download graph as png"></img>}
+                        ? <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg></span>
+                        : <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#download"}/></svg><span>Graph</span></span>}
                     </Button>
-                </Col>
-            </Row>
-
-            <div style={{backgroundColor: "#E6E6E6", padding: "20px 0"}}>
-                <ResponsiveContainer width="90%" height={300}>
-                    <BarChart margin={{left: 50, top: 0}} data={chartData} ref={ref}>
-                        <XAxis dataKey="name" />    
-                        <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + '%'} domain={[0, 100]}/>
-                        <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)} wrapperStyle={{zIndex: 10}}/>
-                        <Legend />
-                        {vtypes.map((vtype:string, i:number) => {
-                            let jsx = [
-                                <Bar key={"bau" + i} dataKey={"BAU - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(44, 177, 213, ${1-i/vtypes.length})`} stackId="bau" unit='%'>
-                                    <LabelList className={(props.showLabels ? "" : "d-none ") + "d-print-block"} dataKey={"BAU - " + vtype} content={CustomLabel} />
-                                </Bar>
-                            ]
-                            for (let c = 0; c < props.climateModalShareData.length; c++) {
-                                if (!props.displayedClimateScenarios[c]) continue
-                                jsx.push(
-                                    <Bar key={"climate" + i + c} dataKey={"Climate (" + (c+1) + ") - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(162, 33, 124, ${1-i/vtypes.length})`} stackId={"climate" +c} unit='%'>
-                                        <LabelList className={(props.showLabels ? "" : "d-none ") + "d-print-block"} dataKey={"Climate (" + (c+1) + ") - " + vtype} content={CustomLabel} />
-                                    </Bar>
-                                )
-                            }
-                            return jsx
-                        })}
-                    </BarChart>
-                </ResponsiveContainer>
                 </div>
+            </div>
+            <div className="chart-content">
+                <div>
+                    <ResponsiveContainer width="100%" height={340}>
+                        <BarChart data={chartData} ref={ref}>
+                            <XAxis dataKey="name" />    
+                            <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + '%'} domain={[0, 100]}/>
+                            <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)} wrapperStyle={{zIndex: 10}}/>
+                            <Legend />
+                            {vtypes.map((vtype:string, i:number) => {
+                                let jsx = [
+                                    <Bar barSize={22} key={"bau" + i} dataKey={"BAU - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(44, 177, 213, ${1-i/vtypes.length})`} stackId="bau" unit='%'>
+                                        <LabelList className={(props.showLabels ? "" : "d-none ") + "d-print-block"} dataKey={"BAU - " + vtype} content={CustomLabel} />
+                                    </Bar>
+                                ]
+                                for (let c = 0; c < props.climateModalShareData.length; c++) {
+                                    if (!props.displayedClimateScenarios[c]) continue
+                                    jsx.push(
+                                        <Bar barSize={22} key={"climate" + i + c} dataKey={"Climate (" + (c+1) + ") - " + vtype} fill={props.highContrastColors ? colorsPerVtype[vtype] : `rgba(162, 33, 124, ${1-i/vtypes.length})`} stackId={"climate" +c} unit='%'>
+                                            <LabelList className={(props.showLabels ? "" : "d-none ") + "d-print-block"} dataKey={"Climate (" + (c+1) + ") - " + vtype} content={CustomLabel} />
+                                        </Bar>
+                                    )
+                                }
+                                return jsx
+                            })}
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
         </div>
+        
     )
 }
 const CustomLabel = (props: any) => {
@@ -120,16 +121,6 @@ const CustomLabel = (props: any) => {
         <g className={className}>
           <text x={x + width / 2} y={y + verticalOffset} fontSize="12" fill="black" textAnchor="middle" dominantBaseline="middle">
             {new Intl.NumberFormat('fr', { notation: 'compact' }).format(value)}
-          </text>
-        </g>
-      );
-}
-const PercentLabel = (props: any) => {
-    const { x, width, value, className } = props
-    return (
-        <g className={className}>
-          <text x={x + width / 2} y={12} fontSize="12" fill="black" textAnchor="middle" dominantBaseline="middle">
-            {value}
           </text>
         </g>
       );

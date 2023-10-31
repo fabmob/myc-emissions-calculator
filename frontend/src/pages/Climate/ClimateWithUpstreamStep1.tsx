@@ -2,16 +2,15 @@ import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
 import {Table, Button, Badge, Modal, Form, Tabs, Tab, Alert} from 'react-bootstrap'
-import {FuelType, InputClimateWithUpstreamStep1, InputInventoryStep2, ProjectType} from '../../frontendTypes'
+import {InputClimateWithUpstreamStep1, ProjectType} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
-import TdDiagonalBar from '../../components/TdDiagonalBar'
-import PercentInput from '../../components/PercentInput'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function ClimateWithUpstreamStep1(){
     const { keycloak, initialized } = useKeycloak();
@@ -150,27 +149,31 @@ export default function ClimateWithUpstreamStep1(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/intro', content: "<- Prev", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/intro', content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                     seeMoreCallBack={()=>setShowInfo(true)}
                 >
-                    <p>
-                        Mileage is the cornerstorne of the calculation of transport GHG emissions. Please enter VKT computed with your transport planning tool for the current climate scenario.
-                    </p>
+                    <p>Mileage is the cornerstorne of the calculation of transport GHG emissions. Please enter VKT computed with your transport planning tool for the current climate scenario.</p>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
                     fill
                 >
-                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" />{/* Vehicle */}
+                                <col className="tablecol3" />{/* BAU VKT */}
+                                <col className="tablecol1" />{/* Source */}
+                                <col className="tablecolfluid" />{/* Climate VKT */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario">🛈 BAU VKT (Mkm/y)</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of climate VKT, it can be the source used to fill the transport tool. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="VKT values extracted from upstream calculation for the current climate scenario">🛈 Climate VKT (Mkm/y)</ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Remininder of VKT computed for this year during BAU scenario"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>BAU VKT (Mkm/y)</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of climate VKT, it can be the source used to fill the transport tool. Click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="VKT values extracted from upstream calculation for the current climate scenario"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Climate VKT (Mkm/y)</span></span></ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -180,18 +183,23 @@ export default function ClimateWithUpstreamStep1(){
                                     const vkt = vehicle.vkt?.[yearIndex] || ""
                                     return (
                                         <tr key={vtype}>
-                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>
-                                            <td>{bAUVkt?.[vtype]?.[yearIndex + 1]}</td>
+                                            <td style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
+                                            <OutputNumberTd value={bAUVkt?.[vtype]?.[yearIndex + 1]}></OutputNumberTd>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
-                                            : <Button variant="action" onClick={e => configureSource(vtype)}>+</Button>}</td>
+                                            : <Button size="sm" variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
                                             <td>
                                                 <Form.Control value={vkt} onChange={(e:any) => updateInput(vtype, yearIndex, e.target.value)}></Form.Control>
                                             </td>
                                         </tr>
                                     )
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}
@@ -208,14 +216,14 @@ export default function ClimateWithUpstreamStep1(){
                 <Modal.Header closeButton>
                     <Modal.Title>Transport activity information</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>The composition of a city-specific vehicle fleet strongly influences local transport emissions. The more private cars are on the road and the larger or older the vehicles are, the higher their fuel consumption is and the higher the related GHG emissions are. In other words, GHG emissions depend on the vehicle fleet and on the distribution of VKT across the fleet's vehicle mix.</p>
                     <p>Data on the vehicle fleet is generally available from vehicle registration statistics for passenger cars, taxis, trucks, and motorcycles (e-bikes are mostly excluded), which includes technical specifications for the different vehicle types. Once the registered fleet is documented for the base year, e.g. 2015, only newly registered (and deregistered) vehicles have to be monitored each year.</p>
                     <p>If there are no big differences in the fleet compositions across different cities in a country, using national averages for urban fleet composition may be considered. Where the fleet is known to be quite specific, however, these local characteristics should be accounted for, e.g. prosperous metropolitan areas may have a larger number of new and larger cars than less prosperous mid-sized cities with a smaller but older fleet.</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseInfo}>
-                    Close
+                        <span className="item"><span>Close</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>

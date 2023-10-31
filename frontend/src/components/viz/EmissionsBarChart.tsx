@@ -36,14 +36,14 @@ export default function EmissionsBarChart (props: {
     const [showPercents, setShowPercents] = useState(false)
     const [showLabels, setShowLabels] = useState(false)
     return (
-        <ResponsiveContainer width="90%" height={300}>
-            <BarChart margin={{left: 50, top: showPercents? 20: 0}} data={emissionChartData}>
+        <ResponsiveContainer width="100%" height={340}>
+            <BarChart data={emissionChartData}>
                 <XAxis dataKey="name" />    
                 <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr').format(value) + 't'} domain={[0, maxValRoundedAbove]}/>
                 <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr').format(value)} wrapperStyle={{zIndex: 10}}/>
                 <Legend />
                 {vtypes.map((vtype:string, i:number) => (
-                    <Bar key={i} dataKey={vtype} fill={colorsPerVtype[vtype]} stackId="a" unit=' tons GHG'>
+                    <Bar barSize={22} key={i} dataKey={vtype} fill={colorsPerVtype[vtype]} stackId="a" unit=' tons GHG'>
                         <LabelList className={(showLabels ? "" : "d-none ") + "d-print-block"} dataKey={vtype} content={CustomLabel} />
                         {i===0 && showPercents && <LabelList dataKey="percent" content={PercentLabel} />}
                     </Bar>

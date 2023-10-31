@@ -87,7 +87,7 @@ export function createProject(project: types.Project, owner: string): [string | 
         ])
         return [null, res]
     } catch (error: any) {
-        return [error?.code, null]
+                return [error?.code, null]
     }
 }
 
@@ -266,14 +266,22 @@ export function updateProject(id: number, owner: string, project: types.Project,
     }
 }
 export function deleteProject(id: number, owner: string, isAdmin: boolean) {
-    let updateProjectStatusStmt
+    let deleteProjectStmt
     let res
     if (isAdmin) {
-        updateProjectStatusStmt = db.prepare("DELETE FROM Projects where id = ?")
-        res = updateProjectStatusStmt.run([id])
+        deleteProjectStmt = db.prepare("DELETE FROM ProjectSteps where projectId = ?")
+        res = deleteProjectStmt.run([id])
+        deleteProjectStmt = db.prepare("DELETE FROM ProjectSources where projectId = ?")
+        res = deleteProjectStmt.run([id])
+        deleteProjectStmt = db.prepare("DELETE FROM Projects where id = ?")
+        res = deleteProjectStmt.run([id])
     } else {
-        updateProjectStatusStmt = db.prepare("DELETE FROM Projects where id = ? and owner = ?")
-        res = updateProjectStatusStmt.run([id, owner])
+        deleteProjectStmt = db.prepare("DELETE FROM ProjectSteps where projectId = ? and owner = ?")
+        res = deleteProjectStmt.run([id, owner])
+        deleteProjectStmt = db.prepare("DELETE FROM ProjectSources where projectId = ? and owner = ?")
+        res = deleteProjectStmt.run([id, owner])
+        deleteProjectStmt = db.prepare("DELETE FROM Projects where id = ? and owner = ?")
+        res = deleteProjectStmt.run([id, owner])
     }
     return res
 }

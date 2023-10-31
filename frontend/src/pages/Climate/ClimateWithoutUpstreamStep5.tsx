@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Table, Button, Badge, Form, Tabs, Tab, Alert} from 'react-bootstrap'
+import {Table, Button, Badge, Tabs, Tab, Alert} from 'react-bootstrap'
 import {FuelType, InputBAUStep2, InputClimateWithoutUpstreamStep1, InputClimateWithoutUpstreamStep2, InputClimateWithoutUpstreamStep3, InputClimateWithoutUpstreamStep4, InputInventoryStep1, InputInventoryStep6, InputInventoryStep8, ProjectType, VehicleStats} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 
@@ -13,6 +13,7 @@ import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import { computeVktAfterASI } from '../../utils/asiComputations'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function ClimateWithoutUpstreamStep5(){
     const { keycloak, initialized } = useKeycloak();
@@ -171,9 +172,6 @@ export default function ClimateWithoutUpstreamStep5(){
             .then(() => navigate('/project/' + projectId + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber + 1)));
     }
     const inputInventoryStep1 : InputInventoryStep1 = project.stages?.Inventory[0].steps?.[1] || {}
-    const isVtypeFreight = (vtype: string) => {
-        return inputInventoryStep1.vtypes[vtype].type === "freight"
-    }
     const inputClimateWithoutUpstreamStep1 : InputClimateWithoutUpstreamStep1 = project.stages?.Climate[climateScenarioId].steps?.[1]
     const inputClimateWithoutUpstreamStep2 : InputClimateWithoutUpstreamStep2 = project.stages?.Climate[climateScenarioId].steps?.[2]
     const inputClimateWithoutUpstreamStep3 : InputClimateWithoutUpstreamStep3 = project.stages?.Climate[climateScenarioId].steps?.[3]
@@ -201,39 +199,43 @@ export default function ClimateWithoutUpstreamStep5(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <p>
-                     Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.
-                    </p>
+                    <p>Please also enter the percentage of vehicle kilometers travelled (vkt) per fuel type. The sum of fuel shares in each vehicle category must be 100 %.</p>
+                    <p>Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.</p>
                 </DescAndNav>
-                <p>
-                    Values are pre-filled with BAU data if available; this is done to simplify the filling process. Please update values accordingly.
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
                     fill
                 >
-                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" />{/* Vehicle */}
+                                <col className="tablecol3" />{/* Fuels */}
+                                <col className="tablecol4" />{/* Computed VKT */}
+                                <col className="tablecol2" />{/* BAU VKT */}
+                                <col className="tablecol1" />{/* Source */}
+                                <col className="tablecolfluid" />{/* VKT */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
-                                    <th className="item-sm">
+                                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                                    <th>
                                         <ItemWithOverlay overlayContent={
                                             <div>Vehicle kilometers travelled. Values for each fuel are computed as
                                                 <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                                    <Badge bg="disabled">Computed VKT after shift (Mkm/y)</Badge> x <Badge bg="disabled">VKT (%)</Badge> / 100
+                                                    <Badge className="badge-read-only"><span className="item"><span>Computed VKT after shift (Mkm/y)</span></span></Badge> × <Badge className="badge-read-only"><span className="item"><span>VKT (%)</span></span></Badge> / 100
                                                 </div>
                                             </div>
-                                        }>🛈 Computed VKT (Mkm/y)</ItemWithOverlay>
+                                        }><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Computed VKT (Mkm/y)</span></span></ItemWithOverlay>
                                     </th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of share values used during BAU scenario">🛈 BAU. VKT (%)</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of VKT share, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%">🛈 VKT (%)</ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Reminder of share values used during BAU scenario"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>BAU. VKT (%)</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of VKT share, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Share of vehicle vkt per fuel, sum should be 100%"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>VKT (%)</span></span></ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -254,13 +256,13 @@ export default function ClimateWithoutUpstreamStep5(){
                                         const percentSource = vehicle?.fuels[ftype]?.percentSource
                                         const bAUPercent = project.stages.BAU[0].steps?.[2].vtypes?.[vtype].fuels?.[ftype]?.percent[yearIndex] || "?"
                                         fuelJsx.push(<tr key={vtype + ftype}>
-                                            <td><Badge bg="disabled">{ftype}</Badge></td>
-                                            <td>{parseFloat((parseFloat(value) / 100 * (computedASI?.baseVkt?.[vtype]?.[yearIndex+1] || 0)).toFixed(10)) || ""}</td>
-                                            <td>{bAUPercent}</td>
+                                            <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
+                                            <OutputNumberTd value={(parseFloat(value) / 100 * (computedASI?.baseVkt?.[vtype]?.[yearIndex+1] || 0))}></OutputNumberTd>
+                                            <OutputNumberTd value={bAUPercent} decimals={0}></OutputNumberTd>
                                             <td>
                                                 {percentSource 
                                                 ? <ValidSource source={percentSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                                : <Button variant="action" onClick={e => configureSource(vtype, ftype)}>+</Button>}
+                                                : <Button size="sm" variant="action" onClick={e => configureSource(vtype, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                             </td>
                                             <td>
                                                 <PercentInput value={value} onChange={(e:any) => updateInputPercent(vtype, ftype, yearIndex, e.target.value)} invalid={totalPercent > 100}></PercentInput>
@@ -269,17 +271,24 @@ export default function ClimateWithoutUpstreamStep5(){
                                     }
                                     return [
                                         <tr key={vtype}>
-                                            <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>
+                                            <td rowSpan={ftypes.length +1} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>All</td>
-                                            <td>{computedASI?.baseVkt?.[vtype]?.[yearIndex+1]}</td>
-                                            <td>100</td>
+                                            <OutputNumberTd value={computedASI?.baseVkt?.[vtype]?.[yearIndex+1] || 0}></OutputNumberTd>
+                                            <OutputNumberTd value={100} decimals={0}></OutputNumberTd>
                                             <TdDiagonalBar></TdDiagonalBar>
-                                            <td className={totalPercent > 100 ? "cellError": ""}>{totalPercent || 0}</td>
+                                            <OutputNumberTd cls={totalPercent > 100 ? "cellError": ""} value={totalPercent || 0} decimals={0}></OutputNumberTd>
                                         </tr>,
                                         fuelJsx
                                     ]
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}

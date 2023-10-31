@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
 import {Table, Button, Badge, Form} from 'react-bootstrap'
-import {FuelType, InputInventoryStep8, ProjectType} from '../../frontendTypes'
+import {InputInventoryStep8, ProjectType} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 
 import '../Project.css'
@@ -115,7 +115,7 @@ export default function InventoryStep8(){
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
                 <h1>Vehicle trip length</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
                     <p>
@@ -123,33 +123,43 @@ export default function InventoryStep8(){
                     It is used to weight the modal shift effect of public transport in the Climate Scenario and it will then be considered constant
                     during the whole MobiliseYourCity emissions calculation process. Go to modal shift in the Climate Scenario to learn more about it.
                     </p>
+                    <p>
+                        It is asked to fill it here because the data should be collected during the diagnostic process of collecting data.
+                    </p>
                 </DescAndNav>
-                <p>
-                    It is asked to fill it here because the data should be collected during the diagnostic process of collecting data.
-                </p>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol4" />{/* Passenger transport */}
+                        <col className="tablecol1" />{/* Src */}
+                        <col className="tablecolfluid" />{/* Avg trip len */}
+                    </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Passenger transport modes, current and expected">🛈 Passenger transport</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of average trip length, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                            <th className="item-sm">Average trip length (km)</th>
+                            <th><ItemWithOverlay overlayContent="Passenger transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Passenger transport</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Source of average trip length, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                            <th><span className="item"><span>Average trip length (km)</span></span></th>
                         </tr>
                     </thead>
                     <tbody>
                         {Object.keys(inputData.vtypes).map((vtype, index) => {
                             const vehicle = inputData.vtypes[vtype]
                             return (<tr key={index}>
-                                    <td><Badge bg="disabled">{vtype}</Badge></td>
+                                    <td><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                     <td>
                                         {vehicle.source 
                                         ? <ValidSource source={vehicle.source} onClick={(e:any) => configureSource(vtype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype)}>+</Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={vehicle.value} onChange={e => updateInput(vtype, e.target.value)}></Form.Control>
                                     </td>
                                 </tr>)
                         })}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>

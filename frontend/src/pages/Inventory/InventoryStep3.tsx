@@ -152,26 +152,32 @@ export default function InventoryStep3(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
                     <p>
                         Once transport activity i.e. mileage by mode and fuel is known, it needs to be multiplied with adequate fuel consumption factors.
                     </p>
+                    <p>
+                        Please enter the expected average fuel/energy consumption changes for each vehicle category and per fuel type (average fuel/energy consumption per vehicle per 100 km).
+                    </p>
+                    <p>
+                        If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.
+                    </p>
                 </DescAndNav>
-                <p>
-                    Please enter the expected average fuel/energy consumption changes for each vehicle category and per fuel type (average fuel/energy consumption per vehicle per 100 km).
-                </p>
-                <p>
-                    If there are no big differences in the fleet compositions across different cities within the country, using national averages for urban fleet composition is a possible approach.
-                </p>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol4" />{/* Vehicle */}
+                        <col className="tablecol3" />{/* Fuels */}
+                        <col className="tablecol1" />{/* Src */}
+                        <col className="tablecolfluid" />{/* Cons */}
+                    </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Source of consumption value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuel consumption. Set to zero for vehicles not used in reference year">🛈 Cons (l-kg-kwh/100km)</ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Source of consumption value, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Fuel consumption. Set to zero for vehicles not used in reference year"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Cons (l-kg-kwh/100km)</span></span></ItemWithOverlay></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -185,12 +191,12 @@ export default function InventoryStep3(){
                                 const cons = vehicle.fuels[ftype]?.cons || ''
                                 const consSource = vehicle.fuels[ftype]?.consSource
                                 fuelJsx.push(<tr key={vtype + ftype}>
-                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>}
-                                    <td><Badge bg="disabled">{ftype}</Badge></td>
+                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>}
+                                    <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     <td>
                                         {consSource 
                                         ? <ValidSource source={consSource} onClick={(e:any) => configureSource(vtype, ftype)}/>
-                                        : <Button variant="action" onClick={e => configureSource(vtype, ftype)}>+</Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource(vtype, ftype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
                                     <td>
                                         <Form.Control value={cons} onChange={e => updateInputCons(vtype, ftype, e.target.value)}></Form.Control>
@@ -201,7 +207,12 @@ export default function InventoryStep3(){
                                 fuelJsx
                             ]
                         })}
-                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
             </ProjectStepContainerWrapper>

@@ -137,25 +137,28 @@ export default function ClimateWithUpstreamStep2(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <p>
-                        Please enter the transport performances (Mio. passenger-kilometers or Mio. tons-kilometers). The same data can be entered for the following years taking into account the changes planned in the climate scenario.
-                    </p>
+                    <p>Please enter the transport performances (Mio. passenger-kilometers or Mio. tons-kilometers). The same data can be entered for the following years taking into account the changes planned in the climate scenario.</p>
                 </DescAndNav>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
                     fill
                 >
-                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" />{/* Vehicle */}
+                                <col className="tablecol1" />{/* Source */}
+                                <col className="tablecolfluid" />{/* Transport performance */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of climate transport performances, it can be the source used to fill the transport tool. Click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport performance values extracted from upstream calculation for the current climate scenario">Transport performance (Mpkm or Mtkm)</ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of climate transport performances, it can be the source used to fill the transport tool. Click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Transport performance values extracted from upstream calculation for the current climate scenario"><span className="item"><span>Transport performance (Mpkm or Mtkm)</span></span></ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -165,17 +168,21 @@ export default function ClimateWithUpstreamStep2(){
                                     const ukm = vehicle.ukm[yearIndex]
                                     return (
                                         <tr key={vtype}>
-                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>
+                                            <td style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
-                                            : <Button variant="action" onClick={e => configureSource(vtype)}>+</Button>}</td>
+                                            : <Button size="sm" variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
                                             <td>
                                                 <Form.Control value={ukm} onChange={(e:any) => updateInput(vtype, yearIndex, e.target.value)}></Form.Control>
                                             </td>
                                         </tr>
                                     )
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}

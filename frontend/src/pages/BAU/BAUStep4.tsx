@@ -10,6 +10,7 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function BAUStep4(){
     const { keycloak, initialized } = useKeycloak();
@@ -116,35 +117,35 @@ export default function BAUStep4(){
     return (
         <>
             <ProjectStepContainerWrapper project={project} stage="BAU" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
-                <h1>CO2 content of alternative energy production</h1>
+                <h1>CO2 content of alt. energy production</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                     <p>
-                        In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).
-                    </p>
+                    <p>In MobiliseYourCity methodology, transport related GHG emissions can integrate or not the CO2 content of the production of electricity and hydrogen (based on national/local energy mix).</p>
+                    <p>If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.</p>
+                    <p>Please enter the predicted CO2 content of electricity and hydrogen production.</p>
                 </DescAndNav>
-                <p>
-                    If you have this information, it will allow you to choose later between a TTW and a WTW approach for emissions calculation.
-                </p>
-                <p>
-                    Please enter the predicted CO2 content of electricity and hydrogen production.
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
                     fill
                 >
-                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
-                        <h2>Electricity</h2>
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
+                        <h3>Electricity</h3>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" />{/* Network */}
+                                <col className="tablecol3" />{/* Source */}
+                                <col className="tablecol3" />{/* Inventory emissions */}
+                                <col className="tablecolfluid" />{/* Emissions */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail">🛈 Network</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of emission used during inventory">🛈 Inv. Emissions</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected emissions of production of 1kWh of electricity, leave empty or set to zero if unavailable">🛈 Emissions (gCO2/kWh)</ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Reminder of emission used during inventory"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Inv. Emissions</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Projected emissions of production of 1kWh of electricity, leave empty or set to zero if unavailable"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions (gCO2/kWh)</span></span></ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,29 +155,39 @@ export default function BAUStep4(){
                                     const value = inputData.electricity[network].value[yearIndex]
                                     const inventoryValue = project.stages.Inventory[0].steps[4].electricity[network].value
                                     return (<tr key={network}>
-                                    <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network} (electric)</Badge></td>
+                                    <td><Badge className="badge-read-only" style={{textTransform: "capitalize"}}><span className="item"><span>{network} (electric)</span></span></Badge></td>
                                     <td>
                                         {source
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('electricity', network)}/>
-                                        : <Button variant="action" onClick={e => configureSource('electricity', network)}>+</Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource('electricity', network)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
-                                    <td>
-                                        {inventoryValue}
-                                    </td>
+                                    <OutputNumberTd value={inventoryValue}></OutputNumberTd>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput('electricity', network, yearIndex, e.target.value)}></Form.Control>
                                     </td>
                                 </tr>)})}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
-                        <h2>Hydrogen</h2>
+                        <h3>Hydrogen</h3>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" />{/* Network */}
+                                <col className="tablecol3" />{/* Source */}
+                                <col className="tablecol3" />{/* Inventory emissions */}
+                                <col className="tablecolfluid" />{/* Emissions */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail">🛈 Network</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of emission used during inventory">🛈 Inv. Emissions</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Projected emissions of production of 1kg of hydrogen, leave empty or set to zero if unavailable">🛈 Emissions (gCO2/kg)</ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Emissions related to energy production can differ if the energy is used in road or rail"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of emissions, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Reminder of emission used during inventory"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Inv. Emissions</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Projected emissions of production of 1kg of hydrogen, leave empty or set to zero if unavailable"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions (gCO2/kg)</span></span></ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -186,19 +197,23 @@ export default function BAUStep4(){
                                     const value = inputData.hydrogen[network].value[yearIndex]
                                     const inventoryValue = project.stages.Inventory[0].steps[4].hydrogen[network].value
                                     return (<tr key={network}>
-                                    <td><Badge bg="disabled" style={{textTransform: "capitalize"}}>{network} (electric)</Badge></td>
+                                    <td><Badge className="badge-read-only" style={{textTransform: "capitalize"}}><span className="item"><span>{network} (electric)</span></span></Badge></td>
                                     <td>
                                         {source
                                         ? <ValidSource source={source} onClick={(e:any) => configureSource('hydrogen', network)}/>
-                                        : <Button variant="action" onClick={e => configureSource('hydrogen', network)}>+</Button>}
+                                        : <Button size="sm" variant="action" onClick={e => configureSource('hydrogen', network)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}
                                     </td>
-                                    <td>
-                                        {inventoryValue}
-                                    </td>
+                                    <OutputNumberTd value={inventoryValue}></OutputNumberTd>
                                     <td>
                                         <Form.Control value={value} onChange={e => updateInput('hydrogen', network, yearIndex, e.target.value)}></Form.Control>
                                     </td>
                                 </tr>)})}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}

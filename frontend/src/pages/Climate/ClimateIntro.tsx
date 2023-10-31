@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Table, Container, Row, Col, Badge, OverlayTrigger, Tooltip, Modal, Button, Dropdown } from 'react-bootstrap'
+import { Table, Container, Row, Col, Badge, Modal, Button, Dropdown } from 'react-bootstrap'
 import { ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
-import ChoiceModal from '../../components/ChoiceModal'
+import Footer from "../../components/Footer"
 
 
 export default function ClimateIntro(){
@@ -64,13 +64,23 @@ export default function ClimateIntro(){
     }
     const MethodSelector = () => {
         return (
-            <div style={{display: "flex", marginBottom: "10px"}}>
+            <div style={{display: "flex"}}>
                 <Dropdown onSelect={(key:any) => method === "With upstream calculation" ? setMethod("Without upstream calculation") : setMethod("With upstream calculation")}>
-                    <Dropdown.Toggle as={Badge} bg="info" style={{margin: "0 10px 0 10px"}}>
+                    <Dropdown.Toggle as={Badge} className="badge-default" style={{margin: "0 10px 0 10px"}}>
                         {method === "With upstream calculation" ? "With upstream calculation" : "Without upstream calculation"}
                     </Dropdown.Toggle>
-                    <Dropdown.Menu style={{padding: "10px"}}>
-                        <Dropdown.Item as={Badge} bg="info">
+                    <Dropdown.Menu
+                        popperConfig={{
+                                modifiers: [
+                                {
+                                    name: 'offset',
+                                    options: {
+                                    offset: [0, 8],
+                                    },
+                                },
+                                ],
+                            }}>
+                        <Dropdown.Item as={Badge} className="badge-default">
                             {method === "Without upstream calculation" ? "With upstream calculation" : "Without upstream calculation"}
                         </Dropdown.Item>
                     </Dropdown.Menu>
@@ -79,97 +89,103 @@ export default function ClimateIntro(){
         )
     }
     return (
-        <div>
+        <>
+        <section>
             <Container>
-                <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
-                    <Col xs lg="8">
-                        <h1>Climate scenario</h1>
+                <Row className="justify-content-md-center align-items-center">
+                    <Col xs lg="7">
+                        <h1>Climate Scenario</h1>
                         <DescAndNav 
-                            prevNav={{link: '/project/' + project.id + '/edit', content: "cancel", variant: "link"}}
-                            nextNav={{trigger: nextTrigger, content: "Start ->", variant: "primary"}}
+                            prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
+                            nextNav={{trigger: nextTrigger, content: "Start", showArrow: true, variant: "primary"}}
                         >
                             <p>This step enables calculating a climate scenario, based on mitigations actions. Calculating the impact of NUMP/SUMP measures in the MYC Calculator requires bundling measures based on the ASI : Avoid-Shift-Improve.</p>
+                            <p>In order to derive transport demand data for the calculations two different data input approaches are possible : <Button variant="link" onClick={e => setShowInfo(true)} style={{padding: "0"}}><span className="item"><span>with upstream calculations or without</span></span></Button>. This will depend on if you count with a transport model. In order to avoid wrong results please choose and apply just one approach.</p>
                         </DescAndNav>
-                        <p>
-                            In order to derive transport demand data for the calculations two different data input approaches are possible : <Button variant="link" onClick={e => setShowInfo(true)} style={{padding: "0"}}>🛈 with upstream calculations or without</Button>. This will depend on if you count with a transport model. In order to avoid wrong results please choose and apply just one approach.
-                        </p>
-                        <img src='/asi-approach-diagram.png' alt="Avoid-Shift-Improve Approach (Transport NAMA Handbook, GIZ, 2015 based on Dalkmann and Brannigan 2007)" style={{width: '100%'}}></img>
+                        <div className="illustration">
+                            <img src='/pictures/asi-approach-diagram.png' alt="Avoid-Shift-Improve Approach (Transport NAMA Handbook, GIZ, 2015 based on Dalkmann and Brannigan 2007)" style={{width: '100%'}}></img>
+                        </div>
                         <h3>Calculation method</h3>
                         <div style={{display: "flex", marginBottom: "20px", padding: "5px"}}>
                             <div className="item">Method</div>
                             <MethodSelector></MethodSelector>
                         </div>
-                        <h3>{method}, the calculation of transport related emissions requires information on</h3>
+                        {/* <h3>{method}, the calculation of transport related emissions requires information on</h3> */}
+                        <h3>Required for this calculation</h3>
                         <Table>
+                            <colgroup>
+                                <col className="tablecol6" />{/* Data */}
+                                <col className="tablecolfluid" />{/* Unit */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm">Data</th>
-                                    <th className="item-sm">Unit</th>
+                                    <th><span className="item"><span>Data</span></span></th>
+                                    <th><span className="item"><span>Unit</span></span></th>
                                 </tr>
                             </thead>
                             {method === "With upstream calculation" 
                             ? <tbody>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected transport activity - mileage for each transport mode per year</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected transport activity - mileage for each transport mode per year</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">vkt: vehicle-kilometre</td>
+                                    <td>vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected transport performance for each transport mode per year</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected transport performance for each transport mode per year</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">pkm: passenger-km or tkm: tons-km</td>
+                                    <td>pkm: passenger-km or tkm: tons-km</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected share of the transport activity by vehicle category and fuel type</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">%vkt and %tkm</td>
+                                    <td>%vkt and %tkm</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">l-kW-kg/100km</td>
+                                    <td>l-kW-kg/100km</td>
                                 </tr>
                             </tbody>
                             : <tbody>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected avoided transport activity</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected avoided transport activity</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">vkt: vehicle-kilometre</td>
+                                    <td>vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected added transport activity</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected added transport activity</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">vkt: vehicle-kilometre</td>
+                                    <td>vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected vehicle load</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected vehicle load</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">passengers or tons</td>
+                                    <td>passengers or tons</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected vehicle shift - orgin of shifted trips</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected vehicle shift - orgin of shifted trips</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">% of trips</td>
+                                    <td>% of trips</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected share of the transport activity by vehicle category and fuel type</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">%vkt and %tkm</td>
+                                    <td>%vkt and %tkm</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge bg="disabled">Projected vehicle fuel consumption according to vehicle category and fuel type</Badge>
+                                        <Badge className="badge-read-only"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                     </td>
-                                    <td className="item-sm">l-kW-kg/100km</td>
+                                    <td>l-kW-kg/100km</td>
                                 </tr>
                             </tbody>
                             }
@@ -181,7 +197,7 @@ export default function ClimateIntro(){
                 <Modal.Header closeButton>
                     <Modal.Title>With or without upstream calculation</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="masked-overflow-y">
                     <p>The first approach “WITH UPSTREAM CALCULATIONS - INPUT FROM EXTERNAL TRANSPORT PLANNING TOOL” the user can directly enter transport performance (pkm/tkm) and the vehicle kilometers travelled (vkt) provided by an external transport planning tool.</p>
                     <p>If no data from a transport planning tool are available, the second approach “WITHOUT UPSTREAM CALCULATIONS - CALCULATIONS WITHIN THIS TOOL” can be applied. For calculating potential GHG savings from mitigation measures within this approach the “ASI” (Avoid/Shift/Improve) approach is applied. Users have to estimate the effect of transport related actions on the transport demand for each mitigation action type (Avoid, Shift or Improve). E.g. Parking area management may lead to 5% avoided passenger car vehicle kilometers travelled (vkt).</p>
                     <ul>
@@ -200,6 +216,17 @@ export default function ClimateIntro(){
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </section>
+        <section className="footer">
+            <Container>
+                <Row className="justify-content-md-center">
+                    <Col lg="7">
+                        <Footer />
+                    </Col>
+                </Row>
+            </Container>
+        </section>
+        </>
+        
     )
 }

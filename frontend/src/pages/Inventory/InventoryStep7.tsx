@@ -1,17 +1,18 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Table, Button, Badge} from 'react-bootstrap'
-import {InputInventoryStep1, InputInventoryStep7, FuelType, ProjectType, TotalEnergyAndEmissions, ModalShare, EmissionParams} from '../../frontendTypes'
+import {Table, Badge} from 'react-bootstrap'
+import {InputInventoryStep7, FuelType, ProjectType, TotalEnergyAndEmissions, ModalShare} from '../../frontendTypes'
 
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, Legend } from 'recharts'
 import EditEmissionFactors from '../../components/EditEmissionFactors'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import TTWorWTWSelector from '../../components/TTWorWTWSelector'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function InventoryStep7(){
     const { keycloak, initialized } = useKeycloak();
@@ -21,7 +22,6 @@ export default function InventoryStep7(){
     const [emissionFactorsInputData, setEmissionFactorsInputData] = useState({} as InputInventoryStep7)
     const projectId = params.projectId
     const [ totalEnergyAndEmissions, setTotalEnergyAndEmissions] = useState({TTW: {} as TotalEnergyAndEmissions, WTW:  {} as TotalEnergyAndEmissions})
-    const [ emissionFactorsWTWComputedForElectric, setEmissionFactorsWTWComputedForElectric] = useState({ElectricRail: {} as EmissionParams, ElectricRoad: {} as EmissionParams})
     const [ modalShare, setModalShare] = useState({
         passengers: {} as ModalShare,
         freight: {} as ModalShare
@@ -67,7 +67,6 @@ export default function InventoryStep7(){
                     WTW: data.totalEnergyAndEmissionsWTW,
                     TTW: data.totalEnergyAndEmissionsTTW
                 })
-                setEmissionFactorsWTWComputedForElectric(data.emissionFactorsWTWComputedForElectric)
                 setModalShare(data.modalShare)
             })
     }
@@ -128,32 +127,36 @@ export default function InventoryStep7(){
             <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber}>
                 <h1>Results</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Inventory/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <p>
-                        This page displays a short summary of emissions for the reference year. More tables and visualisations are available in the Compare section of the project.
-                    </p>
+                    <p>This page displays a short summary of emissions for the reference year. More tables and visualisations are available in the Compare section of the project.</p>
                 </DescAndNav>
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
-                <h2>GHG emissions</h2>
+                <h3>GHG emissions</h3>
                 <Table bordered>
+                    <colgroup>
+                        <col className="tablecol4" />{/* Vehicle */}
+                        <col className="tablecol3" />{/* Fuels */}
+                        <col className="tablecol4" />{/* Emissions Factor */}
+                        <col className="tablecolfluid" />{/* GHG Emissions */}
+                    </colgroup>
                     <thead>
                         <tr>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected">🛈 Fuels</ItemWithOverlay></th>
-                            <th className="item-sm"><ItemWithOverlay overlayContent="Emission factors per fuel. This values can be edited using the Edit GHG emission factors link below the pie chart.">🛈 Emission Factor (kg/TJ) ({ttwOrWtw})</ItemWithOverlay></th>
-                            <th className="item-sm">
+                            <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                            <th><ItemWithOverlay overlayContent="Emission factors per fuel. This values can be edited using the Edit GHG emission factors link below the pie chart."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emission Factor (kg/TJ) ({ttwOrWtw})</span></span></ItemWithOverlay></th>
+                            <th>
                                 <ItemWithOverlay overlayContent={
                                     <div>
                                         Emissions (1000 tons of greenhouse gases) computed by the tool, using previous steps inputs. Values for each transport mode and fuel are computed as
                                         <div style={{backgroundColor: "#C5E8F2", padding: "10px", margin: "10px 0px 10px 0px"}}>
-                                        <Badge bg="disabled">Fuel lower heating value (TJ/1000t)</Badge> / 10^6 x <Badge bg="disabled">Fuel density (kg/kg or kg/l)</Badge> x <Badge bg="disabled">Input VKT per fuel (Mkm)</Badge> x 10^6 x <Badge bg="disabled">Fuel consumption factor (l-kg-kwh/100km)</Badge> / 100 x <Badge bg="disabled">Fuel emission factor (kg/TJ)</Badge> / 10^6
+                                        <Badge className="badge-read-only"><span className="item"><span>Fuel lower heating value (TJ/1000t)</span></span></Badge> / 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel density (kg/kg or kg/l)</span></span></Badge> × <Badge className="badge-read-only"><span className="item"><span>Input VKT per fuel (Mkm)</span></span></Badge> × 10^6 × <Badge className="badge-read-only"><span className="item"><span>Fuel consumption factor (l-kg-kwh/100km)</span></span></Badge> / 100 × <Badge className="badge-read-only"><span className="item"><span>Fuel emission factor (kg/TJ)</span></span></Badge> / 10^6
                                         </div>
                                         Lower heating value, fuel density and fuel emission factors use default values that can be edited using the Edit GHG emission factors link below the pie chart.
                                     </div>
                                 }>
-                                    🛈 GHG emissions (1000t GHG) ({ttwOrWtw})
+                                    <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>GHG em. (1000t GHG - {ttwOrWtw})</span></span>
                                 </ItemWithOverlay>
                             </th>
                         </tr>
@@ -168,36 +171,54 @@ export default function InventoryStep7(){
                                 const co2 = fuels[ftype]?.co2 || ''
                                 let ges = emissionFactorsInputData.emissionFactors[ttwOrWtw][ftype].ges
                                 fuelJsx.push(<tr key={vtype + ftype}>
-                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>}
-                                    <td><Badge bg="disabled">{ftype}</Badge></td>
+                                    {i===0 && <td rowSpan={ftypes.length} style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>}
+                                    <td><Badge className="badge-read-only"><span className="item"><span>{ftype}</span></span></Badge></td>
                                     {ftype !== "Electric" && ftype !== "Hydrogen" 
-                                        ? <td>{ges}</td>
+                                        ? <OutputNumberTd value={ges} decimals={0}></OutputNumberTd>
                                         : <TdDiagonalBar></TdDiagonalBar>
                                     }
-                                    <td>{co2}</td>
+                                    <OutputNumberTd value={co2[0]}></OutputNumberTd>
                                 </tr>)
                             }
                             return [
                                 fuelJsx
                             ]
                         })}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </Table>
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart width={400} height={300}>
-                    <Pie
-                        dataKey="value"
-                        data={emissionsPieData}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        label={(entry) => entry.name + ": " + Math.round(entry.value) + " 1000t GHG"}
-                    >
-                        {emissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
-                    </Pie>
-                    <Tooltip />
-                    </PieChart>
-                </ResponsiveContainer>
+                <>
+                    <div className="chart">
+                        {/* <div className="chart-header">
+                            <!--we should have the download buttons like in the compare tab.-->
+                        </div> */}
+                        <div className="chart-content">
+                            <div>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <PieChart width={400} height={300}>
+                                        <Pie
+                                            dataKey="value"
+                                            data={emissionsPieData}
+                                            cx="50%"
+                                            cy="50%"
+                                            outerRadius={80}
+                                            // label={(entry) => entry.name + ": " + Math.round(entry.value) + " 1000t GHG"}
+                                        >
+                                            {emissionsPieData.map((entry, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                                        </Pie>
+                                        <Tooltip />
+                                        <Legend />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+                    </div>
+                </>
                 <EditEmissionFactors 
                     project={project} 
                     stepNumber={stepNumber} 
@@ -206,40 +227,67 @@ export default function InventoryStep7(){
                     inputData={emissionFactorsInputData}
                     setInputData={setEmissionFactorsInputData}
                 ></EditEmissionFactors>
-                <h2>Passenger Modal Share</h2>
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart width={400} height={300}>
-                    <Pie
-                        dataKey="value"
-                        isAnimationActive={false}
-                        data={Object.keys(modalShare.passengers || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.passengers[vtype][0] * 100)}))}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        label={(entry) => entry.name + ": " + entry.value + "%"}
-                    >
-                        {Object.keys(modalShare.passengers || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
-                    </Pie>
-                    <Tooltip />
-                    </PieChart>
-                </ResponsiveContainer>
-                <h2>Freight Modal Share</h2>
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart width={400} height={300}>
-                    <Pie
-                        dataKey="value"
-                        isAnimationActive={false}
-                        data={Object.keys(modalShare.freight || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.freight[vtype][0] * 100)}))}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        label={(entry) => entry.name + ": " + entry.value + "%"}
-                    >
-                        {Object.keys(modalShare.freight || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
-                    </Pie>
-                    <Tooltip />
-                    </PieChart>
-                </ResponsiveContainer>
+
+                <div className="chart">
+                    <div className="chart-header">
+                        <h3>Passenger Modal Share</h3>
+                        <div className="commands">
+                            {/* <!--we should have the download buttons like in the compare tab.--> */}
+                        </div>
+                    </div>
+                    <div className="chart-content">
+                        <div>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart width={400} height={300}>
+                                    <Pie
+                                        dataKey="value"
+                                        isAnimationActive={false}
+                                        data={Object.keys(modalShare.passengers || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.passengers[vtype][0] * 100)}))}
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={80}
+                                        // label={(entry) => entry.name + ": " + entry.value + "%"}
+                                    >
+                                        {Object.keys(modalShare.passengers || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="chart">
+                    <div className="chart-header">
+                        <h3>Freight Modal Share</h3>
+                        <div className="commands">
+                            {/* <!--we should have the download buttons like in the compare tab.--> */}
+                        </div>
+                    </div>
+                    <div className="chart-content">
+                        <div>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart width={400} height={300}>
+                                    <Pie
+                                        dataKey="value"
+                                        isAnimationActive={false}
+                                        data={Object.keys(modalShare.freight || {}).map((vtype, index) => ({name: vtype, value: Math.round(modalShare.freight[vtype][0] * 100)}))}
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={80}
+                                        // label={(entry) => entry.name + ": " + entry.value + "%"}
+                                    >
+                                        {Object.keys(modalShare.freight || {}).map((vtype, index) => (<Cell key={index} fill={defaultColors[index]}></Cell>))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </div>
+
             </ProjectStepContainerWrapper>
             
             

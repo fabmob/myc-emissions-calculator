@@ -1,7 +1,6 @@
 import React from 'react'
 import './App.css'
 import Projects from './pages/Projects'
-import CreateProject from './pages/CreateProject'
 import WelcomePage from './pages/WelcomePage'
 import InventoryIntro from './pages/Inventory/InventoryIntro'
 import InventoryStep1 from './pages/Inventory/InventoryStep1'
@@ -38,23 +37,28 @@ import Nav from "./components/Nav"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { ReactKeycloakProvider } from "@react-keycloak/web"
 import keycloak from "./Keycloak"
-import ProjectSummary from './pages/ProjectSummary'
-import ProjectCompare from './pages/ProjectCompare'
+import Project from './pages/Project'
+// import Footer from "./components/Footer"
+
+// adrien test 231021 to reset scroll on every page change
+import ScrollToTop from "./scrollToTop";
+
 
 function App() {
   return (
     <div className="App">
         <ReactKeycloakProvider authClient={keycloak} initOptions={{onLoad: 'check-sso', silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'}}>
             <BrowserRouter>
+              <ScrollToTop />
                 <Nav />
                 <Routes>
                     <Route path="/" element={<WelcomePage />} />
                     <Route path="/Projects" element={<Projects />} />
-                    <Route path="/createProject" element={<CreateProject />} />
-                    {/* config also using createproject page, as a way of editing project info */}
-                    <Route path="/project/:projectId/config" element={<CreateProject />} />
-                    <Route path="/project/:projectId/edit" element={<ProjectSummary />} />
-                    <Route path="/project/:projectId/viz" element={<ProjectCompare />} />
+                    <Route path="/createProject" element={<Project page="config" />} />
+                    {/* config also using project config page, as a way of editing project info */}
+                    <Route path="/project/:projectId/config" element={<Project page="config" />} />
+                    <Route path="/project/:projectId/edit" element={<Project page="edit" />} />
+                    <Route path="/project/:projectId/viz" element={<Project page="viz" />} />
 
                     <Route path="/project/:projectId/Inventory/intro" element={<InventoryIntro />} />
                     <Route path="/project/:projectId/Inventory/step/1" element={<InventoryStep1 />} />
@@ -87,6 +91,7 @@ function App() {
                     <Route path="/project/:projectId/Climate/:climateScenarioId/Without/step/6" element={<ClimateWithoutUpstreamStep6 />} />
                     <Route path="/project/:projectId/Climate/:climateScenarioId/Without/step/7" element={<ClimateWithoutUpstreamStep7 />} />
                 </Routes>
+                {/* <Footer /> */}
             </BrowserRouter>
         </ReactKeycloakProvider>
     </div>

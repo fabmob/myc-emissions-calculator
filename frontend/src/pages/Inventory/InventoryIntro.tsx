@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Table, Container, Row, Col, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Table, Container, Row, Col, Badge } from 'react-bootstrap'
 import { ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import Footer from "../../components/Footer"
 
 
 export default function InventoryIntro(){
@@ -36,114 +37,138 @@ export default function InventoryIntro(){
     }, [keycloak, initialized, projectId, navigate])
     
     return (
+        <>
+        <section>
         <Container>
-            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
-                <Col xs lg="8">
-                    <h1>Inventory / Base Year</h1>
+            <Row className="justify-content-md-center align-items-center">
+                <Col xs lg="7">
+                    <h1>Inventory</h1>
                     <DescAndNav 
-                        prevNav={{link: '/project/' + project.id + '/edit', content: "cancel", variant: "link"}}
-                        nextNav={{link: '/project/' + project.id + '/Inventory/step/1', content: "Start ->", variant: "primary"}}
+                        prevNav={{link: '/project/' + project.id + '/edit', content: "Cancel", variant: "link"}}
+                        nextNav={{link: '/project/' + project.id + '/Inventory/step/1', content: "Start", showArrow: true, variant: "primary"}}
                     >
                         <p>The emission inventory for the transport sector is calculated using the bottom-up approach - based on transport activity. It relies on the ASIF framework, considering Activity, Structure, Intensity and Fuel.</p>
                     </DescAndNav>
-                    <img src='/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
-                    <h3>The calculation of transport related emissions requires information on</h3>
+                    <div className="illustration">
+                        <img src='/pictures/asif-framework-diagram.png' alt="ASIF Framework Diagram" style={{width: '100%'}}></img>
+                    </div>
+
+                    <h3>Required for this calculation</h3>
                     <Table>
+                        <colgroup>
+                            <col className="tablecol6" />{/* Data */}
+                            <col className="tablecolfluid" />{/* Unit */}
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th className="item-sm">Data</th>
-                                <th className="item-sm">Unit</th>
+                                <th><span className="item"><span>Data</span></span></th>
+                                <th><span className="item"><span>Unit</span></span></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">
-                                        <ItemWithOverlay overlayContent="mileage and transport performance for each transport mode">
-                                            🛈 Transport activity
-                                        </ItemWithOverlay>
-                                    </Badge>
+                                    <ItemWithOverlay overlayContent="Mileage and transport performance for each transport mode">
+                                        <Badge className="badge-read-only">
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Transport activity</span></span>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
-                                <td className="item-sm">vkt: vehicle-kilometre and tkm: ton-kilometre</td>
+                                <td>vkt: vehicle-kilometre and tkm: ton-kilometre</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">Share of the transport activity by vehicle category and fuel type</Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Share of the transport activity by vehicle category and fuel type</span></span></Badge>
                                 </td>
-                                <td className="item-sm">%vkt and %tkm</td>
+                                <td>%vkt and %tkm</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">Vehicle fuel consumption according to vehicle category and fuel type</Badge>
+                                    <Badge className="badge-read-only"><span className="item"><span>Vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
                                 </td>
-                                <td className="item-sm">l-kW-kg/100km</td>
+                                <td>l-kW-kg/100km</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">
-                                        <ItemWithOverlay overlayContent="Default values are available in the tool but you can customize them if you have local factors">
-                                            🛈 Emissions factors per fuel
-                                        </ItemWithOverlay>
-                                    </Badge>
+                                    <ItemWithOverlay overlayContent="Default values are available in the tool but you can customize them if you have local factors">
+                                        <Badge className="badge-read-only">
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Emissions factors per fuel</span></span>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
-                                <td className="item-sm">kgC02/TJ</td>
+                                <td>kgC02/TJ</td>
                             </tr>
                         </tbody>
                     </Table>
-                    <h3>The tool will also offer you to add [optional but recommended]</h3>
+                    
+                    <h3>Required for later calculations</h3>
                     <Table>
+                        <colgroup>
+                            <col className="tablecol6" />{/* Data */}
+                            <col className="tablecolfluid" />{/* Unit */}
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th className="item-sm">Data</th>
-                                <th className="item-sm">Unit</th>
+                                <th><span className="item"><span>Data</span></span></th>
+                                <th><span className="item"><span>Unit</span></span></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">
-                                        <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
-                                            🛈 Occupation rate per transport category
-                                        </ItemWithOverlay>
-                                    </Badge>
+                                    <ItemWithOverlay overlayContent="Used to obtain passenger.km (Pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
+                                        <Badge className="badge-read-only">
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Occupation rate per transport category</span></span>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
-                                <td className="item-sm">passengers / load (tons)</td>
+                                <td>passengers / load (tons)</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">
-                                        <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
-                                            🛈 CO2 content of electricity and hydrogen production
-                                        </ItemWithOverlay>
-                                    </Badge>
+                                    <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
+                                        <Badge className="badge-read-only">
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2 content of alt. energy production</span></span>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
-                                <td className="item-sm">gCO2/kWh or gCO2/kg</td>
+                                <td>gCO2/kWh or gCO2/kg</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">
-                                        <ItemWithOverlay overlayContent="Used to compare your results with the “top-down” approach">
-                                            🛈 Energy sales in the territory
-                                        </ItemWithOverlay>
-                                    </Badge>
+                                    <ItemWithOverlay overlayContent="Used to compare your results with the “top-down” approach">
+                                        <Badge className="badge-read-only">
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Energy sales in the territory</span></span>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
-                                <td className="item-sm">TOE: tons of oil equivalent</td>
+                                <td>TOE: tons of oil equivalent</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge bg="disabled">
-                                        <ItemWithOverlay overlayContent="It is not useful for the inventory calculation but we encourage you to collect this data during the SUMP/NUMP diagnostic process, as it will be useful for the Climate Scenario">
-                                            🛈 Trip length per transport category
-                                        </ItemWithOverlay>
-                                    </Badge>
+                                    <ItemWithOverlay overlayContent="It is not useful for the inventory calculation but we encourage you to collect this data during the SUMP/NUMP diagnostic process, as it will be useful for the Climate Scenario">
+                                        <Badge className="badge-read-only">
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Trip length per transport category</span></span>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
-                                <td className="item-sm">km</td>
+                                <td>km</td>
                             </tr>
                         </tbody>
                     </Table>
                 </Col>
             </Row>
         </Container>
-
+        </section>
+        <section className="footer">
+            <Container>
+                <Row className="justify-content-md-center">
+                    <Col lg="7">
+                        <Footer />
+                    </Col>
+                </Row>
+            </Container>
+        </section>
+        </>
     )
 }

@@ -42,7 +42,7 @@ export function inputsAsCsv (project: ProjectType, stage: ProjectStage) : string
         const networks : ("rail"|"road")[] = ["rail", "road"]
         for (let i = 0; i < networks.length; i++) {
             const network = networks[i]
-            const ftypes = Object.keys(inputInventoryStep5.emissions[network].fuels)
+            const ftypes = Object.keys(inputInventoryStep5.emissions?.[network]?.fuels || {})
             for (let j = 0; j < ftypes.length; j++) {
                 const ftype = ftypes[j] as FuelType
                 csv.push(["input", "Inventory", "5", "TopDown Emissions (1000t GHG)", "", ftype, network, inputInventoryStep5.emissions[network].fuels[ftype]!.value, inputInventoryStep5.emissions[network].fuels[ftype]!.source])

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Button, Modal} from 'react-bootstrap'
 import {EmissionsResults, InputInventoryStep7, ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
@@ -106,12 +105,10 @@ export default function ClimateWithUpstreamStep5(){
             <ProjectStepContainerWrapper project={project} stage="Climate" currentStep={stepNumber} climateScenarioId={climateScenarioId} isWithoutUpstream={false}>
                 <h1>Results</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/With/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
-                    <p>
-                        This page displays a short summary of emissions for this climate scenario. More tables and visualisations are available in the Compare section of the project.
-                    </p>
+                    <p>This page displays a short summary of emissions for this climate scenario. More tables and visualisations are available in the Compare section of the project.</p>
                 </DescAndNav>
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
                 <EditEmissionFactors 
@@ -123,7 +120,7 @@ export default function ClimateWithUpstreamStep5(){
                     setInputData={setEmissionFactorsInputData}
                 ></EditEmissionFactors>
                 
-                <h2>Emissions</h2>
+                <h3>Emissions</h3>
                 <EmissionsTable emissionsData={emissions} project={project}></EmissionsTable>
                 <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
                 

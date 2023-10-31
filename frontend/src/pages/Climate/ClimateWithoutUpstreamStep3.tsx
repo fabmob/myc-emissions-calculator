@@ -10,6 +10,7 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function ClimateWithoutUpstreamStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -138,29 +139,31 @@ export default function ClimateWithoutUpstreamStep2(){
                 {error && <Alert variant='danger'>{error}</Alert>}
                 {sourceWarning && <Alert variant='warning'>Warning: At least one source is missing. Please add missing sources below or click the Next button again to ignore this warning.</Alert>}
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
-                    nextNav={{trigger: nextTrigger, content: "Next ->", variant: "primary"}}
+                    prevNav={{link: '/project/' + project.id + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
+                    nextNav={{trigger: nextTrigger, content: "Next", showArrow: true, variant: "primary"}}
                 >
-                    <p>
-                        Please adjust the vehicle load rate if it is expected to be impacted by the planned measures for the corresponding year.
-                    </p>
+                    <p>Please adjust the vehicle load rate if it is expected to be impacted by the planned measures for the corresponding year.</p>
+                    <p>Examples: Decreasing the train ticket price would increase the number of passengers per train or increase in the load of freight trains due to a new software optimising the routing of trains</p>
                 </DescAndNav>
-                <p>
-                    Examples: Decreasing the train ticket price would increase the number of passengers per train or increase in the load of freight trains due to a new software optimising the routing of trains
-                </p>
                 <Tabs
                     defaultActiveKey={project.referenceYears?.[1]}
                     className="mb-3"
                     fill
                 >
-                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}>
+                    {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
+                            <colgroup>
+                                <col className="tablecol4" />{/* Vehicle */}
+                                <col className="tablecol3" />{/* Inv. load */}
+                                <col className="tablecol1" />{/* Source */}
+                                <col className="tablecolfluid" />{/* Load */}
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Transport modes, current and expected">🛈 Vehicle</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Reminder of load values used during inventory">🛈 Inv. load</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Source of load value, click the blue + button to add a source">🛈 Src</ItemWithOverlay></th>
-                                    <th className="item-sm"><ItemWithOverlay overlayContent="Occupancy for passenger vehicles (average number of passengers per vehicle) or load for freight vehicles (average load per vehicle in tons)">🛈 Load (pass. or tons per vehicle)</ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Reminder of load values used during inventory"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Inv. load</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Source of load value, click the blue + button to add a source"><span className="item"><span>Src</span></span></ItemWithOverlay></th>
+                                    <th><ItemWithOverlay overlayContent="Occupancy for passenger vehicles (average number of passengers per vehicle) or load for freight vehicles (average load per vehicle in tons)"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Load (pass. or tons per vehicle)</span></span></ItemWithOverlay></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -171,18 +174,23 @@ export default function ClimateWithoutUpstreamStep2(){
                                     const invLoad = (project.stages.Inventory[0].steps[6] as InputInventoryStep6).vtypes[vtype].value
                                     return (
                                         <tr key={vtype}>
-                                            <td style={{verticalAlign: "top"}}><Badge bg="disabled">{vtype}</Badge></td>
-                                            <td>{invLoad}</td>
+                                            <td style={{verticalAlign: "top"}}><Badge className="badge-read-only"><span className="item"><span>{vtype}</span></span></Badge></td>
+                                            <OutputNumberTd value={invLoad} decimals={1}></OutputNumberTd>
                                             <td>{source
                                             ? <ValidSource source={source} onClick={(e:any) => configureSource(vtype)}/>
-                                            : <Button variant="action" onClick={e => configureSource(vtype)}>+</Button>}</td>
+                                            : <Button size="sm" variant="action" onClick={e => configureSource(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>}</td>
                                             <td>
                                                 <Form.Control value={load} onChange={(e:any) => updateInput(vtype, yearIndex, e.target.value)}></Form.Control>
                                             </td>
                                         </tr>
                                     )
                                 })}
-                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Tab>))}

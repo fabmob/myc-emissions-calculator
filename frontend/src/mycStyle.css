@@ -1,215 +1,1967 @@
-.App {
-  color: rgb(102, 102, 102);
-}
+/* alexs edits */
 
-.btn-primary, .btn-secondary {
-    padding: 8px 14px;
-    font-weight: 700;
-    border-radius: 10px;
-}
-.btn-primary,.btn-primary:active,.btn-primary:focus {
-    background-color: #a2217c;
-    border-color: #a2217c;
-    --bs-btn-active-border-color: #a2217c;
-    --bs-btn-active-bg: #a2217c;
-}
-.btn-primary:focus {
-    box-shadow: 0 0 0 0.25rem   #a2217b6e;
-}
-.btn-primary:hover {
-    background-color: #caa6c0;
-    border-color: #caa6c0;
-    color: #A2217C;
-}
-.btn-secondary,.btn-secondary:active,.btn-secondary:focus {
-    background-color: #CE8DBB;
-    border-color: #CE8DBB;
-
-    --bs-btn-active-border-color: #CE8DBB;
-    --bs-btn-active-bg: #CE8DBB;
-}
-.btn-secondary:hover {
-    background-color: #caa6c0;
-    border-color: #caa6c0;
-    color: #A2217C;
-}
-.btn-sm {
-    padding: 0 0.5rem;
-    font-size: 12px;
-    border-radius: 10px;
-}
-.btn-action {
-    background-color: #2CB1D5;
-    border-color: #2CB1D5;
-    --bs-btn-disabled-bg: #2CB1D5;
-    --bs-btn-disabled-color: white;
-    color: white;
-    font-weight: 700;
-    border-radius: 0.25rem;
-}
-.btn-action:hover {
-    background-color: #AAE0EE;
-    border-color: #AAE0EE;
-    color: #2CB1D5;
-}
-.btn-link {
-    color: #808080;
-    text-decoration: none;
-    font-weight: 500;
-}
-.btn-link:hover {
-    color: #B3B3B3;
-}
-
-h1, h2, h3 {
-    font-family: 'Roboto Mono';
-    font-style: normal;
-    font-weight: 700;
-    color: #292929;
-}  
-body {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 500;
-    background-color: #F5F5F5;    
-}
-b {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 700;
-}
-.item {
-    font-family: 'Roboto Mono';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 25px;
-    color: #B3B3B3;
-}
-.item-sm {
-    font-family: 'Roboto Mono';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 22px;
-    color: #B3B3B3 !important;
-    white-space: nowrap;
-}
-.bg-info {
-    background-color: #EBEBEB !important;
-    color: #292929;
-}
-.badge.bg-info:hover {
-    cursor: pointer;
-    background-color: #0000000d !important;
-}
-.bg-disabled {
-    background-color: #B3B3B3;
-}
-.inputTable thead th {
-    background-color: #9e2886;
-    color: white;
-}
-
-td, tr, th {
-    border-color: #67CAE4;
-}
-table thead tr {
-    border-top: none;
-}
-table tbody tr:last-child {
-    border-bottom: none;
-}
-tbody {
-    border-top: none !important;
-    color: #B3B3B3;
-    --bs-table-color: #B3B3B3;
-    font-weight: 700;
-}
-table tr td:first-child,
-table tr th:first-child {
-    border-left: none;
-}
-table tr td:last-child,
-table tr th:last-child {
-    border-right: none;
-}
-td {
-    vertical-align: middle;
-}
-.cellError {
-    color: #FF5C77 !important;
-}
-input.cellError {
-    background-color: #FF5C771A !important;
-}
-.infoTooltip, .errorTooltip {
-    /* Prevents the tooltip from messing with the page when it's created */
-    top:0;
-    left:0;
-}
-.infoTooltip.show, .errorTooltip.show {
-    opacity: 1 !important;
-    
-}
-.tooltip-inner {
-    padding: 20px;
-    text-align: left;
-    font-weight: 500;
-    max-width: 350px;
-}
-.errorTooltip .tooltip-inner {
-    background-color: #ffedf0;
-    color: #FF5C77;
-}
-.errorTooltip .tooltip-arrow::before {
-    border-bottom-color: #ffedf0;
-}
-.infoTooltip .tooltip-inner {
-    background-color: white;
-    color: #292929;
-}
-.infoTooltip .tooltip-arrow::before {
-    border-top-color: white;
-}
-.stepLeft {
-    background-color: rgb(237, 249, 253);
-}
-.stepLeft, .stepRight {
-    padding-top: 20px;
-}
-@media only screen and (min-width: 1400px)  {
-    .stepLeft, .stepRight {
-        padding: 20px;
+    b {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 700;
     }
+
+
+
+    /* table */
+        .inputTable thead th {
+            background-color: #9e2886;
+            color: white;
+        }
+        table thead tr {
+            border-top: none;
+        }
+        table tbody tr:last-child,
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        tbody {
+            border-top: none !important;
+            /* color: #B3B3B3;
+            --bs-table-color: #B3B3B3; */
+            /* font-weight: 700; */
+        }
+        table tr td:first-child,
+        table tr th:first-child {
+            border-left: none;
+        }
+        table tr td:last-child,
+        table tr th:last-child {
+            border-right: none;
+        }
+        td {
+            vertical-align: middle;
+        }
+        .cellError {
+            color: #FF5C77 !important;
+        }
+        input.cellError {
+            background-color: #FF5C771A !important;
+        }
+        .table {
+            --bs-table-bg: transparent;
+        }
+    
+    /* tooltip */
+        .tooltip-button {
+            /* background: var(--c-edition-t0) !important; */
+        }
+        .infoTooltip, .errorTooltip {
+            /* Prevents the tooltip from messing with the page when it's created */
+            top:0;
+            left:0;
+        }
+        .errorTooltip .tooltip-inner {
+            background-color: #ffedf0;
+            color: #FF5C77;
+        }
+        .errorTooltip .tooltip-arrow::before {
+            border-bottom-color: #ffedf0;
+        }
+        .infoTooltip .tooltip-inner {
+            background-color: white;
+            color: #292929;
+        }
+        .infoTooltip .tooltip-arrow::before {
+            border-top-color: white;
+        }
+
+    /* fonts */
+        @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Thin.otf") format("opentype");
+            font-weight: 100;
+        } @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Light.otf") format("opentype");
+            font-weight: 300;
+        } @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Regular.otf") format("opentype");
+            font-weight: normal;
+        } @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Bold.otf") format("opentype");
+            font-weight: bold;
+        } @font-face {
+            font-family: "Gravur Condensed";
+            src: url("/public/fonts/GravurCondensed/GravurCondensed-Black.otf") format("opentype");
+            font-weight: 900;
+        }
+
+    /* output number */
+        .outputNumber {
+            /* text-align: right; */ /* finalement je pense que c'est moins pire à gauche 230924-192644 */
+            .regular {
+                display: block
+            }
+            .hover {
+                display: none;
+            }
+        }
+        .outputNumber:hover,
+        .outputNumber:focus,
+        .outputNumber:active {
+            .regular {
+                display: none
+            }
+            .hover {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+    /* no need */
+        /* .stepLeft {
+            background-color: rgb(237, 249, 253);
+        } */
+        /* .stepLeft, .stepRight {
+            padding-top: 20px;
+        } */
+        /* @media only screen and (min-width: 1400px)  {
+            .stepLeft, .stepRight {
+                padding: 20px;
+            }
+        } */
+        /* .btn-imglink {
+            padding-left: 0;
+        }
+        .btn-imglink:hover {
+            opacity: 0.6;
+        }
+        .btn-group-lg .btn {
+            border-radius: 10px;
+        } */
+        /* .App {
+            color: rgb(102, 102, 102);
+        } */
+        /* h1, h2, h3 {
+            font-family: 'Roboto Mono';
+            font-style: normal;
+            font-weight: 700;
+            color: #292929;
+        }   */
+        /* body {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 500;
+            background-color: #F5F5F5; 
+        } */
+
+
+
+
+
+
+
+
+
+/* adriens edits */
+
+/* variables ————————————————————— */
+
+    :root {
+        /* spacing */
+            --spacing-xxs: 0.8rem;
+            --spacing-xs: 1.2rem;
+            --spacing-s: 1.8rem;
+            --spacing-m: 2.4rem;
+            --spacing-l: 3.6rem;
+            --spacing-xl: 5.6rem;
+            --spacing-xxl: 7.2rem;
+            /* section paddings */
+                --section-padding-l-top: 10rem;
+                --section-padding-l-right: 10rem;
+                --section-padding-l-bottom: 14rem;
+                --section-padding-l-left: 10rem;
+                --section-padding-s-top: 6rem;
+                --section-padding-s-right: 1.4rem;
+                --section-padding-s-bottom: 6rem;
+                --section-padding-s-left: 1.4rem;
+        /* colors */
+            /*grey (luminance variations)*/
+            --c-h0-s0-l0: #000000;
+            --c-h0-s0-l1: #292929;
+            --c-h0-s0-l2: #808080;
+            --c-h0-s0-l3: #B3B3B3;
+            --c-h0-s0-l4: #E6E6E6;
+            --c-h0-s0-l5: #F5F5F5;
+            --c-h0-s0-l6: #FFFFFF;
+            /*cyan (luminance variations)*/
+            --c-h1-s0-l2: #2CB1D5;
+            --c-h1-s0-l3: #67CAE4;
+            --c-h1-s0-l4: #C5E8F2;
+            --c-h1-s0-l5: #EDF9FD;
+            /*magenta (luminance variations)*/
+            --c-h2-s0_l2: #A2217C;
+            --c-h2-s0_l3: #CE8DBB;
+            --c-h2-s0_l4: #EBD1E1;
+            /*orange (transparency variations)*/
+            --c-h3-s0-l0-t0: #FF6747;
+            --c-h3-s0-l0-t1: hsla(10,100%,64%,60%);
+            --c-h3-s0-l0-t2: hsla(10,100%,64%,10%);
+            /*red (transparency variations)*/
+            --c-h4-s0-l0-t0: #FF5C77;
+            --c-h4-s0-l0-t1: hsla(350,100%,68%,60%);
+            --c-h4-s0-l0-t2: hsla(350,100%,68%,10%);
+            /*green (transparency variations)*/
+            --c-h5-s0-l0-t0: #44AF69;
+            --c-h5-s0-l0-t1: hsla(141,44%,48%,60%);
+            --c-h5-s0-l0-t2: hsla(141,44%,48%,10%);
+            /*edition (transparency variations)*/
+            --c-edition-t0: #9747FF;
+            --c-edition-t1: hsla(266,100%,64%,60%);
+            --c-edition-t2: hsla(266,100%,64%,10%);
+        /* fonts */
+            /*for headings and body copy*/
+            --t-lh-main: 140%;
+            /*for headings*/
+            --t-ff-h: "Gravur Condensed";
+            --t-fw-h: 1000;
+            --t-fs-h1: 4.8rem; /*big*/
+            --t-lh-h1: 110%;
+            --t-fs-h2: 3.6rem; /*medium*/
+            --t-lh-h2: 110%;
+            --t-fs-h3: 2.4rem; /*small*/
+            --t-lh-h3: 110%;
+            /*for body copy*/
+            --t-ff-p-mono: "Roboto Mono";
+            --t-fw-p-mono: medium;
+            --t-fw-p-mono-bold: bold;
+            --t-ff-p-regular: "Roboto";
+            --t-fw-p-regular: 500;
+            --t-fw-p-regular-bold: 700;
+            --t-fs-p1: 2.4rem; /*big*/
+            --t-lh-p1: var(--t-lh-main);
+            --t-fs-p2: 1.8rem; /*medium*/
+            --t-lh-p2: var(--t-lh-main);
+            --t-fs-p3: 1.2rem; /*small*/
+            --t-lh-p3: 180%;
+        /* tables */
+            --table-border-color: var(--c-h1-s0-l4);
+            --table-cell-padding: 0.6rem;
+            --table-cell-height: 3.7rem;
+        /* breakpoints */
+            --breakpoint-m: 768px;
+        
+    }
+
+
+
+
+/* html ————————————————————— */
+   
+
+    html {
+        /* management of ALL dimensions */
+        /* setting 1rem to 10px. */
+        /* all dimensions should now be set in rem. */
+        /* this value can be used as a global zoom level. */
+        /* it is handy to play with to achieve responsiveness. */
+            font-size: 10px;
+        /* no anim when scrolling to top between pages */
+            scroll-behavior: auto !important;
+        }
+    @media (max-width: 768px) {
+        html {
+            font-size: 8.5px;
+        }
+    }
+
+
+
+/* page sections, rows, columns ————————————————————— */
+
+    /* this is what the markup structure should be like in ALL cases : */
+    /* ~/body
+            /.App [= the page]
+                /section [= a vertical section of the page]
+                    /.container [= a bootstrap container containing the content of the section]
+                        /.row [= a bootsrap row]
+                            /.col [= a bootstrap column]
+                                /* [= any piece of content] */
+
+    /* sections */
+        /* size and pad sections */
+        div.App header {
+            padding: 0 0 0 0;
+        }
+        div.App section {
+            width: 100%;
+            padding: 
+                var(--section-padding-l-top) 
+                var(--section-padding-l-right)
+                var(--section-padding-l-bottom)
+                var(--section-padding-l-left);
+        }
+        div.App section.footer {
+            width: 100%;
+            padding: 
+                var(--section-padding-l-top) 
+                var(--section-padding-l-right)
+                var(--section-padding-l-bottom)
+                var(--section-padding-l-left);
+        }
+
+        @media (max-width: 768px) {
+            div.App header {
+                padding: 0 1.4rem 0 1.4rem;
+                padding: 
+                    0 
+                    var(--section-padding-s-right)
+                    0
+                    var(--section-padding-s-left);
+            }
+            div.App section {
+                --reduction-factor: 1/4;
+                width: 100%;
+                padding: 
+                    var(--section-padding-s-top) 
+                    var(--section-padding-s-right)
+                    var(--section-padding-s-bottom)
+                    var(--section-padding-s-left);
+            }
+            div.App section.footer {
+                padding: 
+                    var(--section-padding-s-top) 
+                    var(--section-padding-s-right)
+                    var(--section-padding-s-bottom)
+                    var(--section-padding-s-left);
+            }
+        }
+        
+
+    /* columns */
+        .container, 
+        .row { /* for some reason these variables are set for these elements and not :root by bootstrap */
+            /* edit gap between columns */
+            --bs-gutter-x: 4.2rem;
+            /* edit gap between rows */
+            --bs-gutter-y: 6.4rem; /* vertical distance between two columns when they stack up */
+            /* box-shadow: 0 0 0 1rem hsla(40,100%,50%,100%); */
+        }
+        .row > .col,
+        .row > [class^=col-], 
+        .row > [class*= col-] {
+            /* background: var(--c-edition-t2); */
+        }
+
+            /* exceptions */
+                .row > .col > *:not(button),
+                .row > [class^=col-] > *:not(button),
+                .row > [class*= col-] > *:not(button) {
+                    /* background: var(--c-edition-t2); */
+                }
+                .row > .col > *:not(:last-child),
+                .row > [class^=col-] > *:not(:last-child),
+                .row > [class*= col-] > *:not(:last-child) {
+                    margin-bottom: var(--spacing-m) !important;
+                }
+        
+        
+        /*set medium column width to 600px*/
+            /* @media (min-width: 1200px) {
+                .col-xl-8 {
+                    flex: 0 0 auto;
+                    width: calc(60rem + var(--bs-gutter-x));
+                }
+            } */
+            /* @media (min-width: 992px) {
+                .col-lg-8 {
+                    flex: 0 0 auto;
+                    width: calc(60rem + var(--bs-gutter-x));
+                }
+            } */
+
+
+/* page header ————————————————————— */
+
+header {
+    background-color: var(--c-h0-s0-l5);
 }
 
-.btn-imglink {
-    padding-left: 0;
+nav.navbar {
+    --bs-nav-link-padding-y: 0.5rem; /* bs default value */
+    --bs-navbar-nav-link-padding-x: 0.8rem;   
+    --bs-navbar-hover-color: var(--c-h0-s0-l1);
+    --bs-navbar-brand-hover-color: var(--bs-navbar-brand-hover-color);
+    height: 6.4rem;
+    padding: 1.45rem 0; /* to prevent it from going up when the toggler is triggered */
 }
-.btn-imglink:hover {
-    opacity: 0.6;
-}
-.btn-group-lg .btn {
-    border-radius: 10px;
+/* links */
+    nav.navbar a,
+    nav.navbar button {
+        font-size: var(--t-fs-p2);
+        font-weight: var(--t-fw-p-regular);
+        color: var(--c-h0-s0-l3);
+    }
+    .navbar-nav .nav-link.active, 
+    .navbar-nav .nav-link.show {
+        color: var(--bs-navbar-hover-color);
+    }
+    nav.navbar a.navbar-brand,
+    nav.navbar .nav-link,
+    nav.navbar #github-link {
+        padding: 
+            var(--bs-nav-link-padding-y) 
+            var(--bs-navbar-nav-link-padding-x) 
+            var(--bs-nav-link-padding-y)
+            var(--bs-navbar-nav-link-padding-x);
+    }
+    nav.navbar a.navbar-brand,
+    nav.navbar #basic-navbar-nav {
+        margin: 0 calc(-1 * var(--bs-navbar-nav-link-padding-x));
+    }
+/* github-link */
+    nav.navbar span.github-link-container a#github-link {
+        display: inline-block;
+        width: 4rem;
+        height: auto;
+    }
+    nav.navbar span.github-link-container a#github-link:hover,
+    nav.navbar span.github-link-container a#github-link:focus {
+        /* mimic .nav-link behavior */
+            color: var(--bs-navbar-hover-color);
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+    }
+    nav.navbar span.github-link-container a#github-link > svg {
+        width: 100%;
+        fill: currentColor;
+    }
+    /* hide on small screens */
+    @media(max-width:768px) {
+        nav.navbar span.github-link-container {
+            display: none;
+        }
+    }
+/* dropdown menu */
+    .dropdown-menu {
+        --bs-dropdown-spacer: 1rem;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        margin: 0;
+        line-height: 0;
+    }
+    .dropdown-menu .dropdown-item {
+        line-height: 100%;
+        /* transition : same as nav-link */
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+            transition-duration: 0.15s, 0.15s, 0.15s;
+            transition-timing-function: ease-in-out, ease-in-out, ease-in-out;
+            transition-delay: 0s, 0s, 0s;
+    }
+    .dropdown-menu .dropdown-item:hover,
+    .dropdown-menu .dropdown-item:focus,
+    .dropdown-menu .dropdown-item:active {
+        background-color: unset;
+    }
+    .dropdown-toggle::after {
+        display: none;
+    }
+    form .dropdown-item {
+        font-size: 18px;
+    }
+/* navbar toggler */
+    .navbar-toggler,
+    .navbar-toggler:hover,
+    .navbar-toggler:focus,
+    .navbar-toggler:active {
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none;
+    }
+    .navbar-toggler .navbar-toggler-icon {
+        background-image: url(/public/navbar-toggler-icon.svg);
+    }
+    .navbar-toggler:hover .navbar-toggler-icon,
+    .navbar-toggler:focus .navbar-toggler-icon,
+    .navbar-toggler:active .navbar-toggler-icon {
+        background-image: url(/public/navbar-toggler-icon.svg);
+        outline: 3px solid hsla(0,0%,50%,0.3);
+        outline-offset: 3px;
+        border-radius: 3px;
+    }
+
+
+/* page footer */
+
+/* on most pages, the footer is a section element (the last of the page).
+   on calculation steps, it is a div element (within the right hand side column). */
+
+    div.projectStepContainer .stepRight .footer {
+        margin-top: 12.8rem;
+    }
+
+/* logos of partners ————————————————————— */
+    :root {
+        --logo-common-scale-base: 1rem;
+        /* --logo-common-scale-factor: 1; */ /* ISO with proto */
+        --logo-common-scale-factor: 1.5; /* adjusted while working */
+    }
+    .partnerLine {
+        display: flex;
+        flex-flow: row wrap;
+        /* gap: 3rem 3.7rem; */ /* ISO with proto */
+        gap: 3rem 7rem; /* adjusted while working */
+        align-items: center;
+        width: 100%;
+        margin:  0 auto 9.2rem auto;
+    }
+    .partnerLine .group {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 3rem 7rem;
+        align-items: center;
+    }
+    .partnerLine .group .img-wrapper {
+        height: 7rem;
+        display: flex;
+        align-items: center;
+    }
+    .partnerLine img {
+        height: fit-content;
+    }
+    .partnerLine img.logo-ADB       { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-ADEME     { width: calc( var(--logo-common-scale-base) * 4.2 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-AFD       { width: calc( var(--logo-common-scale-base) * 6.0 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-Cerema    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-Codatu    { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-DTFA      { width: calc( var(--logo-common-scale-base) * 7.6 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-EB        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-ECF       { width: calc( var(--logo-common-scale-base) * 4.6 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-EU        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-Euroclima { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-FFEM      { width: calc( var(--logo-common-scale-base) * 3.8 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-FMECD     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-FMENCNSCP { width: calc( var(--logo-common-scale-base) * 10.1 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-GIZ       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-GPIT      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-ITDP      { width: calc( var(--logo-common-scale-base) * 4.3 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-KFW       { width: calc( var(--logo-common-scale-base) * 2.9 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-MP        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-MTE       { width: calc( var(--logo-common-scale-base) * 5.9 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-Platforma { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-SMFA      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-SSATP     { width: calc( var(--logo-common-scale-base) * 4.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-TRUFI     { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-TUMI      { width: calc( var(--logo-common-scale-base) * 5.1 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-UCLG      { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-UNH       { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+    .partnerLine img.logo-WI        { width: calc( var(--logo-common-scale-base) * 6.4 * var(--logo-common-scale-factor)) }
+
+
+
+
+/* colors ————————————————————— */
+
+    /*text colors*/
+    html, 
+    body {
+        color: var(--c-h0-s0-l1);
+    }
+    body {
+        background: var(--c-h0-s0-l5);
+    }
+    h1,h2,h3,
+    p,span,text {
+        color: inherit;
+    }
+    h1,h2,h3 {
+        color: var(--c-h0-s0-l1);
+    }
+    body {
+        background-color: unset;
+    }
+    .reqStar:after {
+        content: "*";
+        color: var(--c-h4-s0-l0-t0);
+    }
+
+
+
+
+/* fonts ————————————————————— */
+
+    /* prevent bootstrap to set fontsizes that i don't want */
+        p,span,text {
+            font-size: inherit;
+        }
+
+    /* paragraph spacing */
+        p:not(:last-of-type), text:not(:last-of-type) {
+            margin-bottom: 0.8em;
+        }
+        p:last-of-type, text:last-of-type {
+            margin-bottom: 0;
+    }
+
+    /* 1. headings */
+        h1, h2, h3 {
+            font-family: var(--t-ff-h);
+            font-weight: var(--t-fw-h);
+            line-height: var(--t-lh-main);
+            margin: 0.33em 0 0.67em 0;
+        }
+        h1 {font-size: var(--t-fs-h1); line-height: var(--t-lh-h1);} 
+        h2 {font-size: var(--t-fs-h2); line-height: var(--t-lh-h2);} 
+        h3 {font-size: var(--t-fs-h3); line-height: var(--t-lh-h3);}
+        h4, h5, h6 {
+            /*these are not supposed to exist*/
+            font-family: "Times New Roman";
+            color: red;
+        }
+
+    /* 2. body copy */
+        /* 2.1. body copy styles */
+            /* body copy style:  all */
+                .p-reg,
+                .p-mono,
+                body {
+                    line-height: var(--t-lh-main);    
+                }
+            /* body copy style: regular */
+                .p-reg,
+                body {
+                    font-family: var(--t-ff-p-regular);
+                    font-weight: var(--t-fw-p-regular);
+                }
+            /* body copy style: regular bold */
+                .p-reg-bold {
+                    font-family: var(--t-ff-p-regular);
+                    font-weight: var(--t-fw-p-regular-bold);
+                }
+            /* body copy style: mono */
+                .p-mono,
+                .card-body > span {
+                    font-family: var(--t-ff-p-mono);
+                    font-weight: var(--t-fw-p-mono);
+                }
+            /* body copy style: mono bold */
+                .p-mono-bold,
+                form label.form-label,
+                form label.form-label span,
+                .badge {
+                    font-family: var(--t-ff-p-mono);
+                    font-weight: var(--t-fw-p-mono-bold);
+                }
+        /* 2.2. body copy sizes */
+            /* body copy large */
+                .p1 {
+                    font-size: var(--t-fs-p1);}
+            /* body copy medium */
+                .p2,
+                body {
+                    font-size: var(--t-fs-p2);}
+            /* body copy small */
+                .p3,
+                form label.form-label,
+                form label.form-label span, 
+                .badge {
+                    font-size: var(--t-fs-p3);
+                    line-height: var(--t-lh-p3);}
+
+
+
+
+
+/* buttons ————————————————————— */
+
+    .btn, 
+    [class^=btn-] {
+        /* --bs-btn-font-size: unset; */
+        font-family: var(--t-ff-p-regular);
+        font-weight: var(--t-fw-p-regular-bold);
+        font-size: var(--t-fs-p3);
+        padding: 0.8rem 1.4rem;
+        border: none;
+        border-radius: 1rem;
+        transition: none;
+        /* the following is useful since we spanned all "item" elements */
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: center;
+        
+    }
+
+    :focus-visible {
+        background: hsla(0,0%,50%,0.2) !important;
+        /* outline: .4rem solid hsla(0,0%,50%,0.2) !important;
+        outline-offset: 0rem; */
+        outline: none !important;
+        box-shadow: none !important;
+        transition: none;
+    }
+
+    .btn-sm {
+        font-family: var(--t-ff-p-mono);
+        font-weight: var(--t-fw-p-mono-bold);
+    }
+    .btn-lg {
+        font-size: var(--t-fs-p2);
+        padding: 1rem 1.6rem;
+        border: none;
+    }
+    /* links */
+        a, 
+        link, 
+        .btn-link {
+            display: inline-block;
+            font-family: var(--t-ff-p-regular);
+            font-weight: var(--t-fw-p-regular);
+            padding: 0;
+            border-radius: 0;
+            text-decoration: none;
+        }
+        /* if within text and a button, space it out */
+            .text .btn-link:not(:first-child),
+            p .btn-link:not(:first-child) {
+                margin: 0 0.4em;
+            }
+        /* if within text, underline it */
+            .text a, 
+            .text link, 
+            .text .btn-link,
+            p a, 
+            p link, 
+            p .btn-link {
+                text-decoration: underline;
+                text-underline-offset: 0.2em;
+            }
+        /* if within text, make it the size of the text */
+            .text a, 
+            .text link, 
+            .text .btn-link,
+            p a, 
+            p link, 
+            p .btn-link {
+                font-size: inherit;
+                color: var(--c-h0-s0-l3);
+                vertical-align: baseline;
+                line-height: inherit;
+                
+            }
+        /* button colors : link */
+            a, 
+            link, 
+            .btn-link,
+            a:hover, 
+            link:hover, 
+            .btn-link:hover,
+            a:focus, 
+            link:focus, 
+            .btn-link:focus,
+            a:active, 
+            link:active, 
+            .btn-link:active {
+                color: var(--c-h0-s0-l2);
+                text-decoration-color: var(--c-h0-s0-l3);
+            }
+            /* btn link active state */
+                .btn-link.btn-check:checked+.btn, 
+                .btn-link.btn.active, 
+                .btn-link.btn.show, 
+                .btn-link.btn:first-child:active, 
+                :not(.btn-check)+.btn-link.btn:active {
+                    color: var(--c-h0-s0-l2);
+                    background-color: none;
+                    border-color: none;
+                }
     
+    /* button colors */
+        /* button colors : primary */
+            .btn-primary,
+            .btn-primary:active,
+            .btn-primary:focus {
+                /* color: var(--c-h0-s0-l6); */
+                background-color: var(--c-h2-s0_l2);
+                --bs-btn-active-bg: var(--c-h2-s0_l2);
+            }
+            .btn-primary:focus {
+                box-shadow: none;
+            }
+            .btn-primary:hover {
+                color: var(--c-h2-s0_l2);
+                background-color: var(--c-h2-s0_l3);
+            }
+        /* button colors : secondary */
+            .btn-secondary,
+            .btn-secondary:active,
+            .btn-secondary:focus {
+                /* color: var(--c-h0-s0-l6); */
+                background-color: var(--c-h2-s0_l3);
+                border-color: var(--c-h2-s0_l3);
+                --bs-btn-active-bg: var(--c-h2-s0_l3);
+            }
+            .btn-secondary:hover {
+                color: var(--c-h2-s0_l2);
+                background-color: var(--c-h2-s0_l3);
+            }
+        /* button colors : various */
+            .btn-action {
+                background-color: var(--c-h1-s0-l2);
+                color: var(--c-h0-s0-l6);
+                --bs-btn-disabled-bg: var(--c-h0-s0-l4);
+                --bs-btn-disabled-color: var(--c-h0-s0-l3);
+            }
+            .btn-action:hover {
+                background-color: var(--c-h1-s0-l3);
+                color: var(--c-h1-s0-l2);
+            }
+            .bg-success {
+                background-color: var(--c-h5-s0-l0-t0) !important;
+            }
+            .btn-success {
+                --bs-btn-color: var(--c-h0-s0-l6);
+                --bs-btn-bg: var(--c-h5-s0-l0-t0);
+                --bs-btn-hover-color: var(--c-h0-s0-l6);
+                --bs-btn-hover-bg: var(--c-h5-s0-l0-t1);
+                /* --bs-btn-focus-shadow-rgb: 60,153,110; */
+                --bs-btn-active-color: var(--c-h0-s0-l6);
+                --bs-btn-active-bg: var(--c-h5-s0-l0-t1);
+                --bs-btn-active-shadow: none;
+            }
+            .btn-danger {
+                background-color: var(--c-h4-s0-l0-t0) !important;
+            }
+            .btn.disabled,
+            .btn:disabled, 
+            fieldset:disabled .btn {
+                color: var(--c-h0-s0-l3);
+                background-color: var(--c-h0-s0-l4);
+                border-color: var(--c-h0-s0-l4);
+                opacity: 1;
+                pointer-events: none;
+            }
+
+    
+    /* badges and small buttons ————————————————————— */
+
+        .badge, .btn-sm {
+            padding: 0 0.6rem;
+            /* padding: 0rem; */
+            /* min-width: 2.2rem; */
+            height: 2.2rem;
+            display: inline-flex;
+            align-items: center;
+            line-height: 100%;
+            border-radius: 0.6rem !important;
+            font-size: var(--t-fs-p3);
+            user-select: none;
+            text-align: initial;
+            vertical-align: text-top;
+        }
+        .badge > svg.icon:first-child {
+            margin-left: -0.4rem;
+        }
+        .badge > svg.icon:last-child {
+            margin-right: -0.4rem;
+        }
+        /*default colors*/
+        .badge-default {
+            background-color: var(--c-h0-s0-l4) !important;
+            color: var(--c-h0-s0-l1);
+            cursor: pointer;
+        }
+        .badge-default:hover,
+        .badge-default:focus,
+        .badge-default:active {
+            background-color: var(--c-h0-s0-l5) !important;
+        }
+        .badge-read-only {
+            color: var(--c-h0-s0-l6);
+            background-color: var(--c-h0-s0-l3) !important; 
+            cursor: default;
+            /*forced to use "!important" as it is used in the overritten rule*/
+        }
+
+
+
+
+
+
+/* form, form fields (like in /project/config-tab) ————————————————————— */
+
+    .form-control {
+        /* width: 100%; */
+        padding:  var(--table-cell-padding);
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        color: inherit;
+        background-color: unset;
+        border-radius: 0;
+        border-color: var(--table-border-color);
+    }
+    form label.form-label,
+    form label.form-label span {
+        color: var(--c-h0-s0-l3);
+    }
+    input, textarea,
+    .proj-year-options {
+        /* background-color: unset !important; */
+        transition: none !important;
+        border: none !important;
+        border-radius: 0;
+        box-shadow: 
+            0 calc(var(--bs-border-width) * -1/2) 0 var(--table-border-color),
+            inset 0 calc(var(--bs-border-width) * 1/2) 0 var(--table-border-color);
+    }
+    input[type^='radio'],
+    input[type^='checkbox'] {
+        box-shadow: 
+            inset 0 0 0 calc(var(--bs-border-width) * 1/2) var(--table-border-color),
+            0 0 0 calc(var(--bs-border-width) * 1/2) var(--table-border-color);
+    }
+    .form-check-input:checked {
+        background-color: var(--c-h1-s0-l3);
+    }
+
+    /* make outline larger when in focus */
+        input:focus, textarea:focus {
+            box-shadow: 
+                inset 0 0 0 calc(var(--bs-border-width) * 4/2) var(--c-h1-s0-l3),
+                0 0 0 calc(var(--bs-border-width) * 4/2) var(--c-h1-s0-l3) !important;
+            /* background: unset !important; */
+            outline: none !important;
+        }
+    /* some input fields are doubled. the clone needs to be put in the bg */
+        input.rbt-input-hint {
+            z-index: -1;
+        }
+    /* deal with inputs inside tables */
+        table td input, 
+        table td textarea {
+            box-shadow: 
+                inset 0 0 0 calc(var(--bs-border-width) * 4/2) transparent,
+                0 0 0 calc(var(--bs-border-width) * 4/2) transparent !important;
+        }
+    /* on the config tab */
+        /* respace sections of the form */
+        .col > form > *:not(:last-child) {
+            margin-bottom: var(--spacing-m) !important;
+        }
+
+
+
+
+/* tables ————————————————————— */
+
+    table.table {
+        border-collapse: collapse; 
+        border-spacing: 0; /* ← this is cellspacing */
+        /* overflow: hidden; */
+        table-layout: fixed;
+        /* the following is to switch to an auto col width layout : */
+            /* width: 100%;
+            table-layout: fixed; */
+    }
+
+    table.table tr,
+    table.table tr th, td { 
+        /* reset padding */
+            margin: 0 !important;
+            padding: 0 !important;
+            border-color: var(--table-border-color);
+        /* show overflow */
+            /* overflow: hidden !important; */
+    }
+    table.table tr th > :not(input),
+    table.table tr td > :not(input) { 
+        /* hide overflow */
+            /* overflow: hidden !important; */
+    }
+    table.table tr td {
+        line-height: 0;
+        /* line-height: 26px; */ /* alexs edit 230921-141931 */
+        font-size: var(--t-fs-p2);
+    }
+    table.table tr td > * {
+        line-height: 100%;
+    }
+
+    /* table header cells */
+        table.table thead tr th {
+            border-right: 0;
+            border-left: 0;
+
+            cursor: pointer;
+        }
+        /* change bg on hover */
+            table.table thead tr th:hover,
+            table.table thead tr th:focus,
+            table.table thead tr th:active {
+                background: var(--c-h0-s0-l5);
+            }
+        /* give the text an overflow ellipsis */ 
+            table.table th .item {
+                max-width: 100%;
+            }
+            table.table th .item > span {
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        /* lets temporarily hide the info icons */
+        table.table th .item > .icon {
+            display: none;
+        }
+
+
+    /* table/cell */
+        table.table tr td,
+        table.table tr th {
+            /* min-width: calc(var(--table-cell-height) * 1); /* temporary fix for modulo cell sizing */
+            /* max-width: calc(var(--table-cell-height) * 4); /* temporary fix for modulo cell sizing */
+            height: var(--table-cell-height) !important; /* temporary fix for modulo cell sizing */
+            padding: var(--table-cell-padding) !important;
+            font-family: var(--t-ff-p-mono);
+            font-weight: var(--t-fw-p-mono-bold);
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: middle;
+            color: var(--c-h0-s0-l3);
+            /* background-color: pink; */
+            vertical-align: text-top;
+        }
+        table.table tr th {
+            font-size: var(--t-fs-p3);
+        }
+        /* table/cell/diagonal bar */
+            .tdDiagonalBar {
+                width: 100%;
+                height: 100%;
+            }
+            svg.diagonalBar {
+                position: absolute;
+                width: calc(100%);
+                height: calc(100%);
+                margin: calc(-1 * var(--table-cell-padding));
+            }
+            svg.diagonalBar line {
+                stroke: var(--table-border-color);
+                stroke-width: 2.375%;
+            }
+
+        /* table/cell/form field */
+            table.table td .form-control {
+                color: var(--c-h0-s0-l1);
+                width: calc(100% + 2 * var(--table-cell-padding));
+                height: calc(100% + 2 * var(--table-cell-padding));
+                margin: calc(-1 * var(--table-cell-padding));
+                border: var(--bs-border-width) solid transparent;
+            }
+
+        /* table/cell/button */
+            table.table td button {
+                border-radius: 0.6rem;
+            }
+
+        /* table/cell/badge and table/cell/button */
+            table.table td .badge:not(:last-child),
+            table.table td button:not(:last-child) {
+                margin-right: var(--spacing-xxs);
+            }
+            
+        /* table/cell/multiple badges */
+            table.table .hstack {
+                gap: 0rem !important; /* managing this with badge margins instead */ 
+            }
+    .tablecolfluid {
+        width: 100%;
+    }
+    .tablecol1 {
+        width: calc(var(--table-cell-height) * 1);
+    }
+    .tablecol2 {
+        width: calc(var(--table-cell-height) * 2);
+    }
+    .tablecol3 {
+        width: calc(var(--table-cell-height) * 3);
+    }
+    .tablecol4 {
+        width: calc(var(--table-cell-height) * 4);
+    }
+    .tablecol5 {
+        width: calc(var(--table-cell-height) * 5);
+    }
+    .tablecol6 {
+        width: calc(var(--table-cell-height) * 6);
+    }
+    .tablecol7 {
+        width: calc(var(--table-cell-height) * 7);
+    }
+
+
+/* "item" elements —————————————————————*/
+
+.item {
+    /* background: var(--c-edition-t2); */
+    font-size: inherit;
+    line-height: inherit; /* not sure */
+    color: inherit;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 0.6em;
+    justify-content: center;
+    width: fit-content;
 }
-.card {
-    background-color: #E6E6E6;
-    border-radius: 24px;
-    border: none;
-    padding: 30px 36px;
-}
-.card-header {
-    border: none;
-    background-color: inherit;
-}
-.card-header:first-child {
-    border-radius: 24px;
-}
-.card-header h2{
-    font-size: 24px;
-}
-.table {
-    --bs-table-bg: transparent;
-}
+
+
+
+
+/* icons ————————————————————— */
+
+    .icon {
+        fill: none; 
+        stroke: currentColor; 
+        stroke-linecap: square;
+    }
+    /* WORKING HERE 230901-175815 */
+    /* trying to fix the spacing around icons / the size of a mono-icon badge */
+    /* what has been tried (negative icon margin) is not satisfying as icons become offset in other contexts. */
+    .icon-size-s {
+        stroke-width: calc(1.375rem * 0.14);
+        height: 1.55rem;
+        width: 1.55rem;
+        margin: -0.3rem;
+    }
+    .icon-size-m {
+        stroke-width: calc(2.25rem * 0.1);
+        height: 2.2rem;
+        width: 2.2rem;
+        margin: -0.4rem;
+    }
+    .icon-size-l {
+        stroke-width: calc(3rem * 0.1);
+        height: 2.56rem;
+        width: 2.56rem;
+        margin: -0.48rem;
+    }
+
+
+
+
+
+
+/* cards ————————————————————— */
+
+    .card {
+        background-color: var(--c-h0-s0-l4);
+        border-radius: 2.4rem;
+        border: none;
+        padding: 3rem 3.6rem 3.6rem 3.6rem;
+    }
+    .card-header,
+    .card-body {
+        padding: 0;
+    }
+    .card > *:not(:last-child),
+    .card-body > *:not(:last-child) {
+        margin-bottom: 1.4rem;
+    }
+    
+    /* card header */
+        .card-header {
+            background-color: unset;
+            border-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row nowrap;
+        }
+        .card-header .title,
+        .card-header .nav {
+            width: auto;
+            gap: var(--spacing-xxs);
+            align-content: center;
+        }
+        .card-header .title h3 {
+            margin: 0;
+        }
+        .card-header .nav button[class^='btn-primary'],
+        .card-header .nav button[class*='btn-primary'] {
+            /* background: pink; */
+            min-width: 8.6rem;
+        }
+        .card-header .nav button[title='Duplicate Scenario'] {
+            padding: 0 .6rem;
+        }
+
+    /* card body */
+        .card-body > span {
+            color: var(--c-h0-s0-l2);
+            padding: var(--table-cell-padding); /*cell padding - this is supposed to be in a table cell*/
+            border-top: var(--bs-border-width) solid var(--table-border-color);
+        }
+        /* .h1, .h2, .h3, .h4, .h5, .h6, 
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: 0;
+        } */
+        .card-body {
+            display: flex;
+            flex-flow: column nowrap;
+        }
+        .card-body div.table {
+            padding: 0;
+            overflow: hidden;
+        }
+        .card-body .results-preview {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: var(--spacing-s);
+            margin: 0;
+        }
+        .card-body .results-preview > * {
+            width: 100%;
+        }
+        .card-body .results-preview .chart-content,
+        .chart-content {
+            background: var(--c-h0-s0-l5) !important;
+            padding: 4.8rem !important;
+            font-size: var(--t-fs-p3);
+            font-family: var(--t-ff-p-mono);
+        }
+        .card-body .results-preview .chart-content svg path,
+        .chart-content svg path{
+            stroke: var(--c-h0-s0-l5);
+            stroke-width: 0rem;
+            stroke-linejoin: round;
+        }
+        /* .card-body .results-preview .chart svg path {
+            stroke: var(--c-h0-s0-l5);
+            stroke-width: 1rem;
+        } */
+
+
+/* charts ————————————————————— */
+    .chart-header,
+    .chart-header .commands {
+        /* background:pink; */
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: .8rem;
+    }
+    .recharts-wrapper .recharts-surface {
+        overflow: visible;
+    }
+    /* chart legent */
+        .recharts-wrapper ul.recharts-default-legend {
+            /* background: pink; */
+            display: flex;
+            flex-flow: row nowrap;
+            overflow-x: auto;
+            
+        }
+        .recharts-wrapper ul.recharts-default-legend li {
+            /* background: yellow; */
+            display: flex;
+            flex-flow: row nowrap;
+            white-space: nowrap;
+        }
+        .recharts-wrapper ul.recharts-default-legend li .recharts-legend-item-text {
+            /* background: yellow; */
+            /* display: flex;
+            flex-flow: row nowrap; */
+            white-space: nowrap;
+            color: var(--c-h0-s0-l2) !important;
+        }
+    /* chart tooltip */
+        .recharts-wrapper p.recharts-tooltip-label {
+            /* font-size: var(--t-fs-p2); */
+            font-weight: var(--t-fw-h);
+            color: var(--c-h0-s0-l1);
+        }
+        .recharts-wrapper ul.recharts-tooltip-item-list {
+            /* background: orange; */
+        }
+        .recharts-wrapper ul.recharts-tooltip-item-list li {
+            /* background: cyan; */
+            padding: 0 !important;
+        }
+
+
+/* illustrations —————————————————————*/
+
+    div.illustration {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: var(--c-h0-s0-l5);
+        padding: var(--spacing-l);
+        width: 100%;
+        height: 100%;
+        min-height: 38rem;
+        overflow: hidden;
+    }
+
+
+
+
+/* modals and tooltips ————————————————————— */
+    /* variables */
+        :root {
+            /* modal content width */
+                --modal-xs-content-width: 30rem;
+                --modal-s-content-width: 30rem;
+                --modal-m-content-width: 40rem;
+                --modal-l-content-width: 60rem;
+            /* modal width */
+                --modal-xs-width: calc( var(--modal-xs-content-width) + 2 * var(--modal-xs-base-padding) );
+                --modal-s-width: calc( var(--modal-s-content-width) + 2 * var(--modal-s-base-padding) );
+                --modal-m-width: calc( var(--modal-m-content-width) + 2 * var(--modal-m-base-padding) );
+                --modal-l-width: calc( var(--modal-l-content-width) + 2 * var(--modal-l-base-padding) );
+            /* modal vertical offset */
+                --modal-xs-v-offset : 12.4rem;
+                --modal-s-v-offset : 12.4rem;
+                --modal-m-v-offset : 12.4rem;
+                --modal-l-v-offset : 12.4rem;
+            /* modal padding */
+                --modal-xs-base-padding: 1.4rem;
+                --modal-xs-padding: 
+                    var(--modal-xs-base-padding) 
+                    var(--modal-xs-base-padding) 
+                    2rem 
+                    var(--modal-xs-base-padding);
+                --modal-s-base-padding: 2.4rem;
+                --modal-s-padding: 
+                    var(--modal-s-base-padding) 
+                    var(--modal-s-base-padding) 
+                    3.6rem 
+                    var(--modal-s-base-padding);
+                --modal-m-base-padding: 4.8rem;
+                --modal-m-padding: 
+                    var(--modal-m-base-padding) 
+                    var(--modal-m-base-padding) 
+                    7.2rem 
+                    var(--modal-m-base-padding);
+                --modal-l-base-padding: 4.8rem;
+                --modal-l-padding: 
+                    var(--modal-l-base-padding) 
+                    var(--modal-l-base-padding) 
+                    7.2rem 
+                    var(--modal-l-base-padding);
+            /* modal shadow */
+                --modal-box-shadow-size-factor: 0.3;
+                --modal-box-shadow: 
+                    0 calc(var(--modal-box-shadow-size-factor) * 17.900rem) calc(var(--modal-box-shadow-size-factor) * 28.800rem) rgba(0,0,0,0.1650),
+                    0 calc(var(--modal-box-shadow-size-factor) * 07.478rem) calc(var(--modal-box-shadow-size-factor) * 12.030rem) rgba(0,0,0,0.1186),
+                    0 calc(var(--modal-box-shadow-size-factor) * 03.998rem) calc(var(--modal-box-shadow-size-factor) * 06.433rem) rgba(0,0,0,0.0984),
+                    0 calc(var(--modal-box-shadow-size-factor) * 02.242rem) calc(var(--modal-box-shadow-size-factor) * 03.606rem) rgba(0,0,0,0.0825),
+                    0 calc(var(--modal-box-shadow-size-factor) * 01.190rem) calc(var(--modal-box-shadow-size-factor) * 01.915rem) rgba(0,0,0,0.0667),
+                    0 calc(var(--modal-box-shadow-size-factor) * 00.495rem) calc(var(--modal-box-shadow-size-factor) * 00.797rem) rgba(0,0,0,0.0464);
+                --modal-drop-shadow:
+                    0 calc(var(--modal-box-shadow-size-factor) * 17.900rem) calc(var(--modal-box-shadow-size-factor) * 28.800rem) rgba(0,0,0,0.1650),
+                    0 calc(var(--modal-box-shadow-size-factor) * 07.478rem) calc(var(--modal-box-shadow-size-factor) * 12.030rem) rgba(0,0,0,0.1186),
+                    0 calc(var(--modal-box-shadow-size-factor) * 03.998rem) calc(var(--modal-box-shadow-size-factor) * 06.433rem) rgba(0,0,0,0.0984),
+                    0 calc(var(--modal-box-shadow-size-factor) * 02.242rem) calc(var(--modal-box-shadow-size-factor) * 03.606rem) rgba(0,0,0,0.0825),
+                    0 calc(var(--modal-box-shadow-size-factor) * 01.190rem) calc(var(--modal-box-shadow-size-factor) * 01.915rem) rgba(0,0,0,0.0667),
+                    0 calc(var(--modal-box-shadow-size-factor) * 00.495rem) calc(var(--modal-box-shadow-size-factor) * 00.797rem) rgba(0,0,0,0.0464);
+        }
+    /* for all modals and tooltips */
+        /* 1) main container, covering the entire screen surface */
+            div.modal, 
+            .tooltip {
+                /* default font style */
+                    font-size: var(--t-fs-p2);
+                    font-weight: var(--t-fw-p-mono);
+                    font-family: var(--t-ff-p-mono);
+                /* default colors */
+                    color: var(--c-h0-s0-l1);
+                    border-top-color: var(--c-h0-s0-l6); /* will inherit to arrow */
+            }
+        /* 2) secondary container, basically a column where to insert the modal */
+            /* pad surface in which modal appears */
+                .modal-dialog {
+                    margin: var(--modal-m-v-offset) auto var(--modal-m-v-offset) auto;
+                }
+        /* 3) the modal itself */
+            /* remove border radiuses */
+                div.modal .modal-content,
+                .tooltip .tooltip-inner {
+                    border: none;
+                    border-radius: 0;
+                    box-shadow: var(--modal-box-shadow);
+                    /* default colors */
+                        background: var(--c-h0-s0-l6);
+                        color: inherit;
+                }
+            /* hide modal content overflow */
+                .tooltip .tooltip-inner, 
+                div.modal .modal-content {
+                    overflow: hidden;
+                } 
+
+    /* for all modals */
+        /* 1) main container, covering the entire screen surface */
+            /* set font size */
+                div.modal {
+                    font-size: var(--t-fs-p2);
+                }
+                div.modal,
+                div.modal .modal-dialog {
+                    transition: none !important;
+                }
+            /*  */
+        /* 2) secondary container, basically a column where to insert the modal */
+            div.modal .modal-dialog {
+                min-height: unset; /* override the default value */
+                max-height: calc(100vh - 2 * var(--modal-m-v-offset));
+                background: var(--c-edition-t1);
+            }
+        /* 3) the modal itself */
+            div.modal .modal-dialog .modal-content {
+                /* no styles for now */
+                max-height: inherit; /* same as secondary container */
+            }
+        /* 4) the content of the modal */
+            /* set content max-height */
+                div.modal .modal-dialog .modal-content .modal-body {
+                    overflow: scroll;
+                    padding: 0;
+                }
+                div.modal .modal-dialog.modal-sm .modal-content .modal-body {
+                    overflow: initial;
+                }
+            /* reset padding and margins of inner elements */
+                div.modal .modal-dialog .modal-content > * {
+                    padding: 0;
+                    margin: 0;
+                }
+            /* space out inner elements */
+                div.modal .modal-content > *:not(:last-child) {
+                    margin-bottom: 1.4rem;
+                }
+                div.modal .modal-content .modal-header {
+                    border-bottom: none;
+                }
+                div.modal .modal-content .modal-footer {
+                    border-top: none;
+                    gap: var(--spacing-xxs);
+                }
+                div.modal .modal-content .modal-footer > * {
+                    margin: 0;
+                }
+            /*headers*/
+                div.modal .modal-content .modal-header .modal-title {
+                    /* it has an h4 tag ! inherited from the react component */
+                    font-size: var(--t-fs-h3);
+                    font-weight: var(--t-fw-h);
+                    font-family: var(--t-ff-h);
+                }
+    /* for modals of large size */
+        .modal-xl {
+            width: var(--modal-l-width);
+            max-width: var(--modal-l-width);
+        }
+        .modal-xl .modal-content {
+            padding: var(--modal-l-padding);
+        }
+    /* for modals of medium size */
+        .modal-md,
+        .modal-lg {
+            width: var(--modal-m-width);
+            max-width: var(--modal-m-width);
+        }
+        .modal-md .modal-content,
+        .modal-lg .modal-content {
+            padding: var(--modal-m-padding);
+        }
+    /* for modals of small size and tooltips */
+        .modal-sm,
+        .tooltip .tooltip-inner {
+            width: var(--modal-s-width);
+            max-width: var(--modal-s-width);
+        }
+        .modal-sm .modal-content,
+        .tooltip .tooltip-inner {
+            padding: var(--modal-s-padding);
+        }
+    /* for modals of small size */
+        /* for the selector modal */
+            div.modal.selector .modal-body .input-group,
+            div.modal.selector .modal-body .form-label,
+            div.modal.selector .modal-body .option {
+                height: var(--table-cell-height);
+                margin: 0;
+                padding: 0;
+            }
+            div.modal.selector .modal-body .form-label,
+            div.modal.selector .modal-body .option {
+                padding: var(--table-cell-padding);
+            }
+            div.modal.selector .modal-body .form-label {
+                line-height: inherit;
+            }
+            div.modal.selector .modal-body .option {
+                border-top: var(--bs-border-width) solid var(--table-border-color);
+            }
+            /* div.modal.selector,
+            div.modal.selector .modal-dialog {
+                transition: none;
+            } */
+    /* for tooltips */
+        .infoTooltip.show, 
+        .errorTooltip.show {
+            opacity: 1 !important;
+        }
+        .tooltip-inner {
+            /* padding: 20px; */
+            text-align: left;
+            /* font-weight: 500; */
+            /* max-width: 350px; */
+        }
+        /* set font size */
+            .tooltip {
+                font-size: var(--t-fs-p3);
+            }
+        /* bolden header */
+            .tooltip .tooltip-header {
+                font-weight: var(--t-fw-p-mono-bold);
+            }
+        /* pad tooltip header */
+            .tooltip .tooltip-inner .tooltip-header {
+                margin-bottom: var(--spacing-xxs);
+            }
+        /* set tooltip arrow size and specs */
+            .tooltip .tooltip-arrow {
+                --bs-tooltip-arrow-width: 3.5355339059327376rem;
+                --bs-tooltip-arrow-height: 1.7677669529663688rem;
+                width: var(--bs-tooltip-arrow-width);
+                height: var(--bs-tooltip-arrow-height);
+                pointer-events: none;
+                border-top-color: inherit;
+            }
+            .tooltip .tooltip-arrow:before {
+                border-top-color: inherit;
+            }
+        /* hide info icon when cloned from page content */
+            .tooltip .tooltip-inner .tooltip-header .icon {
+                display: none;
+            }
+
+
+
+
+/* page : home ————————————————————— */
+
+    /* navbar */
+        .homepage-header {
+            background-color: unset !important;
+        }
+        .homepage-header .navbar-brand, 
+        .homepage-header .nav-link, 
+        .homepage-header nav.navbar span.github-link-container a#github-link,
+        .homepage-header nav.navbar .dropdown .dropdown-item {
+            color: var(--c-h0-s0-l2);
+        }
+        .homepage-header .navbar-brand:focus, 
+        .homepage-header .navbar-brand:hover,
+        .homepage-header .nav-link:focus, 
+        .homepage-header .nav-link:hover,
+        .homepage-header nav.navbar span.github-link-container a#github-link:focus,
+        .homepage-header nav.navbar span.github-link-container a#github-link:hover,
+        .homepage-header nav.navbar .dropdown .dropdown-item:focus,
+        .homepage-header nav.navbar .dropdown .dropdown-item:hover {
+            color: var(--c-h0-s0-l6);
+        }
+
+    /* section : hero */
+        section.hero {
+            background: #390064;
+            background-image: url("/public/pictures/homepage-hero-bg.svg");
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+            margin-top: -6.4rem; /* header height */
+
+            padding-top: calc(var(--section-padding-l-top) 
+                + 6.4rem /* header height */ 
+                + 0rem /* additional padding */) !important;
+            padding-bottom: calc(var(--section-padding-l-bottom) + 3.6rem) !important;
+
+            overflow: hidden;
+        }
+        
+        @media(max-width:768px) {
+            section.hero {
+                padding-top: calc(var(--section-padding-s-top) 
+                    + 6.4rem /* header height */ 
+                    + 0rem /* additional padding */) !important;
+                padding-bottom: calc(var(--section-padding-s-bottom) + 3.6rem) !important;
+            }
+        }
+
+        /* illustration */
+                section.hero .illustration {
+                    display: flex;
+                    flex-flow: row nowrap;
+                    justify-content: center;
+                    align-items: center;
+                    /* ferdis version */
+                    height: 100%;
+                    overflow: visible;
+                    padding: 0;
+                    background: none;
+                }
+                section.hero .illustration .layers-wrapper {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    position: relative;
+                }
+                section.hero .illustration .layers-wrapper img {
+                    margin-top: auto;
+                    width: 100%;
+                    filter: drop-shadow(0 0.4rem 0.6rem hsla(0,0%,0%,0.2)) drop-shadow(0 0.4rem 0.6rem hsla(0,0%,0%,0.2));
+                    
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 0;
+
+                    border-radius: 0.8rem;
+                    border: var(--bs-border-width) solid var(--c-h0-s0-l3);
+                }
+
+                section.hero .illustration .layers-wrapper img:nth-child(1) {
+                    top: 0;
+                    /* left: 46rem;
+                    width: 24rem; */
+                }
+                section.hero .illustration .layers-wrapper img:nth-child(2) {
+                    top: 90%;
+                    left: 70%;
+                    width: 34%;
+                }
+                @media (max-width: 768px) {
+                    section.hero .illustration .layers-wrapper img:nth-child(2) {
+                        top: 60%;
+                    }
+                }
+
+        /* text */
+            section.hero h1,
+            section.hero .text p,
+            section.hero .text p a:hover,
+            section.hero .text p a:focus {
+                color: var(--c-h0-s0-l6);
+                text-decoration-color: var(--c-h0-s0-l5);
+            }
+            
+            section.hero .text p a {
+                color: var(--c-h0-s0-l4);
+                text-decoration-color: var(--c-h0-s0-l3);
+            }
+
+
+
+
+
+/* page : projects ————————————————————— */
+
+    .projectsLists {
+        padding: var(--spacing-xl) 0; /* needs to be bigger */
+    }
+    .projectsLists .projectsList { /* would rather add bottom-only margin or padding so the element starts sharp */
+        padding: 0 0 var(--spacing-xl) 0;
+    }
+    /* style project names to behave like buttons */
+    .projectsLists .projectsList .project-name {
+        color: var(--c-h0-s0-l1);
+        cursor: pointer;
+    }
+    .projectsLists .projectsList .project-name:hover,
+    .projectsLists .projectsList .project-name:focus,
+    .projectsLists .projectsList .project-name:active {
+        color: var(--c-h0-s0-l2);
+    }
+
+
+/* page : project config ————————————————————— */
+    .proj-year-options {
+        padding: var(--table-cell-padding);
+        height: var(--table-cell-height);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+    }
+
+
+
+/* page : calculation/stepper ————————————————————— */
+    
+    .projectStepContainer > * {
+        display: flex;
+        gap: 4.2rem;
+    }
+
+    /* step left */
+        .stepLeft {
+            padding: 3rem;
+            background: var(--c-h1-s0-l5);
+        }
+        .stepLeft span,
+        .stepLeft li,
+        .stepLeft a,
+        .stepLeft .btn-link { /* ! overwriting default link styles here ! to iso the proto */
+            font-size: var(--t-fs-p3);
+            font-weight: var(--t-fw-p-regular-bold);
+            text-decoration: none;
+        }
+        /* header */
+            .projectStepContainer .stepLeft .progressMenu .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .projectStepContainer .stepLeft .progressMenu .header h3 {
+                margin: 0.4rem 0 0 0;
+            }
+            .projectStepContainer .stepLeft .progressMenu .header > * {
+                width: auto;
+                flex: 0 0;
+            }
+        /* progress bar and last saved mention */
+        .projectStepContainer .stepLeft .progressMenu .progressBar > span,
+        .projectStepContainer .stepLeft .progressMenu .lastSaved > span {
+            padding: 0rem 1rem;
+            display: inline-block;
+            width: 100%;
+        } 
+        /* progress bar */
+            /* bg */
+            .projectStepContainer .stepLeft .progressMenu .progress {
+                height: 0.5rem;
+                background: var(--c-h0-s0-l4);
+            }  
+            /* fg */
+            .projectStepContainer .stepLeft .progressMenu .progress-bar {
+                background: var(--c-h1-s0-l2);
+            }
+        /* last saved mention */
+            /*need a fix for the line height*/
+            .projectStepContainer .stepLeft .progressMenu .lastSaved > span {
+                max-width: 100%;
+                white-space: break-spaces;
+                color: var(--c-h0-s0-l3);
+            }
+        /* progress links */
+            /* text color */
+                .progressMenu ol li button,
+                .progressMenu ol li button:hover {
+                    color: var(--c-h0-s0-l1);
+                }
+                .progressMenu ol li.stepDisabled, 
+                .progressMenu ol li.stepDisabled button {
+                    color: var(--c-h0-s0-l3);
+                    cursor: initial;
+                }
+                .progressMenu ol li.stepDisabled, .btn:disabled{
+                    background-color: initial;
+                }
+            .progressMenu ol {
+                list-style-position: inside;
+                padding-left: 0;
+                white-space: nowrap; /* pour empêcher break entre numéro et nom d'étape */
+            }
+            /* aligning number and step name */
+                .progressMenu ol li::marker,
+                .progressMenu ol li .item span {
+                    line-height: var(--t-lh-p3);
+                }
+                .progressMenu ol li::marker,
+                .progressMenu ol li button {
+                    vertical-align: baseline;    
+                }
+            .progressMenu ol li {
+                flex-flow: row nowrap;
+                background: transparent;
+                padding: 0.6rem 1rem;
+                cursor: pointer;
+            }
+            .progressMenu li.currentStep,
+            .progressMenu li.currentStepDone {
+                background: var(--c-h1-s0-l4);
+            }
+            .progressMenu ol li > * {
+                padding: 0;
+                white-space: nowrap;
+            }
+            .progressMenu > *:not(:last-child) {
+                margin-bottom: 3rem;
+            }
+    /* step right */
+        .projectStepContainer .stepRight {
+            padding: 0;
+            /* background: var(--c-edition-t2); */
+            overflow: visible;
+            /* temp - before i put the logos in */
+            /* padding-bottom: calc(3 * var(--spacing-l)); */
+        }
+        /* desc and nav */
+            .descAndNav {
+                position: relative;
+            }
+            .descAndNav .text.desc {
+                height: 16rem;
+                max-height: 16rem;
+                overflow: scroll;
+            }
+            .descAndNav .text.desc p:last-of-type {
+                display: inline;
+            }
+            .descAndNav .text.desc .info-button {
+                vertical-align: bottom;
+            }
+            .descAndNav .col-4 {
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: space-between;
+            }
+            .descAndNav .nav {
+                flex-flow: row nowrap;
+                align-items: center;
+                gap: var(--spacing-xxs);
+                margin-left: 0;
+                margin-right: 0;
+            }
+            .descAndNav .nav > * {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .descAndNav .prevNav,
+            .descAndNav .nextNav {
+                display: flex;
+                flex-flow: row nowrap;
+                flex: 1 1 0;
+            }
+            .descAndNav .prevNav button,
+            .descAndNav .nextNav button {
+                display: flex;
+                flex-flow: row nowrap;
+                white-space: nowrap;
+                justify-content: center;
+                width: 100%;
+            }
+        /* years horizontal tabs */
+            ul.nav-tabs {
+                --bs-nav-tabs-border-width: 0;
+                --bs-nav-tabs-border-radius: 0;
+                --bs-nav-tabs-link-active-color: var(--c-h0-s0-l1);
+                --bs-nav-tabs-link-active-bg: var(--c-h1-s0-l4);
+                border-bottom: 0;
+            }
+            ul.nav-tabs li.nav-item button {
+                font-size: var(--t-fs-p3);
+                font-weight: var(--t-fw-p-regular-bold);
+                color: var(--c-h0-s0-l1);
+                padding: 0.6rem 1rem;
+                text-align: left;
+                transition: none; /* the existing transition is nice but it does not exist in the steps nav and i prefer to stay coherent */
+            }
+            div.tab-content .tab-pane > hr {
+                margin-top: -1rem; /* dirty fix */
+                margin-bottom: 1.4rem;
+            }
+        /* user note */
+            .projectStepContainer .user-note {
+                font-size: var(--t-fs-p2);
+                font-weight: var(--t-fw-p-mono);
+                font-family: var(--t-ff-p-mono);
+                color: var(--c-h0-s0-l1);
+                margin-bottom: 0 !important;
+            }
+            .projectStepContainer .user-note .form-label {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+            .projectStepContainer .user-note-button {
+                font-size: var(--t-fs-p3);
+                font-weight: var(--t-fw-p-mono-bold);
+                font-family: var(--t-ff-p-mono);
+                color: var(--c-h0-s0-l3);
+                width: 100%;
+                height: var(--table-cell-height);
+                padding: var(--table-cell-padding);
+            }
+            .projectStepContainer .user-note-button:hover,
+            .projectStepContainer .user-note-button:focus,
+            .projectStepContainer .user-note-button:active {
+                background: var(--c-h0-s0-l5);  
+            }
+            .projectStepContainer .user-note .form-control {
+                min-height: 20rem;
+            }
+
+
+
+
+/* overflows fading out */
+    /* horizontal overflows */
+        .recharts-wrapper ul.recharts-default-legend:after {
+            content: "";
+            position: absolute;
+            right: 0;  
+            height: 100%;
+            width: var(--spacing-l);
+            content: "";
+            background: linear-gradient(to left, var(--c-h0-s0-l5), transparent);
+            pointer-events: none; /* so the text is still selectable */
+        }
+    /* vertical overflows */
+        .masked-overflow-y::-webkit-scrollbar{
+            display: none;
+          
+        }
+        .masked-overflow-y {
+            /* scroll bar width, for use in mask calculations*/
+                --scrollbar-width: 0.8rem;
+            /* mask fade distance, for use in mask calculations */
+                --mask-height: 3.2rem;
+            /* If content exceeds height of container, overflow! */
+                overflow-y: auto;
+            /* Our height limit */
+                /* height: 300px; */
+            /* Need to make sure container has bottom space,
+            otherwise content at the bottom is always faded out */
+                padding-bottom: var(--mask-height) !important;
+            /* Keep some space between content and scrollbar */
+                padding-right: 2rem;
+            /* The CSS mask */
+                /* The content mask is a linear gradient from top to bottom */
+                --mask-image-content: linear-gradient(
+                    to bottom,
+                    /* transparent, */ /* commented out to make it bottom-only */
+                    black var(--mask-height),
+                    black calc(100% - var(--mask-height)),
+                    transparent);
+                /* Here we scale the content gradient to the width of the container 
+                minus the scrollbar width. The height is the full container height */
+                    --mask-size-content: calc(100% - var(--scrollbar-width)) 100%;
+                /* The scrollbar mask is a black pixel */
+                    --mask-image-scrollbar: linear-gradient(black, black);
+                /* The width of our black pixel is the width of the scrollbar.
+                The height is the full container height */
+                    --mask-size-scrollbar: var(--scrollbar-width) 100%;
+                /* Apply the mask image and mask size variables */
+                    mask-image: var(--mask-image-content), var(--mask-image-scrollbar);
+                    mask-size: var(--mask-size-content), var(--mask-size-scrollbar);
+                /* Position the content gradient in the top left, and the 
+                scroll gradient in the top right */
+                    mask-position: 0 0, 100% 0;
+                /* We don't repeat our mask images */
+                    mask-repeat: no-repeat, no-repeat;
+        }

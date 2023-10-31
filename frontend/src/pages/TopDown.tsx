@@ -120,9 +120,9 @@ export default function TopDown(){
     return (
         <Container className="projectStepContainer">
             <Progress project={project} currentStep={8} stage='Inventory' />
-            <Row className="justify-content-md-center align-items-center" style={{minHeight: "calc(100vh - 200px)", marginTop: "20px"}}>
+            <Row className="justify-content-md-center align-items-center">
                 <Col xs lg="8">
-                    <h1>Top Down validation</h1>
+                    <h1>Top-down validation</h1>
                     <h2 style={{marginTop: "-40px", marginBottom: "40px"}}>Project: {project.name}</h2>
                     <p>
                         A well-known validation approach especially for national GHG inventories is the comparison of the calculated fuel consumption (summed by fuel type and vehicle category) obtained from the present tool (bottom-up approach) with the national energy balance (top-down approach). Differences within a range of +/- 10% are quite common and should not be considered as error but as uncertainty. One reason can be for example, that the energy balance does not include fuels bought in neighboring countries and consumed within the country. The emission inventory report should try explaining gaps and analyze the possibility to minimize the related uncertainties.<br/>
@@ -202,9 +202,9 @@ export default function TopDown(){
                                 </Table>
                             )
                         })}
-                        <h2>Energy consumption for both transport types</h2>
+                        <h3>Energy consumption for both transport types</h3>
                         <div style={{marginBottom: "20px"}}>
-                            <ResponsiveContainer width="90%" height={300}>
+                            <ResponsiveContainer width="100%" height={340}>
                                 <BarChart data={ftypes.map(_ftype => {
                                     const ftype = _ftype as FuelType
                                     return {
@@ -217,16 +217,16 @@ export default function TopDown(){
                                     <YAxis tickFormatter={(value:number) => new Intl.NumberFormat('fr', { notation: 'compact' }).format(value)} />
                                     <Tooltip formatter={(value:number) => new Intl.NumberFormat('fr', { notation: 'compact' }).format(value)}/>
                                     <Legend />
-                                    <Bar dataKey="Calculated value" fill="#50F19E" unit=' TOE'></Bar>
-                                    <Bar dataKey="Energy balance" fill="#7CDDFF" unit=' TOE'></Bar>
+                                    <Bar barSize={22} dataKey="Calculated value" fill="#50F19E" unit=' TOE'></Bar>
+                                    <Bar barSize={22} dataKey="Energy balance" fill="#7CDDFF" unit=' TOE'></Bar>
                                 </BarChart>
                             </ResponsiveContainer>
                             </div>
                         <Button variant="secondary" style={{marginRight: "20px"}} onClick={goPreviousStep}>
-                            Previous
+                            <span className="item"><span>Previous</span></span>
                         </Button>
                         <Button variant="primary" type="submit">
-                            Next
+                            <span className="item"><span>Next</span></span>
                         </Button>
                     </Form>
                     

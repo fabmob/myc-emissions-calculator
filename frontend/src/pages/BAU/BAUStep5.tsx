@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Button} from 'react-bootstrap'
 import {EmissionsResults, InputInventoryStep7, ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
@@ -105,12 +104,10 @@ export default function BAUStep5(){
             <ProjectStepContainerWrapper project={project} stage="BAU" currentStep={stepNumber}>
                 <h1>Results</h1>
                 <DescAndNav 
-                    prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "<- Prev", variant: "secondary"}}
+                    prevNav={{link: '/project/' + project.id + '/BAU/step/' + (stepNumber - 1), content: "Prev", showArrow: true, variant: "secondary"}}
                     nextNav={{trigger: nextTrigger, content: "To the project", variant: "primary"}}
                 >
-                    <p>
-                        This page displays a short summary of emissions for the BAU scenario. More tables and visualisations are available in the Compare section of the project.
-                    </p>
+                    <p>This page displays a short summary of emissions for the BAU scenario. More tables and visualisations are available in the Compare section of the project.</p>
                 </DescAndNav>
                 <TTWorWTWSelector ttwOrWtw={ttwOrWtw} setTtwOrWtw={setTtwOrWtw}></TTWorWTWSelector>
                 <EditEmissionFactors 
@@ -122,9 +119,24 @@ export default function BAUStep5(){
                     setInputData={setEmissionFactorsInputData}
                 ></EditEmissionFactors>
                 
-                <h2>Emissions per year</h2>
+                <h3>Emissions per year</h3>
                 <EmissionsTable emissionsData={emissions} project={project}></EmissionsTable>
-                <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
+                <>
+                    <div className="chart">
+                        {/* <div className="chart-header">
+                            <h3>Passenger Modal Share</h3>
+                            <div className="commands">
+                                <!--we should have the download buttons like in the compare tab.-->
+                            </div>
+                        </div> */}
+                        <div className="chart-content">
+                            <div>
+                                <EmissionsBarChart emissionsData={emissions} project={project}></EmissionsBarChart>
+                            </div>
+                        </div>
+                    </div>
+                </>
+                
             </ProjectStepContainerWrapper>
         </>
     )
