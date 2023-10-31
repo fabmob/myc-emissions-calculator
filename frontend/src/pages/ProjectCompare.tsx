@@ -1,12 +1,10 @@
 import React, {useState, useEffect, SetStateAction} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Button, Container, Row, Col, Card, Table, Badge, Form, Modal } from 'react-bootstrap'
-import {ProjectType, TotalEnergyAndEmissions, EmissionsResults, InputStep2, InputInventoryStep1} from '../frontendTypes'
-import ProjectNav from '../components/ProjectNav'
+import { Button, Row, Col, Table, Badge, Form, Modal } from 'react-bootstrap'
+import {ProjectType, EmissionsResults, InputInventoryStep1} from '../frontendTypes'
 
 import './Project.css'
-import EmissionsTable from '../components/viz/EmissionsTable'
 import EmissionsCompareBarChart from '../components/viz/EmissionsCompareBarChart'
 import VktCompareBarChart from '../components/viz/VktCompareBarChart'
 import ModalShareCompareBarChart from '../components/viz/ModalShareCompareBarChart'
@@ -14,14 +12,12 @@ import TransportPerformanceCompareBarChart from '../components/viz/TransportPerf
 import EmissionsPerUkmCompareBarChart from '../components/viz/EmissionsPerUkmCompareBarChart'
 import { inputsAsCsv } from '../utils/inputsAsCsv'
 import { CSVLink } from 'react-csv'
-import Footer from "../components/Footer"
 
 export default function ProjectCompare(props: {project: ProjectType}){
     const { keycloak, initialized } = useKeycloak()
     const navigate = useNavigate()
     const params = useParams()
     const [project, setProject ] = useState({} as ProjectType)
-    const [inventoryTotalEnergyAndEmissions, setInventoryTotalEnergyAndEmissions] = useState({TTW: {} as TotalEnergyAndEmissions, WTW:  {} as TotalEnergyAndEmissions})
     const [bauResults, setBAUResults] = useState({} as EmissionsResults)
     const [climateResults, setClimateResults] = useState<EmissionsResults[]>([])
     const [displayedVtypes, setDisplayedVtypes] = useState({} as {[key: string]: boolean})
@@ -59,10 +55,6 @@ export default function ProjectCompare(props: {project: ProjectType}){
                     console.log(data.status)
                     return
                 }
-                setInventoryTotalEnergyAndEmissions({
-                    WTW: data.totalEnergyAndEmissionsWTW,
-                    TTW: data.totalEnergyAndEmissionsTTW
-                })
             })
     }
     const fetchBAUResults = () => {

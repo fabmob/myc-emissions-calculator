@@ -10,7 +10,6 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
-import EditEmissionFactors from '../../components/EditEmissionFactors'
 import OutputNumberTd from '../../components/OutputNumberTd'
 
 export default function InventoryStep5(){

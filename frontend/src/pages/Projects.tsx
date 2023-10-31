@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { Navigate, useNavigate } from 'react-router-dom'
 import {ProjectType} from '../frontendTypes'
-import { Container, Button, Row, Col, Stack, Modal, OverlayTrigger, Tooltip, Table, Badge } from 'react-bootstrap'
+import { Container, Button, Row, Col, Modal, OverlayTrigger, Tooltip, Table, Badge } from 'react-bootstrap'
 import Footer from "../components/Footer"
 
 export default function Projects(){
@@ -73,11 +73,6 @@ export default function Projects(){
                 .then(loadProjects)
         }
     }
-    const referenceYearTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            Choose the year of reference based on your needs.
-        </Tooltip>
-    );
     return (
         <>
             <section>
@@ -252,7 +247,6 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
                                         : 
                                             <Badge className="badge-default"><span className="item"><span>NUMP</span></span></Badge>}              
                             </OverlayTrigger></td>
-                            {/* <td><ProjectProgress step={project.stages["Inventory"][0]?.step}/></td> */}
                             <td>{project.status === 'draft' ? <Badge className="badge-default"><span className="item"><span>Draft</span></span></Badge> : <Badge className="badge-default"><span className="item"><span>Validated</span></span></Badge>}</td>
                             <td style={{whiteSpace: "nowrap"}}>
                                 {/* <Button variant="primary" className="btn-sm" onClick={() => openProject(project)}><span className="item"><span>Open</span></span></Button> */}
@@ -325,18 +319,6 @@ const DeleteConfirmModal = ({showDeleteConfirmModal, handleCloseDeleteConfirmMod
         </Modal.Footer>
     </Modal>
 )
-const ProjectProgress = ({step} : {step: number}) => {
-    let res = ""
-    for (let i = 0; i < step; i++) {
-        // res += '🟩'
-        res += '—'
-    }
-    for (let i = step; i < 8; i++) {
-        // res += '🟧'
-        res += ' '
-    }
-    return <span style={{whiteSpace: "nowrap"}}>{res}</span>
-}
 const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: ProjectType[], handleEditProject: (project: ProjectType, action: 'validate' | 'delete') => void}) => {
     const navigate = useNavigate()
     const openProject = (p: ProjectType) => {

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Table, Button, Badge, Modal, Alert, Stack} from 'react-bootstrap'
+import {Table, Button, Badge, Modal, Alert} from 'react-bootstrap'
 import {FuelType, InputInventoryStep1, ProjectType} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 

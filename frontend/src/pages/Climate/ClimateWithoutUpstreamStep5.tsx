@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Table, Button, Badge, Form, Tabs, Tab, Alert} from 'react-bootstrap'
+import {Table, Button, Badge, Tabs, Tab, Alert} from 'react-bootstrap'
 import {FuelType, InputBAUStep2, InputClimateWithoutUpstreamStep1, InputClimateWithoutUpstreamStep2, InputClimateWithoutUpstreamStep3, InputClimateWithoutUpstreamStep4, InputInventoryStep1, InputInventoryStep6, InputInventoryStep8, ProjectType, VehicleStats} from '../../frontendTypes'
 import ChoiceModal from '../../components/ChoiceModal'
 
@@ -172,9 +172,6 @@ export default function ClimateWithoutUpstreamStep5(){
             .then(() => navigate('/project/' + projectId + '/Climate/' + climateScenarioId + '/Without/step/' + (stepNumber + 1)));
     }
     const inputInventoryStep1 : InputInventoryStep1 = project.stages?.Inventory[0].steps?.[1] || {}
-    const isVtypeFreight = (vtype: string) => {
-        return inputInventoryStep1.vtypes[vtype].type === "freight"
-    }
     const inputClimateWithoutUpstreamStep1 : InputClimateWithoutUpstreamStep1 = project.stages?.Climate[climateScenarioId].steps?.[1]
     const inputClimateWithoutUpstreamStep2 : InputClimateWithoutUpstreamStep2 = project.stages?.Climate[climateScenarioId].steps?.[2]
     const inputClimateWithoutUpstreamStep3 : InputClimateWithoutUpstreamStep3 = project.stages?.Climate[climateScenarioId].steps?.[3]

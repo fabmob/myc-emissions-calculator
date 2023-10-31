@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Table, Button, Badge} from 'react-bootstrap'
-import {InputInventoryStep1, InputInventoryStep7, FuelType, ProjectType, TotalEnergyAndEmissions, ModalShare, EmissionParams} from '../../frontendTypes'
+import {Table, Badge} from 'react-bootstrap'
+import {InputInventoryStep7, FuelType, ProjectType, TotalEnergyAndEmissions, ModalShare} from '../../frontendTypes'
 
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
@@ -22,7 +22,6 @@ export default function InventoryStep7(){
     const [emissionFactorsInputData, setEmissionFactorsInputData] = useState({} as InputInventoryStep7)
     const projectId = params.projectId
     const [ totalEnergyAndEmissions, setTotalEnergyAndEmissions] = useState({TTW: {} as TotalEnergyAndEmissions, WTW:  {} as TotalEnergyAndEmissions})
-    const [ emissionFactorsWTWComputedForElectric, setEmissionFactorsWTWComputedForElectric] = useState({ElectricRail: {} as EmissionParams, ElectricRoad: {} as EmissionParams})
     const [ modalShare, setModalShare] = useState({
         passengers: {} as ModalShare,
         freight: {} as ModalShare
@@ -68,7 +67,6 @@ export default function InventoryStep7(){
                     WTW: data.totalEnergyAndEmissionsWTW,
                     TTW: data.totalEnergyAndEmissionsTTW
                 })
-                setEmissionFactorsWTWComputedForElectric(data.emissionFactorsWTWComputedForElectric)
                 setModalShare(data.modalShare)
             })
     }

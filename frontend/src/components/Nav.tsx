@@ -19,7 +19,7 @@ const MyNav = () => {
     /* adrien : discriminate homepage nav */
         const {pathname} = useLocation();
     return (
-        <header className={pathname=="/" ? "homepage-header" : ""}>
+        <header className={pathname==="/" ? "homepage-header" : ""}>
             <Container>
                 <Row className="justify-content-md-center">
                     <Col lg="12">

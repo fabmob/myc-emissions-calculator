@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Table, Container, Row, Col, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Table, Container, Row, Col, Badge } from 'react-bootstrap'
 import { ProjectType} from '../../frontendTypes'
 
 import '../Project.css'

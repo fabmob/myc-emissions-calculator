@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react"
 import { ProjectType, InputInventoryStep7, FuelType} from "../frontendTypes"
 import {Table, Button, Badge, Form, Modal} from 'react-bootstrap'
 import ChoiceModal from "./ChoiceModal"
-import TdDiagonalBar from "./TdDiagonalBar"
 import ValidSource from "./ValidSource"
 import ItemWithOverlay from "./ItemWithOverlay"
 

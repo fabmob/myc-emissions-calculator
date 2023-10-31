@@ -2,13 +2,11 @@ import React, {useState, useMemo, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import countryList from 'react-select-country-list'
-import { Button, Container, Row, Col, Form, InputGroup, OverlayTrigger, Tooltip, Badge, ButtonGroup } from 'react-bootstrap'
+import { Button, Row, Col, Form, InputGroup, Badge } from 'react-bootstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 import { ProjectType } from '../frontendTypes'
 import ChoiceModal from '../components/ChoiceModal'
-import ProjectNav from '../components/ProjectNav'
-import Footer from "../components/Footer"
 
 export default function CreateProject(props : {project: ProjectType}) {
     const navigate = useNavigate();
@@ -20,7 +18,6 @@ export default function CreateProject(props : {project: ProjectType}) {
     const [ partnerLocation, setPartnerLocation ] = useState("")
     const [ projectArea, setProjectArea ] = useState("")
     const [ projectReferenceYears, setProjectReferenceYears ] = useState(["2020","2025","2030","2035","2040","2050"])
-    const [ geoData, setGeoData ] = useState("")
     const [ isSump, setIsSump ] = useState(true)
     const [validated, setValidated] = useState(false)
     const [ createWarning, setCreateWarning ] = useState(false)
@@ -151,11 +148,6 @@ export default function CreateProject(props : {project: ProjectType}) {
                 });
         }
     }
-    const referenceYearTooltip = (props:any) => (
-        <Tooltip id="button-tooltip" {...props}>
-            You can choose the year of reference based on your needs
-        </Tooltip>
-    );
     const setProjectReferenceYear = (index: number, year: string) => {
         setProjectReferenceYears((prevProjectReferenceYears) => {
             return prevProjectReferenceYears.map((e,i) => i === index ? year : e)

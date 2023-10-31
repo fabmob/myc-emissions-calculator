@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Table, Container, Row, Col, Badge, OverlayTrigger, Tooltip, Modal, Button, Dropdown } from 'react-bootstrap'
+import { Table, Container, Row, Col, Badge, Modal, Button, Dropdown } from 'react-bootstrap'
 import { ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
-import ChoiceModal from '../../components/ChoiceModal'
 import Footer from "../../components/Footer"
 
 

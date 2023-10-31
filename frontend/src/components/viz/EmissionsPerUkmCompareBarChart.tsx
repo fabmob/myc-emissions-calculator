@@ -1,11 +1,11 @@
-import React, {useCallback, useState} from "react"
+import React, {useCallback} from "react"
 import { ProjectType, TransportPerformance } from "../../frontendTypes"
 import { Bar, BarChart, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { computePercentIncrease } from "../../utils/computePercentIncrease"
 import { CSVLink } from "react-csv"
 import { useCurrentPng } from "recharts-to-png"
 import { saveAs } from 'file-saver'
-import { Button, Col, Row } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 
 export default function EmissionsPerUkmCompareBarChart (props: {
     title: string,

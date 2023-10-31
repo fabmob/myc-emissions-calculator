@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Button} from 'react-bootstrap'
 import {EmissionsResults, InputInventoryStep7, ProjectType} from '../../frontendTypes'
 
 import '../Project.css'

@@ -2,7 +2,7 @@ import React, {useCallback} from "react"
 import { ProjectType, VehicleKilometresTravelledComputed } from "../../frontendTypes"
 import { Bar, BarChart, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { computePercentIncrease } from "../../utils/computePercentIncrease"
-import { Button, Col, Row } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 import { CSVLink } from "react-csv"
 import { useCurrentPng } from "recharts-to-png"
 import { saveAs } from 'file-saver'

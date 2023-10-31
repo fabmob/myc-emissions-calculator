@@ -40,7 +40,7 @@ const Jumbo = () => {
                         <h1>Estimate emissions from&nbsp;local&nbsp;transports</h1>
                         <div className="text">
                             <p>The MYC Calculator helps government organizations and&nbsp;consulting agencies to&nbsp;estimate current and&nbsp;future GHG&nbsp;emissions, and allows them to&nbsp;compare their “Business&nbsp;As&nbsp;Usual”&nbsp;scenario to&nbsp;GHG reduction plans.</p>
-                            <p className="p3">The MYC Calculator is fully <a href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank">open source</a> and free to use.</p>
+                            <p className="p3">The MYC Calculator is fully <a href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank" rel="noreferrer">open source</a> and free to use.</p>
                         </div>
                         {/* {keycloak.authenticated ?
                             <Button variant="action" size="lg" 
@@ -143,17 +143,6 @@ const Devs = () => (
                         <img style={{height: "100px"}} src="/logos/logo-fabmob.png" alt="fabmob"></img>
                         <img style={{height: "100px"}} className="m-3" src="/logos/logo-IFEU.gif" alt="ifeu"></img>
                     </div>
-                </Col>
-            </Row>
-        </div>
-    </section>
-)
-const Partners = () => (
-    <section className="">
-        <div className="container">
-            <Row>
-                <Col>
-                    {/* <!-- this needs to become a carousel. it takes way too much screen space. --> */}
                 </Col>
             </Row>
         </div>

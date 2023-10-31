@@ -1,7 +1,7 @@
 import React, {useCallback} from "react"
 import { ProjectType, VehicleKilometresTravelledComputed } from "../../frontendTypes"
 import { Bar, BarChart, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { Button, Col, Row } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 import { CSVLink } from "react-csv"
 import { useCurrentPng } from "recharts-to-png"
 import { saveAs } from 'file-saver'
@@ -121,16 +121,6 @@ const CustomLabel = (props: any) => {
         <g className={className}>
           <text x={x + width / 2} y={y + verticalOffset} fontSize="12" fill="black" textAnchor="middle" dominantBaseline="middle">
             {new Intl.NumberFormat('fr', { notation: 'compact' }).format(value)}
-          </text>
-        </g>
-      );
-}
-const PercentLabel = (props: any) => {
-    const { x, width, value, className } = props
-    return (
-        <g className={className}>
-          <text x={x + width / 2} y={12} fontSize="12" fill="black" textAnchor="middle" dominantBaseline="middle">
-            {value}
           </text>
         </g>
       );

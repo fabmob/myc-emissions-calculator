@@ -1,14 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Button, Container, Row, Col, Card, Table, Badge, Alert } from 'react-bootstrap'
+import { Button, Row, Col, Card, Table, Badge, Alert } from 'react-bootstrap'
 import {ProjectStage, ProjectType, TotalEnergyAndEmissions, FuelType, EmissionsResults} from '../frontendTypes'
-import ProjectNav from '../components/ProjectNav'
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'
-import Footer from "../components/Footer"
 
 import './Project.css'
-import EmissionsTable from '../components/viz/EmissionsTable'
 import EmissionsBarChart from '../components/viz/EmissionsBarChart'
 import OutputNumberTd from '../components/OutputNumberTd'
 

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import {Badge, Button, Dropdown} from 'react-bootstrap'
 import {EmissionsResults, InputInventoryStep7, ProjectType} from '../../frontendTypes'
 
 import '../Project.css'
@@ -10,7 +9,6 @@ import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWr
 import EmissionsTable from '../../components/viz/EmissionsTable'
 import EmissionsBarChart from '../../components/viz/EmissionsBarChart'
 import EditEmissionFactors from '../../components/EditEmissionFactors'
-import ChoiceModal from '../../components/ChoiceModal'
 import TTWorWTWSelector from '../../components/TTWorWTWSelector'
 
 export default function ClimateWithUpstreamStep7(){

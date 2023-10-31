@@ -1,5 +1,4 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 export default function ItemWithOverlay (props: {children: React.ReactNode, overlayContent: React.ReactNode}) {

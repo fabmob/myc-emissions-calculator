@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Modal, Form, InputGroup, Button, Badge } from "react-bootstrap"
+import { Modal, Form, InputGroup, Badge } from "react-bootstrap"
 
 const ChoiceModal = (props: {
     showModal: boolean,
