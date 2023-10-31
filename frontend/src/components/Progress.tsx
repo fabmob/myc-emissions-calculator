@@ -55,6 +55,19 @@ const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep
             navigate('/project/' + props.project.id + '/' + props.stage + '/step/' + step)
         }
     }
+    let projectStep = props.project.stages?.[props.stage][0]?.step
+    if (props.project.stages?.[props.stage][0]?.step !== undefined && props.stage === "Climate") {
+        // climate has a hidden step 0, With or Without upstream, so one has to be removed from the counter
+        projectStep = props.project.stages?.[props.stage][props.climateScenarioId || 0]?.step
+
+        projectStep -= 1
+    }
+
+    const stepsToUse = props.isWithoutUpstream ? withoutUpstreamClimateSteps : steps[props.stage]
+    if (props.project.stages?.[props.stage][0]?.step !== undefined && stepsToUse[projectStep-1] === "Results") {
+        // skip results
+        projectStep += 1
+    }
     const getClassName = (step: number) => {
         // if (props.project.stages[props.stage][0].step === 9) {
         //     // Step 9: overview is done by default
@@ -62,19 +75,24 @@ const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep
         // }
         // const isStepResults = steps[props.stage][props.currentStep-1] === "Results"
         if (props.currentStep === step) {
-            if (props.project.stages?.[props.stage][0]?.step > props.currentStep ) {
+            if (projectStep > props.currentStep ) {
                 return "currentStepDone"
             }
             return "currentStep"
         }
-        if (!(props.project.stages?.[props.stage][0]?.step > step)) {
+        // is the checked step equal to the current project progress
+        if (step === projectStep) {
+            // Not quite the current step, but still and accessible step (probably the next one), no need for specific class
+            return ""
+        }
+        // is the checked step later than the current project progress
+        if (projectStep === undefined || step > projectStep) {
             return "stepDisabled"
         } else {
             return "stepDone"
         }
     }
-    const progressValue = (props.project.stages?.[props.stage][0]?.step - 1) / steps[props.stage].length *100;
-    const stepsToUse = props.isWithoutUpstream ? withoutUpstreamClimateSteps : steps[props.stage]
+    const progressValue = (projectStep - 1) / stepsToUse.length *100;
     return (
         <div className="progressMenu d-print-none">
             <div className="header">
@@ -99,10 +117,13 @@ const Progress = (props: {project: ProjectType, stage: ProjectStage, currentStep
                 {stepsToUse.map((step, index) => {
                     const className = getClassName(index + 1)
                     return (
-                        <li className={className} key={index + 1} onClick={() => link((index + 1).toString())}>
+                        <li className={className} key={index + 1} onClick={() => {
+                            if (projectStep < index + 1) return
+                            return link((index + 1).toString())
+                        }}>
                             <Button
                                 variant="link"
-                                disabled={props.project.stages?.[props.stage][0]?.step < index + 1}
+                                disabled={projectStep < index + 1}
                                 >
                                 {/* <span className="item"><span>{step}</span></span> */}
                                 <span className="item">
