@@ -149,12 +149,12 @@ export default function InventoryStep5(){
                 <h3>Energy balance</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol4" /> {/* Network */}
-                        <col className="tablecol3" /> {/* Fuels */}
-                        <col className="tablecol1" /> {/* Src */}
-                        <col className="tablecol4" /> {/* Energy balance */}
-                        <col className="tablecol4" /> {/* Calculated */}
-                        <col className="tablecolfluid" /> {/* Gap */}
+                        <col className="tablecol4" />{/* Network */}
+                        <col className="tablecol3" />{/* Fuels */}
+                        <col className="tablecol1" />{/* Src */}
+                        <col className="tablecol4" />{/* Energy balance */}
+                        <col className="tablecol4" />{/* Calculated */}
+                        <col className="tablecolfluid" />{/* Gap */}
                     </colgroup>
                     <thead>
                         <tr>
@@ -237,12 +237,12 @@ export default function InventoryStep5(){
                 <h3>Emissions</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol4" /> {/* Network */}
-                        <col className="tablecol3" /> {/* Fuels */}
-                        <col className="tablecol1" /> {/* Src */}
-                        <col className="tablecol4" /> {/* Emissions */}
-                        <col className="tablecol4" /> {/* Calculated */}
-                        <col className="tablecolfluid" /> {/* Gap */}
+                        <col className="tablecol4" />{/* Network */}
+                        <col className="tablecol3" />{/* Fuels */}
+                        <col className="tablecol1" />{/* Src */}
+                        <col className="tablecol4" />{/* Emissions */}
+                        <col className="tablecol4" />{/* Calculated */}
+                        <col className="tablecolfluid" />{/* Gap */}
                     </colgroup>
                     <thead>
                         <tr>

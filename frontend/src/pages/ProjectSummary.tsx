@@ -215,9 +215,9 @@ export default function ProjectSummary(props : {project: ProjectType}){
                     <Col lg="8" className="table">
                         <Table bordered>
                             <colgroup>
-                                <col className="tablecol4" /> {/* Vehicle */}
-                                <col className="tablecol3" /> {/* Fuel */}
-                                <col className="tablecolfluid" /> {/* GHG emissions */}
+                                <col className="tablecol4" />{/* Vehicle */}
+                                <col className="tablecol3" />{/* Fuel */}
+                                <col className="tablecolfluid" />{/* GHG emissions */}
                             </colgroup>
                             <thead>
                                 <tr>

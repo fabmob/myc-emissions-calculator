@@ -224,9 +224,9 @@ export default function ProjectCompare(props: {project: ProjectType}){
             <h2>Datasets</h2>
             <Table bordered>
                 <colgroup>
-                    <col className="tablecol4" /> {/* Dataset */}
-                    <col className="tablecol3" /> {/* Action */}
-                    <col className="tablecolfluid" /> {/* Sources */}
+                    <col className="tablecol4" />{/* Dataset */}
+                    <col className="tablecol3" />{/* Action */}
+                    <col className="tablecolfluid" />{/* Sources */}
                 </colgroup>
                 <thead>
                     <tr>
@@ -262,8 +262,8 @@ export default function ProjectCompare(props: {project: ProjectType}){
             <h2>Sources</h2>
             <Table bordered>
                 <colgroup>
-                    <col className="tablecol4" /> {/* Source */}
-                    <col className="tablecolfluid" /> {/* ID */}
+                    <col className="tablecol4" />{/* Source */}
+                    <col className="tablecolfluid" />{/* ID */}
                 </colgroup>
                 <thead>
                     <tr>
@@ -351,7 +351,7 @@ const OptionsModal = (
             <Modal.Body className="masked-overflow-y">
                 <Form.Group className="mb-3">
                     <Form.Label>Displayed categories of transport</Form.Label>
-                    <Row>
+                    <div style={{display: 'flex', flexWrap: 'wrap'}}>
                     {vtypes.map((vtype, index) => {
                         return (
                             <Col lg="6" key={index}>
@@ -362,7 +362,7 @@ const OptionsModal = (
                             </Col>
                         )
                     })}
-                    </Row>
+                    </div>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Displayed Climate Scenarios</Form.Label>

@@ -58,8 +58,8 @@ export default function BAUIntro(){
                         <h3>Required for this calculation</h3>
                         <Table>
                             <colgroup>
-                                <col className="tablecol6" /> {/* Data */}
-                                <col className="tablecolfluid" /> {/* Unit */}
+                                <col className="tablecol6" />{/* Data */}
+                                <col className="tablecolfluid" />{/* Unit */}
                             </colgroup>
                             <thead>
                                 <tr>
@@ -95,8 +95,8 @@ export default function BAUIntro(){
                         <h3>Required for later calculations</h3>
                         <Table>
                             <colgroup>
-                                <col className="tablecol6" /> {/* Data */}
-                                <col className="tablecolfluid" /> {/* Unit */}
+                                <col className="tablecol6" />{/* Data */}
+                                <col className="tablecolfluid" />{/* Unit */}
                             </colgroup>
                             <thead>
                                 <tr>

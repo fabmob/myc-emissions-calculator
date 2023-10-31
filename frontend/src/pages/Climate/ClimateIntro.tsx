@@ -115,8 +115,8 @@ export default function ClimateIntro(){
                         <h3>Required for this calculation</h3>
                         <Table>
                             <colgroup>
-                                <col className="tablecol6" /> {/* Data */}
-                                <col className="tablecolfluid" /> {/* Unit */}
+                                <col className="tablecol6" />{/* Data */}
+                                <col className="tablecolfluid" />{/* Unit */}
                             </colgroup>
                             <thead>
                                 <tr>

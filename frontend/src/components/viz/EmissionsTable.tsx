@@ -12,9 +12,9 @@ export default function EmissionsTable (props: {
     return (
         <Table bordered>
             <colgroup>
-                <col className="tablecol4" /> {/* Transport modes */}
+                <col className="tablecol4" />{/* Transport modes */}
                 {props.project.referenceYears && props.project.referenceYears.map((y, yearIndex) => (
-                    <col className="tablecolfluid" />
+                    <col key={y} className="tablecolfluid" />
                 ))}
             </colgroup>
             <thead>
@@ -55,9 +55,9 @@ export default function EmissionsTable (props: {
 
                 <tr>
                     <td></td>
-                    {props.project.referenceYears && props.project.referenceYears.map(() => {
+                    {props.project.referenceYears && props.project.referenceYears.map((y) => {
                         return (
-                            <td></td>
+                            <td key={y}></td>
                         )
                     })}
                 </tr>

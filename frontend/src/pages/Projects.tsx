@@ -224,12 +224,11 @@ const DetailedProjects = ({projects, handleEditProject, showOwner}:
         <>
             <Table>
                 <colgroup>
-                    <col className="tablecol7" /> {/* Name */}
-                    <col className="tablecol2" /> {/* Type */}
-                    {/* <col className="tablecol4" /> Inventory progress */}
-                    <col className="tablecol2" /> {/* Status */}
-                    <col className="tablecolfluid" /> {/* Action */}
-                    {showOwner && <col className="tablecol2" />} {/* Author */}
+                    <col className="tablecol7" />{/* Name */}
+                    <col className="tablecol2" />{/* Type */}
+                    <col className="tablecol2" />{/* Status */}
+                    <col className="tablecolfluid" />{/* Action */}
+                    {showOwner && <col className="tablecol2" />}{/* Author */}
                 </colgroup>
                 <thead>
                     <tr>
@@ -346,10 +345,10 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
     return (
         <Table>
             <colgroup>
-                <col className="tablecol7" /> {/* Name */}
-                <col className="tablecol2" /> {/* Type */}
-                <col className="tablecol2" /> {/* Author */}
-                <col className="tablecolfluid" /> {/* Action */}
+                <col className="tablecol7" />{/* Name */}
+                <col className="tablecol2" />{/* Type */}
+                <col className="tablecol2" />{/* Author */}
+                <col className="tablecolfluid" />{/* Action */}
             </colgroup>
             <thead>
                 <tr>
@@ -363,8 +362,7 @@ const PublicProjects = ({publicProjects, handleEditProject}: {publicProjects: Pr
             <tbody>
                 {publicProjects.map(project => 
                     <tr key={project.id}>
-                        <td>{project.id}</td>
-                        <td>{project.name}</td>
+                        <td><span className="project-name" onClick={() => openProject(project)}>{project.name}</span></td>
                         <td>
                             <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={<Tooltip>{project.isSump && project.city + ", "}{project.country}</Tooltip>}>
                                 {project.isSump ? <Badge bg="primary"><span className="item"><span>SUMP</span></span></Badge> : <Badge className="badge-default"><span className="item"><span>NUMP</span></span></Badge>}

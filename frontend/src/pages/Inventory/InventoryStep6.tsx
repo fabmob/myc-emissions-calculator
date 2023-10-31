@@ -129,9 +129,9 @@ export default function InventoryStep6(){
                 </DescAndNav>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol4" /> {/* Vehicle */}
-                        <col className="tablecol1" /> {/* Src */}
-                        <col className="tablecolfluid" /> {/* Load */}
+                        <col className="tablecol4" />{/* Vehicle */}
+                        <col className="tablecol1" />{/* Src */}
+                        <col className="tablecolfluid" />{/* Load */}
                     </colgroup>
                     <thead>
                         <tr>

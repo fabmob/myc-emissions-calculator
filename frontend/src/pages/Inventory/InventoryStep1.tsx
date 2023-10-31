@@ -259,10 +259,10 @@ export default function InventoryStep1(){
                 </DescAndNav>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol4" /> {/* Vehicle */}
-                        <col className="tablecol2" /> {/* Network */}
-                        <col className="tablecol3" /> {/* Type */}
-                        <col className="tablecolfluid" /> {/* Fuels */}
+                        <col className="tablecol4" />{/* Vehicle */}
+                        <col className="tablecol2" />{/* Network */}
+                        <col className="tablecol3" />{/* Type */}
+                        <col className="tablecolfluid" />{/* Fuels */}
                     </colgroup>
                     <thead>
                         <tr>

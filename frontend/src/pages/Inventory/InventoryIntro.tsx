@@ -56,8 +56,8 @@ export default function InventoryIntro(){
                     <h3>Required for this calculation</h3>
                     <Table>
                         <colgroup>
-                            <col className="tablecol6" /> {/* Data */}
-                            <col className="tablecolfluid" /> {/* Unit */}
+                            <col className="tablecol6" />{/* Data */}
+                            <col className="tablecolfluid" />{/* Unit */}
                         </colgroup>
                         <thead>
                             <tr>
@@ -104,8 +104,8 @@ export default function InventoryIntro(){
                     <h3>Required for later calculations</h3>
                     <Table>
                         <colgroup>
-                            <col className="tablecol6" /> {/* Data */}
-                            <col className="tablecolfluid" /> {/* Unit */}
+                            <col className="tablecol6" />{/* Data */}
+                            <col className="tablecolfluid" />{/* Unit */}
                         </colgroup>
                         <thead>
                             <tr>
@@ -128,7 +128,7 @@ export default function InventoryIntro(){
                                 <td>
                                     <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
                                         <Badge className="badge-read-only">
-                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2 content of electricity and hydrogen production</span></span>
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2 content of alt. energy production</span></span>
                                         </Badge>
                                     </ItemWithOverlay>
                                 </td>

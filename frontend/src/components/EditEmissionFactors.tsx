@@ -115,12 +115,12 @@ export default function EditEmissionFactors (props: {
                     </p>
                     <Table bordered>
                         <colgroup>
-                            <col className="tablecol4" /> {/* Fuels */}
-                            <col className="tablecol1" /> {/* Source */}
-                            <col className="tablecolfluid" /> {/* Lower heating value */}
-                            <col className="tablecolfluid" /> {/* Fuel density */}
-                            <col className="tablecolfluid" /> {/* CO2e TTW */}
-                            <col className="tablecolfluid" /> {/* CO2e WTW (kg/Tj) */}
+                            <col className="tablecol4" />{/* Fuels */}
+                            <col className="tablecol1" />{/* Source */}
+                            <col className="tablecolfluid" />{/* Lower heating value */}
+                            <col className="tablecolfluid" />{/* Fuel density */}
+                            <col className="tablecolfluid" />{/* CO2e TTW */}
+                            <col className="tablecolfluid" />{/* CO2e WTW (kg/Tj) */}
                         </colgroup>
                         <thead>
                             <tr>

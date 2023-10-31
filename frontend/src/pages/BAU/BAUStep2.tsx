@@ -187,12 +187,12 @@ export default function BAUStep2(){
                     {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
                             <colgroup>
-                                <col className="tablecol4" /> {/* Vehicle */}
-                                <col className="tablecol3" /> {/* Fuels */}
-                                <col className="tablecol3" /> {/* VKT */}
-                                <col className="tablecol2" /> {/* Inventory VKT */}
-                                <col className="tablecol1" /> {/* Source */}
-                                <col className="tablecolfluid" /> {/* Share per fuel */}
+                                <col className="tablecol4" />{/* Vehicle */}
+                                <col className="tablecol3" />{/* Fuels */}
+                                <col className="tablecol3" />{/* VKT */}
+                                <col className="tablecol2" />{/* Inventory VKT */}
+                                <col className="tablecol1" />{/* Source */}
+                                <col className="tablecolfluid" />{/* Share per fuel */}
                             </colgroup>
                             <thead>
                                 <tr>

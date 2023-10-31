@@ -247,15 +247,15 @@ export default function ClimateWithoutUpstreamStep4(){
                         <h3>Passengers</h3>
                         <Table bordered>
                             <colgroup>
-                                <col className="tablecol4" /> {/* Target vehicle */}
-                                <col className="tablecol2" /> {/* Ref. Pkm */}
-                                <col className="tablecol2" /> {/* Pkm */}
-                                <col className="tablecol2" /> {/* Added Pkm VKT */}
-                                <col className="tablecol4" /> {/* Origin vehicle */}
-                                <col className="tablecol2" /> {/* Inv. trip length */}
-                                <col className="tablecol1" /> {/* Source */}
-                                <col className="tablecol1" /> {/* Parts of trips to shift */}
-                                <col className="tablecolfluid" /> {/* Shifted Pkm */}
+                                <col className="tablecol4" />{/* Target vehicle */}
+                                <col className="tablecol2" />{/* Ref. Pkm */}
+                                <col className="tablecol2" />{/* Pkm */}
+                                <col className="tablecol2" />{/* Added Pkm VKT */}
+                                <col className="tablecol4" />{/* Origin vehicle */}
+                                <col className="tablecol2" />{/* Inv. trip length */}
+                                <col className="tablecol1" />{/* Source */}
+                                <col className="tablecol1" />{/* Parts of trips to shift */}
+                                <col className="tablecolfluid" />{/* Shifted Pkm */}
                             </colgroup>
                             <thead>
                                 <tr>
@@ -338,14 +338,14 @@ export default function ClimateWithoutUpstreamStep4(){
                         <h3>Freight</h3>
                         <Table bordered>
                             <colgroup>
-                                <col className="tablecol4" /> {/* Target vehicle */}
-                                <col className="tablecol2" /> {/* Ref. Pkm */}
-                                <col className="tablecol2" /> {/* Pkm */}
-                                <col className="tablecol2" /> {/* Added Pkm VKT */}
-                                <col className="tablecol4" /> {/* Origin vehicle */}
-                                <col className="tablecol1" /> {/* Source */}
-                                <col className="tablecol1" /> {/* Parts of trips to shift */}
-                                <col className="tablecolfluid" /> {/* Shifted Pkm */}
+                                <col className="tablecol4" />{/* Target vehicle */}
+                                <col className="tablecol2" />{/* Ref. Pkm */}
+                                <col className="tablecol2" />{/* Pkm */}
+                                <col className="tablecol2" />{/* Added Pkm VKT */}
+                                <col className="tablecol4" />{/* Origin vehicle */}
+                                <col className="tablecol1" />{/* Source */}
+                                <col className="tablecol1" />{/* Parts of trips to shift */}
+                                <col className="tablecolfluid" />{/* Shifted Pkm */}
                             </colgroup>
                             <thead>
                                 <tr>

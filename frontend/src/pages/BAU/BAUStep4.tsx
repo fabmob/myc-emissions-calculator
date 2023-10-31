@@ -135,10 +135,10 @@ export default function BAUStep4(){
                         <h3>Electricity</h3>
                         <Table bordered>
                             <colgroup>
-                                <col className="tablecol4" /> {/* Network */}
-                                <col className="tablecol3" /> {/* Source */}
-                                <col className="tablecol3" /> {/* Inventory emissions */}
-                                <col className="tablecolfluid" /> {/* Emissions */}
+                                <col className="tablecol4" />{/* Network */}
+                                <col className="tablecol3" />{/* Source */}
+                                <col className="tablecol3" />{/* Inventory emissions */}
+                                <col className="tablecolfluid" />{/* Emissions */}
                             </colgroup>
                             <thead>
                                 <tr>
@@ -177,10 +177,10 @@ export default function BAUStep4(){
                         <h3>Hydrogen</h3>
                         <Table bordered>
                             <colgroup>
-                                <col className="tablecol4" /> {/* Network */}
-                                <col className="tablecol3" /> {/* Source */}
-                                <col className="tablecol3" /> {/* Inventory emissions */}
-                                <col className="tablecolfluid" /> {/* Emissions */}
+                                <col className="tablecol4" />{/* Network */}
+                                <col className="tablecol3" />{/* Source */}
+                                <col className="tablecol3" />{/* Inventory emissions */}
+                                <col className="tablecolfluid" />{/* Emissions */}
                             </colgroup>
                             <thead>
                                 <tr>

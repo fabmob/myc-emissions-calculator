@@ -153,10 +153,10 @@ export default function ClimateWithoutUpstreamStep2(){
                     {project.referenceYears && project.referenceYears.slice(1).map((y, yearIndex) => (<Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
                             <colgroup>
-                                <col className="tablecol4" /> {/* Vehicle */}
-                                <col className="tablecol3" /> {/* Inv. load */}
-                                <col className="tablecol1" /> {/* Source */}
-                                <col className="tablecolfluid" /> {/* Load */}
+                                <col className="tablecol4" />{/* Vehicle */}
+                                <col className="tablecol3" />{/* Inv. load */}
+                                <col className="tablecol1" />{/* Source */}
+                                <col className="tablecolfluid" />{/* Load */}
                             </colgroup>
                             <thead>
                                 <tr>

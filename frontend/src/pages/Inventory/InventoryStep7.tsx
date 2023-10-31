@@ -138,10 +138,10 @@ export default function InventoryStep7(){
                 <h3>GHG emissions</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol4" /> {/* Vehicle */}
-                        <col className="tablecol3" /> {/* Fuels */}
-                        <col className="tablecol4" /> {/* Emissions Factor */}
-                        <col className="tablecolfluid" /> {/* GHG Emissions */}
+                        <col className="tablecol4" />{/* Vehicle */}
+                        <col className="tablecol3" />{/* Fuels */}
+                        <col className="tablecol4" />{/* Emissions Factor */}
+                        <col className="tablecolfluid" />{/* GHG Emissions */}
                     </colgroup>
                     <thead>
                         <tr>

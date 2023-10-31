@@ -120,9 +120,9 @@ export default function InventoryStep4(){
                 <h3>Electricity</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol4" /> {/* Network */}
-                        <col className="tablecol1" /> {/* Src */}
-                        <col className="tablecolfluid" /> {/* Emissions Input */}
+                        <col className="tablecol4" />{/* Network */}
+                        <col className="tablecol1" />{/* Src */}
+                        <col className="tablecolfluid" />{/* Emissions Input */}
                     </colgroup>
                     <thead>
                         <tr>
@@ -156,9 +156,9 @@ export default function InventoryStep4(){
                 <h3>Hydrogen</h3>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol4" /> {/* Network */}
-                        <col className="tablecol1" /> {/* Src */}
-                        <col className="tablecolfluid" /> {/* Emissions Input */}
+                        <col className="tablecol4" />{/* Network */}
+                        <col className="tablecol1" />{/* Src */}
+                        <col className="tablecolfluid" />{/* Emissions Input */}
                     </colgroup>
                     <thead>
                         <tr>

@@ -129,9 +129,9 @@ export default function InventoryStep8(){
                 </DescAndNav>
                 <Table bordered>
                     <colgroup>
-                        <col className="tablecol4" /> {/* Passenger transport */}
-                        <col className="tablecol1" /> {/* Src */}
-                        <col className="tablecolfluid" /> {/* Avg trip len */}
+                        <col className="tablecol4" />{/* Passenger transport */}
+                        <col className="tablecol1" />{/* Src */}
+                        <col className="tablecolfluid" />{/* Avg trip len */}
                     </colgroup>
                     <thead>
                         <tr>

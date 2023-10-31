@@ -150,10 +150,10 @@ export default function BAUStep1(){
                     <Tab eventKey={y} title={y} key={yearIndex}><hr></hr>
                         <Table bordered>
                             <colgroup>
-                                <col className="tablecol4" /> {/* Transport modes */}
-                                <col className="tablecol4" /> {/* VKT */}
-                                <col className="tablecol1" /> {/* Source */}
-                                <col className="tablecolfluid" /> {/* VKT growth */}
+                                <col className="tablecol4" />{/* Transport modes */}
+                                <col className="tablecol4" />{/* VKT */}
+                                <col className="tablecol1" />{/* Source */}
+                                <col className="tablecolfluid" />{/* VKT growth */}
                             </colgroup>
                             <thead>
                                 <tr>
