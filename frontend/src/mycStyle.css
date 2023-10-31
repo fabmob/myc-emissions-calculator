@@ -526,7 +526,7 @@ nav.navbar {
         align-items: center;
     }
     .partnerLine img {
-        height: fit-content;
+        height: auto;
     }
     .partnerLine img.logo-ADB       { width: calc( var(--logo-common-scale-base) * 3.6 * var(--logo-common-scale-factor)) }
     .partnerLine img.logo-ADEME     { width: calc( var(--logo-common-scale-base) * 4.2 * var(--logo-common-scale-factor)) }
