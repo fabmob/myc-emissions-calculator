@@ -24,7 +24,7 @@ The web version of the tool is orchestrated and created by [La Fabrique des Mobi
 
 ## Scope of the project
 
-An MVP has been defined during the first quarter of 2022, the web version will begin by focusing on:
+An MVP has been defined during the first quarter of 2022, the web version began by focusing on:
 * Targeted at consulting firms helping cities (not countries)
 * Focused on GHG estimation for BAU (First sheet, 1A)
 * Focused on passengers (no freight)
@@ -49,12 +49,12 @@ An MVP has been defined during the first quarter of 2022, the web version will b
 * **Visualize output data as graphs**
 * Ease the understanding of computations
 
-In 2023, the **version MVP2 was released**, complementing the scope to match the functionnalities of the excel spreadsheet. The following features were included:
+In 2023, the **version MVP2 was released**, complementing the scope to match the functionalities of the excel spreadsheet. The following features were included:
 * Complete rework of the Inventory & BAU steps described in the first MVP. A project is now divided in three steps
-    1. An inventory, focused only on the reference year. This is were vehicles and fuels are defined
+    1. An inventory, focused only on the reference year. This is where vehicles and fuels are defined
     2. A Business as Usual (BAU) scenario, built on top of the inventory 
     3. One or more Climate scenarios, to be compared to the BAU
-    * Each step includes a small résults page, to identify potential problems in data
+    * Each step includes a small results page, to identify potential problems in data
 * Full rework of the User Interface
 * **Match the features of the latest version of the offline tool (excel)**
     * This includes an update on computation methods, filling option, new types of fuels such as hydrogen and an update of default emission factors
