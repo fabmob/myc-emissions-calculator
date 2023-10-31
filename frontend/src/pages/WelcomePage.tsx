@@ -141,7 +141,7 @@ const Devs = () => (
                 <Col lg="7">
                     <div className="illustration">
                         <img style={{height: "100px"}} src="/logos/logo-fabmob.png" alt="fabmob"></img>
-                        <img style={{height: "100px"}} className="m-3" src="/logos/logo-ifeu.gif" alt="ifeu"></img>
+                        <img style={{height: "100px"}} className="m-3" src="/logos/logo-IFEU.gif" alt="ifeu"></img>
                     </div>
                 </Col>
             </Row>

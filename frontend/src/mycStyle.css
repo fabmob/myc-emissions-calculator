@@ -448,10 +448,8 @@ nav.navbar {
         padding: 0;
         margin: 0;
         line-height: 0;
-        background: transparent;
     }
     .dropdown-menu .dropdown-item {
-        padding: var(--bs-nav-link-padding-y) var(--bs-navbar-nav-link-padding-x);
         line-height: 100%;
         /* transition : same as nav-link */
             transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
@@ -466,6 +464,9 @@ nav.navbar {
     }
     .dropdown-toggle::after {
         display: none;
+    }
+    form .dropdown-item {
+        font-size: 18px;
     }
 /* navbar toggler */
     .navbar-toggler,
@@ -839,7 +840,7 @@ nav.navbar {
                 opacity: 1;
                 pointer-events: none;
             }
-    
+
     
     /* badges and small buttons ————————————————————— */
 
@@ -925,11 +926,10 @@ nav.navbar {
 
     /* make outline larger when in focus */
         input:focus, textarea:focus {
-            /* background-color: unset !important; */
             box-shadow: 
                 inset 0 0 0 calc(var(--bs-border-width) * 4/2) var(--c-h1-s0-l3),
                 0 0 0 calc(var(--bs-border-width) * 4/2) var(--c-h1-s0-l3) !important;
-            background: unset !important;
+            /* background: unset !important; */
             outline: none !important;
         }
     /* some input fields are doubled. the clone needs to be put in the bg */
@@ -1260,7 +1260,7 @@ nav.navbar {
             /* background: pink; */
             display: flex;
             flex-flow: row nowrap;
-            overflow: scroll;
+            overflow-x: auto;
             
         }
         .recharts-wrapper ul.recharts-default-legend li {
@@ -1462,6 +1462,7 @@ nav.navbar {
     /* for modals of large size */
         .modal-xl {
             width: var(--modal-l-width);
+            max-width: var(--modal-l-width);
         }
         .modal-xl .modal-content {
             padding: var(--modal-l-padding);
@@ -1470,6 +1471,7 @@ nav.navbar {
         .modal-md,
         .modal-lg {
             width: var(--modal-m-width);
+            max-width: var(--modal-m-width);
         }
         .modal-md .modal-content,
         .modal-lg .modal-content {
@@ -1479,6 +1481,7 @@ nav.navbar {
         .modal-sm,
         .tooltip .tooltip-inner {
             width: var(--modal-s-width);
+            max-width: var(--modal-s-width);
         }
         .modal-sm .modal-content,
         .tooltip .tooltip-inner {
@@ -1763,6 +1766,10 @@ nav.navbar {
                 .progressMenu ol li.stepDisabled, 
                 .progressMenu ol li.stepDisabled button {
                     color: var(--c-h0-s0-l3);
+                    cursor: initial;
+                }
+                .progressMenu ol li.stepDisabled, .btn:disabled{
+                    background-color: initial;
                 }
             .progressMenu ol {
                 list-style-position: inside;
@@ -1915,8 +1922,12 @@ nav.navbar {
             pointer-events: none; /* so the text is still selectable */
         }
     /* vertical overflows */
+        .masked-overflow-y::-webkit-scrollbar{
+            display: none;
+          
+        }
         .masked-overflow-y {
-            /* scroll bar width, for use in mask calculations */
+            /* scroll bar width, for use in mask calculations*/
                 --scrollbar-width: 0.8rem;
             /* mask fade distance, for use in mask calculations */
                 --mask-height: 3.2rem;

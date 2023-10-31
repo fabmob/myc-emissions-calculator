@@ -7,7 +7,7 @@ export default function TTWorWTWSelector (props: {
 }) {
     return (
         <div className="text">
-            <p style={{display: "inline-flex", gap:"0.4em"}}>
+            <div style={{display: "inline-flex", gap:"0.4em"}}>
                 Results are computed using the
                 <Dropdown onSelect={(key:any) => props.ttwOrWtw === "TTW" ? props.setTtwOrWtw("WTW") : props.setTtwOrWtw("TTW")}>
                     <Dropdown.Toggle as={Badge} className="badge-default">
@@ -30,7 +30,7 @@ export default function TTWorWTWSelector (props: {
                     </Dropdown.Menu>
                 </Dropdown>
                 approach.
-            </p>
+            </div>
         </div>
     )
 }
