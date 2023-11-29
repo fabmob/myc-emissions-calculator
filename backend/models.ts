@@ -31,7 +31,7 @@ export function computeVehicleKilometresTravelled(
     // Initialize output with default values
     for (let i = 0; i < vehicleTypeArray.length; i++) {
         let vtype = vehicleTypeArray[i]
-        outputVehicleKilometresTravelledComputed[vtype] = [inputVehicleKilometresTravelled[vtype]?.vkt || 0, 0, 0, 0, 0]
+        outputVehicleKilometresTravelledComputed[vtype] = [inputVehicleKilometresTravelled[vtype]?.vkt || 0]
     }
     // Compute increases according to rate
     for (let k = 0; k < vehicleTypeArray.length; k++) {
@@ -40,7 +40,7 @@ export function computeVehicleKilometresTravelled(
             let numberOfYears = referenceYears[i] - referenceYears[i - 1]
             let lastValue = outputVehicleKilometresTravelledComputed[vtype][i-1]
             let percentIncrease = inputVehicleKilometresTravelled[vtype]?.vktRate[i-1] || 0
-            outputVehicleKilometresTravelledComputed[vtype][i] = lastValue * Math.pow((1 + percentIncrease / 100), numberOfYears)
+            outputVehicleKilometresTravelledComputed[vtype].push(lastValue * Math.pow((1 + percentIncrease / 100), numberOfYears))
         }
     }
     return outputVehicleKilometresTravelledComputed
