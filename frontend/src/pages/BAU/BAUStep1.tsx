@@ -117,6 +117,10 @@ export default function BAUStep1(){
                 setSourceWarning(true)
                 return
             }
+            for (let i = 0; i < vehicle.vktRate.length; i++) {
+                // Remove % char if it was added
+                vehicle.vktRate[i] = vehicle.vktRate[i].replace('%', '')
+            }
         }
         // save data and nav to next step
         const requestOptions = {
