@@ -12,6 +12,7 @@ import PercentInput from '../../components/PercentInput'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function BAUStep1(){
     const { keycloak, initialized } = useKeycloak();
@@ -67,7 +68,7 @@ export default function BAUStep1(){
     const updateInputPercent = (vtype: string, yearIndex: number, percent: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[vtype].vktRate[yearIndex] = percent
+            tmp.vtypes[vtype].vktRate[yearIndex] = sanitizeFloatInput(percent)
             return tmp
         })
     }
@@ -116,10 +117,6 @@ export default function BAUStep1(){
             if (srcMissing && !sourceWarning) {
                 setSourceWarning(true)
                 return
-            }
-            for (let i = 0; i < vehicle.vktRate.length; i++) {
-                // Remove % char if it was added
-                vehicle.vktRate[i] = vehicle.vktRate[i].replace('%', '')
             }
         }
         // save data and nav to next step

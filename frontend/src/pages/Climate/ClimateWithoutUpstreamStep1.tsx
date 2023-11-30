@@ -12,6 +12,7 @@ import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWr
 import { computeVktAfterASI } from '../../utils/asiComputations'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function ClimateWithoutUpstreamStep1(){
     const { keycloak, initialized } = useKeycloak();
@@ -78,7 +79,7 @@ export default function ClimateWithoutUpstreamStep1(){
     const updateInput = (vtype: string, yearIndex: number, value: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[vtype].avoidedVkt[yearIndex] = value
+            tmp.vtypes[vtype].avoidedVkt[yearIndex] = sanitizeFloatInput(value)
             return tmp
         })
         setError("")

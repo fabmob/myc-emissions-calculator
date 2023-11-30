@@ -11,6 +11,7 @@ import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function BAUStep4(){
     const { keycloak, initialized } = useKeycloak();
@@ -65,7 +66,7 @@ export default function BAUStep4(){
     const updateInput = (energy: "electricity" | "hydrogen", network: "road" | "rail", yearIndex: number, value: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp[energy][network].value[yearIndex] = value
+            tmp[energy][network].value[yearIndex] = sanitizeFloatInput(value)
             return tmp
         })
     }

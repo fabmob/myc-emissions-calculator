@@ -11,6 +11,7 @@ import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function InventoryStep5(){
     const { keycloak, initialized } = useKeycloak();
@@ -77,7 +78,7 @@ export default function InventoryStep5(){
     const updateInput = (type: "emissions" | "energy", network: "road" | "rail", ftype: FuelType, value: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp[type][network].fuels[ftype]!.value = value
+            tmp[type][network].fuels[ftype]!.value = sanitizeFloatInput(value)
             return tmp
         })
     }

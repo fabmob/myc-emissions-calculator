@@ -4,6 +4,7 @@ import {Table, Button, Badge, Form, Modal} from 'react-bootstrap'
 import ChoiceModal from "./ChoiceModal"
 import ValidSource from "./ValidSource"
 import ItemWithOverlay from "./ItemWithOverlay"
+import { sanitizeFloatInput } from "../utils/sanitizeInputs"
 
 export default function EditEmissionFactors (props: {
     project: ProjectType,
@@ -53,14 +54,14 @@ export default function EditEmissionFactors (props: {
         props.setInputData((prevInputData) => {
             let tmp = {...prevInputData}
             if (!wtwOrTtw) {
-                tmp.emissionFactors.WTW[ftype][param] = value
-                tmp.emissionFactors.TTW[ftype][param] = value
+                tmp.emissionFactors.WTW[ftype][param] = sanitizeFloatInput(value)
+                tmp.emissionFactors.TTW[ftype][param] = sanitizeFloatInput(value)
                 if (param === 'lowerHeatingValue' || param === 'density') {
                     tmp.emissionFactors.WTW[ftype]['pci'] = (parseFloat(tmp.emissionFactors.WTW[ftype].density) * parseFloat(tmp.emissionFactors.WTW[ftype].lowerHeatingValue)).toString()
                     tmp.emissionFactors.TTW[ftype]['pci'] = (parseFloat(tmp.emissionFactors.WTW[ftype].density) * parseFloat(tmp.emissionFactors.WTW[ftype].lowerHeatingValue)).toString()
                 }
             } else {
-                tmp.emissionFactors[wtwOrTtw][ftype][param] = value
+                tmp.emissionFactors[wtwOrTtw][ftype][param] = sanitizeFloatInput(value)
             }
             return tmp
         })

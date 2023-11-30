@@ -10,6 +10,7 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function InventoryStep4(){
     const { keycloak, initialized } = useKeycloak();
@@ -50,7 +51,7 @@ export default function InventoryStep4(){
     const updateInput = (energy: "electricity" | "hydrogen", network: "road" | "rail", value: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp[energy][network].value = value
+            tmp[energy][network].value = sanitizeFloatInput(value)
             return tmp
         })
     }

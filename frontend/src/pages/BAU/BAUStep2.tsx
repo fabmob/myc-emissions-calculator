@@ -13,6 +13,7 @@ import TdDiagonalBar from '../../components/TdDiagonalBar'
 import PercentInput from '../../components/PercentInput'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function BAUStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -86,7 +87,7 @@ export default function BAUStep2(){
     const updateInputPercent = (vtype: string, ftype: FuelType, yearIndex: number, percent: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[vtype].fuels[ftype]!.percent[yearIndex] = percent
+            tmp.vtypes[vtype].fuels[ftype]!.percent[yearIndex] = sanitizeFloatInput(percent)
             return tmp
         })
         setError("")

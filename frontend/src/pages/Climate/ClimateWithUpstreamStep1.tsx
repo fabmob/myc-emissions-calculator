@@ -11,6 +11,7 @@ import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function ClimateWithUpstreamStep1(){
     const { keycloak, initialized } = useKeycloak();
@@ -77,7 +78,7 @@ export default function ClimateWithUpstreamStep1(){
     const updateInput = (vtype: string, yearIndex: number, value: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[vtype].vkt[yearIndex] = value
+            tmp.vtypes[vtype].vkt[yearIndex] = sanitizeFloatInput(value)
             return tmp
         })
         setError("")
