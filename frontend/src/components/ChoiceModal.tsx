@@ -34,9 +34,9 @@ const ChoiceModal = (props: {
     }
     return (
         <Modal className="selector" size="sm" centered show={props.showModal} onHide={() => props.setShowModal(false)}>
-            <Form noValidate validated={validated} onSubmit={checkFrom}>
-                {/* <Modal.Header></Modal.Header> */}
-                <Modal.Body>
+            {/* <Modal.Header></Modal.Header> */}
+            <Modal.Body className="masked-overflow-y">
+                <Form noValidate validated={validated} onSubmit={checkFrom}>
                     {
                         props.preventCreate 
                         ? <Form.Label>Select an option</Form.Label>
@@ -60,13 +60,13 @@ const ChoiceModal = (props: {
                         ))
                         }
                     </div>
-                </Modal.Body>
-                {/* <Modal.Footer>
-                    <Button variant="primary" type="submit">
-                        <span className="item"><span>Save</span></span>
-                    </Button>
-                </Modal.Footer> */}
-            </Form>
+                </Form>
+            </Modal.Body>
+            {/* <Modal.Footer>
+                <Button variant="primary" type="submit">
+                    <span className="item"><span>Save</span></span>
+                </Button>
+            </Modal.Footer> */}
         </Modal>
     )
 }

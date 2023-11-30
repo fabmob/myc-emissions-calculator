@@ -13,6 +13,7 @@ import { computeVktAfterASI } from '../../utils/asiComputations'
 import TdDiagonalBar from '../../components/TdDiagonalBar'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function ClimateWithoutUpstreamStep4(){
     const { keycloak, initialized } = useKeycloak();
@@ -92,7 +93,7 @@ export default function ClimateWithoutUpstreamStep4(){
     const updateInput = (goalvtype: string, originvtype: string, yearIndex: number, value: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[goalvtype][originvtype].value[yearIndex] = value
+            tmp.vtypes[goalvtype][originvtype].value[yearIndex] = sanitizeFloatInput(value)
             return tmp
         })
         setError("")

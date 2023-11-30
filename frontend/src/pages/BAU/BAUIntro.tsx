@@ -58,7 +58,7 @@ export default function BAUIntro(){
                         <h3>Required for this calculation</h3>
                         <Table>
                             <colgroup>
-                                <col className="tablecol6" />{/* Data */}
+                                <col className="tablecol7" />{/* Data */}
                                 <col className="tablecolfluid" />{/* Unit */}
                             </colgroup>
                             <thead>
@@ -70,7 +70,7 @@ export default function BAUIntro(){
                             <tbody>
                                 <tr>
                                     <td>
-                                        <ItemWithOverlay overlayContent="mileage and transport performance for each transport mode per year">
+                                        <ItemWithOverlay overlayContent="Mileage and transport performance for each transport mode per year">
                                             <Badge className="badge-read-only">
                                                 <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected transport activity</span></span>
                                             </Badge>
@@ -80,13 +80,21 @@ export default function BAUIntro(){
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected share of the transport activity by vehicle category and fuel type">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected modal share</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>%vkt and %tkm</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected vehicle fuel consumption according to vehicle category and fuel type">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected fuels consumption</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>l-kW-kg/100km</td>
                                 </tr>
@@ -95,7 +103,7 @@ export default function BAUIntro(){
                         <h3>Required for later calculations</h3>
                         <Table>
                             <colgroup>
-                                <col className="tablecol6" />{/* Data */}
+                                <col className="tablecol7" />{/* Data */}
                                 <col className="tablecolfluid" />{/* Unit */}
                             </colgroup>
                             <thead>
@@ -107,9 +115,9 @@ export default function BAUIntro(){
                             <tbody>
                                 <tr>
                                     <td>
-                                        <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
+                                        <ItemWithOverlay overlayContent="Used to obtain passenger.km (pkm) or ton.km (tkm) data per transport category and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
                                             <Badge className="badge-read-only">
-                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected occupation rate per transport category</span></span>
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected occupation rate</span></span>
                                             </Badge>
                                         </ItemWithOverlay>
                                     </td>
@@ -117,9 +125,9 @@ export default function BAUIntro(){
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
+                                        <ItemWithOverlay overlayContent="Projected CO2 content of electricity and hydrogen production. Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
                                             <Badge className="badge-read-only">
-                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected CO2 content of electricity and hydrogen production</span></span>
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2 of alt. energy production</span></span>
                                             </Badge>
                                         </ItemWithOverlay>
                                     </td>
