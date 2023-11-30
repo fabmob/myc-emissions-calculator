@@ -65,7 +65,7 @@ In 2023, the **version MVP2 was released**, complementing the scope to match the
     * Fixed project deletion
 
 ## 2.2
-* Banding
+* Branding
     * Made MYC name & logo more visible
     * Colorize partner logos
 * UI
