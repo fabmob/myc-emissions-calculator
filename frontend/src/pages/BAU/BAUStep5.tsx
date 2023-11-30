@@ -19,7 +19,7 @@ export default function BAUStep5(){
     const [project, setProject ] = useState({} as ProjectType)
     const projectId = params.projectId
     const [ results, setResults] = useState({} as EmissionsResults)
-    const [ ttwOrWtw, setTtwOrWtw ] = useState("TTW" as "TTW" | "WTW")
+    const [ ttwOrWtw, setTtwOrWtw ] = useState("WTW" as "TTW" | "WTW")
     const stepNumber = 5
     useEffect(() => {
         if (initialized && keycloak.authenticated && projectId){
