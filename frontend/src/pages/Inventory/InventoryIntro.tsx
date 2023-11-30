@@ -56,7 +56,7 @@ export default function InventoryIntro(){
                     <h3>Required for this calculation</h3>
                     <Table>
                         <colgroup>
-                            <col className="tablecol6" />{/* Data */}
+                            <col className="tablecol7" />{/* Data */}
                             <col className="tablecolfluid" />{/* Unit */}
                         </colgroup>
                         <thead>
@@ -78,13 +78,21 @@ export default function InventoryIntro(){
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge className="badge-read-only"><span className="item"><span>Share of the transport activity by vehicle category and fuel type</span></span></Badge>
+                                    <ItemWithOverlay overlayContent="Share of the transport activity by vehicle category and fuel type">
+                                        <Badge className="badge-read-only">
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Modal share</span></span>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
                                 <td>%vkt and %tkm</td>
                             </tr>
                             <tr>
                                 <td>
-                                    <Badge className="badge-read-only"><span className="item"><span>Vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
+                                    <ItemWithOverlay overlayContent="Vehicle fuel consumption according to vehicle category and fuel type">
+                                        <Badge className="badge-read-only">
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels consumption</span></span>
+                                        </Badge>
+                                    </ItemWithOverlay>
                                 </td>
                                 <td>l-kW-kg/100km</td>
                             </tr>
@@ -104,7 +112,7 @@ export default function InventoryIntro(){
                     <h3>Required for later calculations</h3>
                     <Table>
                         <colgroup>
-                            <col className="tablecol6" />{/* Data */}
+                            <col className="tablecol7" />{/* Data */}
                             <col className="tablecolfluid" />{/* Unit */}
                         </colgroup>
                         <thead>
@@ -116,9 +124,9 @@ export default function InventoryIntro(){
                         <tbody>
                             <tr>
                                 <td>
-                                    <ItemWithOverlay overlayContent="Used to obtain passenger.km (Pkm) or ton.km (tkm) data and compare your GHG emissions with your modal share, and it will be used for the Climate Scenario to quantify the “shift measures”">
+                                    <ItemWithOverlay overlayContent="Used to obtain passenger.km (Pkm) or ton.km (tkm) data per transport category and compare your GHG emissions with your modal share. It will also be used for the Climate Scenario to quantify the “shift measures”">
                                         <Badge className="badge-read-only">
-                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Occupation rate per transport category</span></span>
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Occupation rate</span></span>
                                         </Badge>
                                     </ItemWithOverlay>
                                 </td>
@@ -128,7 +136,7 @@ export default function InventoryIntro(){
                                 <td>
                                     <ItemWithOverlay overlayContent="Used to calculate GHG emissions through a WTW (well-to-wheel) approach, that considers the CO2 emissions of electricity and hydrogen production">
                                         <Badge className="badge-read-only">
-                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2 content of alt. energy production</span></span>
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>CO2 of alt. energy production</span></span>
                                         </Badge>
                                     </ItemWithOverlay>
                                 </td>
@@ -148,7 +156,7 @@ export default function InventoryIntro(){
                                 <td>
                                     <ItemWithOverlay overlayContent="It is not useful for the inventory calculation but we encourage you to collect this data during the SUMP/NUMP diagnostic process, as it will be useful for the Climate Scenario">
                                         <Badge className="badge-read-only">
-                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Trip length per transport category</span></span>
+                                            <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Avg vehicle trip length</span></span>
                                         </Badge>
                                     </ItemWithOverlay>
                                 </td>

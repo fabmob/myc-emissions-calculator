@@ -1430,9 +1430,9 @@ nav.navbar {
                     overflow: scroll;
                     padding: 0;
                 }
-                div.modal .modal-dialog.modal-sm .modal-content .modal-body {
+                /* div.modal .modal-dialog.modal-sm .modal-content .modal-body {
                     overflow: initial;
-                }
+                } */
             /* reset padding and margins of inner elements */
                 div.modal .modal-dialog .modal-content > * {
                     padding: 0;
@@ -1817,7 +1817,8 @@ nav.navbar {
             .descAndNav .text.desc {
                 height: 16rem;
                 max-height: 16rem;
-                overflow: scroll;
+                overflow-y: auto;
+                overflow-x: unset;
             }
             .descAndNav .text.desc p:last-of-type {
                 display: inline;
@@ -1922,10 +1923,21 @@ nav.navbar {
             pointer-events: none; /* so the text is still selectable */
         }
     /* vertical overflows */
-        .masked-overflow-y::-webkit-scrollbar{
+        /* .masked-overflow-y::-webkit-scrollbar{
             display: none;
           
-        }
+        } */
+        .masked-overflow-y::-webkit-scrollbar {
+            width: 0.8rem;
+          }
+          .masked-overflow-y::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          .masked-overflow-y::-webkit-scrollbar-thumb {
+            background-color: rgba(155, 155, 155, 0.5);
+            border-radius: 20px;
+            border: transparent;
+          }
         .masked-overflow-y {
             /* scroll bar width, for use in mask calculations*/
                 --scrollbar-width: 0.8rem;

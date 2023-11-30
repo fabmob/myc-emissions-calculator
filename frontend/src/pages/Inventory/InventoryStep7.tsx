@@ -26,7 +26,7 @@ export default function InventoryStep7(){
         passengers: {} as ModalShare,
         freight: {} as ModalShare
     })
-    const [ ttwOrWtw, setTtwOrWtw ] = useState("TTW" as "TTW" | "WTW")
+    const [ ttwOrWtw, setTtwOrWtw ] = useState("WTW" as "TTW" | "WTW")
     const defaultColors = ["#2CB1D5", "#A2217C", "#808080", "#67CAE4", "#CE8DBB", "#B3B3B3", "#C5E8F2", "#EBD1E1", "#E6E6E6"]
     const stepNumber = 7
     useEffect(() => {

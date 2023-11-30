@@ -37,10 +37,11 @@ const Jumbo = () => {
                 <Row>
                     {/* <Col lg="12"><h1>Get emissions from local transportation</h1></Col> */}
                     <Col lg="5">
+                        <img src="/logos/logo-MYC.png" alt="Mobilise Your City" />
                         <h1>Estimate emissions from&nbsp;local&nbsp;transports</h1>
                         <div className="text">
-                            <p>The MYC Calculator helps government organizations and&nbsp;consulting agencies to&nbsp;estimate current and&nbsp;future GHG&nbsp;emissions, and allows them to&nbsp;compare their “Business&nbsp;As&nbsp;Usual”&nbsp;scenario to&nbsp;GHG reduction plans.</p>
-                            <p className="p3">The MYC Calculator is fully <a href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank" rel="noreferrer">open source</a> and free to use.</p>
+                            <p>The MobiliseYourCity emission calculator helps government organizations and&nbsp;consulting agencies to&nbsp;estimate current and&nbsp;future GHG&nbsp;emissions, and allows them to&nbsp;compare their “Business&nbsp;As&nbsp;Usual”&nbsp;scenario to&nbsp;GHG reduction plans.</p>
+                            <p className="p3">The Calculator is fully <a href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank" rel="noreferrer">open source</a> and free to use.</p>
                         </div>
                         {/* {keycloak.authenticated ?
                             <Button variant="action" size="lg" 

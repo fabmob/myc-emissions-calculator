@@ -7,6 +7,7 @@ import { ProjectType} from '../../frontendTypes'
 import '../Project.css'
 import DescAndNav from '../../components/DescAndNav'
 import Footer from "../../components/Footer"
+import ItemWithOverlay from '../../components/ItemWithOverlay'
 
 
 export default function ClimateIntro(){
@@ -114,7 +115,7 @@ export default function ClimateIntro(){
                         <h3>Required for this calculation</h3>
                         <Table>
                             <colgroup>
-                                <col className="tablecol6" />{/* Data */}
+                                <col className="tablecol7" />{/* Data */}
                                 <col className="tablecolfluid" />{/* Unit */}
                             </colgroup>
                             <thead>
@@ -127,25 +128,41 @@ export default function ClimateIntro(){
                             ? <tbody>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected transport activity - mileage for each transport mode per year</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected transport activity - mileage for each transport mode per year">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected transport activity</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected transport performance for each transport mode per year</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected transport performance for each transport mode per year">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected transport performance</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>pkm: passenger-km or tkm: tons-km</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected share of the transport activity by vehicle category and fuel type">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected modal share</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>%vkt and %tkm</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected vehicle fuel consumption according to vehicle category and fuel type">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected fuels consumption</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>l-kW-kg/100km</td>
                                 </tr>
@@ -153,37 +170,61 @@ export default function ClimateIntro(){
                             : <tbody>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected avoided transport activity</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected avoided transport activity">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected avoided activity</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected added transport activity</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected added transport activity">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected added activity</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>vkt: vehicle-kilometre</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected vehicle load</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected vehicle load">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected vehicle load</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>passengers or tons</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected vehicle shift - orgin of shifted trips</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected vehicle shift - orgin of shifted trips">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected vehicle shift</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>% of trips</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected share of the transport activity by vehicle category and fuel type</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected share of the transport activity by vehicle category and fuel type">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected modal share</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>%vkt and %tkm</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Badge className="badge-read-only"><span className="item"><span>Projected vehicle fuel consumption according to vehicle category and fuel type</span></span></Badge>
+                                        <ItemWithOverlay overlayContent="Projected vehicle fuel consumption according to vehicle category and fuel type">
+                                            <Badge className="badge-read-only">
+                                                <span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Projected fuels consumption</span></span>
+                                            </Badge>
+                                        </ItemWithOverlay>
                                     </td>
                                     <td>l-kW-kg/100km</td>
                                 </tr>

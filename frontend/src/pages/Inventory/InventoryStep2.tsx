@@ -13,6 +13,7 @@ import PercentInput from '../../components/PercentInput'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function InventoryStep2(){
     const { keycloak, initialized } = useKeycloak();
@@ -87,14 +88,14 @@ export default function InventoryStep2(){
         setError("")
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[vtype].fuels[ftype]!.percent = percent
+            tmp.vtypes[vtype].fuels[ftype]!.percent = sanitizeFloatInput(percent)
             return tmp
         })
     }
     const updateInputVkt = (vtype: string, vkt: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[vtype].vkt = vkt
+            tmp.vtypes[vtype].vkt = sanitizeFloatInput(vkt)
             return tmp
         })
     }
@@ -103,6 +104,7 @@ export default function InventoryStep2(){
             let tmp = {...prevInputData}
             let vkt = ""
             if (fleetStock) {
+                fleetStock = sanitizeFloatInput(fleetStock)
                 vkt = (parseFloat(tmp.vtypes[vtype].fleetMileage) * parseFloat(fleetStock) / 1000000).toString()
             }
             tmp.vtypes[vtype].vkt = vkt
@@ -115,6 +117,7 @@ export default function InventoryStep2(){
             let tmp = {...prevInputData}
             let vkt = "";
             if (fleetMileage) {
+                fleetMileage = sanitizeFloatInput(fleetMileage)
                 vkt = (parseFloat(fleetMileage) * parseFloat(tmp.vtypes[vtype].fleetStock) / 1000000).toString() 
             }
             tmp.vtypes[vtype].vkt = vkt

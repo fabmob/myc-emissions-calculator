@@ -11,6 +11,7 @@ import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function BAUStep3(){
     const { keycloak, initialized } = useKeycloak();
@@ -77,7 +78,7 @@ export default function BAUStep3(){
     const updateInputCons = (vtype: string, ftype: FuelType, yearIndex: number, cons: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[vtype].fuels[ftype]!.cons[yearIndex] = cons
+            tmp.vtypes[vtype].fuels[ftype]!.cons[yearIndex] = sanitizeFloatInput(cons)
             return tmp
         })
         setError("")

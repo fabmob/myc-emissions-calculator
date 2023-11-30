@@ -10,6 +10,7 @@ import DescAndNav from '../../components/DescAndNav'
 import ValidSource from '../../components/ValidSource'
 import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWrapper'
 import ItemWithOverlay from '../../components/ItemWithOverlay'
+import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
 
 export default function InventoryStep3(){
     const { keycloak, initialized } = useKeycloak();
@@ -73,7 +74,7 @@ export default function InventoryStep3(){
     const updateInputCons = (vtype: string, ftype: FuelType, cons: string) => {
         setInputData((prevInputData) => {
             let tmp = {...prevInputData}
-            tmp.vtypes[vtype].fuels[ftype]!.cons = cons
+            tmp.vtypes[vtype].fuels[ftype]!.cons = sanitizeFloatInput(cons)
             return tmp
         })
         setError("")
