@@ -1430,9 +1430,9 @@ nav.navbar {
                     overflow: scroll;
                     padding: 0;
                 }
-                div.modal .modal-dialog.modal-sm .modal-content .modal-body {
+                /* div.modal .modal-dialog.modal-sm .modal-content .modal-body {
                     overflow: initial;
-                }
+                } */
             /* reset padding and margins of inner elements */
                 div.modal .modal-dialog .modal-content > * {
                     padding: 0;
