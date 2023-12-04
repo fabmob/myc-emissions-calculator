@@ -1927,6 +1927,7 @@ nav.navbar {
             display: none;
           
         } */
+        
         .masked-overflow-y::-webkit-scrollbar {
             width: 0.8rem;
           }
@@ -1939,6 +1940,9 @@ nav.navbar {
             border: transparent;
           }
         .masked-overflow-y {
+            /* Firefox styling of vertical scroll bar */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
             /* scroll bar width, for use in mask calculations*/
                 --scrollbar-width: 0.8rem;
             /* mask fade distance, for use in mask calculations */
