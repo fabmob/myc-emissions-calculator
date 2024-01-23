@@ -26,7 +26,7 @@ const MyNav = () => {
                         <Navbar expand="lg" className="d-print-none">
                             <Navbar.Brand href="/">
                                 {/* <img style={{height: "50px", marginRight: "20px"}}src="/mobiliseyourcity.png" alt="Mobilise Your City" /> */}
-                                <span className="item"><span>MYC GHG emissions calculator</span></span>
+                                <span className="item"><span>MYC Emissions Calculator</span></span>
                             </Navbar.Brand>
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                             <Navbar.Collapse id="basic-navbar-nav">

@@ -12,6 +12,7 @@ export default function WelcomePage(){
     return (
         <>
             <Jumbo />
+            <Initiative />
             <Methodology />
             <Devs />
             {/* <Partners /> */}
@@ -39,8 +40,8 @@ const Jumbo = () => {
                     <Col lg="5">
                         <h1>Estimate emissions from&nbsp;local&nbsp;transports</h1>
                         <div className="text">
-                            <p>The MYC Calculator helps government organizations and&nbsp;consulting agencies to&nbsp;estimate current and&nbsp;future GHG&nbsp;emissions, and allows them to&nbsp;compare their “Business&nbsp;As&nbsp;Usual”&nbsp;scenario to&nbsp;GHG reduction plans.</p>
-                            <p className="p3">The MYC Calculator is fully <a href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank">open source</a> and free to use.</p>
+                            <p>The <a href="https://www.mobiliseyourcity.net/">MobiliseYourCity</a> (MYC) Emissions Calculator helps government organizations and&nbsp;consulting agencies to&nbsp;estimate current and&nbsp;future greenhouse&nbsp;gas&nbsp;(GHG) emissions, and allows them to&nbsp;compare their “Business&nbsp;As&nbsp;Usual”&nbsp;scenario to&nbsp;GHG reduction plans.</p>
+                            <p className="p3">The MYC Emissions Calculator is fully <a href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank">open source</a> and free to use.</p>
                         </div>
                         {/* {keycloak.authenticated ?
                             <Button variant="action" size="lg" 
@@ -105,15 +106,36 @@ const Jumbo = () => {
         </>
     )
 }
-const Methodology = () => (
+const Initiative = () => (
     <section className="" style={{position: "relative", background: "var(--c-h0-s0-l6)", boxShadow: "0rem 0rem 3.6rem 0rem hsla(0,0%,0%,0.2)"}}>
+        <div className="container">
+            <Row>
+                {/* <Col lg="12"><h2>Initiative</h2></Col> */}
+                <Col lg="5">
+                    <h2 style={{marginTop: 0}}>Initiative</h2>
+                    <div className="text">
+                        <p>The MYC Emissions Calculator is an initiative from the <a href="https://www.mobiliseyourcity.net/">MobiliseYourCity</a> global partnership, which aims to improve sustainable mobility and decarbonize transport.</p>
+                        <p>Launched in 2015, it has over <b>70&nbsp;member cities</b> and <b>15&nbsp;member countries</b>. It works to transition to sustainable urban mobility, develop comprehensive mobility plans, facilitate sustainable financing for large-scale projects, and close the investment gap for sustainable mobility.</p>
+                    </div>
+                </Col>
+                <Col lg="7">
+                    <div className="illustration">
+                        <img style={{height: "120px"}} src="/pictures/myc_logo-h.png" alt="initiative"></img>
+                    </div>
+                </Col>
+            </Row>
+        </div>
+    </section>
+)
+const Methodology = () => (
+    <section className="" style={{position: "relative", background: "var(--c-h0-s0-l6)"}}>
         <div className="container">
             <Row>
                 {/* <Col lg="12"><h2>Methodology</h2></Col> */}
                 <Col lg="5">
                     <h2 style={{marginTop: 0}}>Methodology</h2>
                     <div className="text">
-                        <p>It relies on a <b>bottom-up model</b> : calculations are based on distance travelled (whereas the top-down model bases the calculations on fuel/energy consumption). </p>
+                        <p>The tool relies on a <b>bottom-up model</b> : calculations are based on distance travelled (whereas the top-down model bases the calculations on fuel/energy consumption). </p>
                         <p>The scope of the emission that should be taken into account is <b>based on a territorial principle</b> : basically all traffic within the city must taken into account. For more details, go to chapter 3.2 of <a href="https://www.mobiliseyourcity.net/sites/default/files/2022-04/MRV%20GHG%20Guidelines_ENG_2020_final.pdf">MYC-GHG Guidelines</a>. </p>
                     </div>
                 </Col>
@@ -132,9 +154,9 @@ const Devs = () => (
             <Row>
                 {/* <Col lg="12"><h2>Creators</h2></Col> */}
                 <Col lg="5">
-                    <h2 style={{marginTop: 0}}>Creators</h2>
+                    <h2 style={{marginTop: 0}}>Development</h2>
                     <div className="text">
-                        <p>The tool was developed by <a href="https://lafabriquedesmobilites.fr/" target="_blank" rel="noreferrer">Fabrique des Mobilités </a> based on the <a href="https://www.mobiliseyourcity.net/mobiliseyourcity-emissions-calculator" target="_blank" rel="noreferrer">Excel</a> model created by the <a href="http://www.ifeu.de">Institute for Energy and Environmental Research</a> in cooperation with the German and French development agencies GIZ and AFD.</p>
+                        <p>The tool was developed by <a href="https://lafabriquedesmobilites.fr/" target="_blank" rel="noreferrer">Fabrique des Mobilités </a> based on the <a href="https://www.mobiliseyourcity.net/mobiliseyourcity-emissions-calculator" target="_blank" rel="noreferrer">Excel</a> model created by the <a href="http://www.ifeu.de" style={{display: 'inline'}}>Institute for Energy and Environmental Research</a> in cooperation with the German and French development agencies GIZ and AFD.</p>
                         <p>The developers are not responsible for the accuracy of the results. Any modification of the tool is the responsibility of the user. It is not allowed to use the tool for commercial purposes.</p>
                     </div>
                 </Col>
