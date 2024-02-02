@@ -76,6 +76,11 @@ In 2023, the **version MVP2 was released**, complementing the scope to match the
     * Display well to wheel results by default on inventory results page
     * Prevent users from adding special characters and letters in number fields, also convert commas to dot automatically.
 
+## 2.3
+* Design rework on the welcome page
+* New feature: New vehicules and fuels can be added at the start of BAU & Climatescenarios, instead of having to go back to inventory and redoing all the steps
+* New feature: Climate scenarios can now be deleted if more than one is present
+
 ---
 
 More information, and illustrations for the above list can be found on the [Fabrique des Mobilités' wiki entry](https://wiki.lafabriquedesmobilites.fr/wiki/MYC_GHG_Emissions_Calculator).
