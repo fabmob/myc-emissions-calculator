@@ -340,7 +340,7 @@ const OptionsModal = (
             <Modal.Header closeButton>
                 <Modal.Title>Settings</Modal.Title>
             </Modal.Header>
-            <Modal.Body className="masked-overflow-y">
+            <Modal.Body className="masked-overflow-y" style={{"overflowX": "hidden"}}>
                 <Form.Group className="mb-3">
                     <Form.Label>Displayed categories of transport</Form.Label>
                     <div style={{display: 'flex', flexWrap: 'wrap'}}>

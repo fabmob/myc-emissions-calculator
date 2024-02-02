@@ -800,3 +800,296 @@ test('compute scenario modal share', () => {
     expect(modalShare.freight['Truck'].map(e => parseFloat(e.toFixed(3)))).toEqual([0.667, 0.666,0.665,0.664,0.663,0.662])
 })
 
+test('Inventory steps update after vtype update', () => {
+    const inputInventoryStep1: types.InputInventoryStep1 = {"vtypes":{"👟 Walking":{"network":"road","type":"private transport","fuels":{"None":true}},"🚘 Private car":{"network":"road","type":"private transport","fuels":{"Gasoline":true,"Diesel":true}},"🚕 Individual taxi":{"network":"road","type":"public transport","fuels":{"Gasoline":true}},"🏍️ Motorcycle":{"network":"road","type":"private transport","fuels":{"Gasoline":true}},"🚐 Minibus":{"network":"road","type":"public transport","fuels":{"Gasoline":true,"Diesel":true}},"🚌 Bus":{"network":"road","type":"public transport","fuels":{"CNG":true,"Diesel":true}}},"note":""}
+    const inputInventoryStep2: types.InputInventoryStep2 = {"vtypes":{"👟 Walking":{"vkt":"0.01","vktSource":"IMEPLAN","fuels":{"None":{"percent":"100","percentSource":"IMEPLAN"},"CNG":{"percent":"","percentSource":"IMEPLAN"}},"fleetStock":"5","fleetMileage":"2000"},"🚘 Private car":{"vkt":"20865.182984","vktSource":"","fuels":{"Gasoline":{"percent":"99","percentSource":"IMEPLAN"},"Diesel":{"percent":"1","percentSource":""},"CNG":{"percent":"","percentSource":""}},"fleetStock":"1173916","fleetMileage":"17774"},"🚕 Individual taxi":{"vkt":"270.851283","vktSource":"","fuels":{"Gasoline":{"percent":"100","percentSource":""}},"fleetStock":"13599","fleetMileage":"19917"},"🏍️ Motorcycle":{"vkt":"9716.914212","vktSource":"","fuels":{"Gasoline":{"percent":"100","percentSource":""}},"fleetStock":"225508","fleetMileage":"43089"},"🚐 Minibus":{"vkt":"145.336476","vktSource":"","fuels":{"Gasoline":{"percent":"22","percentSource":""},"Diesel":{"percent":"78","percentSource":""}},"fleetStock":"2787","fleetMileage":"52148"},"🚌 Bus":{"vkt":"321.98498","vktSource":"","fuels":{"Diesel":{"percent":"44","percentSource":""},"CNG":{"percent":"56","percentSource":""}},"fleetStock":"6914","fleetMileage":"46570"}},"note":""}
+    
+    const inputInventoryStep3: types.InputInventoryStep3 = {"vtypes":{"👟 Walking":{"fuels":{"None":{"cons":"0","consSource":""}}},"🚘 Private car":{"fuels":{"Gasoline":{"cons":"9.4","consSource":""},"Diesel":{"cons":"6.8","consSource":""}}},"🚕 Individual taxi":{"fuels":{"Gasoline":{"cons":"9.2","consSource":""}}},"🏍️ Motorcycle":{"fuels":{"Gasoline":{"cons":"10","consSource":""}}},"🚐 Minibus":{"fuels":{"Gasoline":{"cons":"34.3","consSource":""},"Diesel":{"cons":"31.2","consSource":""}}},"🚌 Bus":{"fuels":{"Diesel":{"cons":"34.3","consSource":""},"CNG":{"cons":"0","consSource":""}}}}, "note": ""}
+    const inputInventoryStep6: types.InputInventoryStep6 = {"vtypes":{"👟 Walking":{"source":"","value":"1"},"🚘 Private car":{"source":"","value":"1.6"},"🚕 Individual taxi":{"source":"","value":"1.1"},"🏍️ Motorcycle":{"source":"","value":"1.2"},"🚐 Minibus":{"source":"","value":"16.4"},"🚌 Bus":{"source":"","value":"16.4"}}, "note": ""}
+    const inputInventoryStep8: types.InputInventoryStep8 = {"vtypes":{"👟 Walking":{"source":"","value":"0.6"},"🚘 Private car":{"source":"","value":"7.6"},"🚕 Individual taxi":{"source":"","value":"5.4"},"🏍️ Motorcycle":{"source":"","value":"8.6"},"🚐 Minibus":{"source":"","value":"7.8"},"🚌 Bus":{"source":"","value":"7.8"}}, "note": ""}
+    let project: types.FullProject = {
+        id: 1,
+        createdDate: new Date(),
+        modifiedDate: new Date(),
+        owner: "owner", 
+        name: "name",
+        isSump: true,
+        country: "country", 
+        city: "city", 
+        partnerLocation: "partnerLocation", 
+        area: "area", 
+        status: "status", 
+        referenceYears: [2020, 2030, 2040],
+        stages:  {
+            "BAU": [],
+            "Inventory": [{steps: [{}, inputInventoryStep1, inputInventoryStep2, inputInventoryStep3, {}, {}, inputInventoryStep6, {}, inputInventoryStep8], step: 8}],
+            "Climate": []
+        },
+        sources: []
+    }
+    project.stages.Inventory[0].steps[1].vtypes["NEWVTYPE"] = {
+        network: "road",
+        type: "private transport",
+        fuels: {"Gasoline":true,"Diesel":true}
+    }
+    let updatedProject = models.updateStepsWithNewVehicles(project)
+    let updatedinputInventoryStep2: types.InputInventoryStep2 = updatedProject.stages.Inventory[0].steps[2]
+    let updatedinputInventoryStep3: types.InputInventoryStep3 = updatedProject.stages.Inventory[0].steps[3]
+    let updatedinputInventoryStep6: types.InputInventoryStep6 = updatedProject.stages.Inventory[0].steps[6]
+    let updatedinputInventoryStep8: types.InputInventoryStep8 = updatedProject.stages.Inventory[0].steps[8]
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"])
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"].vkt).toEqual("0")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percent).toEqual("")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percentSource).toEqual("")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percent).toEqual("")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percentSource).toEqual("")
+    expect(updatedinputInventoryStep3.vtypes["NEWVTYPE"])
+    expect(updatedinputInventoryStep3.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.cons).toEqual("")
+    expect(updatedinputInventoryStep3.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.consSource).toEqual("")
+    expect(updatedinputInventoryStep3.vtypes["NEWVTYPE"]?.fuels?.Diesel?.cons).toEqual("")
+    expect(updatedinputInventoryStep3.vtypes["NEWVTYPE"]?.fuels?.Diesel?.consSource).toEqual("")
+    expect(updatedinputInventoryStep3.vtypes["NEWVTYPE"])
+    expect(updatedinputInventoryStep6.vtypes["NEWVTYPE"])
+    expect(updatedinputInventoryStep8.vtypes["NEWVTYPE"])
+
+
+    project.stages.Inventory[0].steps[1].vtypes["NEWVTYPE2"] = {
+        network: "road",
+        type: "private transport",
+        fuels: {"Gasoline":true,"Diesel":false}
+    }
+    updatedProject = models.updateStepsWithNewVehicles(project)
+    updatedinputInventoryStep2 = updatedProject.stages.Inventory[0].steps[2]
+    updatedinputInventoryStep3 = updatedProject.stages.Inventory[0].steps[3]
+    updatedinputInventoryStep6 = updatedProject.stages.Inventory[0].steps[6]
+    updatedinputInventoryStep8 = updatedProject.stages.Inventory[0].steps[8]
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE2"])
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE2"].vkt).toEqual("0")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE2"]?.fuels?.Gasoline?.percent).toEqual("100")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE2"]?.fuels?.Gasoline?.percentSource).toEqual("")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE2"]?.fuels?.Diesel?.percent).toBe(undefined)
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE2"]?.fuels?.Diesel?.percentSource).toBe(undefined)
+})
+
+test('Partial inventory steps update after vtype update', () => {
+    const inputInventoryStep1: types.InputInventoryStep1 = {"vtypes":{"👟 Walking":{"network":"road","type":"private transport","fuels":{"None":true}},"🚘 Private car":{"network":"road","type":"private transport","fuels":{"Gasoline":true,"Diesel":true}},"🚕 Individual taxi":{"network":"road","type":"public transport","fuels":{"Gasoline":true}},"🏍️ Motorcycle":{"network":"road","type":"private transport","fuels":{"Gasoline":true}},"🚐 Minibus":{"network":"road","type":"public transport","fuels":{"Gasoline":true,"Diesel":true}},"🚌 Bus":{"network":"road","type":"public transport","fuels":{"CNG":true,"Diesel":true}}},"note":""}
+    const inputInventoryStep2: types.InputInventoryStep2 = {"vtypes":{"👟 Walking":{"vkt":"0.01","vktSource":"IMEPLAN","fuels":{"None":{"percent":"100","percentSource":"IMEPLAN"},"CNG":{"percent":"","percentSource":"IMEPLAN"}},"fleetStock":"5","fleetMileage":"2000"},"🚘 Private car":{"vkt":"20865.182984","vktSource":"","fuels":{"Gasoline":{"percent":"99","percentSource":"IMEPLAN"},"Diesel":{"percent":"1","percentSource":""},"CNG":{"percent":"","percentSource":""}},"fleetStock":"1173916","fleetMileage":"17774"},"🚕 Individual taxi":{"vkt":"270.851283","vktSource":"","fuels":{"Gasoline":{"percent":"100","percentSource":""}},"fleetStock":"13599","fleetMileage":"19917"},"🏍️ Motorcycle":{"vkt":"9716.914212","vktSource":"","fuels":{"Gasoline":{"percent":"100","percentSource":""}},"fleetStock":"225508","fleetMileage":"43089"},"🚐 Minibus":{"vkt":"145.336476","vktSource":"","fuels":{"Gasoline":{"percent":"22","percentSource":""},"Diesel":{"percent":"78","percentSource":""}},"fleetStock":"2787","fleetMileage":"52148"},"🚌 Bus":{"vkt":"321.98498","vktSource":"","fuels":{"Diesel":{"percent":"44","percentSource":""},"CNG":{"percent":"56","percentSource":""}},"fleetStock":"6914","fleetMileage":"46570"}},"note":""}
+    let project: types.FullProject = {
+        id: 1,
+        createdDate: new Date(),
+        modifiedDate: new Date(),
+        owner: "owner", 
+        name: "name",
+        isSump: true,
+        country: "country", 
+        city: "city", 
+        partnerLocation: "partnerLocation", 
+        area: "area", 
+        status: "status", 
+        referenceYears: [2020, 2030, 2040],
+        stages:  {
+            "BAU": [],
+            "Inventory": [{steps: [{}, inputInventoryStep1, inputInventoryStep2], step: 2}],
+            "Climate": []
+        },
+        sources: []
+    }
+    project.stages.Inventory[0].steps[1].vtypes["NEWVTYPE"] = {
+        network: "road",
+        type: "private transport",
+        fuels: {"Gasoline":true,"Diesel":true}
+    }
+    let updatedProject = models.updateStepsWithNewVehicles(project)
+    let updatedinputInventoryStep2: types.InputInventoryStep2 = updatedProject.stages.Inventory[0].steps[2]
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"])
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"].vkt).toEqual("0")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percent).toEqual("")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percentSource).toEqual("")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percent).toEqual("")
+    expect(updatedinputInventoryStep2.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percentSource).toEqual("")
+})
+
+test('Bau steps update after vtype update', () => {
+    const inputInventoryStep1: types.InputInventoryStep1 = {"vtypes":{"👟 Walking":{"network":"road","type":"private transport","fuels":{"None":true}},"🚘 Private car":{"network":"road","type":"private transport","fuels":{"Gasoline":true,"Diesel":true}},"🚕 Individual taxi":{"network":"road","type":"public transport","fuels":{"Gasoline":true}},"🏍️ Motorcycle":{"network":"road","type":"private transport","fuels":{"Gasoline":true}},"🚐 Minibus":{"network":"road","type":"public transport","fuels":{"Gasoline":true,"Diesel":true}},"🚌 Bus":{"network":"road","type":"public transport","fuels":{"CNG":true,"Diesel":true}}},"note":""}
+    const inputInventoryStep3: types.InputInventoryStep3 = {"vtypes":{"👟 Walking":{"fuels":{"None":{"cons":"0","consSource":""}}},"🚘 Private car":{"fuels":{"Gasoline":{"cons":"9.4","consSource":""},"Diesel":{"cons":"6.8","consSource":""}}},"🚕 Individual taxi":{"fuels":{"Gasoline":{"cons":"9.2","consSource":""}}},"🏍️ Motorcycle":{"fuels":{"Gasoline":{"cons":"10","consSource":""}}},"🚐 Minibus":{"fuels":{"Gasoline":{"cons":"34.3","consSource":""},"Diesel":{"cons":"31.2","consSource":""}}},"🚌 Bus":{"fuels":{"Diesel":{"cons":"34.3","consSource":""},"CNG":{"cons":"0","consSource":""}}}}, "note": ""}
+    const inputBAUStep1: types.InputBAUStep1 = {"vtypes":{"👟 Walking":{"source":"","vktRate":[1.9,1.9,1.9,1.9,1.9]},"🚘 Private car":{"source":"","vktRate":[1.9,1.9,1.9,1.9,1.9]},"🚕 Individual taxi":{"source":"","vktRate":[1.9,1.9,1.9,1.9,1.9]},"🏍️ Motorcycle":{"source":"","vktRate":[1.9,1.9,1.9,1.9,1.9]},"🚐 Minibus":{"source":"","vktRate":[1.9,1.9,1.9,1.9,1.9]},"🚌 Bus":{"source":"","vktRate":[1.9,1.9,1.9,1.9,1.9]}}, "note": ""}
+    const inputBAUStep2: types.InputBAUStep2 = {"vtypes":{"👟 Walking":{"fuels":{"None":{"percent":["100","100","100","100","100"],"percentSource":""}}},"🚘 Private car":{"fuels":{"Gasoline":{"percent":["99","99","99","99","99"],"percentSource":""},"Diesel":{"percent":["1","1","1","1","1"],"percentSource":""}}},"🚕 Individual taxi":{"fuels":{"Gasoline":{"percent":["100","100","100","100","100"],"percentSource":""}}},"🏍️ Motorcycle":{"fuels":{"Gasoline":{"percent":["100","100","100","100","100"],"percentSource":""}}},"🚐 Minibus":{"fuels":{"Gasoline":{"percent":["22","22","22","22","22"],"percentSource":""},"Diesel":{"percent":["78","78","78","78","78"],"percentSource":""}}},"🚌 Bus":{"fuels":{"Diesel":{"percent":["44","44","44","44","44"],"percentSource":""},"CNG":{"percent":["56","56","56","56","56"],"percentSource":""}}}}, "note": ""}
+    const inputBAUStep3: types.InputBAUStep3 = {"vtypes":{"👟 Walking":{"fuels":{"None":{"cons":["0","0","0","0","0"],"consSource":""}}},"🚘 Private car":{"fuels":{"Gasoline":{"cons":["9.4","9.4","9.4","9.4","9.4"],"consSource":""},"Diesel":{"cons":["6.8","6.8","6.8","6.8","6.8"],"consSource":""}}},"🚕 Individual taxi":{"fuels":{"Gasoline":{"cons":["9.2","9.2","9.2","9.2","9.2"],"consSource":""}}},"🏍️ Motorcycle":{"fuels":{"Gasoline":{"cons":["10","10","10","10","10"],"consSource":""}}},"🚐 Minibus":{"fuels":{"Gasoline":{"cons":["34.3","34.3","34.3","34.3","34.3"],"consSource":""},"Diesel":{"cons":["31.2","31.2","31.2","31.2","31.2"],"consSource":""}}},"🚌 Bus":{"fuels":{"Diesel":{"cons":["34.3","34.3","34.3","34.3","34.3"],"consSource":""},"CNG":{"cons":["0","0","0","0","0"],"consSource":""}}}}, "note": ""}
+    let project: types.FullProject = {
+        id: 1,
+        createdDate: new Date(),
+        modifiedDate: new Date(),
+        owner: "owner", 
+        name: "name",
+        isSump: true,
+        country: "country", 
+        city: "city", 
+        partnerLocation: "partnerLocation", 
+        area: "area", 
+        status: "status", 
+        referenceYears: [2020, 2030, 2040],
+        stages:  {
+            "BAU": [{steps: [undefined, inputBAUStep1, inputBAUStep2, inputBAUStep3, undefined], step: 5}],
+            "Inventory": [{steps: [undefined, inputInventoryStep1, undefined, inputInventoryStep3], step: 8}],
+            "Climate": []
+        },
+        sources: []
+    }
+    project.stages.Inventory[0].steps[1].vtypes["NEWVTYPE"] = {
+        network: "road",
+        type: "private transport",
+        fuels: {"Gasoline":true,"Diesel":true}
+    }
+    let updatedProject = models.updateStepsWithNewVehicles(project)
+
+    let updatedinputBAUStep1: types.InputBAUStep1 = updatedProject.stages.BAU[0].steps[1]
+    let updatedinputBAUStep2: types.InputBAUStep2 = updatedProject.stages.BAU[0].steps[2]
+    let updatedinputBAUStep3: types.InputBAUStep3 = updatedProject.stages.BAU[0].steps[3]
+    expect(updatedinputBAUStep1.vtypes["NEWVTYPE"])
+    expect(updatedinputBAUStep1.vtypes["NEWVTYPE"].vktRate).toEqual([0, 0])
+    expect(updatedinputBAUStep2.vtypes["NEWVTYPE"])
+    expect(updatedinputBAUStep2.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percent).toEqual(["",""])
+    expect(updatedinputBAUStep2.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percentSource).toEqual("")
+    expect(updatedinputBAUStep2.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percent).toEqual(["",""])
+    expect(updatedinputBAUStep2.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percentSource).toEqual("")
+    expect(updatedinputBAUStep3.vtypes["NEWVTYPE"])
+    expect(updatedinputBAUStep3.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.cons).toEqual(["0","0"])
+    expect(updatedinputBAUStep3.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.consSource).toEqual("")
+    expect(updatedinputBAUStep3.vtypes["NEWVTYPE"]?.fuels?.Diesel?.cons).toEqual(["0","0"])
+    expect(updatedinputBAUStep3.vtypes["NEWVTYPE"]?.fuels?.Diesel?.consSource).toEqual("")
+
+    project.stages.Inventory[0].steps[1].vtypes["NEWVTYPE2"] = {
+        network: "road",
+        type: "private transport",
+        fuels: {"Gasoline":true,"Diesel":false}
+    }
+    updatedProject = models.updateStepsWithNewVehicles(project)
+
+    updatedinputBAUStep1 = updatedProject.stages.BAU[0].steps[1]
+    updatedinputBAUStep2 = updatedProject.stages.BAU[0].steps[2]
+    expect(updatedinputBAUStep2.vtypes["NEWVTYPE2"]?.fuels?.Gasoline?.percent).toEqual(["100","100"])
+    expect(updatedinputBAUStep2.vtypes["NEWVTYPE2"]?.fuels?.Gasoline?.percentSource).toEqual("")
+    expect(updatedinputBAUStep2.vtypes["NEWVTYPE2"]?.fuels?.Diesel).toBe(undefined)
+})
+
+test('Climate steps update after vtype update', () => {
+    const inputInventoryStep1: types.InputInventoryStep1 = {"vtypes":{"👟 Walking":{"network":"road","type":"private transport","fuels":{"None":true}},"🚘 Private car":{"network":"road","type":"private transport","fuels":{"Gasoline":true,"Diesel":true}},"🚕 Individual taxi":{"network":"road","type":"public transport","fuels":{"Gasoline":true}},"🏍️ Motorcycle":{"network":"road","type":"private transport","fuels":{"Gasoline":true}},"🚐 Minibus":{"network":"road","type":"public transport","fuels":{"Gasoline":true,"Diesel":true}},"🚌 Bus":{"network":"road","type":"public transport","fuels":{"CNG":true,"Diesel":true}}},"note":""}
+    const inputInventoryStep3: types.InputInventoryStep3 = {"vtypes":{"👟 Walking":{"fuels":{"None":{"cons":"0","consSource":""}}},"🚘 Private car":{"fuels":{"Gasoline":{"cons":"9.4","consSource":""},"Diesel":{"cons":"6.8","consSource":""}}},"🚕 Individual taxi":{"fuels":{"Gasoline":{"cons":"9.2","consSource":""}}},"🏍️ Motorcycle":{"fuels":{"Gasoline":{"cons":"10","consSource":""}}},"🚐 Minibus":{"fuels":{"Gasoline":{"cons":"34.3","consSource":""},"Diesel":{"cons":"31.2","consSource":""}}},"🚌 Bus":{"fuels":{"Diesel":{"cons":"34.3","consSource":""},"CNG":{"cons":"0","consSource":""}}}}, "note": ""}
+    const inputInventoryStep6: types.InputInventoryStep6 = {"vtypes":{"👟 Walking":{"source":"","value":"1"},"🚘 Private car":{"source":"","value":"1.6"},"🚕 Individual taxi":{"source":"","value":"1.1"},"🏍️ Motorcycle":{"source":"","value":"1.2"},"🚐 Minibus":{"source":"","value":"16.4"},"🚌 Bus":{"source":"","value":"16.4"}}, "note": ""}
+    const inputClimateWithoutUpstreamStep1: types.InputClimateWithoutUpstreamStep1 = {"vtypes":{"👟 Walking":{"source":"","avoidedVkt":[0,0,0,0,0]},"🚘 Private car":{"source":"","avoidedVkt":[1,5,9.9,19.8,29.8]},"🚕 Individual taxi":{"source":"","avoidedVkt":[0,0,0,0,0]},"🏍️ Motorcycle":{"source":"","avoidedVkt":[4,2.2,4.4,8.8,13.3]},"🚐 Minibus":{"source":"","avoidedVkt":[0,0,0,0,0]},"🚌 Bus":{"source":"","avoidedVkt":[0,0,0,0,0]}}, 'note': ''}
+    const inputClimateWithoutUpstreamStep2: types.InputClimateWithoutUpstreamStep2 = {"vtypes":{"👟 Walking":{"source":"","addedVkt":["0","0","0","0","0"]},"🚘 Private car":{"source":"","addedVkt":["0","0","0","0","0"]},"🚕 Individual taxi":{"source":"","addedVkt":["0","0","0","0","0"]},"🏍️ Motorcycle":{"source":"","addedVkt":["0","0","0","0","0"]},"🚐 Minibus":{"source":"","addedVkt":["0","5.6","11.5","23.9","37.4"]},"🚌 Bus":{"source":"","addedVkt":["0","12.5","25.5","53.1","82.9"]}}, 'note': ''}
+    const inputClimateWithoutUpstreamStep3: types.InputClimateWithoutUpstreamStep3 = {"vtypes":{"👟 Walking":{"source":"","load":["1","1","1","1","1"]},"🚘 Private car":{"source":"","load":["1.6","1.6","1.6","1.6","1.6"]},"🚕 Individual taxi":{"source":"","load":["1.1","1.1","1.1","1.1","1.1"]},"🏍️ Motorcycle":{"source":"","load":["1.2","1.2","1.2","1.2","1.2"]},"🚐 Minibus":{"source":"","load":["16.4","16.4","16.4","16.4","16.4"]},"🚌 Bus":{"source":"","load":["16.4","16.4","16.4","16.4","16.4"]}}, 'note': ''}
+    const inputClimateWithoutUpstreamStep4: types.InputClimateWithoutUpstreamStep4 = {"vtypes":{"👟 Walking":{"👟 Walking":{"source":"","value":["0","0","0","0","0"]},"🚘 Private car":{"source":"","value":["0","0","0","0","0"]},"🚕 Individual taxi":{"source":"","value":["0","0","0","0","0"]},"🏍️ Motorcycle":{"source":"","value":["0","0","0","0","0"]},"🚐 Minibus":{"source":"","value":["0","0","0","0","0"]},"🚌 Bus":{"source":"","value":["0","0","0","0","0"]}},"🚘 Private car":{"👟 Walking":{"source":"","value":["0","0","0","0","0"]},"🚘 Private car":{"source":"","value":["0","0","0","0","0"]},"🚕 Individual taxi":{"source":"","value":["0","0","0","0","0"]},"🏍️ Motorcycle":{"source":"","value":["0","0","0","0","0"]},"🚐 Minibus":{"source":"","value":["0","0","0","0","0"]},"🚌 Bus":{"source":"","value":["0","0","0","0","0"]}},"🚕 Individual taxi":{"👟 Walking":{"source":"","value":["0","0","0","0","0"]},"🚘 Private car":{"source":"","value":["0","0","0","0","0"]},"🚕 Individual taxi":{"source":"","value":["0","0","0","0","0"]},"🏍️ Motorcycle":{"source":"","value":["0","0","0","0","0"]},"🚐 Minibus":{"source":"","value":["0","0","0","0","0"]},"🚌 Bus":{"source":"","value":["0","0","0","0","0"]}},"🏍️ Motorcycle":{"👟 Walking":{"source":"","value":["0","0","0","0","0"]},"🚘 Private car":{"source":"","value":["0","0","0","0","0"]},"🚕 Individual taxi":{"source":"","value":["0","0","0","0","0"]},"🏍️ Motorcycle":{"source":"","value":["0","0","0","0","0"]},"🚐 Minibus":{"source":"","value":["0","0","0","0","0"]},"🚌 Bus":{"source":"","value":["0","0","0","0","0"]}},"🚐 Minibus":{"👟 Walking":{"source":"","value":["0","0","0","0","0"]},"🚘 Private car":{"source":"","value":["0","14","14","14","14"]},"🚕 Individual taxi":{"source":"","value":["0","15","15","15","8"]},"🏍️ Motorcycle":{"source":"","value":["0","9","9","9","9"]},"🚐 Minibus":{"source":"","value":["0","0","0","0","0"]},"🚌 Bus":{"source":"","value":["0","33","33","33","33"]}},"🚌 Bus":{"👟 Walking":{"source":"","value":["0","0","0","0","0"]},"🚘 Private car":{"source":"","value":["0","14","14","14","14"]},"🚕 Individual taxi":{"source":"","value":["0","15","15","15","8"]},"🏍️ Motorcycle":{"source":"","value":["0","9","9","9","9"]},"🚐 Minibus":{"source":"","value":["0","33","33","33","33"]},"🚌 Bus":{"source":"","value":["0","0","0","0","0"]}}}, 'note': ''}
+    const inputClimateWithoutUpstreamStep5: types.InputBAUStep2 = {"vtypes":{"👟 Walking":{"fuels":{"None":{"percent":["100","100","100","100","100"],"percentSource":""}}},"🚘 Private car":{"fuels":{"Gasoline":{"percent":["99","99","99","99","99"],"percentSource":""},"Diesel":{"percent":["1","1","1","1","1"],"percentSource":""}}},"🚕 Individual taxi":{"fuels":{"Gasoline":{"percent":["100","100","100","100","100"],"percentSource":""}}},"🏍️ Motorcycle":{"fuels":{"Gasoline":{"percent":["100","100","100","100","100"],"percentSource":""}}},"🚐 Minibus":{"fuels":{"Gasoline":{"percent":["22","22","22","22","22"],"percentSource":""},"Diesel":{"percent":["78","78","78","78","78"],"percentSource":""}}},"🚌 Bus":{"fuels":{"Diesel":{"percent":["44","44","44","44","44"],"percentSource":""},"CNG":{"percent":["56","56","56","56","56"],"percentSource":""}}}}, 'note': ''}
+    const inputClimateWithoutUpstreamStep6: types.InputBAUStep3 = {"vtypes":{"👟 Walking":{"fuels":{"None":{"cons":["0","0","0","0","0"],"consSource":""}}},"🚘 Private car":{"fuels":{"Gasoline":{"cons":["10.5","10.1","9.8","9.1","8.5"],"consSource":""},"Diesel":{"cons":["12.7","12.3","11.9","11.1","10.3"],"consSource":""}}},"🚕 Individual taxi":{"fuels":{"Gasoline":{"cons":["9.2","8.8","8.4","8","7.1"],"consSource":""}}},"🏍️ Motorcycle":{"fuels":{"Gasoline":{"cons":["10","9.7","9.5","9","8.5"],"consSource":""}}},"🚐 Minibus":{"fuels":{"Gasoline":{"cons":["11","10.6","10.1","9.3","8.6"],"consSource":""},"Diesel":{"cons":["11.9","11.4","11","10.1","9.3"],"consSource":""}}},"🚌 Bus":{"fuels":{"Diesel":{"cons":["12","11.5","11.1","10.2","9.4"],"consSource":""},"CNG":{"cons":["0","0","0","0","0"],"consSource":""}}}}, 'note': ''}
+    let project: types.FullProject = {
+        id: 1,
+        createdDate: new Date(),
+        modifiedDate: new Date(),
+        owner: "owner", 
+        name: "name",
+        isSump: true,
+        country: "country", 
+        city: "city", 
+        partnerLocation: "partnerLocation", 
+        area: "area", 
+        status: "status", 
+        referenceYears: [2020, 2030, 2040],
+        stages:  {
+            "BAU": [],
+            "Inventory": [{steps: [undefined, inputInventoryStep1, undefined, inputInventoryStep3, undefined, undefined, inputInventoryStep6], step: 8}],
+            "Climate": [{steps: [{method: "Without"}, inputClimateWithoutUpstreamStep1, inputClimateWithoutUpstreamStep2, inputClimateWithoutUpstreamStep3, inputClimateWithoutUpstreamStep4, inputClimateWithoutUpstreamStep5, inputClimateWithoutUpstreamStep6], step: 7}]
+        },
+        sources: []
+    }
+    project.stages.Inventory[0].steps[1].vtypes["NEWVTYPE"] = {
+        network: "road",
+        type: "private transport",
+        fuels: {"Gasoline":true,"Diesel":true}
+    }
+    let updatedProject = models.updateStepsWithNewVehicles(project)
+
+    let updatedinputClimateWithoutUpstreamStep1: types.InputClimateWithoutUpstreamStep1 = updatedProject.stages.Climate[0].steps[1]
+    let updatedinputClimateWithoutUpstreamStep2: types.InputClimateWithoutUpstreamStep2 = updatedProject.stages.Climate[0].steps[2]
+    let updatedinputClimateWithoutUpstreamStep3: types.InputClimateWithoutUpstreamStep3 = updatedProject.stages.Climate[0].steps[3]
+    let updatedinputClimateWithoutUpstreamStep4: types.InputClimateWithoutUpstreamStep4 = updatedProject.stages.Climate[0].steps[4]
+    let updatedinputClimateWithoutUpstreamStep5: types.InputBAUStep2 = updatedProject.stages.Climate[0].steps[5]
+    let updatedinputClimateWithoutUpstreamStep6: types.InputBAUStep3 = updatedProject.stages.Climate[0].steps[6]
+    expect(updatedinputClimateWithoutUpstreamStep1.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithoutUpstreamStep1.vtypes["NEWVTYPE"].avoidedVkt).toEqual([0, 0])
+    expect(updatedinputClimateWithoutUpstreamStep2.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithoutUpstreamStep2.vtypes["NEWVTYPE"].addedVkt).toEqual(["0", "0"])
+    expect(updatedinputClimateWithoutUpstreamStep3.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithoutUpstreamStep3.vtypes["NEWVTYPE"].load).toEqual(["", ""])
+    expect(updatedinputClimateWithoutUpstreamStep4.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithoutUpstreamStep4.vtypes["NEWVTYPE"]["🚘 Private car"].value).toEqual(["0", "0"])
+    expect(updatedinputClimateWithoutUpstreamStep5.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithoutUpstreamStep5.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percent).toEqual(["",""])
+    expect(updatedinputClimateWithoutUpstreamStep5.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percentSource).toEqual("")
+    expect(updatedinputClimateWithoutUpstreamStep5.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percent).toEqual(["",""])
+    expect(updatedinputClimateWithoutUpstreamStep5.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percentSource).toEqual("")
+    expect(updatedinputClimateWithoutUpstreamStep6.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithoutUpstreamStep6.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.cons).toEqual(["0","0"])
+    expect(updatedinputClimateWithoutUpstreamStep6.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.consSource).toEqual("")
+    expect(updatedinputClimateWithoutUpstreamStep6.vtypes["NEWVTYPE"]?.fuels?.Diesel?.cons).toEqual(["0","0"])
+    expect(updatedinputClimateWithoutUpstreamStep6.vtypes["NEWVTYPE"]?.fuels?.Diesel?.consSource).toEqual("")
+})
+
+test('Climate With upstream steps update after vtype update', () => {
+    const inputInventoryStep1: types.InputInventoryStep1 = {"vtypes":{"👟 Walking":{"network":"road","type":"private transport","fuels":{"None":true}},"🚘 Private car":{"network":"road","type":"private transport","fuels":{"Gasoline":true,"Diesel":true}},"🚕 Individual taxi":{"network":"road","type":"public transport","fuels":{"Gasoline":true}},"🏍️ Motorcycle":{"network":"road","type":"private transport","fuels":{"Gasoline":true}},"🚐 Minibus":{"network":"road","type":"public transport","fuels":{"Gasoline":true,"Diesel":true}},"🚌 Bus":{"network":"road","type":"public transport","fuels":{"CNG":true,"Diesel":true}}},"note":""}
+    const inputInventoryStep3: types.InputInventoryStep3 = {"vtypes":{"👟 Walking":{"fuels":{"None":{"cons":"0","consSource":""}}},"🚘 Private car":{"fuels":{"Gasoline":{"cons":"9.4","consSource":""},"Diesel":{"cons":"6.8","consSource":""}}},"🚕 Individual taxi":{"fuels":{"Gasoline":{"cons":"9.2","consSource":""}}},"🏍️ Motorcycle":{"fuels":{"Gasoline":{"cons":"10","consSource":""}}},"🚐 Minibus":{"fuels":{"Gasoline":{"cons":"34.3","consSource":""},"Diesel":{"cons":"31.2","consSource":""}}},"🚌 Bus":{"fuels":{"Diesel":{"cons":"34.3","consSource":""},"CNG":{"cons":"0","consSource":""}}}}, "note": ""}
+    const inputInventoryStep6: types.InputInventoryStep6 = {"vtypes":{"👟 Walking":{"source":"","value":"1"},"🚘 Private car":{"source":"","value":"1.6"},"🚕 Individual taxi":{"source":"","value":"1.1"},"🏍️ Motorcycle":{"source":"","value":"1.2"},"🚐 Minibus":{"source":"","value":"16.4"},"🚌 Bus":{"source":"","value":"16.4"}}, "note": ""}
+    const inputClimateWithUpstreamStep1: types.InputClimateWithUpstreamStep1 = {"vtypes":{"🚘 Private car":{"source":"SUMP study","vkt":["500","600"]},"🏍️ Motorcycle":{"source":"SUMP study","vkt":["1000","1000"]},"🚐 Minibus":{"source":"SUMP study","vkt":["400","800"]}}, 'note': ''}
+    const inputClimateWithUpstreamStep2: types.InputClimateWithUpstreamStep2 = {"vtypes":{"🚘 Private car":{"source":"SUMP study","ukm":["3750","5000"]},"🏍️ Motorcycle":{"source":"age du capitaine","ukm":["2000","25000"]},"🚐 Minibus":{"source":"taille moustache capitaine hadock","ukm":["3600","36000"]}}, 'note': ''}
+    const inputClimateWithUpstreamStep3: types.InputBAUStep2 = {"vtypes":{"🚘 Private car":{"fuels":{"Diesel":{"percent":["0","70"],"percentSource":"SUMP study"},"CNG":{"percent":["100","30"],"percentSource":"SUMP study"}}},"🏍️ Motorcycle":{"fuels":{"Diesel":{"percent":["30","60"],"percentSource":"SUMP study"},"Electric":{"percent":["70","40"],"percentSource":"SUMP study"}}},"🚐 Minibus":{"fuels":{"Diesel":{"percent":["100","100"],"percentSource":"SUMP study"}}}},"note":""}
+    const inputClimateWithUpstreamStep4: types.InputBAUStep3 = {"vtypes":{"🚘 Private car":{"fuels":{"Diesel":{"cons":["5,9","4"],"consSource":"age du capitaine"},"CNG":{"cons":["4","3"],"consSource":"SUMP study"}}},"🏍️ Motorcycle":{"fuels":{"Diesel":{"cons":["4","3"],"consSource":"taille moustache capitaine hadock"},"Electric":{"cons":["5","4"],"consSource":"age du capitaine"}}},"🚐 Minibus":{"fuels":{"Diesel":{"cons":["7,7","6"],"consSource":"age du capitaine"}}}}, 'note': ''}
+    
+    let project: types.FullProject = {
+        id: 1,
+        createdDate: new Date(),
+        modifiedDate: new Date(),
+        owner: "owner", 
+        name: "name",
+        isSump: true,
+        country: "country", 
+        city: "city", 
+        partnerLocation: "partnerLocation", 
+        area: "area", 
+        status: "status", 
+        referenceYears: [2020, 2030, 2040],
+        stages:  {
+            "BAU": [],
+            "Inventory": [{steps: [undefined, inputInventoryStep1, undefined, inputInventoryStep3, undefined, undefined, inputInventoryStep6], step: 8}],
+            "Climate": [{steps: [{method: "With"}, inputClimateWithUpstreamStep1, inputClimateWithUpstreamStep2, inputClimateWithUpstreamStep3, inputClimateWithUpstreamStep4], step: 7}]
+        },
+        sources: []
+    }
+    project.stages.Inventory[0].steps[1].vtypes["NEWVTYPE"] = {
+        network: "road",
+        type: "private transport",
+        fuels: {"Gasoline":true,"Diesel":true}
+    }
+    let updatedProject = models.updateStepsWithNewVehicles(project)
+
+    let updatedinputClimateWithUpstreamStep1: types.InputClimateWithUpstreamStep1 = updatedProject.stages.Climate[0].steps[1]
+    let updatedinputClimateWithUpstreamStep2: types.InputClimateWithUpstreamStep2 = updatedProject.stages.Climate[0].steps[2]
+    let updatedinputClimateWithUpstreamStep3: types.InputBAUStep2 = updatedProject.stages.Climate[0].steps[3]
+    let updatedinputClimateWithUpstreamStep4: types.InputBAUStep3 = updatedProject.stages.Climate[0].steps[4]
+    expect(updatedinputClimateWithUpstreamStep1.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithUpstreamStep1.vtypes["NEWVTYPE"].vkt).toEqual(["", ""])
+    expect(updatedinputClimateWithUpstreamStep2.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithUpstreamStep2.vtypes["NEWVTYPE"].ukm).toEqual(["", ""])
+    expect(updatedinputClimateWithUpstreamStep3.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithUpstreamStep3.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percent).toEqual(["",""])
+    expect(updatedinputClimateWithUpstreamStep3.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.percentSource).toEqual("")
+    expect(updatedinputClimateWithUpstreamStep3.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percent).toEqual(["",""])
+    expect(updatedinputClimateWithUpstreamStep3.vtypes["NEWVTYPE"]?.fuels?.Diesel?.percentSource).toEqual("")
+    expect(updatedinputClimateWithUpstreamStep4.vtypes["NEWVTYPE"])
+    expect(updatedinputClimateWithUpstreamStep4.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.cons).toEqual(["0","0"])
+    expect(updatedinputClimateWithUpstreamStep4.vtypes["NEWVTYPE"]?.fuels?.Gasoline?.consSource).toEqual("")
+    expect(updatedinputClimateWithUpstreamStep4.vtypes["NEWVTYPE"]?.fuels?.Diesel?.cons).toEqual(["0","0"])
+    expect(updatedinputClimateWithUpstreamStep4.vtypes["NEWVTYPE"]?.fuels?.Diesel?.consSource).toEqual("")
+})
+
+
+

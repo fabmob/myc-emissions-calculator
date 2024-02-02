@@ -775,6 +775,16 @@ app.put('/api/project/:projectId/:stage/:stageId/step/:stepNumber', keycloak.pro
             parseInt(req.params.stepNumber),
             inputDataString
         )
+        if (req.params.stage === "Inventory" && req.params.stepNumber === "1") {
+            const project = dbwrapper.getProject(owner, parseInt(req.params.projectId), isAdmin) as types.FullProject
+            const updatedProject = models.updateStepsWithNewVehicles(project)
+            const result = dbwrapper.updateAllProjectSteps(updatedProject)
+            if (!result) {
+                return res.status(500).json({
+                    status: "couldn't update project"
+                });
+            }
+        }
         res.json({
             status: "ok"
         });

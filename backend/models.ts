@@ -412,3 +412,217 @@ export function computeScenarioModalShare(
         "freight": computeModalShare(scenarioTransportPerformances.freight)
     }
 }
+
+export function updateStepsWithNewVehicles(
+    project: types.FullProject
+) : types.FullProject {
+    const inputInventoryStep1 = project.stages.Inventory[0].steps[1] as types.InputInventoryStep1
+    const vtypes = Object.keys(inputInventoryStep1.vtypes)
+
+    let inputInventoryStep2 = project.stages?.Inventory[0]?.steps[2] as types.InputInventoryStep2
+    let inputInventoryStep3 = project.stages?.Inventory?.[0]?.steps?.[3] as types.InputInventoryStep3
+    let inputInventoryStep6 = project.stages?.Inventory?.[0]?.steps?.[6] as types.InputInventoryStep6
+    let inputInventoryStep8 = project.stages?.Inventory?.[0]?.steps?.[8] as types.InputInventoryStep8
+
+    let inputBAUStep1 = project.stages?.BAU?.[0]?.steps?.[1] as types.InputBAUStep1
+    let inputBAUStep2 = project.stages?.BAU?.[0]?.steps?.[2] as types.InputBAUStep2
+    let inputBAUStep3 = project.stages?.BAU?.[0]?.steps?.[3] as types.InputBAUStep3
+
+    for (let i = 0; i < vtypes.length; i++) {
+        const vtype = vtypes[i]
+        if (inputInventoryStep2 && !inputInventoryStep2.vtypes[vtype]) {
+            inputInventoryStep2.vtypes[vtype] = {
+                vkt: "0",
+                vktSource: "",
+                fuels: {},
+                fleetStock: "0",
+                fleetMileage: "0"
+            }
+        }
+        if (inputInventoryStep3 && !inputInventoryStep3.vtypes[vtype]) {
+            inputInventoryStep3.vtypes[vtype] = {
+                fuels: {}
+            }
+        }
+        if (inputInventoryStep6 && !inputInventoryStep6.vtypes[vtype]) {
+            inputInventoryStep6.vtypes[vtype] = {
+                source: '',
+                value: ''
+            }
+        }
+        if (inputInventoryStep8 && !inputInventoryStep8.vtypes[vtype]) {
+            inputInventoryStep8.vtypes[vtype] = {
+                source: '',
+                value: ''
+            }
+        }
+        if (inputBAUStep1 && !inputBAUStep1.vtypes[vtype]) {
+            inputBAUStep1.vtypes[vtype] = {
+                source: "",
+                vktRate: project.referenceYears.slice(1).map(() => 0)
+            }
+        }
+        if (inputBAUStep2 && !inputBAUStep2.vtypes[vtype]) {
+            inputBAUStep2.vtypes[vtype] = {
+                fuels: {}
+            }
+        }
+        if (inputBAUStep3 && !inputBAUStep3.vtypes[vtype]) {
+            inputBAUStep3.vtypes[vtype] = {
+                fuels: {}
+            }
+        }
+        for (let k = 0; k < project.stages.Climate.length; k++) {
+            const climateScenario = project.stages.Climate[k]
+            let method = climateScenario.steps[0].method as "With" | "Without"
+            if (method === "With") {
+                let inputClimateWithUpstreamStep1 = climateScenario.steps?.[1] as types.InputClimateWithUpstreamStep1
+                let inputClimateWithUpstreamStep2 = climateScenario.steps?.[2] as types.InputClimateWithUpstreamStep2
+                let inputClimateWithUpstreamStep3 = climateScenario.steps?.[3] as types.InputBAUStep2
+                let inputClimateWithUpstreamStep4 = climateScenario.steps?.[4] as types.InputBAUStep3
+
+                if (inputClimateWithUpstreamStep1 && !inputClimateWithUpstreamStep1.vtypes[vtype]) {
+                    inputClimateWithUpstreamStep1.vtypes[vtype] = {
+                        source: "",
+                        vkt: project.referenceYears.slice(1).map(() => "")
+                    }
+                }
+
+                if (inputClimateWithUpstreamStep2 && !inputClimateWithUpstreamStep2.vtypes[vtype]) {
+                    inputClimateWithUpstreamStep2.vtypes[vtype] = {
+                        source: "",
+                        ukm: project.referenceYears.slice(1).map(() => "")
+                    }
+                }
+
+                if (inputClimateWithUpstreamStep3 && !inputClimateWithUpstreamStep3.vtypes[vtype]) {
+                    inputClimateWithUpstreamStep3.vtypes[vtype] = {
+                        fuels: {}
+                    }
+                }
+
+                if (inputClimateWithUpstreamStep4 && !inputClimateWithUpstreamStep4.vtypes[vtype]) {
+                    inputClimateWithUpstreamStep4.vtypes[vtype] = {
+                        fuels: {}
+                    }
+                }
+            } else {
+                let inputClimateWithoutUpstreamStep1 = climateScenario.steps?.[1] as types.InputClimateWithoutUpstreamStep1
+                let inputClimateWithoutUpstreamStep2 = climateScenario.steps?.[2] as types.InputClimateWithoutUpstreamStep2
+                let inputClimateWithoutUpstreamStep3 = climateScenario.steps?.[3] as types.InputClimateWithoutUpstreamStep3
+                let inputClimateWithoutUpstreamStep4 = climateScenario.steps?.[4] as types.InputClimateWithoutUpstreamStep4
+                let inputClimateWithoutUpstreamStep5 = climateScenario.steps?.[5] as types.InputBAUStep2
+                let inputClimateWithoutUpstreamStep6 = climateScenario.steps?.[6] as types.InputBAUStep3
+
+                if (inputClimateWithoutUpstreamStep1 && !inputClimateWithoutUpstreamStep1.vtypes[vtype]) {
+                    inputClimateWithoutUpstreamStep1.vtypes[vtype] = {
+                        source: "",
+                        avoidedVkt: project.referenceYears.slice(1).map(() => 0)
+                    }
+                }
+
+                if (inputClimateWithoutUpstreamStep2 && !inputClimateWithoutUpstreamStep2.vtypes[vtype]) {
+                    inputClimateWithoutUpstreamStep2.vtypes[vtype] = {
+                        source: "",
+                        addedVkt: project.referenceYears.slice(1).map(() => "0")
+                    }
+                }
+
+                if (inputClimateWithoutUpstreamStep3 && !inputClimateWithoutUpstreamStep3.vtypes[vtype]) {
+                    inputClimateWithoutUpstreamStep3.vtypes[vtype] = {
+                        source: "",
+                        load: project.referenceYears.slice(1).map(() => inputInventoryStep6.vtypes[vtype].value)
+                    }
+                }
+
+                if (inputClimateWithoutUpstreamStep4 && !inputClimateWithoutUpstreamStep4.vtypes[vtype]) {
+                    inputClimateWithoutUpstreamStep4.vtypes[vtype] = {}
+                    for (let l = 0; l < vtypes.length; l++) {
+                        const originvtype = vtypes[l];
+                        if(!inputClimateWithoutUpstreamStep4.vtypes[vtype][originvtype]?.value) {
+                            inputClimateWithoutUpstreamStep4.vtypes[vtype][originvtype] = {
+                                source: "",
+                                value: project.referenceYears.slice(1).map(() => "0")
+                            }
+                        }
+                    }
+                    if(!inputClimateWithoutUpstreamStep4.vtypes[vtype]["Induced Traffic"]?.value) {
+                        inputClimateWithoutUpstreamStep4.vtypes[vtype]["Induced Traffic"] = {
+                            source: "",
+                            value: project.referenceYears.slice(1).map(() => "0")
+                        }
+                    }
+                }
+
+                if (inputClimateWithoutUpstreamStep5 && !inputClimateWithoutUpstreamStep5.vtypes[vtype]) {
+                    inputClimateWithoutUpstreamStep5.vtypes[vtype] = {
+                        fuels: {}
+                    }
+                }
+
+                if (inputClimateWithoutUpstreamStep6 && !inputClimateWithoutUpstreamStep6.vtypes[vtype]) {
+                    inputClimateWithoutUpstreamStep6.vtypes[vtype] = {
+                        fuels: {}
+                    }
+                }
+            }
+        }
+        const ftypes = Object.keys(inputInventoryStep1.vtypes[vtype].fuels).filter(ftype => inputInventoryStep1.vtypes[vtype].fuels[ftype as types.FuelType])
+        for (let j = 0; j < ftypes.length; j++) {
+            const ftype = ftypes[j] as types.FuelType
+            if (inputInventoryStep2 && !inputInventoryStep2.vtypes[vtype].fuels[ftype]) {
+                inputInventoryStep2.vtypes[vtype].fuels[ftype] = {
+                    percent: ftypes.length === 1 ? "100" : "",
+                    percentSource: ""
+                }
+            }
+            if (inputInventoryStep3 && !inputInventoryStep3.vtypes[vtype].fuels[ftype]) {
+                inputInventoryStep3.vtypes[vtype].fuels[ftype] = {
+                    cons: ftype === "None" ? "0" : "",
+                    consSource: ""
+                }
+            }
+            if (inputBAUStep2 && !inputBAUStep2.vtypes[vtype].fuels[ftype]) {
+                inputBAUStep2.vtypes[vtype].fuels[ftype] = {
+                    percent: project.referenceYears.slice(1).map(() => ftypes.length === 1 ? "100" : ""),
+                    percentSource: ""
+                }
+            }
+            if (inputBAUStep3 && !inputBAUStep3.vtypes[vtype].fuels[ftype]) {
+                const invCons = inputInventoryStep3.vtypes?.[vtype]?.fuels?.[ftype]?.cons || "0"
+                inputBAUStep3.vtypes[vtype].fuels[ftype] = {
+                    cons: project.referenceYears.slice(1).map(() => invCons),
+                    consSource: ""
+                }
+            }
+
+            for (let k = 0; k < project.stages.Climate.length; k++) {
+                const climateScenario = project.stages.Climate[k]
+                let method = climateScenario.steps[0].method as "With" | "Without"
+                let input1 : types.InputBAUStep2
+                let input2 : types.InputBAUStep3
+                if (method === "With") {
+                    input1 = climateScenario.steps?.[3] as types.InputBAUStep2
+                    input2 = climateScenario.steps?.[4] as types.InputBAUStep3
+                } else {
+                    input1 = climateScenario.steps?.[5] as types.InputBAUStep2
+                    input2 = climateScenario.steps?.[6] as types.InputBAUStep3
+                }
+                if (input1 && !input1.vtypes[vtype].fuels[ftype]) {
+                    input1.vtypes[vtype].fuels[ftype] = {
+                        percent: project.referenceYears.slice(1).map(() => ftypes.length === 1 ? "100" : ""),
+                        percentSource: ""
+                    }
+                }
+                if (input2 && !input2.vtypes[vtype].fuels[ftype]) {
+                    const invCons = inputInventoryStep3.vtypes?.[vtype]?.fuels?.[ftype]?.cons || "0"
+                    input2.vtypes[vtype].fuels[ftype] = {
+                        cons: project.referenceYears.slice(1).map(() => invCons),
+                        consSource: ""
+                    }
+                }
+            }
+        }
+    }
+    return project
+}

@@ -12,63 +12,6 @@ export function init() {
     }
 }
 
-type ProjectsDbEntry = {
-    id: number,
-    createdDate: string,
-    modifiedDate: string,
-    owner: string,
-    name: string,
-    isSump: number,
-    country: string,
-    city: string,
-    partnerLocation: string,
-    area: string,
-    referenceYears: string,
-    status: string,
-    stage?: types.ProjectStage,
-    stageId: number,
-    step: number,
-    stages: {
-        [stage in types.ProjectStage]: {
-            steps: any[],
-            step: number
-        }[]
-    }
-}
-type ProjectStepsDbEntry = {
-    projectId: number,
-    stage: types.ProjectStage,
-    stageId: number,
-    stepNumber: number,
-    value: string
-}
-type ProjectSourcesDbEntry = {
-    sourceId: number,
-    projectId: number,
-    value: string
-}
-type Project = {
-    id: number,
-    createdDate: Date,
-    modifiedDate: Date,
-    owner: string,
-    name: string,
-    isSump: boolean,
-    country: string,
-    city: string,
-    partnerLocation: string,
-    area: string,
-    status: string
-    referenceYears: number[],
-    stages: {
-        [stage in types.ProjectStage]: {
-            steps: any[],
-            step: number
-        }[]
-    },
-    sources: ProjectSourcesDbEntry[]
-    
-}
 export function createProject(project: types.Project, owner: string): [string | null, Database.RunResult | null] {
     const createProjectStmt = db.prepare("INSERT INTO Projects (id, createdDate, modifiedDate, owner, name, isSump, country, city, partnerLocation, area, referenceYears, status) values (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
     try {
@@ -91,8 +34,8 @@ export function createProject(project: types.Project, owner: string): [string | 
     }
 }
 
-function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectStepsDbEntry[], projectSources?: ProjectSourcesDbEntry[]) {
-    let project : Project = {
+function parseProject(projectEntry: types.ProjectsDbEntry, projectSteps?: types.ProjectStepsDbEntry[], projectSources?: types.ProjectSourcesDbEntry[]) {
+    let project : types.FullProject = {
         id: projectEntry.id,
         createdDate: new Date(projectEntry.createdDate),
         modifiedDate: new Date(projectEntry.modifiedDate),
@@ -128,8 +71,8 @@ function parseProject(projectEntry: ProjectsDbEntry, projectSteps?: ProjectSteps
     }
     return project
 }
-function concatProjects(res: ProjectsDbEntry[]) : ProjectsDbEntry[] {
-    let concatRes: ProjectsDbEntry[] = []
+function concatProjects(res: types.ProjectsDbEntry[]) : types.ProjectsDbEntry[] {
+    let concatRes: types.ProjectsDbEntry[] = []
     for (let i = 0; i < res.length; i++) {
         const project = res[i]
         if (project.stage && project.stageId >= 0) {
@@ -165,8 +108,8 @@ function concatProjects(res: ProjectsDbEntry[]) : ProjectsDbEntry[] {
 }
 export function getProjectsByOwner(owner: string) {
     const getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, stage, stageId, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner = ? group by id, stage, stageId")
-    let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner) as ProjectsDbEntry[]
-    const concatRes: ProjectsDbEntry[] = concatProjects(res)
+    let res: types.ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner) as types.ProjectsDbEntry[]
+    const concatRes: types.ProjectsDbEntry[] = concatProjects(res)
     return concatRes.map(projectEntry => parseProject(projectEntry))
 }
 export function getPublicProjectsNotOwned(owner: string, isAdmin: boolean) {
@@ -176,27 +119,27 @@ export function getPublicProjectsNotOwned(owner: string, isAdmin: boolean) {
     } else {
         getProjectsByOwnerStmt = db.prepare("SELECT Projects.*, stage, stageId, max(stepNumber) as step FROM Projects LEFT JOIN ProjectSteps on projectId = id WHERE owner != ? AND status = 'validated' group by id, stage, stageId")
     }
-    let res: ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner) as ProjectsDbEntry[]
-    const concatRes: ProjectsDbEntry[] = concatProjects(res)
+    let res: types.ProjectsDbEntry[] = getProjectsByOwnerStmt.all(owner) as types.ProjectsDbEntry[]
+    const concatRes: types.ProjectsDbEntry[] = concatProjects(res)
     return concatRes.map(projectEntry => parseProject(projectEntry))
 }
 export function getProject(owner: string, id: number, isAdmin: boolean) {
     let getProjectStmt
-    let resProject: ProjectsDbEntry
+    let resProject: types.ProjectsDbEntry
     if (isAdmin) {
         getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ?")
-        resProject = getProjectStmt.get([id]) as ProjectsDbEntry
+        resProject = getProjectStmt.get([id]) as types.ProjectsDbEntry
     } else {
         getProjectStmt = db.prepare("SELECT * FROM Projects WHERE id = ? AND (owner = ? OR status = 'validated')")
-        resProject = getProjectStmt.get([id, owner]) as ProjectsDbEntry
+        resProject = getProjectStmt.get([id, owner]) as types.ProjectsDbEntry
     }
     if (!resProject) {
         return null
     }
     const getProjectStepsStmt = db.prepare("SELECT * FROM ProjectSteps WHERE projectId = ?")
-    let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([id]) as ProjectStepsDbEntry[]
+    let resProjectSteps: types.ProjectStepsDbEntry[] = getProjectStepsStmt.all([id]) as types.ProjectStepsDbEntry[]
     const getProjectSourcesStmt = db.prepare("SELECT * FROM ProjectSources WHERE projectId = ?")
-    let resProjectSources: ProjectSourcesDbEntry[] = getProjectSourcesStmt.all([id]) as ProjectSourcesDbEntry[]
+    let resProjectSources: types.ProjectSourcesDbEntry[] = getProjectSourcesStmt.all([id]) as types.ProjectSourcesDbEntry[]
     return parseProject(resProject, resProjectSteps, resProjectSources)
 }
 
@@ -288,7 +231,7 @@ export function deleteProject(id: number, owner: string, isAdmin: boolean) {
 
 export function duplicateClimateScenario(projectId: number, oldStageId: number, newStageId: number, done: Function) {
     const getProjectStepsStmt = db.prepare("SELECT * FROM ProjectSteps WHERE projectId = ? and stage = 'Climate' and stageId = ?")
-    let resProjectSteps: ProjectStepsDbEntry[] = getProjectStepsStmt.all([projectId, oldStageId]) as ProjectStepsDbEntry[]
+    let resProjectSteps: types.ProjectStepsDbEntry[] = getProjectStepsStmt.all([projectId, oldStageId]) as types.ProjectStepsDbEntry[]
     const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stage, stageId, stepNumber, value) values (?, ?, ?, ?, ?)")
     const inserts = db.transaction((steps) => {
         for (let i = 0; i < steps.length; i++) {
@@ -298,4 +241,34 @@ export function duplicateClimateScenario(projectId: number, oldStageId: number, 
         done()
     })
     inserts(resProjectSteps)
+}
+
+export function updateAllProjectSteps(project: types.FullProject) {
+    const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stage, stageId, stepNumber, value) values (?, ?, ?, ?, ?)")
+    let dataToInsert = []
+    for (let i = 1; i < project.stages.Inventory[0].steps.length; i++) {
+        const stepData = project.stages.Inventory[0].steps[i]
+        dataToInsert.push([project.id, "Inventory", 0, i, JSON.stringify(stepData)])
+    }
+    if (project.stages.BAU[0]) {
+        for (let i = 1; i < project.stages.BAU[0].steps.length; i++) {
+            const stepData = project.stages.BAU[0].steps[i]
+            dataToInsert.push([project.id, "BAU", 0, i, JSON.stringify(stepData)])
+        }
+    }
+    for (let k = 0; k < project.stages.Climate.length; k++) {
+        for (let i = 1; i < project.stages.Climate[k].steps.length; i++) {
+            const stepData = project.stages.Climate[k].steps[i]
+            dataToInsert.push([project.id, "Climate", k, i, JSON.stringify(stepData)])
+        }
+    }
+    const insertFn = db.transaction(dataToInsert => {
+        for (const step of dataToInsert) {
+            addProjectStepStmt.run(step)
+        }
+    })
+    insertFn(dataToInsert)
+    const updateProjectDateStmt = db.prepare("UPDATE Projects set modifiedDate = ? where id = ?")
+    const res = updateProjectDateStmt.run([new Date().toString(), project.id])
+    return res
 }

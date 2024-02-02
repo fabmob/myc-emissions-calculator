@@ -12,6 +12,7 @@ import ProjectStepContainerWrapper from '../../components/ProjectStepContainerWr
 import ItemWithOverlay from '../../components/ItemWithOverlay'
 import OutputNumberTd from '../../components/OutputNumberTd'
 import { sanitizeFloatInput } from '../../utils/sanitizeInputs'
+import InventoryStep1 from '../Inventory/InventoryStep1'
 
 export default function ClimateWithUpstreamStep1(){
     const { keycloak, initialized } = useKeycloak();
@@ -28,52 +29,68 @@ export default function ClimateWithUpstreamStep1(){
     const [bAUVkt, setBAUVkt] = useState({} as {[key: string]: number[]})
     const [showInfo, setShowInfo] = useState(false);
     const handleCloseInfo = () => setShowInfo(false);
+    const [showVehicules, setShowVehicules] = useState(false);
+    const [triggerVehiculesSave, setTriggerVehiculesSave] = useState(false);
+    const handleCloseVehicules = (save: boolean) => {
+        if (save) {
+            setTriggerVehiculesSave(true)
+        }
+        setShowVehicules(false)
+    }
+    const handleTriggerVehiculesSave = (save: boolean) => {
+        setTriggerVehiculesSave(save)
+        load()
+    }
     const stepNumber = 1
-    useEffect(() => {
-        if (initialized && keycloak.authenticated && projectId){
-            const requestOptions = {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
-            };
-            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
-                .then(response => {
-                    if (response.status !== 200) {
-                        navigate('/')
-                    }
-                    return response.json()
-                })
-                .then(data => {
-                    console.log("get projetcs reply", data)
-                    setProject(data.project)
-                    let init:InputClimateWithUpstreamStep1 = {
-                        vtypes: {},
-                        note: data.project.stages?.Climate?.[climateScenarioId]?.steps?.[stepNumber]?.note || undefined
-                    }
-                    const inventoryStep1 = data.project.stages?.Inventory?.[0]?.steps?.[1].vtypes || {}
-                    const vtypes = Object.keys(inventoryStep1)
-                    for (let i = 0; i < vtypes.length; i++) {
-                        const vtype = vtypes[i];
-                        if (data.project.stages.Climate[climateScenarioId]?.steps[stepNumber]?.vtypes[vtype]) {
-                            init.vtypes[vtype] = data.project.stages.Climate[climateScenarioId]?.steps[stepNumber].vtypes[vtype]
-                        } else {
-                            init.vtypes[vtype] = {
-                                source: "",
-                                vkt: data.project.referenceYears.slice(1).map(() => "")
-                            }
+    const load = () => {
+        setBAUVkt({})
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
+        };
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId, requestOptions)
+            .then(response => {
+                if (response.status !== 200) {
+                    navigate('/')
+                }
+                return response.json()
+            })
+            .then(data => {
+                console.log("get projetcs reply", data)
+                setProject(data.project)
+                let init:InputClimateWithUpstreamStep1 = {
+                    vtypes: {},
+                    note: data.project.stages?.Climate?.[climateScenarioId]?.steps?.[stepNumber]?.note || undefined
+                }
+                const inventoryStep1 = data.project.stages?.Inventory?.[0]?.steps?.[1].vtypes || {}
+                const vtypes = Object.keys(inventoryStep1)
+                for (let i = 0; i < vtypes.length; i++) {
+                    const vtype = vtypes[i];
+                    if (data.project.stages.Climate[climateScenarioId]?.steps[stepNumber]?.vtypes[vtype]) {
+                        init.vtypes[vtype] = data.project.stages.Climate[climateScenarioId]?.steps[stepNumber].vtypes[vtype]
+                    } else {
+                        init.vtypes[vtype] = {
+                            source: "",
+                            vkt: data.project.referenceYears.slice(1).map(() => "")
                         }
                     }
-                    setInputData(init)
+                }
+                setInputData(init)
 
-                });
-            fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + "/BAU/0/vehicleKilometresTravelledComputed", requestOptions)
-                .then(response => {
-                    return response.json()
-                })
-                .then(data => {
-                    console.log("get inv results reply", data)
-                    setBAUVkt(data.vehicleKilometresTravelledComputed)
-                })
-            }
+            });
+        fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + "/BAU/0/vehicleKilometresTravelledComputed", requestOptions)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                console.log("get inv results reply", data)
+                setBAUVkt(data.vehicleKilometresTravelledComputed)
+            })
+    }
+    useEffect(() => {
+        if (initialized && keycloak.authenticated && projectId){
+            load()    
+        }
     }, [keycloak, initialized, projectId, navigate])
     const updateInput = (vtype: string, yearIndex: number, value: string) => {
         setInputData((prevInputData) => {
@@ -205,6 +222,9 @@ export default function ClimateWithUpstreamStep1(){
                         </Table>
                     </Tab>))}
                 </Tabs>
+                <div>
+                    <Button className="user-note-button" variant="link" onClick={e=>setShowVehicules(true)}><span className="item">Click here to edit vehicules and fuels</span></Button>
+                </div>
                 
             </ProjectStepContainerWrapper>
             <ChoiceModal 
@@ -225,6 +245,26 @@ export default function ClimateWithUpstreamStep1(){
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseInfo}>
                         <span className="item"><span>Close</span></span>
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal size="xl" centered show={showVehicules} onHide={() => handleCloseVehicules(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Vehicles and fuels in use</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="masked-overflow-y">
+                    <p>
+                        Vehicules and fuels are shared between Inventory and all scenarios to ease comparison. <br/>
+                        Adding a vehicule or fuel here will also automatically add it to the Inventory and to other scenarios with default values (usualy zero).<br/>
+                        Removing a vehicule or fuel here will also remove it elsewhere.
+                        It is thus recommanded to avoid removing unused vehicules or fuels, and setting their value to zero in later steps instead.
+                    </p>
+                    <InventoryStep1 asComponent={true} triggerSave={triggerVehiculesSave} setTriggerSave={handleTriggerVehiculesSave}></InventoryStep1>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => handleCloseVehicules(true)}>
+                        <span className="item"><span>Save</span></span>
                     </Button>
                 </Modal.Footer>
             </Modal>

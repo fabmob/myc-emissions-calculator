@@ -110,7 +110,7 @@ const defaultVehiclesParams : {[key: string]: {desc: string, network: "road" | "
         type: "freight"
     }
 }
-export default function InventoryStep1(){
+export default function InventoryStep1({asComponent = false, triggerSave = false, setTriggerSave}: {asComponent?: boolean, triggerSave?: boolean, setTriggerSave?: Function}){
     const { keycloak, initialized } = useKeycloak();
     const navigate = useNavigate()
     const params = useParams();
@@ -148,6 +148,10 @@ export default function InventoryStep1(){
                 });
             }
     }, [keycloak, initialized, projectId, navigate])
+
+    useEffect(() => {
+        if (triggerSave) nextTrigger()
+    }, [triggerSave])
 
     const addVehicle = (vtype: string) => {
         setError("")
@@ -237,11 +241,65 @@ export default function InventoryStep1(){
         };
         fetch(process.env.REACT_APP_BACKEND_API_BASE_URL + '/api/project/' + projectId + '/Inventory/0/step/' + stepNumber, requestOptions)
             .then(response => response.json())
-            .then(() => navigate('/project/' + projectId + '/Inventory/step/' + (stepNumber + 1)));
+            .then(() => {
+                if (!asComponent)
+                    navigate('/project/' + projectId + '/Inventory/step/' + (stepNumber + 1))
+                if (setTriggerSave)
+                    setTriggerSave(false)
+            });
     }
+    const VehicleTable = () => (
+        <Table bordered>
+            <colgroup>
+                <col className="tablecol4" />{/* Vehicle */}
+                <col className="tablecol2" />{/* Network */}
+                <col className="tablecol3" />{/* Type */}
+                <col className="tablecolfluid" />{/* Fuels */}
+            </colgroup>
+            <thead>
+                <tr>
+                    <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
+                    <th><ItemWithOverlay overlayContent="Used network, can be road or rail. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
+                    <th><ItemWithOverlay overlayContent="Type of transport, can be public transport, private transport or freight. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Type</span></span></ItemWithOverlay></th>
+                    <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
+                </tr>
+            </thead>
+            <tbody>
+                {Object.keys(inputData.vtypes).map((vtype, index) => {
+                    const vehicle = inputData.vtypes[vtype]
+                    let networkBadge = <Badge className="badge-default" onClick={e => networkTrigger(vtype)}><span className="item"><span>{vehicle.network} v</span></span></Badge>
+                    let typeBadge = <Badge className="badge-default" onClick={e => typeTrigger(vtype)}><span className="item"><span>{vehicle.type} v</span></span></Badge>
+                    if (defaultVehiclesParams[vtype]) {
+                        networkBadge = <Badge className="badge-read-only"><span className="item"><span>{vehicle.network}</span></span></Badge>
+                        typeBadge = <Badge className="badge-read-only"><span className="item"><span>{vehicle.type}</span></span></Badge>
+                    }
+                    return (<tr key={index}>
+                        <td><Badge className="badge-default" onClick={e=>removeVehicle(vtype)}><span className="item"><span>{vtype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge></td>
+                        <td>{networkBadge}</td>
+                        <td>{typeBadge}</td>
+                        <td>
+                            {Object.keys(vehicle.fuels).map((ftype, index) => (
+                                <Badge key={index} className="badge-default" onClick={e=>removeFuel(vtype, ftype as FuelType)}><span className="item"><span>{ftype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
+                            ))}
+                            <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
+                            
+                        </td>
+                    </tr>)
+                })}
+                <tr>
+                    <td><Button size="sm" variant="action" onClick={e => setShowAddVehicleModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </Table>
+    )
     return (
         <>
-            <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
+            {asComponent 
+            ? <VehicleTable/>
+            : <ProjectStepContainerWrapper project={project} stage="Inventory" currentStep={stepNumber} noteValue={inputData.note} setInputData={setInputData}>
                 <h1>Vehicles and fuels in use</h1>
                 {error && <Alert variant='danger'>{error}</Alert>}
                 <DescAndNav 
@@ -257,52 +315,9 @@ export default function InventoryStep1(){
                     </ul>
                     <p>You can also add a custom vehicle category below, if you don’t find it in the list. For each category, you will later need to fill the following information: Total vkt, Vehicle occupancy, Fuel consumptions, Vkt breakdown per fuel.</p>
                 </DescAndNav>
-                <Table bordered>
-                    <colgroup>
-                        <col className="tablecol4" />{/* Vehicle */}
-                        <col className="tablecol2" />{/* Network */}
-                        <col className="tablecol3" />{/* Type */}
-                        <col className="tablecolfluid" />{/* Fuels */}
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th><ItemWithOverlay overlayContent="Transport modes, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Vehicle</span></span></ItemWithOverlay></th>
-                            <th><ItemWithOverlay overlayContent="Used network, can be road or rail. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Network</span></span></ItemWithOverlay></th>
-                            <th><ItemWithOverlay overlayContent="Type of transport, can be public transport, private transport or freight. Create a custom vehicle category to edit this field."><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Type</span></span></ItemWithOverlay></th>
-                            <th><ItemWithOverlay overlayContent="Fuels used by the transport mode, current and expected"><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#circle-info"}/></svg><span>Fuels</span></span></ItemWithOverlay></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {Object.keys(inputData.vtypes).map((vtype, index) => {
-                            const vehicle = inputData.vtypes[vtype]
-                            let networkBadge = <Badge className="badge-default" onClick={e => networkTrigger(vtype)}><span className="item"><span>{vehicle.network} v</span></span></Badge>
-                            let typeBadge = <Badge className="badge-default" onClick={e => typeTrigger(vtype)}><span className="item"><span>{vehicle.type} v</span></span></Badge>
-                            if (defaultVehiclesParams[vtype]) {
-                                networkBadge = <Badge className="badge-read-only"><span className="item"><span>{vehicle.network}</span></span></Badge>
-                                typeBadge = <Badge className="badge-read-only"><span className="item"><span>{vehicle.type}</span></span></Badge>
-                            }
-                            return (<tr key={index}>
-                                <td><Badge className="badge-default" onClick={e=>removeVehicle(vtype)}><span className="item"><span>{vtype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge></td>
-                                <td>{networkBadge}</td>
-                                <td>{typeBadge}</td>
-                                <td>
-                                    {Object.keys(vehicle.fuels).map((ftype, index) => (
-                                        <Badge key={index} className="badge-default" onClick={e=>removeFuel(vtype, ftype as FuelType)}><span className="item"><span>{ftype}</span><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#times"}/></svg></span></Badge>
-                                    ))}
-                                    <Button size="sm" variant="action" onClick={e => fuelTrigger(vtype)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button>
-                                    
-                                </td>
-                            </tr>)
-                        })}
-                        <tr>
-                            <td><Button size="sm" variant="action" onClick={e => setShowAddVehicleModal(true)}><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span></Button></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </Table>
+                <VehicleTable />
             </ProjectStepContainerWrapper>
+            }
             <ChoiceModal 
                 showModal={showAddVehicleModal} 
                 setShowModal={setShowAddVehicleModal} 

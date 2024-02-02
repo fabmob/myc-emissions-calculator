@@ -1460,10 +1460,10 @@ nav.navbar {
                     font-family: var(--t-ff-h);
                 }
     /* for modals of large size */
-        .modal-xl {
+        /* .modal-xl {
             width: var(--modal-l-width);
             max-width: var(--modal-l-width);
-        }
+        } */
         .modal-xl .modal-content {
             padding: var(--modal-l-padding);
         }

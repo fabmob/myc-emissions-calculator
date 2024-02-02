@@ -174,7 +174,7 @@ export default function ProjectSummary(props : {project: ProjectType}){
             })
     }
     const inventoryEmissionsPieData = [].concat.apply([], Object.keys(inventoryTotalEnergyAndEmissions["WTW"]).map((vtype, index) => {
-        let res = []
+        let res: any[] = []
         const fuels = inventoryTotalEnergyAndEmissions["WTW"][vtype]
         const ftypes = Object.keys(fuels)
         for (let i = 0; i < ftypes.length; i++) {
@@ -266,7 +266,7 @@ export default function ProjectSummary(props : {project: ProjectType}){
             </StepCard>
             <StepCard title='3. Climate Scenario' stage="Climate" stageId={0}>
                 <span>The Climate Scenario aims to describe the predicted transport related emissions when a strategy, policy, programme or project were to be introduced.</span>
-                {climateResultsError[0] && <Alert variant='warning'>Failed to compute Climate results. This is often due to a vehicle or fuel being added after the first edits. Please go through the inventory and scenarios steps again and fill missing data.</Alert>}
+                {climateResultsError[0] && <Alert variant='warning'>Failed to compute Climate results. This is often due to missing steps. Please go through the steps again and fill missing data.</Alert>}
                 {climateResults?.[0]?.emissions && <Row className="results-preview align-items-center">
                     <Col lg="8" className="chart-content" style={{background: "white", padding: "20px"}}>
                         <EmissionsBarChart emissionsData={climateResults?.[0]?.emissions?.WTW || {}} project={project}></EmissionsBarChart>

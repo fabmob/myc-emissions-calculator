@@ -149,6 +149,63 @@ export type Project = {
     projectReferenceYears: number[]
 }
 
+export type ProjectsDbEntry = {
+    id: number,
+    createdDate: string,
+    modifiedDate: string,
+    owner: string,
+    name: string,
+    isSump: number,
+    country: string,
+    city: string,
+    partnerLocation: string,
+    area: string,
+    referenceYears: string,
+    status: string,
+    stage?: ProjectStage,
+    stageId: number,
+    step: number,
+    stages: {
+        [stage in ProjectStage]: {
+            steps: any[],
+            step: number
+        }[]
+    }
+}
+export type ProjectStepsDbEntry = {
+    projectId: number,
+    stage: ProjectStage,
+    stageId: number,
+    stepNumber: number,
+    value: string
+}
+export type ProjectSourcesDbEntry = {
+    sourceId: number,
+    projectId: number,
+    value: string
+}
+export type FullProject = {
+    id: number,
+    createdDate: Date,
+    modifiedDate: Date,
+    owner: string,
+    name: string,
+    isSump: boolean,
+    country: string,
+    city: string,
+    partnerLocation: string,
+    area: string,
+    status: string
+    referenceYears: number[],
+    stages: {
+        [stage in ProjectStage]: {
+            steps: any[],
+            step: number
+        }[]
+    },
+    sources: ProjectSourcesDbEntry[]
+    
+}
 export type ProjectStage = "Inventory" | "BAU" | "Climate"
 
 export type AvoidedMotorisedVkt = {
