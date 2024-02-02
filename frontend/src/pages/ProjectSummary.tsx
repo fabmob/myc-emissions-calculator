@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useKeycloak } from "@react-keycloak/web"
 import { useParams, useNavigate } from "react-router-dom"
-import { Button, Row, Col, Card, Table, Badge, Alert } from 'react-bootstrap'
+import { Button, Row, Col, Card, Table, Badge, Alert, Modal } from 'react-bootstrap'
 import {ProjectStage, ProjectType, TotalEnergyAndEmissions, FuelType, EmissionsResults} from '../frontendTypes'
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'
 
@@ -21,10 +21,15 @@ export default function ProjectSummary(props : {project: ProjectType}){
     const [inventoryResultsError, setInventoryResultsError] = useState(false)
     const [bauResultsError, setBauResultsError] = useState(false)
     const [climateResultsError, setClimateResultsError] = useState<boolean[]>([])
+    const [showDeleteWarning, setShowDeleteWarning] = useState(false as number | boolean)
     const projectId = params.projectId
     const defaultColors = ["#2CB1D5", "#A2217C", "#808080", "#67CAE4", "#CE8DBB", "#B3B3B3", "#C5E8F2", "#EBD1E1", "#E6E6E6"]
     
     useEffect(() => {
+        load()
+    }, [keycloak, initialized, props.project, navigate])
+    
+    const load = () => {
         if (initialized && keycloak.authenticated && props.project.id){
             setProject(props.project)
             if (props.project?.stages?.Inventory?.length > 0)
@@ -35,8 +40,7 @@ export default function ProjectSummary(props : {project: ProjectType}){
                 fetchClimateResults(props.project, i)
             }
         }
-    }, [keycloak, initialized, props.project, navigate])
-    
+    }
     const hide = (state: string) => {
         setHideParams(prevHideParams => {
             return {
@@ -85,7 +89,7 @@ export default function ProjectSummary(props : {project: ProjectType}){
                             ? <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>hide(props.title)}><span className="item"><span>See less</span></span></Button>
                             : <Button variant="link" style={{whiteSpace: "nowrap"}} onClick={_=>show(props.title)}><span className="item"><span>See more</span></span></Button>
                         }
-                        {(props.stage === "Climate" && props.stageId != undefined && project.stages?.Climate.length && <Button variant="link" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#copy"}/></svg></span></Button>) || ""}
+                        {(props.stage === "Climate" && props.stageId !== undefined && project.stages?.Climate.length && <Button variant="link" onClick={_=>duplicateClimateScenario(props.stageId!)} title='Duplicate Scenario'><span className="item"><svg className="icon icon-size-s" viewBox="0 0 22 22"><use href={"/icons.svg#copy"}/></svg></span></Button>) || ""}
                     
                         <Button onClick={e => navigate(introUrl)}>
                         {project.stages?.[props.stage].length ? 
@@ -93,6 +97,11 @@ export default function ProjectSummary(props : {project: ProjectType}){
                             <span className="item"><span>Create</span><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg></span>
                         }
                         </Button>
+                        {(props.stage === "Climate" && props.stageId !== undefined && project.stages?.[props.stage].length > 1) && 
+                            <Button onClick={e => setShowDeleteWarning(props.stageId as number)} variant='danger'>
+                                <span className="item"><span>Delete</span></span>
+                            </Button>
+                        }
                 </div>
             </Card.Header>
             {!hideParams[props.title] && <Card.Body>
@@ -135,7 +144,7 @@ export default function ProjectSummary(props : {project: ProjectType}){
             })
             .then(data => {
                 console.log("get BAU results reply", data)
-                if (data.status != "ok") {
+                if (data.status !== "ok") {
                     setBauResultsError(true)
                 } else {
                     setBAUResults(data)
@@ -172,6 +181,25 @@ export default function ProjectSummary(props : {project: ProjectType}){
                     return tmp
                 })
             })
+    }
+    const deleteScenario = (climateScenarioId: number) => {
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + keycloak.token }
+        };
+        fetch(`${process.env.REACT_APP_BACKEND_API_BASE_URL}/api/project/${projectId}/Climate/${climateScenarioId}/`, requestOptions)
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            setShowDeleteWarning(false)
+            load()
+        })
+        .catch(error => {
+            console.log(error)
+            // TODO: display error
+            setShowDeleteWarning(false)
+        })
     }
     const inventoryEmissionsPieData = [].concat.apply([], Object.keys(inventoryTotalEnergyAndEmissions["WTW"]).map((vtype, index) => {
         let res: any[] = []
@@ -298,6 +326,22 @@ export default function ProjectSummary(props : {project: ProjectType}){
             {project?.stages?.Climate?.length > 0 &&
                 <div style={{marginBottom: "30px"}}><Button variant="link" onClick={_=>navigate(`/project/${project.id}/Climate/${project.stages.Climate.length}/intro`)}><span className="item"><svg className="icon icon-size-m" viewBox="0 0 22 22"><use href={"/icons.svg#plus"}/></svg><span>Add another climate scenario</span></span></Button></div>
             }
+            <Modal size="lg" centered show={showDeleteWarning !== false} onHide={() => setShowDeleteWarning(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Are you sure you want to delete this scenario ?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="masked-overflow-y">
+                    This operation is definitive, deleted data can not be retrived.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={() => deleteScenario(showDeleteWarning as number)}>
+                        <span className="item"><span>Confirm deletion</span></span>
+                    </Button>
+                    <Button variant="secondary" onClick={() => setShowDeleteWarning(false)}>
+                        <span className="item"><span>Close</span></span>
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>             
     )
 }

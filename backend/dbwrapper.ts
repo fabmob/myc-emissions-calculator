@@ -243,6 +243,23 @@ export function duplicateClimateScenario(projectId: number, oldStageId: number, 
     inserts(resProjectSteps)
 }
 
+export function deleteClimateScenario(projectId: number, stageId: number, owner: string, isAdmin: boolean) {
+    let deleteClimateScenarioStmt
+    let res
+    if (isAdmin) {
+        deleteClimateScenarioStmt = db.prepare("DELETE FROM ProjectSteps where projectId = ? and stageId = ? and stage = 'Climate'")
+        res = deleteClimateScenarioStmt.run([projectId, stageId])
+    } else {
+        deleteClimateScenarioStmt = db.prepare("DELETE FROM ProjectSteps where projectId = ? and stageId = ? and owner = ? and stage = 'Climate'")
+        res = deleteClimateScenarioStmt.run([projectId, stageId, owner])
+    }
+    if (res){
+        const reduceScenariosIdsStmt = db.prepare("UPDATE ProjectSteps SET stageId = stageId - 1 WHERE projectId = ? AND stage = 'Climate' AND stageId > ?")
+        reduceScenariosIdsStmt.run([projectId, stageId])
+    }
+    return res
+}
+
 export function updateAllProjectSteps(project: types.FullProject) {
     const addProjectStepStmt = db.prepare("INSERT INTO ProjectSteps (projectId, stage, stageId, stepNumber, value) values (?, ?, ?, ?, ?)")
     let dataToInsert = []

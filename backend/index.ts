@@ -107,6 +107,22 @@ app.delete('/api/project/:projectId', keycloak.protect(), (req: Request, res: Re
         status: "ok"
     });
 });
+
+app.delete('/api/project/:projectId/Climate/:climateScenarioId', keycloak.protect(), (req: Request, res: Response) => {
+    const owner = (req as any).kauth.grant.access_token.content.email
+    const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
+    const dbres = dbwrapper.deleteClimateScenario(parseInt(req.params.projectId), parseInt(req.params.climateScenarioId), owner, isAdmin)
+    if (dbres !== null) {
+        res.json({
+            status: "ok"
+        });
+    } else {
+        res.status(400).json({
+            status: "err"
+        })
+    }
+});
+
 app.get('/api/project/:projectId/viz', keycloak.protect(), (req: Request, res: Response) => {
     const owner = (req as any).kauth.grant.access_token.content.email
     const isAdmin = (req as any).kauth.grant.access_token.content.realm_access.roles.indexOf("app-admin") !== -1
