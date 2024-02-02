@@ -38,11 +38,10 @@ const Jumbo = () => {
                 <Row>
                     {/* <Col lg="12"><h1>Get emissions from local transportation</h1></Col> */}
                     <Col lg="5">
-                        <img src="/logos/logo-MYC.png" alt="Mobilise Your City" />
                         <h1>Estimate emissions from local transports</h1>
                         <div className="text">
-                            <p>The <a href="https://www.mobiliseyourcity.net/">MobiliseYourCity</a> Emissions Calculator helps government organizations and consulting agencies to estimate current and future greenhouse gas (GHG) emissions, and allows them to compare their “Business As Usual” scenario to GHG reduction plans.</p>
-                            <p className="p3">The MYC Emissions Calculator is fully <a href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank">open source</a> and free to use.</p>
+                            <p>The <a href="https://www.mobiliseyourcity.net/" target="_blank" rel="noreferrer">MobiliseYourCity</a> Emissions Calculator helps government organizations and consulting agencies to estimate current and future greenhouse gas (GHG) emissions, and allows them to compare their “Business As Usual” scenario to GHG reduction plans.</p>
+                            <p className="p3">The MobiliseYourCity Emissions Calculator is fully <a href="https://github.com/fabmob/myc-emissions-calculator/" target="_blank" rel="noreferrer">open source</a> and free to use.</p>
                         </div>
                         {/* {keycloak.authenticated ?
                             <Button variant="action" size="lg" 
@@ -77,33 +76,6 @@ const Jumbo = () => {
                 </Row>
             </div>
         </section>
-        {/* <section className="hero">
-            <div className="container">
-                <Row>
-                    <Col lg="12"><h1>MYC GHG emissions calculator</h1></Col>
-                    <Col lg="5">
-                        <div className="text">
-                            <p>The MYC GHG emissions calculator helps governmental organizations and consulting agencies to estimate both present and future greenhouse gas (GHG) emissions for local transports.</p>
-                            <p>Future estimations can be made according to the current emission trends ("BAU") and to GHG reduction plans ("Climate Scenarios").</p>
-                        </div>
-                        <Button variant="action" size="lg" 
-                                onClick={() => 
-                                    {keycloak.authenticated ? navigate('/projects') : keycloak.login()}}>
-                            <span className="item"><span>Get started</span></span>
-                        </Button>                        
-                    </Col>
-                    <Col lg="7">
-                        <div className="illustration">
-                            <div className="layers-wrapper">
-                                <Image id="" src="/pictures/frame-364-3.png" alt=""></Image>
-                                <Image id="" src="/pictures/frame-364-2.png" alt=""></Image>
-                                <Image id="" src="/pictures/frame-364-1.png" alt=""></Image>
-                            </div>
-                        </div>
-                    </Col>
-                </Row>
-            </div>
-        </section> */}
         </>
     )
 }
@@ -111,11 +83,10 @@ const Initiative = () => (
     <section className="" style={{position: "relative", background: "var(--c-h0-s0-l6)", boxShadow: "0rem 0rem 3.6rem 0rem hsla(0,0%,0%,0.2)"}}>
         <div className="container">
             <Row>
-                {/* <Col lg="12"><h2>Initiative</h2></Col> */}
                 <Col lg="5">
                     <h2 style={{marginTop: 0}}>Initiative</h2>
                     <div className="text">
-                        <p>The MYC Emissions Calculator is an initiative from the <a href="https://www.mobiliseyourcity.net/">MobiliseYourCity</a> global partnership, which aims to improve sustainable mobility and decarbonize transport.</p>
+                        <p>The Emissions Calculator is an initiative from the <a href="https://www.mobiliseyourcity.net/" target="_blank" rel="noreferrer">MobiliseYourCity</a> global partnership, which aims to improve sustainable mobility and decarbonize transport.</p>
                         <p>Launched in 2015, it has over <b>70 member cities</b> and <b>15 member countries</b>. It works to transition to sustainable urban mobility, develop comprehensive mobility plans, facilitate sustainable financing for large-scale projects, and close the investment gap for sustainable mobility.</p>
                     </div>
                 </Col>
@@ -132,7 +103,6 @@ const Methodology = () => (
     <section className="" style={{position: "relative", background: "var(--c-h0-s0-l6)"}}>
         <div className="container">
             <Row>
-                {/* <Col lg="12"><h2>Methodology</h2></Col> */}
                 <Col lg="5">
                     <h2 style={{marginTop: 0}}>Methodology</h2>
                     <div className="text">
@@ -153,7 +123,6 @@ const Devs = () => (
     <section className="" style={{position: "relative", background: "var(--c-h0-s0-l6)"}}>
         <div className="container">
             <Row>
-                {/* <Col lg="12"><h2>Creators</h2></Col> */}
                 <Col lg="5">
                     <h2 style={{marginTop: 0}}>Development</h2>
                     <div className="text">
