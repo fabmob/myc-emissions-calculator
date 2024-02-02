@@ -214,7 +214,7 @@ app.get('/api/project/:projectId/Inventory/0/emissions', keycloak.protect(), (re
     let vehicleKilometresTravelledComputed : types.VehicleKilometresTravelledComputed = {}
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = {}
     let vehicleStats : types.VehicleStats = {}
-    const vtypes = Object.keys(inputInventoryStep2.vtypes)
+    const vtypes = Object.keys(inputInventoryStep1.vtypes)
     for (let i = 0; i < vtypes.length; i++) {
         const vtype = vtypes[i];
         const vehicle = inputInventoryStep2.vtypes[vtype]
@@ -305,7 +305,7 @@ app.get('/api/project/:projectId/Inventory/0/results', keycloak.protect(), (req:
     let vehicleKilometresTravelledComputed : types.VehicleKilometresTravelledComputed = {}
     let inputAverageEnergyConsumption : types.AverageEnergyConsumption = {}
     let vehicleStats : types.VehicleStats = {}
-    const vtypes = Object.keys(inputInventoryStep2.vtypes)
+    const vtypes = Object.keys(inputInventoryStep1.vtypes)
     for (let i = 0; i < vtypes.length; i++) {
         const vtype = vtypes[i];
         const vehicle = inputInventoryStep2.vtypes[vtype]
@@ -538,14 +538,13 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/With/results', keycl
     const inputClimateWithUpstreamStep2: types.InputClimateWithUpstreamStep2 = project.stages.Climate[climateScenarioId].steps[2]
     const climateVktPerFuel: types.InputBAUStep2 = project.stages.Climate[climateScenarioId].steps[3]
     const climateAvgEnergyConsumption: types.InputBAUStep3 = project.stages.Climate[climateScenarioId].steps[4]
-    let vtypes = Object.keys(inputClimateWithUpstreamStep1.vtypes)
+    const vtypes = Object.keys(vehicles.vtypes)
     let vehicleKilometresTravelledComputed: types.VehicleKilometresTravelledComputed = {}
     for (let i = 0; i < vtypes.length; i++) {
         const vtype = vtypes[i]
         vehicleKilometresTravelledComputed[vtype] = [inventoryVkt.vtypes[vtype].vkt].concat(inputClimateWithUpstreamStep1.vtypes[vtype].vkt).map(e => parseFloat(e))
     }
     let inputVktPerFuel : types.VktPerFuel = {}
-    vtypes = Object.keys(climateVktPerFuel.vtypes)
     for (let i = 0; i < vtypes.length; i++) {
         const vtype = vtypes[i]
         const vehicle = climateVktPerFuel.vtypes[vtype]
@@ -628,7 +627,7 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/Without/results', ke
     }
     const climateScenarioId = parseInt(req.params.climateScenarioId)
     const vehicles : types.InputInventoryStep1 = project.stages.Inventory[0].steps[1]
-    let vtypes = Object.keys(vehicles.vtypes)
+    const vtypes = Object.keys(vehicles.vtypes)
     const inventoryVkt : types.InputInventoryStep2 = project.stages.Inventory[0].steps[2]
     const inventoryAverageEnergyConsumption : types.InputInventoryStep3 = project.stages.Inventory[0].steps[3]
     const inputInventoryStep6: types.InputInventoryStep6 = project.stages?.Inventory[0].steps?.[6]
@@ -656,7 +655,6 @@ app.get('/api/project/:projectId/Climate/:climateScenarioId/Without/results', ke
     const vehicleKilometresTravelledComputed = models.computeVehicleKilometresTravelled(inputVehicleKilometresTravelled, project.referenceYears)
     // console.log("vehicleKilometresTravelledComputed", vehicleKilometresTravelledComputed)
     let inputVktPerFuel : types.VktPerFuel = {}
-    vtypes = Object.keys(climateVktPerFuel.vtypes)
     for (let i = 0; i < vtypes.length; i++) {
         const vtype = vtypes[i]
         const vehicle = climateVktPerFuel.vtypes[vtype]
