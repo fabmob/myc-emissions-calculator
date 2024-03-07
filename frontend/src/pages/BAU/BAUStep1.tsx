@@ -208,7 +208,7 @@ export default function BAUStep1(){
                     </Tab>))}
                 </Tabs>
                 <div>
-                    <Button className="user-note-button" variant="link" onClick={e=>setShowVehicules(true)}><span className="item">Click here to edit vehicules and fuels</span></Button>
+                    <Button className="user-note-button" variant="link" onClick={e=>setShowVehicules(true)}><span className="item">Click here to edit vehicles and fuels</span></Button>
                 </div>
             </ProjectStepContainerWrapper>
             <ChoiceModal 
