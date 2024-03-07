@@ -223,7 +223,7 @@ export default function ClimateWithUpstreamStep1(){
                     </Tab>))}
                 </Tabs>
                 <div>
-                    <Button className="user-note-button" variant="link" onClick={e=>setShowVehicules(true)}><span className="item">Click here to edit vehicules and fuels</span></Button>
+                    <Button className="user-note-button" variant="link" onClick={e=>setShowVehicules(true)}><span className="item">Click here to edit vehicles and fuels</span></Button>
                 </div>
                 
             </ProjectStepContainerWrapper>
@@ -255,10 +255,10 @@ export default function ClimateWithUpstreamStep1(){
                 </Modal.Header>
                 <Modal.Body className="masked-overflow-y">
                     <p>
-                        Vehicules and fuels are shared between Inventory and all scenarios to ease comparison. <br/>
-                        Adding a vehicule or fuel here will also automatically add it to the Inventory and to other scenarios with default values (usualy zero).<br/>
-                        Removing a vehicule or fuel here will also remove it elsewhere.
-                        It is thus recommanded to avoid removing unused vehicules or fuels, and setting their value to zero in later steps instead.
+                        Vehicles and fuels are shared between Inventory and all scenarios to ease comparison. <br/>
+                        Adding a vehicle or fuel here will also automatically add it to the Inventory and to other scenarios with default values (usualy zero).<br/>
+                        Removing a vehicle or fuel here will also remove it elsewhere.
+                        It is thus recommanded to avoid removing unused vehicles or fuels, and setting their value to zero in later steps instead.
                     </p>
                     <InventoryStep1 asComponent={true} triggerSave={triggerVehiculesSave} setTriggerSave={handleTriggerVehiculesSave}></InventoryStep1>
                 </Modal.Body>

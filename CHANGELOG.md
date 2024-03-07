@@ -78,7 +78,9 @@ In 2023, the **version MVP2 was released**, complementing the scope to match the
 
 ## 2.3
 * Design rework on the welcome page
-* New feature: New vehicules and fuels can be added at the start of BAU & Climatescenarios, instead of having to go back to inventory and redoing all the steps
+* New feature: New vehicles and fuels can be added at the start of BAU & Climate scenarios, instead of having to go back to inventory and redoing all the steps
+    * This is done at the first step of both BAU & Climate, using the button "Click here to edit vehicles and fuels"
+    * Overall, the system is way more resilient to this kind of after-the-fact changes.
 * New feature: Climate scenarios can now be deleted if more than one is present
 
 ---

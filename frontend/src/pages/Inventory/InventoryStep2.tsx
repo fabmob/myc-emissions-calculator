@@ -264,17 +264,17 @@ export default function InventoryStep2(){
                 <Table bordered>
                     {computationApproach === "fleet" 
                         ? <colgroup>
-                            <col className="tablecol4" />{/* Vehicule */}
+                            <col className="tablecol4" />{/* Vehicle */}
                             <col className="tablecol3" />{/* Fuels */}
                             <col className="tablecol1" />{/* Src */}
-                            <col className="tablecol3" />{/* Vehicule stock */}
+                            <col className="tablecol3" />{/* Vehicle stock */}
                             <col className="tablecol3" />{/* Avg mileage */}
                             <col className="tablecol3" />{/* Computed VKT */}
                             <col className="tablecol1" />{/* Src */}
                             <col className="tablecolfluid" />{/* VKT% */}
                         </colgroup>
                         : <colgroup>
-                            <col className="tablecol4" />{/* Vehicule */}
+                            <col className="tablecol4" />{/* Vehicle */}
                             <col className="tablecol3" />{/* Fuels */}
                             <col className="tablecol1" />{/* Src */}
                             <col className="tablecol4" />{/* VKT Input */}
